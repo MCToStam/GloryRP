@@ -1,7 +1,7 @@
 {
-	"name": "GloryRP",
+	"name": "nationsglory-tools",
 	"version": "4.0.0",
-	"description": "GloryRP, un outil dont le but est d'innover pour vos rôle-play de serveur sur NationsGlory. Que ce soit en temps que journaliste ou avocat, vous serez servit !",
+	"description": "Robot du serveur Discord Communautaire du serveur Blue",
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js",
@@ -10,9 +10,13 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/MCToStam/GloryRP.gt"
+		"url": "git+https://github.com/Croux31/NationsGlory-Tools.git"
 	},
-	"author": "Croux, ToStam",
+	"author": "Croux",
+	"contributors": [
+		"Evelyne Lachance <eslachance@gmail.com> (http://evie.codes)",
+		"York (http://anidiots.guide)"
+	],
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/Croux31/NationsGlory-Tools/issues"
