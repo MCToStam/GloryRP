@@ -1,10 +1,10 @@
 if (Number(process.version.slice(1).split('.')[0]) < 19)
 	throw new Error('Node 19.x is required. Update Node on your system.');
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 
 const { Client, Collection, IntentsBitField } = require('discord.js');
 const { readdirSync } = require('fs');
-const { intents, partials } = require('./config2.js');
+const { intents, partials } = require('./config.js');
 const log = require('./utils/modules/logger.js');
 const botLaunch = [];
 const myIntents = new IntentsBitField();

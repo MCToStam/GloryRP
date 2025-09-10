@@ -1,7 +1,6 @@
-const config = require('../../config2.js');
+const { ActivityType } = require('discord.js');
+const config = require('../../config.js');
 const log = require('../../utils/modules/logger.js');
-const serv = require('../../components/constants/servers.js');
-const chan = require('../../components/constants/channels.js');
 const { getDateTs } = require('../../utils/functions/numbersAndLetters.js');
 const { botLaunch } = require('../../index.js');
 const checkEmojiCache = require('../../utils/functions/emojis.js');
@@ -16,7 +15,7 @@ async function getPlayerCount(server) {
 	return null;
 }
 
-async function cycleStatus() {
+async function cycleStatus(client) {
 	const server = config.liste_serveur[statusIndex];
 	const playerCount = await getPlayerCount(server);
 
@@ -33,21 +32,18 @@ async function cycleStatus() {
 
 module.exports = async (client, interaction) => {
 	//*Logs
-	const chanCmds = client.channels.cache.get(chan.cmd.dev);
+	const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
 	chanCmds.send('**✅ | BOT ON !**');
 
 	const botStart = new Date();
 	const latence = (botStart.getTime() - botLaunch[0].getTime()) / 1000;
 
-	const chanStatus =
-		client.user.id === config.clients[0]
-			? client.channels.cache.get(chan.logs.status)
-			: client.channels.cache.get(chan.logs.statusDev);
+	const chanStatus = client.channels.cache.get(config.salon.dev.statut);
 	const guilds = client.guilds.cache.size;
 	const usersCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0);
 
 	const readyEmbed = {
-		color: serv.assets.blue.color,
+		color: config.couleur.blue,
 		title: `:robot: | Robot lancé en ${latence.toFixed(1)}s`,
 		description: getDateTs(client.readyAt, 'R'),
 	};
@@ -59,9 +55,8 @@ module.exports = async (client, interaction) => {
 		'green'
 	);
 
-	let statusIndex = 0;
+	await cycleStatus(client, (statusIndex = 0));
 
-	await cycleStatus();
 	setInterval(cycleStatus, 30000);
 	//checkEmojiCache(client);
 };
