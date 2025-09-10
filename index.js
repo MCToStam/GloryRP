@@ -59,7 +59,7 @@ const init = async () => {
 
 	client.login(); /*.then(async () => {
 		const config = require('./config.js');
-		const guild = client.guilds.cache.get(config.guild);
+		const guild = client.guilds.cache.get(config.guilds.dev);
 		const guildCmds = guild.commands;
 		const cmd = client.container.slashCmds;
 		const cmdSlashs = cmd.filter((c) => c.data.name === 'cmd');
