@@ -7,9 +7,10 @@ const checkEmojiCache = require('../../utils/functions/emojis.js');
 
 async function getPlayerCount(server) {
 	try {
-		const response = await axios.get(`${config.glorybot_url}/api/joueurConnecte?serveur=${server}&administrator=true`);
-		if (Array.isArray(response.data) && response.data.length > 0 && response.data[0].nombre !== undefined) {
-			return response.data[0].nombre;
+		var response = await fetch(`${config.glorybot_url}/api/joueurConnecte?serveur=${server}&administrator=true`);
+		var response = await response.json();
+		if (Array.isArray(response) && response.length > 0 && response[0].nombre !== undefined) {
+			return response[0].nombre;
 		}
 	} catch (error) {}
 	return null;
