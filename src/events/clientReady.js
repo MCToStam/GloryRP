@@ -16,7 +16,7 @@ async function getPlayerCount(server) {
 	return null;
 }
 
-async function cycleStatus(client) {
+async function cycleStatus(client, statusIndex) {
 	const server = config.liste_serveur[statusIndex];
 	const playerCount = await getPlayerCount(server);
 
@@ -32,7 +32,6 @@ async function cycleStatus(client) {
 }
 
 module.exports = async (client, interaction) => {
-	//*Logs
 	const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
 	chanCmds.send('**✅ | BOT ON !**');
 
@@ -44,20 +43,22 @@ module.exports = async (client, interaction) => {
 	const usersCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0);
 
 	const readyEmbed = {
-		color: config.couleur.blue,
+		color: config.colors.statut,
 		title: `:robot: | Robot lancé en ${latence.toFixed(1)}s`,
 		description: getDateTs(client.readyAt, 'R'),
 	};
 
 	chanStatus.send({ embeds: [readyEmbed] });
 	log(
-		`${client.user.username} is ready in ${latence.toFixed(1)}s to serve ${usersCount} users, ${guilds} guilds.`,
+		`${client.user.username} est pret en ${latence.toFixed(1)}s, sur ${guilds} serveurs et ${usersCount} utilisateurs.`,
 		'READY',
 		'green'
 	);
 
-	await cycleStatus(client, (statusIndex = 0));
+	await cycleStatus(client, 0);
 
-	setInterval(cycleStatus, 30000);
+	setInterval(() => {
+		cycleStatus(client, 0);
+	}, 30000);
 	//checkEmojiCache(client);
 };

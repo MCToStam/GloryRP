@@ -14,7 +14,7 @@ exports.run = async (client, interaction) => {
 	const slashCmds = container.slashCmds;
 
 	const guildId = guild.id;
-	if (guildId === config.guild) {
+	if (guildId === config.guilds.dev) {
 		var cmds = slashCmds;
 	} else {
 		var cmds = slashCmds.filter((c) => c.data.name !== 'cmd');
@@ -156,7 +156,7 @@ exports.data = {
 		},
 	],
 	contexts: [0],
-	async autocomplete(interaction, client) {
+	async autocomplete(client, interaction) {
 		const focusedValue = interaction.options.getFocused();
 		const { container } = client;
 		const slashCmds = container.slashCmds;
@@ -174,6 +174,5 @@ exports.data = {
 exports.conf = {
 	cooldown: 5,
 	enabled: true,
-	permLevel: 'Bot Admin',
 	category: '⚙ Configuration',
 };
