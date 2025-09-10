@@ -1,5 +1,6 @@
 const { MessageFlags, ButtonStyle } = require('discord.js');
 const fs = require('node:fs');
+const path = require('node:path');
 const { getGuildDatas, getGuildColor } = require('../../utils/functions/datas.js');
 
 exports.run = async (client, interaction, config) => {
@@ -16,16 +17,25 @@ exports.run = async (client, interaction, config) => {
 	try {
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));
 		for (const row of components) {
-			for (const comp of row.components.filter((x) => x.type == 9)) {
-				if (comp.accessory.custom_id === interaction.customId) {
-					if (panelDatas.enable) {
-						comp.accessory.label = 'Activé';
-						comp.accessory.emoji = { name: '✅' };
-						comp.accessory.style = ButtonStyle.Success;
-					} else {
-						comp.accessory.label = 'Désactivé';
-						comp.accessory.emoji = { name: '❌' };
-						comp.accessory.style = ButtonStyle.Danger;
+			for (const comp of row.components) {
+				if (comp.accessory) {
+					if (comp.accessory.custom_id === interaction.customId) {
+						if (panelDatas.enable) {
+							comp.accessory.label = 'Activé';
+							comp.accessory.emoji = { name: '✅' };
+							comp.accessory.style = ButtonStyle.Success;
+						} else {
+							comp.accessory.label = 'Désactivé';
+							comp.accessory.emoji = { name: '❌' };
+							comp.accessory.style = ButtonStyle.Danger;
+						}
+					}
+				} else if (comp.components) {
+					for (const subComp of comp.components) {
+						if (subComp.custom_id.includes('channel')) {
+							subComp.placeholder = panelDatas.enable ? 'Définis un salon' : "Active d'abord le pannel";
+							subComp.disabled = panelDatas.enable ? false : true;
+						}
 					}
 				}
 			}
