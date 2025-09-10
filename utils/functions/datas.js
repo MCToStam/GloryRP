@@ -2,10 +2,12 @@ const { MessageFlags } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 
-async function getGuildPath(interaction) {
+async function getGuildColor(interaction) {
 	try {
 		const rawDatas = fs.readFileSync('data/guilds.json');
-		var jsonDatas = await JSON.parse(rawDatas);
+		const jsonDatas = await JSON.parse(rawDatas);
+		const guildsDatas = await jsonDatas[0].find((x) => x.guild === interaction.guild.id);
+		return guildsDatas.server;
 	} catch (e) {
 		console.error(e);
 		return interaction.reply({
@@ -13,15 +15,14 @@ async function getGuildPath(interaction) {
 			flags: MessageFlags.Ephemeral,
 		});
 	}
-	const guildsDatas = await jsonDatas[0].find((x) => x.guild === interaction.guildId);
-	return path.join('data/servers/', guildsDatas.server + '.json');
 }
 
 async function getGuildDatas(interaction) {
-	const serverPath = await getGuildPath(interaction);
+	const guildColor = await getGuildColor(interaction);
+	const serverPath = path.join('data/servers/', guildColor + '.json');
 	try {
 		const rawDatas = fs.readFileSync(serverPath);
-		var jsonDatas = await JSON.parse(rawDatas);
+		const jsonDatas = await JSON.parse(rawDatas);
 		return jsonDatas;
 	} catch (e) {
 		console.error(e);
@@ -32,4 +33,4 @@ async function getGuildDatas(interaction) {
 	}
 }
 
-module.exports = { getGuildDatas, getGuildPath };
+module.exports = { getGuildDatas, getGuildColor };

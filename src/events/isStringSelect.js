@@ -1,7 +1,8 @@
 const log = require('../../utils/modules/logger.js');
+const config = require('../../config.js');
 
 module.exports = async (client, interaction) => {
-	const selectMenu = client.container.selects.get(interaction.values.toString());
+	const selectMenu = client.container.selects.get(interaction.values[0].split('-')[0]);
 	const cmdName = interaction.message.interaction ? interaction.message.interaction.commandName : '?';
 
 	if (!selectMenu) return;
@@ -14,7 +15,7 @@ module.exports = async (client, interaction) => {
 	}
 
 	try {
-		await selectMenu.run(client, interaction);
+		await selectMenu.run(client, interaction, config);
 	} catch (e) {
 		log(e, 'error', 'red');
 	}
