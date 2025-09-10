@@ -1,6 +1,6 @@
 if (Number(process.version.slice(1).split('.')[0]) < 19)
-	throw new Error('Node 19.x is required. Update Node on your system.');
-require('dotenv').config();
+	throw new Error('Node 19.x est requis. Veuillez augmenter la version de Node.');
+require('dotenv').config({ quiet: true });
 
 const { Client, Collection, IntentsBitField } = require('discord.js');
 const { readdirSync } = require('fs');
@@ -35,15 +35,15 @@ const init = async () => {
 		for (const file of files) {
 			const command = require(`${path}/${file}`);
 			const commandName = file.split('.')[0];
-			log(`Loading ${typeLog}: ${commandName}. 👌`, 'LOG', 'gray');
+			log(`Chargement ${typeLog}: ${commandName}. 👌`, 'LOG', 'gray');
 			client.container[type].set(command.data.name, command);
 		}
 	}
 
 	botLaunch.push(new Date());
-	await load('slashCmds', './src/commands/slash', 'Slash command');
-	await load('userCmds', './src/commands/user', 'User command');
-	await load('msgCmds', './src/commands/message', 'Message command');
+	await load('slashCmds', './src/commands/slash', 'Slash Command');
+	await load('userCmds', './src/commands/user', 'User Command');
+	await load('msgCmds', './src/commands/message', 'Message Command');
 	await load('buttons', './src/buttons', 'Button');
 	await load('selects', './src/selects', 'Select');
 	await load('modals', './src/modals', 'Modals');
@@ -52,7 +52,7 @@ const init = async () => {
 
 	for (const file of eventFiles) {
 		const eventName = file.split('.')[0];
-		log(`Loading Event: ${eventName}. 👌`, 'LOG', 'gray');
+		log(`Chargement Event: ${eventName}. 👌`, 'LOG', 'gray');
 		const event = require(`./src/events/${file}`);
 		client.on(eventName, event.bind(null, client));
 	}
