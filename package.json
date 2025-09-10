@@ -1,0 +1,42 @@
+{
+	"name": "nationsglory-tools",
+	"version": "4.0.0",
+	"description": "Robot du serveur Discord Communautaire du serveur Blue",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"clean": "npx prettier . --write",
+		"format": "node .vscode/clean.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Croux31/NationsGlory-Tools.git"
+	},
+	"author": "Croux",
+	"contributors": [
+		"Evelyne Lachance <eslachance@gmail.com> (http://evie.codes)",
+		"York (http://anidiots.guide)"
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Croux31/NationsGlory-Tools/issues"
+	},
+	"homepage": "https://github.com/Croux31/NationsGlory-Tools#readme",
+	"dependencies": {
+		"@discordjs/voice": "latest",
+		"@napi-rs/canvas": "latest",
+		"cheerio": "^1.0.0",
+		"cron": "latest",
+		"discord.js": "latest",
+		"dotenv": "latest",
+		"ffmpeg-static": "latest",
+		"googleapis": "latest",
+		"libsodium-wrappers": "latest",
+		"moment": "latest",
+		"mongoose": "latest",
+		"nationshdv": "latest",
+		"pagination.djs": "latest",
+		"quickchart-js": "latest",
+		"rss-parser": "latest"
+	}
+}
