@@ -2,6 +2,6 @@
 	"guild": "1415033751733538868",
 	"panels": [
 		{ "id": "journalist", "enable": false },
-		{ "id": "lawyer", "enable": true }
+		{ "id": "lawyer", "enable": false }
 	]
 }

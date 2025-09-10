@@ -3,11 +3,10 @@ const { getGuildColor, getGuildDatas } = require('../../utils/functions/datas.js
 
 exports.run = async (client, interaction, config) => {
 	const panel = interaction.values[0].split('-')[2];
-	var panelName = config.panels[panel].name;
-	var panelName = panelName.charAt(0).toUpperCase() + panelName.slice(1);
+	const realPanelName = config.panels[panel].name;
+	const panelName = realPanelName.charAt(0).toUpperCase() + realPanelName.slice(1);
 
 	const guildColor = await getGuildColor(interaction);
-
 	const guildDatas = await getGuildDatas(interaction);
 	const panelState = guildDatas.panels.find((x) => x.id === panel);
 
@@ -33,27 +32,32 @@ exports.run = async (client, interaction, config) => {
 				],
 				accessory: {
 					type: 2,
-					custom_id: 'toggle-panel-lawyer',
+					custom_id: 'toggle-panel-' + panel,
 					label: panelState.enable ? 'Activé' : 'Désactivé',
 					emoji: { name: panelState.enable ? '✅' : '❌' },
 					style: panelState.enable ? ButtonStyle.Success : ButtonStyle.Danger,
 				},
 			},
 			{
+				type: 14,
+				spacing: SeparatorSpacingSize.Small,
+			},
+			{
+				type: 10,
+				content: 'Salon dans lequel est envoyé le pannel des tâches ' + realPanelName + '.',
+			},
+			{
 				type: 1,
 				components: [
 					{
 						type: 8,
-						custom_id: panel + 'channel',
-						placeholder: 'Définis un salon',
+						custom_id: 'channel' + panel,
+						placeholder: panelState.enable ? 'Définis un salon' : "Active d'abord le pannel",
 						max_values: 1,
+						disabled: panelState.enable ? false : true,
 						channel_types: [ChannelType.GuildText],
 					},
 				],
-			},
-			{
-				type: 14,
-				spacing: SeparatorSpacingSize.Small,
 			},
 		],
 	};
@@ -70,7 +74,6 @@ exports.run = async (client, interaction, config) => {
 		],
 	};
 
-	const components = interaction.message.components.map((row) => row.toJSON());
 	await interaction.message.edit({ components: [pannelContainer, configHome] });
 };
 
