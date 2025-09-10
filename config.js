@@ -84,12 +84,6 @@ const config = {
         delta: "1254510658431746079",
         epsilon: "1297544663707684905"
     },
-    emoji_formate: Object.fromEntries(
-        Object.entries(emoji).map(([serveur, id]) => [
-            serveur,
-            `<:NG${serveur.charAt(0).toUpperCase() + serveur.slice(1)}:${id}>`
-        ])
-    ),
     salon: {
         blue: "1251837868024926270",
         orange: "1251837910106505226",
