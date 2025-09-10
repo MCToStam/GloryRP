@@ -32,7 +32,6 @@ async function cycleStatus(client) {
 }
 
 module.exports = async (client, interaction) => {
-	//*Logs
 	const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
 	chanCmds.send('**✅ | BOT ON !**');
 
@@ -44,7 +43,7 @@ module.exports = async (client, interaction) => {
 	const usersCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0);
 
 	const readyEmbed = {
-		color: config.couleur.blue,
+		color: config.color,
 		title: `:robot: | Robot lancé en ${latence.toFixed(1)}s`,
 		description: getDateTs(client.readyAt, 'R'),
 	};
