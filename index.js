@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const { Client, Collection, IntentsBitField } = require('discord.js');
 const { readdirSync } = require('fs');
-const { intents, partials } = require('./config.js');
+const { intents, partials } = require('./config2.js');
 const log = require('./utils/modules/logger.js');
 const botLaunch = [];
 const myIntents = new IntentsBitField();
@@ -43,7 +43,7 @@ const init = async () => {
 	botLaunch.push(new Date());
 	await load('slashCmds', './src/commands/slash', 'Slash command');
 	await load('userCmds', './src/commands/user', 'User command');
-	await load('msgCmds', './commands/message', 'Message command');
+	await load('msgCmds', './src/commands/message', 'Message command');
 	await load('buttons', './src/buttons', 'Button');
 	await load('selects', './src/selects', 'Select');
 	await load('modals', './src/modals', 'Modals');
