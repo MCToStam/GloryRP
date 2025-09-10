@@ -1,6 +1,6 @@
 const { MessageFlags, ButtonStyle } = require('discord.js');
 const fs = require('node:fs');
-const { getGuildDatas, getGuildPath } = require('../../utils/functions/datas.js');
+const { getGuildDatas, getGuildColor } = require('../../utils/functions/datas.js');
 
 exports.run = async (client, interaction, config) => {
 	const panel = interaction.customId.split('-')[2];
@@ -11,7 +11,8 @@ exports.run = async (client, interaction, config) => {
 	const panelDatas = guildDatas.panels.find((x) => x.id === panel);
 	panelDatas.enable = !panelDatas.enable;
 	const panelState = guildDatas.enable ? 'activé' : 'désactivé';
-	const panelPath = await getGuildPath(interaction);
+	const guildColor = await getGuildColor(interaction);
+	const panelPath = path.join('data/servers/', guildColor + '.json');
 	try {
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));
 		for (const row of components) {
