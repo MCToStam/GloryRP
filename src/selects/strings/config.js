@@ -1,4 +1,4 @@
-const { ChannelType, SeparatorSpacingSize, ButtonStyle, MessageFlags, time } = require('discord.js');
+const { ChannelType, SeparatorSpacingSize, ButtonStyle, MessageFlags, time, userMention } = require('discord.js');
 const { getGuildColor, getGuildDatas } = require('../../../utils/functions/datas.js');
 const { getDateTs } = require('../../../utils/functions/numbersAndLetters.js');
 
@@ -70,7 +70,7 @@ exports.run = async (client, interaction, config) => {
 			},
 			{
 				type: 10,
-				content: '-# Dernières modifications : ' + (await time(panelDatas.timestamp, 'R')),
+				content: '-# Dernières modifications par ' + userMention(panelDatas.lastUser) + ' ' + (await time(panelDatas.timestamp, 'R')),
 			},
 		],
 	};

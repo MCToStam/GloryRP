@@ -1,4 +1,4 @@
-const { MessageFlags, time } = require('discord.js');
+const { MessageFlags, time, userMention } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 const { getGuildColor, getGuildDatas } = require('../../../utils/functions/datas.js');
@@ -24,8 +24,9 @@ exports.run = async (client, interaction, config) => {
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));
 		for (const row of components) {
 			for (const comp of row.components.filter((x) => x.type == 10)) {
-				if (comp.content.startsWith('-# Dernières modifications : ')) {
-					comp.content = '-# Dernières modifications : ' + (await time(panelDatas.timestamp, 'R'));
+				if (comp.content.startsWith('-# Dernières modifications par ')) {
+					comp.content =
+						'-# Dernières modifications par ' + userMention(panelDatas.lastUser) + ' ' + (await time(panelDatas.timestamp, 'R'));
 				}
 			}
 		}
