@@ -12,34 +12,17 @@ exports.run = async (client, interaction, config) => {
 
 	const guildDatas = await getGuildDatas(interaction);
 	const panelDatas = guildDatas.panels.find((x) => x.id === panel);
-	const lawyerPanel = guildDatas.panels.find((x) => x.id === 'lawyer');
-	const journalistPanel = guildDatas.panels.find((x) => x.id === 'journalist');
-	const regroupementPanel = guildDatas.panels.find((x) => x.id === 'regroupement');
 
-	if (
-		(regroupementPanel.enable && panelDatas.id !== regroupementPanel.id) ||
-		(lawyerPanel.enable && panelDatas.id === regroupementPanel.id) ||
-		(journalistPanel.enable && panelDatas.id === regroupementPanel.id)
-	) {
-		var message = `:x: **| Impossible d'activer le panel ${panelName} en même temps que le panel Regroupement !**`;
-		if (panelName === 'Regroupement') {
-			var message = `:x: **| Impossible d'activer le panel Regroupement en même temps que les autres panels !**`;
-		}
-		return interaction.reply({
-			content: message,
-			flags: MessageFlags.Ephemeral,
-		});
-	}
+	const panelState = !panelDatas.enable ? 'activé' : 'désactivé';
+	const guildColor = await getGuildColor(interaction);
+	const panelPath = `data/servers/${guildColor}.json`;
+	const modifDate = await toTimeStamp(new Date());
 
 	panelDatas.enable = !panelDatas.enable;
-	const modifDate = await toTimeStamp(new Date());
 	guildDatas.timestamp = modifDate;
 	guildDatas.lastUser = interaction.user.id;
 	panelDatas.timestamp = modifDate;
 	panelDatas.lastUser = interaction.user.id;
-	const panelState = panelDatas.enable ? 'activé' : 'désactivé';
-	const guildColor = await getGuildColor(interaction);
-	const panelPath = `data/servers/${guildColor}.json`;
 
 	try {
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));

@@ -1,1 +1,10 @@
-{"guild":"1415033751733538868","panels":[{"id":"journalist","enable":true,"channel":"1415328232835776632","timestamp":1757600979,"lastUser":null},{"id":"lawyer","enable":true,"channel":"1415328232835776632","timestamp":1757601439,"lastUser":"506118119216119810"},{"id":"regroupement","enable":false,"channel":"1415328232835776632","timestamp":1757600977,"lastUser":null}],"timestamp":1757601439,"lastUser":"506118119216119810"}
+{
+	"guild": "1415033751733538868",
+	"panels": [
+		{ "id": "journalist", "enable": true, "channel": "1415328232835776632", "timestamp": 1757600979, "lastUser": null },
+		{ "id": "lawyer", "enable": true, "channel": "1415328232835776632", "timestamp": 1757601439, "lastUser": "506118119216119810" },
+		{ "id": "regroupement", "enable": false, "channel": "1415328232835776632", "timestamp": 1757600977, "lastUser": null }
+	],
+	"timestamp": 1757601439,
+	"lastUser": "506118119216119810"
+}
