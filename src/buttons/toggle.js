@@ -38,7 +38,7 @@ exports.run = async (client, interaction, config) => {
 				} else if (comp.components) {
 					for (const subComp of comp.components) {
 						if (subComp.custom_id.includes('channel')) {
-							subComp.placeholder = panelDatas.enable ? 'Définis un salon' : "Active d'abord le pannel";
+							subComp.placeholder = panelDatas.enable ? 'Définis un salon' : "Active d'abord le panel";
 							subComp.disabled = panelDatas.enable ? false : true;
 							subComp.default_values =
 								panelDatas.enable && panelDatas.channel ?
@@ -64,7 +64,7 @@ exports.run = async (client, interaction, config) => {
 		}
 		await interaction.message.edit({ components });
 		interaction.reply({
-			content: `:white_check_mark: **| Le pannel ${panelName} a bien été ${panelState} !**`,
+			content: `:white_check_mark: **| Le panel ${panelName} a bien été ${panelState} !**`,
 			flags: MessageFlags.Ephemeral,
 		});
 	} catch (e) {

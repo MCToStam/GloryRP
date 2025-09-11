@@ -31,7 +31,7 @@ exports.run = async (client, interaction, config) => {
 		}
 		await interaction.message.edit({ components });
 		interaction.reply({
-			content: `:white_check_mark: **| Le salon du pannel ${panelName} a bien été édité !**`,
+			content: `:white_check_mark: **| Le salon du panel ${panelName} a bien été édité !**`,
 			flags: MessageFlags.Ephemeral,
 		});
 	} catch (e) {

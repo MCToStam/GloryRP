@@ -12,7 +12,7 @@ exports.run = async (client, interaction, config) => {
 
 	panelChannel.send(userMention(interaction.user.id) + " t'as une p'tite bite ! 😛").then(
 		interaction.reply({
-			content: ':white_check_mark: **| Le pannel ' + panelName + ' a bien été envoyé !**',
+			content: ':white_check_mark: **| Le panel ' + panelName + ' a bien été envoyé !**',
 			flags: MessageFlags.Ephemeral,
 		})
 	);
