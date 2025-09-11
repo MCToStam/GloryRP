@@ -1,4 +1,4 @@
-const { Collection } = require('discord.js');
+const { Collection, SeparatorSpacingSize, MessageFlags } = require('discord.js');
 const config = require('../../config.js');
 const log = require('../../utils/modules/logger.js');
 
@@ -7,7 +7,25 @@ module.exports = async (client, interaction) => {
 	if (!slashCmd) return;
 
 	if (!slashCmd.conf.enabled) {
-		return interaction.reply({ content: `**❌ | Cette commande est désactivée.**`, ephemeral: true });
+		desactiveContainer = {
+			type: 17,
+			accent_color: config.colors.error,
+			components: [
+				{
+					type: 10,
+					content: '## :no_entry_sign: Commande Désactivée ',
+				},
+				{
+					type: 14,
+					spacing: SeparatorSpacingSize.Large,
+				},
+				{
+					type: 10,
+					content: `Cette commande est désactivé et donc innaccessible.`,
+				}
+			],
+		};
+		return interaction.reply({ components: [desactiveContainer], flags: MessageFlags.IsComponentsV2, ephemeral: true });
 	}
 
 	const { cooldowns } = client;
@@ -27,10 +45,25 @@ module.exports = async (client, interaction) => {
 
 			if (now < expirationTime) {
 				const expiredTimestamp = Math.round(expirationTime / 1000);
-				return interaction.reply({
-					content: `**❌ | La commande est sous cooldown ➜ <t:${expiredTimestamp}:R>**`,
-					ephemeral: true,
-				});
+				cooldownContainer = {
+					type: 17,
+					accent_color: config.colors.error,
+					components: [
+						{
+							type: 10,
+							content: '## :no_entry_sign: Cooldown ',
+						},
+						{
+							type: 14,
+							spacing: SeparatorSpacingSize.Large,
+						},
+						{
+							type: 10,
+							content: `Cette commande est actuellement sous cooldown, tu peux la réutiliser <t:${expiredTimestamp}:R>.`,
+						}
+					],
+				};
+				return interaction.reply({ components: [cooldownContainer], flags: MessageFlags.IsComponentsV2, ephemeral: true });
 			}
 		}
 
