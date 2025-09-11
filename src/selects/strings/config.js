@@ -57,14 +57,14 @@ exports.run = async (client, interaction, config) => {
 						disabled: panelDatas.enable ? false : true,
 						channel_types: [ChannelType.GuildText],
 						default_values:
-							panelDatas.enable && panelDatas.channel
-								? [
-										{
-											type: 'channel',
-											id: panelDatas.channel,
-										},
-								  ]
-								: null,
+							panelDatas.enable && panelDatas.channel ?
+								[
+									{
+										type: 'channel',
+										id: panelDatas.channel,
+									},
+								]
+							:	null,
 					},
 				],
 			},
@@ -84,16 +84,16 @@ exports.run = async (client, interaction, config) => {
 				emoji: { name: '🏡' },
 				style: ButtonStyle.Primary,
 			},
-			panelDatas.channel
-				? {
-						type: 2,
-						custom_id: 'send-panel-' + panel,
-						label: 'Envoyer',
-						emoji: { name: '📨' },
-						style: ButtonStyle.Secondary,
-						disabled: panelDatas.enable ? false : true,
-				  }
-				: null,
+			panelDatas.channel ?
+				{
+					type: 2,
+					custom_id: 'send-panel-' + panel,
+					label: 'Envoyer',
+					emoji: { name: '📨' },
+					style: ButtonStyle.Secondary,
+					disabled: panelDatas.enable ? false : true,
+				}
+			:	null,
 		],
 	};
 

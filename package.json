@@ -1,5 +1,5 @@
 {
-	"name": "GloryRP",
+	"name": "glory-rp",
 	"version": "1.0.0",
 	"description": "GloryRP, un outil dont le but est d'innover pour vos rôle-play de serveur sur NationsGlory. Que ce soit en temps que journaliste ou avocat, vous serez servit !",
 	"main": "index.js",
@@ -21,8 +21,6 @@
 	"dependencies": {
 		"discord.js": "^14.22.1",
 		"dotenv": "^17.2.2",
-		"fs": "^0.0.1-security",
-		"moment": "^2.30.1",
-		"path": "^0.12.7"
+		"moment": "^2.30.1"
 	}
 }

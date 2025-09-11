@@ -1,6 +1,5 @@
 const { MessageFlags, ButtonStyle, time } = require('discord.js');
 const fs = require('node:fs');
-const path = require('node:path');
 const { getGuildDatas, getGuildColor } = require('../../utils/functions/datas.js');
 const { toTimeStamp } = require('../../utils/functions/numbersAndLetters.js');
 
@@ -12,12 +11,13 @@ exports.run = async (client, interaction, config) => {
 
 	const guildDatas = await getGuildDatas(interaction);
 	const panelDatas = guildDatas.panels.find((x) => x.id === panel);
+	panelDatas.enable = !panelDatas.enable;
 	const modifDate = await toTimeStamp(new Date());
 	guildDatas.timestamp = modifDate;
 	panelDatas.timestamp = modifDate;
 	const panelState = panelDatas.enable ? 'activé' : 'désactivé';
 	const guildColor = await getGuildColor(interaction);
-	const panelPath = path.join('data/servers/', guildColor + '.json');
+	const panelPath = `data/servers/${guildColor}.json`;
 
 	try {
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));
@@ -41,19 +41,23 @@ exports.run = async (client, interaction, config) => {
 							subComp.placeholder = panelDatas.enable ? 'Définis un salon' : "Active d'abord le pannel";
 							subComp.disabled = panelDatas.enable ? false : true;
 							subComp.default_values =
-								panelDatas.enable && panelDatas.channel
-									? [
-											{
-												type: 'channel',
-												id: panelDatas.channel,
-											},
-									  ]
-									: null;
+								panelDatas.enable && panelDatas.channel ?
+									[
+										{
+											type: 'channel',
+											id: panelDatas.channel,
+										},
+									]
+								:	null;
 						}
 					}
 				} else if (comp.content) {
 					if (comp.content.startsWith('-# Dernières modifications : ')) {
 						comp.content = '-# Dernières modifications : ' + (await time(panelDatas.timestamp, 'R'));
+					}
+				} else if (comp.custom_id) {
+					if (comp.custom_id.includes('send')) {
+						comp.disabled = panelDatas.enable ? false : true;
 					}
 				}
 			}
