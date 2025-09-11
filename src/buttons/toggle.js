@@ -5,26 +5,24 @@ const { toTimeStamp } = require('../../utils/functions/numbersAndLetters.js');
 const { getPanelsSelecString } = require('../../components/selectsString.js');
 
 exports.run = async (client, interaction, config) => {
-	const panel = interaction.customId.split('-')[2];
-	const realPanelName = config.panels[panel].name;
-	const panelName = realPanelName.charAt(0).toUpperCase() + realPanelName.slice(1);
-	const components = interaction.message.components.map((row) => row.toJSON());
-
-	const guildDatas = await getGuildDatas(interaction);
-	const panelDatas = guildDatas.panels.find((x) => x.id === panel);
-
-	const panelState = !panelDatas.enable ? 'activé' : 'désactivé';
-	const guildColor = await getGuildColor(interaction);
-	const panelPath = `data/servers/${guildColor}.json`;
-	const modifDate = await toTimeStamp(new Date());
-
-	panelDatas.enable = !panelDatas.enable;
-	guildDatas.timestamp = modifDate;
-	guildDatas.lastUser = interaction.user.id;
-	panelDatas.timestamp = modifDate;
-	panelDatas.lastUser = interaction.user.id;
-
 	try {
+		await interaction.deferUpdate();
+		const panel = interaction.customId.split('-')[2];
+		const components = interaction.message.components.map((row) => row.toJSON());
+
+		const guildDatas = await getGuildDatas(interaction);
+		const panelDatas = guildDatas.panels.find((x) => x.id === panel);
+
+		const guildColor = await getGuildColor(interaction);
+		const panelPath = `data/servers/${guildColor}.json`;
+		const modifDate = await toTimeStamp(new Date());
+
+		panelDatas.enable = !panelDatas.enable;
+		guildDatas.timestamp = modifDate;
+		guildDatas.lastUser = interaction.user.id;
+		panelDatas.timestamp = modifDate;
+		panelDatas.lastUser = interaction.user.id;
+
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));
 		for (const row of components) {
 			for (const comp of row.components) {
@@ -73,11 +71,7 @@ exports.run = async (client, interaction, config) => {
 				}
 			}
 		}
-		await interaction.message.edit({ components });
-		interaction.reply({
-			content: `:white_check_mark: **| Le panel ${panelName} a bien été ${panelState} !**`,
-			flags: MessageFlags.Ephemeral,
-		});
+		await interaction.message.edit({ components: components, allowedMentions: { parse: [] } });
 	} catch (e) {
 		console.error(e);
 		return interaction.reply({

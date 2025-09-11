@@ -20,7 +20,7 @@ function getPanelsSelecString(guildDatas) {
 		});
 	}
 
-	if (!lawyerPanel.enable && !journalistPanel.enable && regroupementPanel.enable) {
+	if (regroupementPanel.enable) {
 		panelOptions.push({
 			label: 'Panel Regroupement',
 			value: 'config-panel-regroupement',
