@@ -1,7 +1,8 @@
 const log = require('../../utils/modules/logger.js');
+const config = require('../../config.js');
 
 module.exports = async (client, interaction) => {
-	const btn = client.container.buttons.get(interaction.customId);
+	const btn = client.container.buttons.get(interaction.customId.split('-')[0]);
 	const cmdName = interaction.message.interaction ? interaction.message.interaction.commandName : '?';
 
 	if (!btn) return;
@@ -15,7 +16,7 @@ module.exports = async (client, interaction) => {
 	}
 
 	try {
-		await btn.run(client, interaction);
+		await btn.run(client, interaction, config);
 	} catch (e) {
 		log(e, 'error', 'red');
 	}
