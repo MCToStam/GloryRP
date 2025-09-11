@@ -39,12 +39,12 @@ exports.run = async (client, interaction, config) => {
 
 exports.data = {
 	name: 'config',
-	description: '⛔ Gestionnaire de commandes slash.',
+	description: 'Configure le rôle-play de ton serveur',
 	options: [
 		{
 			type: 3,
 			name: 'serveur',
-			description: 'Serveur que tu souhaites configurer.',
+			description: 'Serveur que tu souhaites configurer',
 			autocomplete: true,
 			required: true,
 		},

@@ -10,13 +10,13 @@ exports.run = async (client, interaction, config) => {
 	const guildColor = await getGuildColor(interaction);
 	const guildDatas = await getGuildDatas(interaction);
 	const panelDatas = guildDatas.panels.find((x) => x.id === panel);
-	const pannelContainer = {
+	const panelContainer = {
 		type: 17,
 		accent_color: config.couleur[guildColor],
 		components: [
 			{
 				type: 10,
-				content: '## :gear: Configuration du Pannel ' + panelName,
+				content: '## :gear: Configuration du Panel ' + panelName,
 			},
 			{
 				type: 14,
@@ -44,7 +44,7 @@ exports.run = async (client, interaction, config) => {
 			},
 			{
 				type: 10,
-				content: 'Salon dans lequel est envoyé le pannel des tâches ' + realPanelName + '.',
+				content: 'Salon dans lequel est envoyé le panel des tâches ' + realPanelName + '.',
 			},
 			{
 				type: 1,
@@ -52,7 +52,7 @@ exports.run = async (client, interaction, config) => {
 					{
 						type: 8,
 						custom_id: 'config-channel-' + panel,
-						placeholder: panelDatas.enable ? 'Définis un salon' : "Active d'abord le pannel",
+						placeholder: panelDatas.enable ? 'Définis un salon' : "Active d'abord le panel",
 						max_values: 1,
 						disabled: panelDatas.enable ? false : true,
 						channel_types: [ChannelType.GuildText],
@@ -97,9 +97,9 @@ exports.run = async (client, interaction, config) => {
 		],
 	};
 
-	await interaction.message.edit({ components: [pannelContainer, configHome] });
+	await interaction.message.edit({ components: [panelContainer, configHome] });
 	return interaction.reply({
-		content: ':gear: **| Configure le pannel ' + panelName + ' !**',
+		content: ':gear: **| Configure le panel ' + panelName + ' !**',
 		flags: MessageFlags.Ephemeral,
 	});
 };
