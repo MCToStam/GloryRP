@@ -25,7 +25,7 @@ module.exports = async (client, interaction) => {
 				},
 			],
 		};
-		return interaction.reply({ components: [disabledContainer], flags: MessageFlags.IsComponentsV2, ephemeral: true });
+		return interaction.reply({ components: [disabledContainer], flags: MessageFlags.IsComponentsV2 });
 	}
 
 	const { cooldowns } = client;
@@ -66,7 +66,6 @@ module.exports = async (client, interaction) => {
 				return interaction.reply({
 					components: [cooldownContainer],
 					flags: MessageFlags.IsComponentsV2,
-					ephemeral: true,
 				});
 			}
 		}
