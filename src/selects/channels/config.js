@@ -1,20 +1,20 @@
 const { MessageFlags, time, userMention } = require('discord.js');
 const fs = require('node:fs');
-const path = require('node:path');
 const { getGuildColor, getGuildDatas } = require('../../../utils/functions/datas.js');
 const { toTimeStamp } = require('../../../utils/functions/numbersAndLetters.js');
 
 exports.run = async (client, interaction, config) => {
 	try {
+		await interaction.deferUpdate();
 		const channelId = interaction.values[0];
-		const panel = interaction.customId.split('-')[2];
-		const realPanelName = config.panels[panel].name;
-		const panelName = realPanelName.charAt(0).toUpperCase() + realPanelName.slice(1);
-		const components = interaction.message.components.map((row) => row.toJSON());
+		const panel = interaction.customId.split('-')[1];
 
 		const guildDatas = await getGuildDatas(interaction);
 		const panelDatas = guildDatas.panels.find((x) => x.id === panel);
-		panelDatas.channel = channelId;
+
+		const channel = interaction.customId.split('-')[3];
+		panelDatas.channels[channel] = channelId;
+
 		const modifDate = await toTimeStamp(new Date());
 		guildDatas.timestamp = modifDate;
 		panelDatas.timestamp = modifDate;
@@ -22,6 +22,7 @@ exports.run = async (client, interaction, config) => {
 		const panelPath = `data/servers/${guildColor}.json`;
 
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));
+		const components = interaction.message.components.map((row) => row.toJSON());
 		for (const row of components) {
 			for (const comp of row.components.filter((x) => x.type == 10)) {
 				if (comp.content.startsWith('-# Dernières modifications par ')) {
@@ -30,11 +31,7 @@ exports.run = async (client, interaction, config) => {
 				}
 			}
 		}
-		await interaction.message.edit({ components });
-		interaction.reply({
-			content: `:white_check_mark: **| Le salon du panel ${panelName} a bien été édité !**`,
-			flags: MessageFlags.Ephemeral,
-		});
+		await interaction.message.edit({ components: components, allowedMentions: { parse: [] } });
 	} catch (e) {
 		console.error(e);
 		return interaction.reply({
