@@ -1,19 +1,24 @@
-const { MessageFlags, ButtonStyle } = require('discord.js');
+const { MessageFlags, ButtonStyle, time } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 const { getGuildDatas, getGuildColor } = require('../../utils/functions/datas.js');
+const { toTimeStamp } = require('../../utils/functions/numbersAndLetters.js');
 
 exports.run = async (client, interaction, config) => {
 	const panel = interaction.customId.split('-')[2];
-	const panelName = panel.charAt(0).toUpperCase() + panel.slice(1);
+	const realPanelName = config.panels[panel].name;
+	const panelName = realPanelName.charAt(0).toUpperCase() + realPanelName.slice(1);
 	const components = interaction.message.components.map((row) => row.toJSON());
 
 	const guildDatas = await getGuildDatas(interaction);
 	const panelDatas = guildDatas.panels.find((x) => x.id === panel);
-	panelDatas.enable = !panelDatas.enable;
-	const panelState = guildDatas.enable ? 'activé' : 'désactivé';
+	const modifDate = await toTimeStamp(new Date());
+	guildDatas.timestamp = modifDate;
+	panelDatas.timestamp = modifDate;
+	const panelState = panelDatas.enable ? 'activé' : 'désactivé';
 	const guildColor = await getGuildColor(interaction);
 	const panelPath = path.join('data/servers/', guildColor + '.json');
+
 	try {
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));
 		for (const row of components) {
@@ -35,7 +40,20 @@ exports.run = async (client, interaction, config) => {
 						if (subComp.custom_id.includes('channel')) {
 							subComp.placeholder = panelDatas.enable ? 'Définis un salon' : "Active d'abord le pannel";
 							subComp.disabled = panelDatas.enable ? false : true;
+							subComp.default_values =
+								panelDatas.enable && panelDatas.channel
+									? [
+											{
+												type: 'channel',
+												id: panelDatas.channel,
+											},
+									  ]
+									: null;
 						}
+					}
+				} else if (comp.content) {
+					if (comp.content.startsWith('-# Dernières modifications : ')) {
+						comp.content = '-# Dernières modifications : ' + (await time(panelDatas.timestamp, 'R'));
 					}
 				}
 			}

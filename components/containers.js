@@ -1,11 +1,11 @@
 const config = require('../config.js');
-const { SeparatorSpacingSize, ButtonStyle } = require('discord.js');
+const { SeparatorSpacingSize, ButtonStyle, time } = require('discord.js');
 const { panelsSelecString } = require('./selectsString.js');
 
-function getconfigContainer(guildDatas, serv) {
+async function getconfigContainer(guildDatas, serv) {
 	const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
-	const lawyerPanelState = guildDatas.panels.find((x) => x.id === 'lawyer');
-	const journalistPanelState = guildDatas.panels.find((x) => x.id === 'journalist');
+	const lawyerPanel = guildDatas.panels.find((x) => x.id === 'lawyer');
+	const journalistPanel = guildDatas.panels.find((x) => x.id === 'journalist');
 	return {
 		type: 17,
 		accent_color: config.couleur[serv],
@@ -29,9 +29,9 @@ function getconfigContainer(guildDatas, serv) {
 				accessory: {
 					type: 2,
 					custom_id: 'toggle-panel-lawyer',
-					label: lawyerPanelState.enable ? 'Activé' : 'Désactivé',
-					emoji: { name: lawyerPanelState.enable ? '✅' : '❌' },
-					style: lawyerPanelState.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+					label: lawyerPanel.enable ? 'Activé' : 'Désactivé',
+					emoji: { name: lawyerPanel.enable ? '✅' : '❌' },
+					style: lawyerPanel.enable ? ButtonStyle.Success : ButtonStyle.Danger,
 				},
 			},
 			{
@@ -45,9 +45,9 @@ function getconfigContainer(guildDatas, serv) {
 				accessory: {
 					type: 2,
 					custom_id: 'toggle-panel-journalist',
-					label: journalistPanelState.enable ? 'Activé' : 'Désactivé',
-					emoji: { name: journalistPanelState.enable ? '✅' : '❌' },
-					style: journalistPanelState.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+					label: journalistPanel.enable ? 'Activé' : 'Désactivé',
+					emoji: { name: journalistPanel.enable ? '✅' : '❌' },
+					style: journalistPanel.enable ? ButtonStyle.Success : ButtonStyle.Danger,
 				},
 			},
 			{
@@ -55,6 +55,10 @@ function getconfigContainer(guildDatas, serv) {
 				spacing: SeparatorSpacingSize.Small,
 			},
 			panelsSelecString,
+			{
+				type: 10,
+				content: '-# Dernières modifications : ' + (await time(guildDatas.timestamp, 'R')),
+			},
 		],
 	};
 }
