@@ -39,7 +39,7 @@ module.exports = async (client, interaction) => {
 	}
 
 	try {
-		await slashCmd.run(client, interaction, db);
+		await slashCmd.run(client, interaction, config);
 	} catch (e) {
 		log(e, 'error', 'red');
 	}

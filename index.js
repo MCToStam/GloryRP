@@ -1,5 +1,5 @@
 if (Number(process.version.slice(1).split('.')[0]) < 19)
-	throw new Error('Node 19.x est requis. Veuillez augmenter la version de Node.');
+	throw new Error('Node 19.x is required. Update Node on your system.');
 require('dotenv').config({ quiet: true });
 
 const { Client, Collection, IntentsBitField } = require('discord.js');
@@ -16,7 +16,8 @@ client.cooldowns = new Collection();
 const userCmds = new Collection();
 const msgCmds = new Collection();
 const buttons = new Collection();
-const selects = new Collection();
+const stringSelects = new Collection();
+const channelSelects = new Collection();
 const modals = new Collection();
 
 client.container = {
@@ -24,7 +25,8 @@ client.container = {
 	userCmds,
 	msgCmds,
 	buttons,
-	selects,
+	stringSelects,
+	channelSelects,
 	modals,
 };
 
@@ -35,31 +37,32 @@ const init = async () => {
 		for (const file of files) {
 			const command = require(`${path}/${file}`);
 			const commandName = file.split('.')[0];
-			log(`Chargement ${typeLog}: ${commandName}. 👌`, 'LOG', 'gray');
+			log(`Loading ${typeLog}: ${commandName}. 👌`, 'LOG', 'gray');
 			client.container[type].set(command.data.name, command);
 		}
 	}
 
 	botLaunch.push(new Date());
-	await load('slashCmds', './src/commands/slash', 'Slash Command');
-	await load('userCmds', './src/commands/user', 'User Command');
-	await load('msgCmds', './src/commands/message', 'Message Command');
+	await load('slashCmds', './src/commands/slash', 'Slash command');
+	await load('userCmds', './src/commands/user', 'User command');
+	await load('msgCmds', './src/commands/message', 'Message command');
 	await load('buttons', './src/buttons', 'Button');
-	await load('selects', './src/selects', 'Select');
+	await load('stringSelects', './src/selects/strings', 'String select');
+	await load('channelSelects', './src/selects/channels', 'Channel select');
 	await load('modals', './src/modals', 'Modals');
 
 	const eventFiles = readdirSync('./src/events/').filter((file) => file.endsWith('.js'));
 
 	for (const file of eventFiles) {
 		const eventName = file.split('.')[0];
-		log(`Chargement Event: ${eventName}. 👌`, 'LOG', 'gray');
+		log(`Loading Event: ${eventName}. 👌`, 'LOG', 'gray');
 		const event = require(`./src/events/${file}`);
 		client.on(eventName, event.bind(null, client));
 	}
 
 	client.login(); /*.then(async () => {
 		const config = require('./config.js');
-		const guild = client.guilds.cache.get(config.guild);
+		const guild = client.guilds.cache.get(config.guilds.dev);
 		const guildCmds = guild.commands;
 		const cmd = client.container.slashCmds;
 		const cmdSlashs = cmd.filter((c) => c.data.name === 'cmd');
