@@ -1,7 +1,8 @@
 {
 	"guild": "1415033751733538868",
 	"panels": [
-		{ "id": "journalist", "enable": false },
-		{ "id": "lawyer", "enable": false }
-	]
+		{ "id": "journalist", "enable": true, "channel": "1415328232835776632", "timestamp": 1757550579 },
+		{ "id": "lawyer", "enable": true, "channel": "1415330443489841153", "timestamp": 1757550700 }
+	],
+	"timestamp": 1757550700
 }

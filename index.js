@@ -16,7 +16,8 @@ client.cooldowns = new Collection();
 const userCmds = new Collection();
 const msgCmds = new Collection();
 const buttons = new Collection();
-const selects = new Collection();
+const stringSelects = new Collection();
+const channelSelects = new Collection();
 const modals = new Collection();
 
 client.container = {
@@ -24,7 +25,8 @@ client.container = {
 	userCmds,
 	msgCmds,
 	buttons,
-	selects,
+	stringSelects,
+	channelSelects,
 	modals,
 };
 
@@ -45,7 +47,8 @@ const init = async () => {
 	await load('userCmds', './src/commands/user', 'User command');
 	await load('msgCmds', './src/commands/message', 'Message command');
 	await load('buttons', './src/buttons', 'Button');
-	await load('selects', './src/selects', 'Select');
+	await load('stringSelects', './src/selects/strings', 'String select');
+	await load('channelSelects', './src/selects/channels', 'Channel select');
 	await load('modals', './src/modals', 'Modals');
 
 	const eventFiles = readdirSync('./src/events/').filter((file) => file.endsWith('.js'));

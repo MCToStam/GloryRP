@@ -14,4 +14,9 @@ function getDateTs(date, style, style2) {
 	}
 }
 
-module.exports = { getDateTs };
+async function toTimeStamp(date) {
+	const isDate = typeof date === 'object' ? date : new Date();
+	return Math.trunc((await isDate.getTime()) / 1000);
+}
+
+module.exports = { getDateTs, toTimeStamp };

@@ -4,7 +4,7 @@ module.exports = {
 		components: [
 			{
 				type: 3,
-				custom_id: 'config-pannels',
+				custom_id: 'config-panels',
 				placeholder: 'Choisis un panel à configurer',
 				options: [
 					{
