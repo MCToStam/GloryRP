@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 async function checkEmojiCache(client) {
-	const cachePath = path.join(__dirname, 'data', 'emojisCache.json');
+	const cachePath = `data/emojisCache.json`;
 	let emojisCache = fs.existsSync(cachePath) ? JSON.parse(fs.readFileSync(cachePath, 'utf8')) : {};
 
 	try {

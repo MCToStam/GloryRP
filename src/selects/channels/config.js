@@ -19,7 +19,7 @@ exports.run = async (client, interaction, config) => {
 		guildDatas.timestamp = modifDate;
 		panelDatas.timestamp = modifDate;
 		const guildColor = await getGuildColor(interaction);
-		const panelPath = path.join('data/servers/', guildColor + '.json');
+		const panelPath = `data/servers/${guildColor}.json`;
 
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));
 		for (const row of components) {
