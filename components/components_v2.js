@@ -849,12 +849,5 @@ const ContainerComponent = {
 	/**
 	 * Up to 10 components of the type action row, text display, section, media gallery, separator, or file
 	 */
-	components: [
-		ActionRowComponent,
-		FileComponent,
-		MediaGalleryComponent,
-		SectionComponent,
-		SeparatorComponent,
-		TextDisplayComponent,
-	],
+	components: [ActionRowComponent, FileComponent, MediaGalleryComponent, SectionComponent, SeparatorComponent, TextDisplayComponent],
 };

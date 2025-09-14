@@ -156,7 +156,16 @@ const config = {
 		delta: '1391052026997243944',
 		epsilon: '1391049795023667311',
 	},
-	panels: { journalist: { name: 'journaliste' }, lawyer: { name: 'avocat' }, regroupement: { name: 'regroupement' } },
+	panels: {
+		journalist: { name: 'journaliste', emoji: ':newspaper:' },
+		lawyer: { name: 'avocat', emoji: ':scales:' },
+		regroupement: { name: 'regroupement', emoji: ':busts_in_silhouette:' },
+	},
+	channels: {
+		logs: '<:a:1415827520347050148> Salon de logs où les tâches acceptées sont envoyées',
+		responsable: "<:a:1415827518057091122> Salon d'acceptation où le responsable reçoit les tâches à valider",
+		tasks: "<:a:1415827516400205894> Salon d'envois où les RP mettent leur tâches via le panel",
+	},
 	intents: [GatewayIntentBits.Guilds],
 	partials: [Partials.User, Partials.Channel, Partials.GuildMember],
 };

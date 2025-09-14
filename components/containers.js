@@ -1,6 +1,6 @@
 const config = require('../config.js');
-const { SeparatorSpacingSize, ButtonStyle, time } = require('discord.js');
-const { panelsSelecString } = require('./selectsString.js');
+const { SeparatorSpacingSize, ButtonStyle, time, userMention } = require('discord.js');
+const { getPanelsSelecString } = require('./selectsString.js');
 
 async function getconfigContainer(guildDatas, serv) {
 	const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
@@ -71,7 +71,14 @@ async function getconfigContainer(guildDatas, serv) {
 				type: 14,
 				spacing: SeparatorSpacingSize.Small,
 			},
-			panelsSelecString,
+			{
+				type: 1,
+				components: [await getPanelsSelecString(guildDatas)],
+			},
+			{
+				type: 10,
+				content: '-# Dernières modifications par ' + userMention(guildDatas.lastUser) + ' ' + (await time(guildDatas.timestamp, 'R')),
+			},
 		],
 	};
 }

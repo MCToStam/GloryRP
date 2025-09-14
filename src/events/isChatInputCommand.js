@@ -7,7 +7,7 @@ module.exports = async (client, interaction) => {
 	if (!slashCmd) return;
 
 	if (!slashCmd.conf.enabled) {
-		desactiveContainer = {
+		const disabledContainer = {
 			type: 17,
 			accent_color: config.colors.error,
 			components: [
@@ -22,10 +22,10 @@ module.exports = async (client, interaction) => {
 				{
 					type: 10,
 					content: `Cette commande est désactivé et donc innaccessible.`,
-				}
+				},
 			],
 		};
-		return interaction.reply({ components: [desactiveContainer], flags: MessageFlags.IsComponentsV2, ephemeral: true });
+		return interaction.reply({ components: [disabledContainer], flags: MessageFlags.IsComponentsV2 });
 	}
 
 	const { cooldowns } = client;
@@ -45,7 +45,7 @@ module.exports = async (client, interaction) => {
 
 			if (now < expirationTime) {
 				const expiredTimestamp = Math.round(expirationTime / 1000);
-				cooldownContainer = {
+				const cooldownContainer = {
 					type: 17,
 					accent_color: config.colors.error,
 					components: [
@@ -60,10 +60,13 @@ module.exports = async (client, interaction) => {
 						{
 							type: 10,
 							content: `Cette commande est actuellement sous cooldown, tu peux la réutiliser <t:${expiredTimestamp}:R>.`,
-						}
+						},
 					],
 				};
-				return interaction.reply({ components: [cooldownContainer], flags: MessageFlags.IsComponentsV2, ephemeral: true });
+				return interaction.reply({
+					components: [cooldownContainer],
+					flags: MessageFlags.IsComponentsV2,
+				});
 			}
 		}
 

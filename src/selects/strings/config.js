@@ -1,26 +1,72 @@
-const { ChannelType, SeparatorSpacingSize, ButtonStyle, MessageFlags, time } = require('discord.js');
+const { ChannelType, SeparatorSpacingSize, ButtonStyle, time, userMention } = require('discord.js');
 const { getGuildColor, getGuildDatas } = require('../../../utils/functions/datas.js');
-const { getDateTs } = require('../../../utils/functions/numbersAndLetters.js');
 
 exports.run = async (client, interaction, config) => {
+	await interaction.deferUpdate();
+
 	const panel = interaction.values[0].split('-')[2];
 	const realPanelName = config.panels[panel].name;
+	const pannelEmoji = config.panels[panel].emoji;
 	const panelName = realPanelName.charAt(0).toUpperCase() + realPanelName.slice(1);
 
 	const guildColor = await getGuildColor(interaction);
 	const guildDatas = await getGuildDatas(interaction);
 	const panelDatas = guildDatas.panels.find((x) => x.id === panel);
+	const channelsOptions = [];
+
+	for (const [channelType, channelId] of Object.entries(panelDatas.channels)) {
+		const channelDesc = config.channels[channelType];
+
+		channelsOptions.push(
+			{
+				type: 10,
+				content: channelDesc,
+			},
+			{
+				type: 1,
+				components: [
+					{
+						type: 8,
+						custom_id: `config-${panel}-channel-${channelType}`,
+						placeholder: panelDatas.enable ? 'Définis un salon' : "Active d'abord le panel",
+						max_values: 1,
+						disabled: panelDatas.enable ? false : true,
+						channel_types: [ChannelType.GuildText],
+						default_values: [
+							panelDatas.enable && channelId ?
+								{
+									type: 'channel',
+									id: channelId,
+								}
+							:	undefined,
+						].filter(Boolean),
+					},
+				],
+			},
+			channelType === 'tasks' ?
+				{
+					type: 10,
+					content: '-# Dernières modifications par ' + userMention(panelDatas.lastUser) + ' ' + (await time(panelDatas.timestamp, 'R')),
+				}
+			:	{
+					type: 14,
+					spacing: SeparatorSpacingSize.Small,
+				}
+		);
+	}
+
 	const panelContainer = {
 		type: 17,
 		accent_color: config.couleur[guildColor],
 		components: [
 			{
 				type: 10,
-				content: '## :gear: Configuration du Panel ' + panelName,
+				content: `## ${pannelEmoji} Configuration du Panel ${panelName}`,
 			},
 			{
 				type: 14,
-				spacing: SeparatorSpacingSize.Large,
+				divider: false,
+				spacing: SeparatorSpacingSize.Small,
 			},
 			{
 				type: 9,
@@ -42,33 +88,7 @@ exports.run = async (client, interaction, config) => {
 				type: 14,
 				spacing: SeparatorSpacingSize.Small,
 			},
-			{
-				type: 10,
-				content: 'Salon dans lequel est envoyé le panel des tâches ' + realPanelName + '.',
-			},
-			{
-				type: 1,
-				components: [
-					{
-						type: 8,
-						custom_id: 'config-channel-' + panel,
-						placeholder: panelDatas.enable ? 'Définis un salon' : "Active d'abord le panel",
-						max_values: 1,
-						disabled: panelDatas.enable ? false : true,
-						channel_types: [ChannelType.GuildText],
-						default_values:
-							panelDatas.enable && panelDatas.channel ?
-								[
-									{
-										type: 'channel',
-										id: panelDatas.channel,
-									},
-								]
-							:	null,
-					},
-				],
-			},
-		],
+		].concat(channelsOptions),
 	};
 	const configHome = {
 		type: 1,
@@ -89,15 +109,10 @@ exports.run = async (client, interaction, config) => {
 					style: ButtonStyle.Secondary,
 					disabled: panelDatas.enable ? false : true,
 				}
-			:	null,
-		],
+			:	undefined,
+		].filter(Boolean),
 	};
-
-	await interaction.message.edit({ components: [panelContainer, configHome] });
-	return interaction.reply({
-		content: ':gear: **| Configure le panel ' + panelName + ' !**',
-		flags: MessageFlags.Ephemeral,
-	});
+	await interaction.message.edit({ components: [panelContainer, configHome], allowedMentions: { parse: [] } });
 };
 
 exports.data = { name: 'config' };

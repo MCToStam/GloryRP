@@ -1,5 +1,4 @@
-if (Number(process.version.slice(1).split('.')[0]) < 19)
-	throw new Error('Node 19.x is required. Update Node on your system.');
+if (Number(process.version.slice(1).split('.')[0]) < 19) throw new Error('Node 19.x is required. Update Node on your system.');
 require('dotenv').config({ quiet: true });
 
 const { Client, Collection, IntentsBitField } = require('discord.js');
