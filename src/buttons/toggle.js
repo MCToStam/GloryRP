@@ -1,25 +1,28 @@
-const { MessageFlags, ButtonStyle, time } = require('discord.js');
+const { MessageFlags, ButtonStyle, time, userMention } = require('discord.js');
 const fs = require('node:fs');
 const { getGuildDatas, getGuildColor } = require('../../utils/functions/datas.js');
 const { toTimeStamp } = require('../../utils/functions/numbersAndLetters.js');
+const { getPanelsSelecString } = require('../../components/selectsString.js');
 
 exports.run = async (client, interaction, config) => {
-	const panel = interaction.customId.split('-')[2];
-	const realPanelName = config.panels[panel].name;
-	const panelName = realPanelName.charAt(0).toUpperCase() + realPanelName.slice(1);
-	const components = interaction.message.components.map((row) => row.toJSON());
-
-	const guildDatas = await getGuildDatas(interaction);
-	const panelDatas = guildDatas.panels.find((x) => x.id === panel);
-	panelDatas.enable = !panelDatas.enable;
-	const modifDate = await toTimeStamp(new Date());
-	guildDatas.timestamp = modifDate;
-	panelDatas.timestamp = modifDate;
-	const panelState = panelDatas.enable ? 'activé' : 'désactivé';
-	const guildColor = await getGuildColor(interaction);
-	const panelPath = `data/servers/${guildColor}.json`;
-
 	try {
+		await interaction.deferUpdate();
+		const panel = interaction.customId.split('-')[2];
+		const components = interaction.message.components.map((row) => row.toJSON());
+
+		const guildDatas = await getGuildDatas(interaction);
+		const panelDatas = guildDatas.panels.find((x) => x.id === panel);
+
+		const guildColor = await getGuildColor(interaction);
+		const panelPath = `data/servers/${guildColor}.json`;
+		const modifDate = await toTimeStamp(new Date());
+
+		panelDatas.enable = !panelDatas.enable;
+		guildDatas.timestamp = modifDate;
+		guildDatas.lastUser = interaction.user.id;
+		panelDatas.timestamp = modifDate;
+		panelDatas.lastUser = interaction.user.id;
+
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));
 		for (const row of components) {
 			for (const comp of row.components) {
@@ -49,7 +52,17 @@ exports.run = async (client, interaction, config) => {
 										},
 									]
 								:	null;
+						} else if (subComp.custom_id.includes('config-panels')) {
+							const newsubComp = await getPanelsSelecString(guildDatas);
+							subComp.placeholder = newsubComp.placeholder;
+							subComp.options = newsubComp.options;
+							subComp.disabled = newsubComp.disabled;
 						}
+					}
+				} else if (comp.content) {
+					if (comp.content.startsWith('-# Dernières modifications par ')) {
+						comp.content =
+							'-# Dernières modifications par ' + userMention(panelDatas.lastUser) + ' ' + (await time(panelDatas.timestamp, 'R'));
 					}
 				} else if (comp.custom_id) {
 					if (comp.custom_id.includes('send')) {
@@ -58,11 +71,7 @@ exports.run = async (client, interaction, config) => {
 				}
 			}
 		}
-		await interaction.message.edit({ components });
-		interaction.reply({
-			content: `:white_check_mark: **| Le panel ${panelName} a bien été ${panelState} !**`,
-			flags: MessageFlags.Ephemeral,
-		});
+		await interaction.message.edit({ components: components, allowedMentions: { parse: [] } });
 	} catch (e) {
 		console.error(e);
 		return interaction.reply({

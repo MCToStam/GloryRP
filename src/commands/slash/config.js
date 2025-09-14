@@ -34,7 +34,7 @@ exports.run = async (client, interaction, config) => {
 
 	const guildDatas = await getGuildDatas(interaction);
 	const configContainer = await getconfigContainer(guildDatas, serv);
-	return interaction.reply({ components: [configContainer], flags: MessageFlags.IsComponentsV2 });
+	return interaction.reply({ components: [configContainer], flags: MessageFlags.IsComponentsV2, allowedMentions: { parse: [] } });
 };
 
 exports.data = {

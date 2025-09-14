@@ -1,24 +1,28 @@
 {
-  "guild": "1415033751733538868",
-  "panels": [
-    {
-      "id": "journalist",
-      "enable": true,
-      "channel": "1415342001548951602",
-      "timestamp": 1757575970
-    },
-    {
-      "id": "lawyer",
-      "enable": false,
-      "channel": "1415328232835776632",
-      "timestamp": 1757575960
-    },
-    {
-      "id": "regroupement",
-      "enable": true,
-      "channel": "1415329848141807688",
-      "timestamp": 1757575948
-    }
-  ],
-  "timestamp": 1757575970
+	"guild": "1415033751733538868",
+	"panels": [
+		{
+			"id": "lawyer",
+			"enable": true,
+			"channels": { "logs": "1415330443489841153", "responsable": "1415328232835776632", "tasks": "1415329226420125806" },
+			"timestamp": 1757633373,
+			"lastUser": "506118119216119810"
+		},
+		{
+			"id": "journalist",
+			"enable": false,
+			"channels": { "logs": "1415328232835776632", "responsable": null, "tasks": null },
+			"lastUser": "506118119216119810",
+			"timestamp": 1757633212
+		},
+		{
+			"id": "regroupement",
+			"enable": true,
+			"channels": { "logs": "1415328232835776632", "responsable": "1415328232835776632", "tasks": "1415329865120481361" },
+			"lastUser": "506118119216119810",
+			"timestamp": 1757633392
+		}
+	],
+	"lastUser": "506118119216119810",
+	"timestamp": 1757633392
 }
