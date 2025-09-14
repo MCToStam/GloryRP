@@ -3,7 +3,7 @@ const { getGuildDatas } = require('../../../utils/functions/datas.js');
 const { getconfigContainer } = require('../../../components/containers.js');
 
 exports.run = async (client, interaction, config) => {
-	const serv = interaction.options.getString('serveur');
+	const serv = interaction.options.getString('serveur').toLowerCase();
 	if (!config.liste_serveur.includes(serv)) {
 		const servers =
 			config.liste_serveur.slice(0, 2).join(', ') +

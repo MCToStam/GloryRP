@@ -23,6 +23,14 @@ exports.run = async (client, interaction, config) => {
 		panelDatas.timestamp = modifDate;
 		panelDatas.lastUser = interaction.user.id;
 
+		if (!guildDatas.logs) guildDatas.logs = [];
+			guildDatas.logs.push({
+			user: interaction.user.id,
+			timestamp: modifDate,
+			panel: panel,
+			action: panelDatas.enable ? 'Activation du module' : 'Désactivation du module'
+		});
+
 		fs.writeFileSync(panelPath, JSON.stringify(guildDatas));
 		for (const row of components) {
 			for (const comp of row.components) {

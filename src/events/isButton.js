@@ -4,7 +4,6 @@ const config = require('../../config.js');
 
 module.exports = async (client, interaction) => {
 	const btn = client.container.buttons.get(interaction.customId.split('-')[0]);
-	const cmdName = interaction.message.interaction ? interaction.message.interaction.commandName : '?';
 
 	if (!btn) return;
 	if (btn.conf.type === 'User') {
