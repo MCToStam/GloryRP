@@ -21,7 +21,7 @@ module.exports = async (client, interaction) => {
 				},
 				{
 					type: 10,
-					content: `Cette commande est désactivé et donc innaccessible.`,
+					content: "Cette commande est désactivé et donc innaccessible.",
 				},
 			],
 		};
@@ -59,7 +59,7 @@ module.exports = async (client, interaction) => {
 						},
 						{
 							type: 10,
-							content: `Cette commande est actuellement sous cooldown, tu peux la réutiliser <t:${expiredTimestamp}:R>.`,
+							content: `Cette commande est actuellement sous cooldown, tu pourras la réutiliser <t:${expiredTimestamp}:R>.`,
 						},
 					],
 				};

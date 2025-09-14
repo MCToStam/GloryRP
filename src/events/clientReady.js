@@ -1,4 +1,4 @@
-const { ActivityType } = require('discord.js');
+const { ActivityType, SeparatorSpacingSize, MessageFlags } = require('discord.js');
 const config = require('../../config.js');
 const log = require('../../utils/modules/logger.js');
 const { getDateTs } = require('../../utils/functions/numbersAndLetters.js');
@@ -41,13 +41,26 @@ module.exports = async (client, interaction) => {
 	const guilds = client.guilds.cache.size;
 	const usersCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0);
 
-	const readyEmbed = {
-		color: config.colors.statut,
-		title: `:robot: | Robot lancé en ${latence.toFixed(1)}s`,
-		description: getDateTs(client.readyAt, 'R'),
+	const readyContainer = {
+		type: 17,
+		accent_color: config.colors.statut,
+		components: [
+			{
+				type: 10,
+				content: `## :robot: | Robot lancé en ${latence.toFixed(1)}s`,
+			},
+			{
+				type: 14,
+				spacing: SeparatorSpacingSize.Large,
+			},
+			{
+				type: 10,
+				content: getDateTs(client.readyAt, 'R'),
+			},
+		],
 	};
+	chanStatus.send({ components: [readyContainer], flags: MessageFlags.IsComponentsV2 });
 
-	chanStatus.send({ embeds: [readyEmbed] });
 	log(
 		`${client.user.username} est pret en ${latence.toFixed(1)}s, sur ${guilds} serveurs et ${usersCount} utilisateurs.`,
 		'READY',
