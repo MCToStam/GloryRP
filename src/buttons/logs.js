@@ -5,8 +5,8 @@ const { MessageFlags } = require("discord.js");
 exports.run = async (client, interaction) => {
   await interaction.deferUpdate();
 
-  const [action, type, serv, currentPage, panel] =
-    interaction.customId.split("-");
+  const [_, type, serv, currentPage, panel] = interaction.customId.split("-");
+  const panelId = Number(panel)
   let page = parseInt(currentPage, 10);
 
   if (type === "prev") {
@@ -17,7 +17,7 @@ exports.run = async (client, interaction) => {
 
   const serverDatas = await getServerDatas(interaction);
 
-  const logContainer = await getlogContainer(serverDatas, panel, serv, page);
+  const logContainer = await getlogContainer(serverDatas, panelId, serv, page);
 
   await interaction.message.edit({
     components: [logContainer],
