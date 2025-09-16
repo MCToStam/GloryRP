@@ -6,13 +6,9 @@ exports.run = async (client, interaction, config) => {
 
   const serverDatas = await getServerDatas(interaction);
   const serveur = await getGuildColor(interaction);
-  try {
 
   const responseContainer = await sendPanelTasks(client, serveur, serverDatas, panelId)
   return interaction.reply({ components: [responseContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
-  } catch(e) {
-    console.log(e)
-  }
 };
 
 exports.data = {
