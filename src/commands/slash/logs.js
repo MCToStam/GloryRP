@@ -5,51 +5,85 @@ const { getlogContainer } = require("../../../components/logContainer.js");
 
 exports.run = async (client, interaction, config) => {
   const serv = interaction.options.getString("serveur").toLowerCase();
-
   if (serv === "non-lie") {
-    const erreurEmbed = new EmbedBuilder()
-      .setTitle("Erreur")
-      .setColor(config.errorcolor)
-      .setDescription(
-        'Votre compte Discord n\'est pas reconnu, il vous faut être renseigné pour utiliser cette commande. Pour ce faire, il te suffit de te connecter à notre panel de contrôle. Une fois connecté avec ton compte Discord, va dans la partie "Profil" puis tu as un bouton afin de lier ton compte NationsGlory.'
-      )
-      .setFooter({ text: config.footer });
+    const nonLieContainer = {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        {
+          type: 10,
+          content: '## :no_entry_sign: Compte non Lié',
+        },
+        {
+          type: 14,
+          spacing: SeparatorSpacingSize.Large,
+        },
+        {
+          type: 10,
+          content: 'Votre compte Discord n\'est pas reconnu, il vous faut être renseigné pour utiliser cette commande. Pour ce faire, il te suffit de te connecter à notre panel de contrôle. Une fois connecté avec ton compte Discord, va dans la partie "Profil" puis tu as un bouton afin de lier ton compte NationsGlory.',
+        },
+        {
+          type: 14,
+          spacing: SeparatorSpacingSize.Large,
+        },
+            {
+                type: 1,
+                components: [
+                    {
+                        type: 2,
+                        label: '💻 Accéder au panel',
+                        url: 'https://glorybot.fr',
+                        style: ButtonStyle.Link,
+                    },
+                ],
+            },
+      ],
+    };
+    return interaction.reply({ components: [nonLieContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+  }
 
-    const panelButton = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setLabel("💻 Accéder au panel")
-        .setStyle(ButtonStyle.Link)
-        .setURL("https://glorybot.fr")
-    );
-
-    return interaction.reply({
-      embeds: [erreurEmbed],
-      components: [panelButton],
-      ephemeral: true,
-    });
+  if (serv === "permission") {
+    const permissionContainer = {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        {
+          type: 10,
+          content: '## :no_entry_sign: Permission Refusée',
+        },
+        {
+          type: 14,
+          spacing: SeparatorSpacingSize.Large,
+        },
+        {
+          type: 10,
+          content: "Tu n'as pas la permission d'effectuer cette commande !",
+        },
+      ],
+    };
+    return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
   }
 
   if (!config.liste_serveur.includes(serv)) {
-    const unknownServerEmbed = {
-      title: "Erreur",
-      description: `Le serveur **${serv}** n'est pas un serveur reconnu. Veuillez fournir un serveur valide.`,
-      color: config.errorcolor,
-      footer: { text: config.footer },
+    const unknownServerContainer = {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        {
+          type: 10,
+          content: '## :no_entry_sign: Serveur Inconnu',
+        },
+        {
+          type: 14,
+          spacing: SeparatorSpacingSize.Large,
+        },
+        {
+          type: 10,
+          content: `Le serveur **${serv}** n'est pas un serveur reconnu. Veuillez fournir un serveur valide.`,
+        },
+      ],
     };
-    return interaction.reply({ embeds: [unknownServerEmbed], ephemeral: true });
-  }
-
-  const capitalizedServeur = serv.charAt(0).toUpperCase() + serv.slice(1);
-  const emojiId = config.emoji[serv.toLowerCase()];
-
-  if (serv === "permission") {
-    const permissionEmbed = {
-      title: "Erreur",
-      description: `Tu n'as pas la permission d'effectuer cette commande !`,
-      color: config.errorcolor,
-      footer: { text: config.footer },
-    };
-    return interaction.reply({ embeds: [permissionEmbed], ephemeral: true });
+    return interaction.reply({ components: [unknownServerContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
   }
 
   const response = await fetch(
@@ -57,13 +91,27 @@ exports.run = async (client, interaction, config) => {
   );
   const servers = await response.json();
   if (!servers.includes(serv)) {
-    const permissionEmbed = {
-      title: "Erreur",
-      description: `Tu n'as pas la permission d'effectuer cette commande pour le serveur <:NG${capitalizedServeur}:${emojiId}> **${capitalizedServeur}** !`,
-      color: config.errorcolor,
-      footer: { text: config.footer },
+    const capitalizedServeur = serv.charAt(0).toUpperCase() + serv.slice(1);
+    const emojiId = config.emoji[serv.toLowerCase()];
+    const permissionContainer = {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        {
+          type: 10,
+          content: '## :no_entry_sign: Permission Refusée',
+        },
+        {
+          type: 14,
+          spacing: SeparatorSpacingSize.Large,
+        },
+        {
+          type: 10,
+          content: `Tu n'as pas la permission d'effectuer cette commande pour le serveur <:NG${capitalizedServeur}:${emojiId}> **${capitalizedServeur}** !`,
+        },
+      ],
     };
-    return interaction.reply({ embeds: [permissionEmbed], ephemeral: true });
+    return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
   }
 
   const panel = interaction.options.getString("panel").toLowerCase();
