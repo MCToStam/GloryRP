@@ -25,17 +25,17 @@ exports.run = async (client, interaction, config) => {
           type: 14,
           spacing: SeparatorSpacingSize.Large,
         },
-            {
-                type: 1,
-                components: [
-                    {
-                        type: 2,
-                        label: '💻 Accéder au panel',
-                        url: 'https://glorybot.fr',
-                        style: ButtonStyle.Link,
-                    },
-                ],
-            },
+        {
+            type: 1,
+            components: [
+                {
+                    type: 2,
+                    label: '💻 Accéder au panel',
+                    url: 'https://glorybot.fr',
+                    style: ButtonStyle.Link,
+                },
+            ],
+        },
       ],
     };
     return interaction.reply({ components: [nonLieContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
