@@ -1,9 +1,9 @@
 const config = require('../config.js');
 const { SeparatorSpacingSize, time, userMention, ButtonStyle } = require('discord.js');
 
-async function getlogContainer(guildDatas, panel, serv, page = 1) {
+async function getlogContainer(serverDatas, panel, serv, page = 1) {
     const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
-    const logs = (guildDatas.logs || []).filter((log) => log.panel === panel);
+    const logs = (serverDatas.logs || []).filter((log) => log.panel === panel);
 
     const logsPerPage = 10;
     const totalPages = Math.max(1, Math.ceil(logs.length / logsPerPage));
@@ -25,8 +25,8 @@ async function getlogContainer(guildDatas, panel, serv, page = 1) {
         );
     }
 
-    const panelInfo = config.panels[panel];
-    const panelLabel = panelInfo ? panelInfo.name.charAt(0).toUpperCase() + panelInfo.name.slice(1) : panel;
+    const panelInfo = serverDatas.panels.find(p => p.id === panel);
+    const panelLabel = panelInfo.name;
 
     return {
         type: 17,
