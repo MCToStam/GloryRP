@@ -1,4 +1,6 @@
 const config = require("../../../config.js");
+const fs = require("fs");
+const path = require("path");
 const { InteractionContextType, SeparatorSpacingSize, ButtonStyle, MessageFlags } = require("discord.js");
 const { getServerDatas } = require("../../../utils/functions/datas.js");
 const { getlogContainer } = require("../../../components/logContainer.js");
@@ -114,10 +116,10 @@ exports.run = async (client, interaction, config) => {
     return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
   }
 
-  const panel = interaction.options.getString("panel").toLowerCase();
+  const panelId = interaction.options.getString("panel").toLowerCase();
 
   const serverDatas = await getServerDatas(interaction);
-  const logContainer = await getlogContainer(serverDatas, panel, serv, 1);
+  const logContainer = await getlogContainer(serverDatas, panelId, serv, 1);
   return interaction.reply({
     components: [logContainer],
     flags: MessageFlags.IsComponentsV2,
@@ -146,44 +148,88 @@ exports.data = {
   ],
   contexts: [InteractionContextType.Guild],
   async autocomplete(client, interaction, config) {
-    const response = await fetch(
-      config.glorystaff_url + "/api/get-staff?discordId=" + interaction.user.id
-    );
-    const servers = await response.json();
-    const respondDatas = [];
-    for (serv of servers) {
-      const servname = serv.charAt(0).toUpperCase() + serv.slice(1);
-      respondDatas.push({ name: servname, value: serv });
+    const focusedOption = interaction.options.getFocused(true);
+
+    if (focusedOption.name === "serveur") {
+      const response = await fetch(
+        config.glorystaff_url + "/api/get-staff?discordId=" + interaction.user.id
+      );
+      const servers = await response.json();
+      const respondDatas = [];
+
+      for (const serv of servers) {
+        const servname = serv.charAt(0).toUpperCase() + serv.slice(1);
+        respondDatas.push({ name: servname, value: serv });
+      }
+
+      if (servers.length === 0) {
+        let pseudo;
+        try {
+          const response = await fetch(
+            `${config.glorybot_url}/api/get-ng?discordId=${interaction.user.id}`
+          );
+          const data = await response.json();
+          pseudo = data.pseudo || null;
+        } catch (e) {
+          pseudo = null;
+        }
+        if (!pseudo) {
+          return await interaction.respond([
+            {
+              name: "Compte NationsGlory non lié, fait le maintenant : https://glorybot.fr",
+              value: "non-lie",
+            },
+          ]);
+        } else {
+          return await interaction.respond([
+            {
+              name: "Vous n'êtes staff d'aucun serveur de NationsGlory.",
+              value: "permission",
+            },
+          ]);
+        }
+      }
+
+      return await interaction.respond(respondDatas);
     }
 
-    if (servers.length === 0) {
-      let pseudo;
-      try {
-        const response = await fetch(
-          `${config.glorybot_url}/api/get-ng?discordId=${interaction.user.id}`
-        );
-        const data = await response.json();
-        pseudo = data.pseudo || null;
-      } catch (e) {
-        pseudo = null;
-      }
-      if (!pseudo) {
+    if (focusedOption.name === "panel") {
+      const serveur = interaction.options.getString("serveur");
+      if (!serveur) {
         return await interaction.respond([
-          {
-            name: "Compte NationsGlory non lié, fait le maintenant : https://glorybot.fr",
-            value: "non-lie",
-          },
+          { name: "Sélectionne d'abord un serveur", value: "no-server" },
         ]);
-      } else {
+      }
+
+      try {
+        const filePath = path.join(__dirname, "..", "..", "..", "data", "servers", `${serveur}.json`);
+        if (!fs.existsSync(filePath)) {
+          return await interaction.respond([
+            { name: "Aucun fichier trouvé pour ce serveur", value: "no-file" },
+          ]);
+        }
+
+        const rawData = fs.readFileSync(filePath, "utf8");
+        const json = JSON.parse(rawData);
+
+        if (!json.panels || json.panels.length === 0) {
+          return await interaction.respond([
+            { name: "Aucun rôle-play trouvé pour ce serveur", value: "no-panel" },
+          ]);
+        }
+
+        const panels = json.panels.map(p => ({
+          name: p.name,
+          value: String(p.id),
+        }));
+
+        return await interaction.respond(panels.slice(0, 25));
+      } catch (err) {
         return await interaction.respond([
-          {
-            name: "Vous n'êtes staff d'aucun serveur de NationsGlory.",
-            value: "permission",
-          },
+          { name: "Erreur lors de la lecture des panels", value: "error" },
         ]);
       }
     }
-    await interaction.respond(respondDatas);
   },
 };
 

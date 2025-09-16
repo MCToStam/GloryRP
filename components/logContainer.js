@@ -3,7 +3,8 @@ const { SeparatorSpacingSize, time, userMention, ButtonStyle } = require('discor
 
 async function getlogContainer(serverDatas, panel, serv, page = 1) {
     const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
-    const logs = (serverDatas.logs || []).filter((log) => log.panel === panel);
+    const panelId = Number(panel)
+    const logs = (serverDatas.logs || []).filter((log) => log.panel === panelId);
 
     const logsPerPage = 10;
     const totalPages = Math.max(1, Math.ceil(logs.length / logsPerPage));
@@ -25,7 +26,7 @@ async function getlogContainer(serverDatas, panel, serv, page = 1) {
         );
     }
 
-    const panelInfo = serverDatas.panels.find(p => p.id === panel);
+    const panelInfo = serverDatas.panels.find(p => p.id === panelId);
     const panelLabel = panelInfo.name;
 
     return {
@@ -53,7 +54,7 @@ async function getlogContainer(serverDatas, panel, serv, page = 1) {
                 components: [
                     {
                         type: 2,
-                        custom_id: `logs-prev-${serv}-${page}-${panel}`,
+                        custom_id: `logs-prev-${serv}-${page}-${panelId}`,
                         label: '⬅️',
                         style: ButtonStyle.Primary,
                         disabled: page <= 1,
@@ -67,7 +68,7 @@ async function getlogContainer(serverDatas, panel, serv, page = 1) {
                     },
                     {
                         type: 2,
-                        custom_id: `logs-next-${serv}-${page}-${panel}`,
+                        custom_id: `logs-next-${serv}-${page}-${panelId}`,
                         label: '➡️',
                         style: ButtonStyle.Primary,
                         disabled: page >= totalPages,
