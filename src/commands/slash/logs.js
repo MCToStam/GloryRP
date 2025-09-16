@@ -1,5 +1,5 @@
 const config = require("../../../config.js");
-const { InteractionContextType, MessageFlags } = require("discord.js");
+const { InteractionContextType, SeparatorSpacingSize, ButtonStyle, MessageFlags } = require("discord.js");
 const { getServerDatas } = require("../../../utils/functions/datas.js");
 const { getlogContainer } = require("../../../components/logContainer.js");
 
