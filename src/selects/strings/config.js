@@ -112,7 +112,7 @@ exports.run = async (client, interaction, config) => {
         emoji: { name: "🏡" },
         style: ButtonStyle.Primary,
       },
-      panelDatas.channel
+      panelDatas.channels.tasks
         ? {
             type: 2,
             custom_id: "send-panel-" + panelId,
