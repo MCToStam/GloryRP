@@ -1,15 +1,18 @@
 const { MessageFlags } = require("discord.js");
+const config = require("../../config.js");
 const fs = require("node:fs");
 const path = require("node:path");
 
 async function getGuildColor(interaction) {
   try {
-    const rawDatas = fs.readFileSync("data/guilds.json");
-    const jsonDatas = await JSON.parse(rawDatas);
-    const guildsDatas = await jsonDatas[0].find(
-      (x) => x.guild === interaction.guild.id
-    );
-    return guildsDatas.server;
+    const color = interaction.message.components[0].data.accent_color;
+
+    return serveur = Object.keys(config.couleur).find((key) => {
+      const hexValue = config.couleur[key];
+      const decimalValue =
+        typeof hexValue === "string" ? parseInt(hexValue, 16) : hexValue;
+      return decimalValue === color;
+    });
   } catch (e) {
     console.error(e);
     return interaction.reply({
