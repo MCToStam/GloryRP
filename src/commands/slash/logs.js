@@ -41,7 +41,7 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-    return interaction.reply({ components: [nonLieContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+    return interaction.reply({ components: [nonLieContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
   }
 
   if (serv === "permission") {
@@ -63,7 +63,7 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-    return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+    return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
   }
 
   if (!config.liste_serveur.includes(serv)) {
@@ -85,7 +85,7 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-    return interaction.reply({ components: [unknownServerContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+    return interaction.reply({ components: [unknownServerContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
   }
 
   const response = await fetch(
@@ -113,17 +113,17 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-    return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+    return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
   }
 
   const panelId = interaction.options.getString("panel").toLowerCase();
 
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, serv);
   const logContainer = await getlogContainer(serverDatas, panelId, serv, 1);
   return interaction.reply({
     components: [logContainer],
     flags: MessageFlags.IsComponentsV2,
-    allowedMentions: { parse: [] },
+    allowedMentions: { parse: [] }
   });
 };
 

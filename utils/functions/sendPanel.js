@@ -86,6 +86,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
   const message = await channel.send({
     components: [panelContainer],
     flags: MessageFlags.IsComponentsV2,
+    allowedMentions: { parse: [] }
   });
 
   return (goodContainer = {

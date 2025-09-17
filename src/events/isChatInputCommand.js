@@ -25,7 +25,7 @@ module.exports = async (client, interaction) => {
 				},
 			],
 		};
-		return interaction.reply({ components: [disabledContainer], flags: MessageFlags.IsComponentsV2 });
+		return interaction.reply({ components: [disabledContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,allowedMentions: { parse: [] } });
 	}
 
 	const { cooldowns } = client;
@@ -66,6 +66,7 @@ module.exports = async (client, interaction) => {
 				return interaction.reply({
 					components: [cooldownContainer],
 					flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+					allowedMentions: { parse: [] }
 				});
 			}
 		}
@@ -99,7 +100,7 @@ module.exports = async (client, interaction) => {
 		if (interaction.deferred || interaction.replied) {
 			await interaction.followUp({ components: [errorContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
 		} else {
-			await interaction.reply({ components: [errorContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+			await interaction.reply({ components: [errorContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
 		}
 		log(e, 'error', 'red');
 	}

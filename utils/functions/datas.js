@@ -22,9 +22,11 @@ async function getGuildColor(interaction) {
   }
 }
 
-async function getServerDatas(interaction) {
-  const guildColor = await getGuildColor(interaction);
-  const serverPath = `data/servers/${guildColor}.json`;
+async function getServerDatas(interaction, serveur = null) {
+  if (!serveur) {
+    serveur = await getGuildColor(interaction);
+  }
+  const serverPath = `data/servers/${serveur}.json`;
   try {
     const rawDatas = fs.readFileSync(serverPath);
     const jsonDatas = await JSON.parse(rawDatas);
