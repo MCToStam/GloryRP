@@ -69,12 +69,14 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
             type: 3,
             custom_id: `panel-tasks-${panel.id}`,
             placeholder: "Choisis une tâche",
-            options: panel.tasks.map((task) => ({
-              label: task.name,
-              value: task.id.toString(),
-              description: task.description || undefined,
-              emoji: task.emoji || undefined,
-            })),
+            options: panel.tasks
+              .filter(task => task.type !== "4" && task.panelId === panelId)
+              .map(task => ({
+                label: task.name,
+                value: `${panel.id}_${task.taskId.toString()}`,
+                description: task.description || undefined,
+                emoji: task.emoji || undefined,
+              })),
           },
         ],
       },
