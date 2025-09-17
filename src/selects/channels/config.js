@@ -18,6 +18,18 @@ exports.run = async (client, interaction, config) => {
     const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
     const channel = interaction.customId.split("-")[3];
+    logMap = {
+      logs: "Édition du salon des logs",
+      responsable: "Édition du salon de responsable",
+      tasks: "Édition du salon des tâches"
+    }
+    if (!serverDatas.logs) serverDatas.logs = [];
+    serverDatas.logs.push({
+      user: interaction.user.id,
+      timestamp: modifDate,
+      panel: panelId,
+      action: logMap[channel],
+    });
     panelDatas.channels[channel] = channelId;
 
     const modifDate = await toTimeStamp(new Date());
