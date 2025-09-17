@@ -1,25 +1,25 @@
-const { MessageFlags, ButtonStyle, time, userMention } = require("discord.js");
+const { MessageFlags } = require("discord.js");
 const fs = require("node:fs");
+const path = require("node:path");
 const {
   getServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
-const { getPanelsSelecString } = require("../../components/selectsString.js");
+const { getConfigContainer, getPanelContainer, getChannelContainer } = require("../../components/containers.js");
 
 exports.run = async (client, interaction, config) => {
   try {
     await interaction.deferUpdate();
-    const panelId = Number(interaction.customId.split("-")[2]);
-    const components = interaction.message.components.map((row) =>
-      row.toJSON()
-    );
 
-    const serverDatas = await getServerDatas(interaction);
+    const panelId = Number(interaction.customId.split("-")[2]);
+    const menu = interaction.customId.split("-")[3];
+
+    let serverDatas = await getServerDatas(interaction);
     const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
     const guildColor = await getGuildColor(interaction);
-    const panelPath = `data/servers/${guildColor}.json`;
+    const panelPath = path.join(__dirname, `../../data/servers/${guildColor}.json`);
     const modifDate = await toTimeStamp(new Date());
 
     panelDatas.enable = !panelDatas.enable;
@@ -33,68 +33,25 @@ exports.run = async (client, interaction, config) => {
       user: interaction.user.id,
       timestamp: modifDate,
       panel: panelId,
-      action: panelDatas.enable
-        ? "Activation du module"
-        : "Désactivation du module",
+      action: panelDatas.enable ? "Activation du module" : "Désactivation du module",
     });
 
-    fs.writeFileSync(panelPath, JSON.stringify(serverDatas));
-    for (const row of components) {
-      for (const comp of row.components) {
-        if (comp.accessory) {
-          if (comp.accessory.custom_id === interaction.customId) {
-            if (panelDatas.enable) {
-              comp.accessory.label = "Activé";
-              comp.accessory.emoji = { name: "✅" };
-              comp.accessory.style = ButtonStyle.Success;
-            } else {
-              comp.accessory.label = "Désactivé";
-              comp.accessory.emoji = { name: "❌" };
-              comp.accessory.style = ButtonStyle.Danger;
-            }
-          }
-        } else if (comp.components) {
-          for (const subComp of comp.components) {
-            if (subComp.custom_id.includes("channel")) {
-              subComp.placeholder = panelDatas.enable
-                ? "Définis un salon"
-                : "Active d'abord le panel";
-              subComp.disabled = panelDatas.enable ? false : true;
-              subComp.default_values =
-                panelDatas.enable && panelDatas.channel
-                  ? [
-                      {
-                        type: "channel",
-                        id: panelDatas.channel,
-                      },
-                    ]
-                  : null;
-            } else if (subComp.custom_id.includes("config-panels")) {
-              const newsubComp = await getPanelsSelecString(serverDatas);
-              subComp.placeholder = newsubComp.placeholder;
-              subComp.options = newsubComp.options;
-              subComp.disabled = newsubComp.disabled;
-            }
-          }
-        } else if (comp.content) {
-          if (comp.content.startsWith("-# Dernières modifications par ")) {
-            comp.content =
-              "-# Dernières modifications par " +
-              userMention(panelDatas.lastUser) +
-              " " +
-              (await time(panelDatas.timestamp, "R"));
-          }
-        } else if (comp.custom_id) {
-          if (comp.custom_id.includes("send")) {
-            comp.disabled = panelDatas.enable ? false : true;
-          }
-        }
-      }
+    fs.writeFileSync(panelPath, JSON.stringify(serverDatas, null, 2));
+
+    serverDatas = JSON.parse(fs.readFileSync(panelPath, "utf-8"));
+    const updatedPanelDatas = serverDatas.panels.find((x) => x.id === panelId);
+
+    let components;
+    if (menu === "acceuil") {
+      components = await getConfigContainer(serverDatas, guildColor);
+    } else if (menu === "panel") {
+      components = await getPanelContainer(guildColor, updatedPanelDatas, panelId);
+    } else if (menu === "channel") {
+      components = await getChannelContainer(panelId, guildColor, updatedPanelDatas);
     }
-    await interaction.message.edit({
-      components: components,
-      allowedMentions: { parse: [] },
-    });
+
+    return await interaction.message.edit({ components: [components], allowedMentions: { parse: [] } });
+
   } catch (e) {
     console.error(e);
     return interaction.reply({

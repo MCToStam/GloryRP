@@ -21,8 +21,7 @@ exports.run = async (client, interaction) => {
 
   await interaction.message.edit({
     components: [logContainer],
-    allowedMentions: { parse: [] },
-    flags: MessageFlags.IsComponentsV2,
+    allowedMentions: { parse: [] }
   });
 };
 

@@ -17,7 +17,7 @@ function getPanelsSelecString(serverDatas) {
     custom_id: "config-panels",
     placeholder:
       panelOptions.length === 0
-        ? "Active d'abord un panel"
+        ? "Il te faut d'abord activer un rôle-play"
         : "Choisis un panel à configurer",
     max_values: 1,
     disabled: panelOptions.length === 0,
@@ -25,10 +25,10 @@ function getPanelsSelecString(serverDatas) {
       panelOptions.length === 0
         ? [
             {
-              label: "Active d'abord un panel",
+              label: "Il te faut d'abord activer un rôle-play",
               value: "no-panel-actived",
               description:
-                "Tu ne peux pas configurer de panels si aucun n'est activé",
+                "Tu ne peux pas configurer de panel si aucun n'est actif",
               emoji: { name: "❌" },
             },
           ]

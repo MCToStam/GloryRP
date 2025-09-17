@@ -59,7 +59,7 @@ module.exports = async (client, interaction) => {
 			},
 		],
 	};
-	chanStatus.send({ components: [readyContainer], flags: MessageFlags.IsComponentsV2 });
+	chanStatus.send({ components: [readyContainer], flags: MessageFlags.IsComponentsV2, allowedMentions: { parse: [] } });
 
 	log(
 		`${client.user.username} est pret en ${latence.toFixed(1)}s, sur ${guilds} serveurs et ${usersCount} utilisateurs.`,

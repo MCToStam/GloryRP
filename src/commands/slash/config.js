@@ -1,6 +1,11 @@
-const { InteractionContextType, SeparatorSpacingSize, ButtonStyle, MessageFlags } = require("discord.js");
+const {
+  InteractionContextType,
+  SeparatorSpacingSize,
+  ButtonStyle,
+  MessageFlags,
+} = require("discord.js");
 const { getServerDatas } = require("../../../utils/functions/datas.js");
-const { getconfigContainer } = require("../../../components/containers.js");
+const { getConfigContainer } = require("../../../components/containers.js");
 
 exports.run = async (client, interaction, config) => {
   const serv = interaction.options.getString("serveur").toLowerCase();
@@ -11,7 +16,7 @@ exports.run = async (client, interaction, config) => {
       components: [
         {
           type: 10,
-          content: '## :no_entry_sign: Compte non Lié',
+          content: "## :no_entry_sign: Compte non Lié",
         },
         {
           type: 14,
@@ -19,26 +24,31 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 10,
-          content: 'Votre compte Discord n\'est pas reconnu, il vous faut être renseigné pour utiliser cette commande. Pour ce faire, il te suffit de te connecter à notre panel de contrôle. Une fois connecté avec ton compte Discord, va dans la partie "Profil" puis tu as un bouton afin de lier ton compte NationsGlory.',
+          content:
+            'Votre compte Discord n\'est pas reconnu, il vous faut être renseigné pour utiliser cette commande. Pour ce faire, il te suffit de te connecter à notre panel de contrôle. Une fois connecté avec ton compte Discord, va dans la partie "Profil" puis tu as un bouton afin de lier ton compte NationsGlory.',
         },
         {
           type: 14,
           spacing: SeparatorSpacingSize.Large,
         },
         {
-            type: 1,
-            components: [
-                {
-                    type: 2,
-                    label: '💻 Accéder au panel',
-                    url: 'https://glorybot.fr',
-                    style: ButtonStyle.Link,
-                },
-            ],
+          type: 1,
+          components: [
+            {
+              type: 2,
+              label: "💻 Accéder au panel",
+              url: "https://glorybot.fr",
+              style: ButtonStyle.Link,
+            },
+          ],
         },
       ],
     };
-    return interaction.reply({ components: [nonLieContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+    return interaction.reply({
+      components: [nonLieContainer],
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      allowedMentions: { parse: [] }
+    });
   }
 
   if (serv === "permission") {
@@ -48,7 +58,7 @@ exports.run = async (client, interaction, config) => {
       components: [
         {
           type: 10,
-          content: '## :no_entry_sign: Permission Refusée',
+          content: "## :no_entry_sign: Permission Refusée",
         },
         {
           type: 14,
@@ -60,7 +70,11 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-    return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+    return interaction.reply({
+      components: [permissionContainer],
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      allowedMentions: { parse: [] }
+    });
   }
 
   if (!config.liste_serveur.includes(serv)) {
@@ -70,7 +84,7 @@ exports.run = async (client, interaction, config) => {
       components: [
         {
           type: 10,
-          content: '## :no_entry_sign: Serveur Inconnu',
+          content: "## :no_entry_sign: Serveur Inconnu",
         },
         {
           type: 14,
@@ -82,7 +96,11 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-    return interaction.reply({ components: [unknownServerContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+    return interaction.reply({
+      components: [unknownServerContainer],
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      allowedMentions: { parse: [] }
+    });
   }
 
   const response = await fetch(
@@ -98,7 +116,7 @@ exports.run = async (client, interaction, config) => {
       components: [
         {
           type: 10,
-          content: '## :no_entry_sign: Permission Refusée',
+          content: "## :no_entry_sign: Permission Refusée",
         },
         {
           type: 14,
@@ -110,15 +128,19 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-    return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+    return interaction.reply({
+      components: [permissionContainer],
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      allowedMentions: { parse: [] }
+    });
   }
 
-  const serverDatas = await getServerDatas(interaction);
-  const configContainer = await getconfigContainer(serverDatas, serv);
+  const serverDatas = await getServerDatas(interaction, serv);
+  const configContainer = await getConfigContainer(serverDatas, serv);
   return interaction.reply({
     components: [configContainer],
     flags: MessageFlags.IsComponentsV2,
-    allowedMentions: { parse: [] },
+    allowedMentions: { parse: [] }
   });
 };
 

@@ -1,4 +1,5 @@
 const log = require('../../utils/modules/logger.js');
+const { MessageFlags } = require("discord.js");
 
 module.exports = async (client, interaction) => {
 	const msgCmd = client.container.msgCmds.get(interaction.commandName);
@@ -27,9 +28,9 @@ module.exports = async (client, interaction) => {
 		};
 
 		if (interaction.deferred || interaction.replied) {
-			await interaction.followUp({ components: [errorContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+			await interaction.followUp({ components: [errorContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
 		} else {
-			await interaction.reply({ components: [errorContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+			await interaction.reply({ components: [errorContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
 		}
 		log(e, 'error', 'red');
 	}
