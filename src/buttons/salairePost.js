@@ -1,5 +1,6 @@
 const { getServerDatas } = require("../../utils/functions/datas.js");
 const { formatDateFr } = require("../../utils/functions/salairePost.js");
+const { salairePost } = require("../../utils/functions/salairePost.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
@@ -40,6 +41,7 @@ exports.run = async (client, interaction, config) => {
   };
 
   await interaction.showModal(modal);
+  await salairePost(client, "blue", serverDatas, panelId, "09_2025")
 };
 
 exports.data = {
