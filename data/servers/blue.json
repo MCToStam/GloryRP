@@ -70,7 +70,7 @@
       },
       "salaire": {
         "automatique": false,
-        "cmd_retrait": "/econ bank take onu [argent]",
+        "cmd_retrait": "/econ bank take ONU [argent]",
         "cmd_don": "/eco give [joueur] [argent]"
       },
       "timestamp": 1758179355,

@@ -1,11 +1,13 @@
-const { MessageFlags } = require("discord.js");
+const { SeparatorSpacingSize, MessageFlags } = require('discord.js');
+const log = require('../../utils/modules/logger.js');
+const config = require('../../config.js');
 
 module.exports = async (client, interaction) => {
-	const modal = client.container.modals.get(interaction.customId);
+	const modal = client.container.modals.get(interaction.customId.split('-')[0]);
 	if (!modal) return;
 
 	try {
-		await modal.run(client, interaction);
+		await modal.run(client, interaction, config);
 	} catch (e) {
 		const errorContainer = {
 			type: 17,
