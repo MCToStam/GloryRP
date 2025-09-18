@@ -195,7 +195,7 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
     );
   }
 
-  return panelContainer = {
+  return {
     type: 17,
     accent_color: config.couleur[guildColor],
     components: [
@@ -255,4 +255,98 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
   }
 }
 
-module.exports = { getConfigContainer, getPanelContainer, getChannelContainer };
+async function getSalaireContainer(panelId, guildColor, panelDatas) {
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${panelDatas.emoji} Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 14,
+        divider: false,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: "📡 Statut",
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `toggle-panel-${panelId}-salaire`,
+          label: panelDatas.enable ? "Activé" : "Désactivé",
+          emoji: { name: panelDatas.enable ? "✅" : "❌" },
+          style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+        },
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `config_salaire-${panelId}-automatique`,
+            placeholder: "Choisis une option...",
+            options: [
+              {
+                label: "Oui",
+                value: `config_salaire-${panelId}-automatique-oui`,
+                description: "Les salaires seront automatiquement envoyé le premier de chaque mois à 10h00",
+                emoji: { name: "✅" },
+                default: panelDatas.salaire.automatique === true,
+              },
+              {
+                label: "Non",
+                value: `config_salaire-${panelId}-automatique-non`,
+                description: "Les salaires pourront être envoyées manuellement",
+                emoji: { name: "❌" },
+                default: panelDatas.salaire.automatique === false,
+              },
+            ],
+          },
+        ],
+      },
+			{
+				type: 9,
+				components: [
+					{
+						type: 10,
+						content: "Modifier les commandes de retrait et don d'argent lors des salaires",
+					},
+				],
+				accessory: {
+					type: 2,
+					custom_id: `config-${panelId}-salaire-commande`,
+					label: "Clic ici pour modifier les commandes",
+					style: ButtonStyle.Primary,
+				},
+			},
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  }
+}
+
+module.exports = { getConfigContainer, getPanelContainer, getChannelContainer, getSalaireContainer };
