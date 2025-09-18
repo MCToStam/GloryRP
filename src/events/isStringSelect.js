@@ -4,7 +4,6 @@ const config = require('../../config.js');
 
 module.exports = async (client, interaction) => {
 	const stringSelect = client.container.stringSelects.get(interaction.values[0].split('-')[0]);
-	const cmdName = interaction.message.interaction ? interaction.message.interaction.commandName : '?';
 
 	if (!stringSelect) return;
 	if (interaction.user.id !== interaction.message.interaction.user.id) {

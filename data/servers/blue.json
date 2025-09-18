@@ -1,1 +1,97 @@
-{"guild":"1415033751733538868","panels":[{"id":1,"name":"Avocat","description":"desc avocat","emoji":"⏳","enable":true,"tasks":[{"taskId":1,"panelId":1,"name":"Résumé ONU","description":"émoji statique","emoji":"<:channel:1415827516400205894>","type":"1","url":"https://nationsglory.fr/forums/category/recaps-onu.414","salaire":{"lundi":4000,"mardi":4000,"mercredi:":4000,"jeudi":4000,"vendredi":4000,"samedi":4000,"dimanche":4000}},{"taskId":2,"panelId":1,"name":"Plainte Anti-Jeu","description":"émoji de base","emoji":"⏳","type":"1","url":"https://nationsglory.fr/forums/category/recaps-onu.414","salaire":{"lundi":4000,"mardi":4000,"mercredi:":4000,"jeudi":4000,"vendredi":4000,"samedi":4000,"dimanche":4000}},{"taskId":3,"panelId":1,"name":"Plainte Animée","description":"émoji animé","emoji":"<a:test:1417844331443916860>","type":"1","url":"https://nationsglory.fr/forums/category/recaps-onu.414","salaire":{"lundi":4000,"mardi":4000,"mercredi:":4000,"jeudi":4000,"vendredi":4000,"samedi":4000,"dimanche":4000}}],"channels":{"logs":"1415329865120481361","responsable":"1415329865120481361","tasks":"1415330656392581140"},"timestamp":1758125762,"lastUser":"719072181631320145"},{"id":2,"name":"Journaliste","description":"desc journal","emoji":"⏳","enable":false,"channels":{"logs":"1415328232835776632","responsable":"1415328232835776632","tasks":"1415330443489841153"},"lastUser":"719072181631320145","timestamp":1758125415}],"lastUser":"719072181631320145","timestamp":1758125762,"logs":[{"user":"719072181631320145","timestamp":1758049178,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758049180,"panel":2,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758049181,"panel":2,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758049231,"panel":2,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758049233,"panel":2,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758051246,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758117396,"panel":2,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758117398,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758117466,"panel":2,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758117468,"panel":2,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758117476,"panel":2,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758120739,"panel":2,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758120745,"panel":2,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758121022,"panel":2,"action":"Édition du salon des logs"},{"user":"719072181631320145","timestamp":1758121025,"panel":2,"action":"Édition du salon des logs"},{"user":"719072181631320145","timestamp":1758121035,"panel":2,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758122778,"panel":2,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758122783,"panel":2,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758122803,"panel":2,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758122874,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758123100,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758123102,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758123107,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758123233,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758123370,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758123372,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758123374,"panel":2,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758123426,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758123428,"panel":2,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758125413,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758125415,"panel":2,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758125419,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758125421,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758125429,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758125665,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758125670,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758125672,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758125674,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758125676,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758125762,"panel":1,"action":"Édition du salon des tâches"},{"user":"719072181631320145","timestamp":1758125766,"panel":1,"action":"Envoie du panel des tâches"},{"user":"719072181631320145","timestamp":1758125895,"panel":1,"action":"Envoie du panel des tâches"}]}
+{
+  "guild": "1415033751733538868",
+  "panels": [
+    {
+      "id": 1,
+      "name": "Avocat",
+      "description": "desc avocat",
+      "emoji": "⏳",
+      "enable": true,
+      "tasks": [
+        {
+          "taskId": 1,
+          "panelId": 1,
+          "name": "Résumé ONU",
+          "description": "émoji statique",
+          "emoji": "<:channel:1415827516400205894>",
+          "type": "1",
+          "url": "https://nationsglory.fr/forums/category/recaps-onu.414",
+          "salaire": {
+            "lundi": 4000,
+            "mardi": 4000,
+            "mercredi:": 4000,
+            "jeudi": 4000,
+            "vendredi": 4000,
+            "samedi": 4000,
+            "dimanche": 4000
+          }
+        },
+        {
+          "taskId": 2,
+          "panelId": 1,
+          "name": "Plainte Anti-Jeu",
+          "description": "émoji de base",
+          "emoji": "⏳",
+          "type": "1",
+          "url": "https://nationsglory.fr/forums/category/recaps-onu.414",
+          "salaire": {
+            "lundi": 4000,
+            "mardi": 4000,
+            "mercredi:": 4000,
+            "jeudi": 4000,
+            "vendredi": 4000,
+            "samedi": 4000,
+            "dimanche": 4000
+          }
+        },
+        {
+          "taskId": 3,
+          "panelId": 1,
+          "name": "Plainte Animée",
+          "description": "émoji animé",
+          "emoji": "<a:test:1417844331443916860>",
+          "type": "1",
+          "url": "https://nationsglory.fr/forums/category/recaps-onu.414",
+          "salaire": {
+            "lundi": 4000,
+            "mardi": 4000,
+            "mercredi:": 4000,
+            "jeudi": 4000,
+            "vendredi": 4000,
+            "samedi": 4000,
+            "dimanche": 4000
+          }
+        }
+      ],
+      "channels": {
+        "logs": "1415329865120481361",
+        "responsable": "1415329865120481361",
+        "tasks": "1415330656392581140"
+      },
+      "salaire": {
+        "automatique": false,
+        "cmd_retrait": "/econ bank take onu [argent]",
+        "cmd_don": "/eco give [joueur] [argent]"
+      },
+      "timestamp": 1758179355,
+      "lastUser": "719072181631320145"
+    },
+    {
+      "id": 2,
+      "name": "Journaliste",
+      "description": "desc journal",
+      "emoji": "⏳",
+      "enable": false,
+      "channels": {
+        "logs": "1415328232835776632",
+        "responsable": "1415328232835776632",
+        "tasks": "1415330443489841153"
+      },
+      "lastUser": "719072181631320145",
+      "timestamp": 1758125415
+    }
+  ],
+  "lastUser": "719072181631320145",
+  "timestamp": 1758179355,
+  "logs": []
+}
