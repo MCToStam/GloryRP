@@ -3,17 +3,24 @@ const {
   getServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
-const { SeparatorSpacingSize, MessageFlags } = require("discord.js");
+const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
+  const selectedValues = interaction.fields.getSelectValue("date");
 
-  const date = interaction.fields.getTextInputValue("date");
+  const date = selectedValues[0];
 
   const guildColor = await getGuildColor(interaction);
   const serverDatas = await getServerDatas(interaction);
 
-  const container = await salairePost(client, guildColor, serverDatas, panelId, date)
+  const container = await salairePost(
+    client,
+    guildColor,
+    serverDatas,
+    panelId,
+    date
+  );
   return interaction.reply({
     components: [container],
     flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
