@@ -296,6 +296,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
             type: 3,
             custom_id: `config_salaire-${panelId}-automatique`,
             placeholder: "Choisis une option...",
+            disabled: panelDatas.enable ? false : true,
             options: [
               {
                 label: "Oui",
@@ -328,6 +329,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
 					custom_id: `cmd_salaire-${panelId}-commande`,
 					label: "🔧 Modifier les commandes",
 					style: ButtonStyle.Primary,
+          disabled: panelDatas.enable ? false : true,
 				},
 			},
       {
@@ -342,6 +344,13 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
             custom_id: `return-${panelId}`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: `salairePost-${panelId}`,
+            label: "💰 Envoyer les Salaires",
+            style: ButtonStyle.Primary,
+            disabled: panelDatas.channels.salaire && panelDatas.enable ? false : true,
           },
         ],
       },

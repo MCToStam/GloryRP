@@ -66,14 +66,43 @@
       "channels": {
         "logs": "1415329865120481361",
         "responsable": "1415329865120481361",
-        "tasks": "1415330656392581140"
+        "tasks": "1415329865120481361",
+        "salaire": "1415329865120481361"
       },
       "salaire": {
         "automatique": false,
         "cmd_retrait": "/econ bank take ONU [argent]",
-        "cmd_don": "/eco give [joueur] [argent]"
+        "cmd_don": "/eco give [joueur] [argent]",
+        "salaire": {
+          "ToStam": {
+            "09_2025": {
+              "taches": [
+                {
+                  "nom": "Résumé ONU",
+                  "lien": "XXX",
+                  "timestamp": "",
+                  "status": "accepted",
+                  "staff": "ToStam",
+                  "argent": 2000
+                }
+              ]
+            },
+            "08_2025": {
+              "taches": [
+                {
+                  "nom": "Résumé ONU",
+                  "lien": "XXX",
+                  "timestamp": "",
+                  "status": "accepted",
+                  "staff": "ToStam",
+                  "argent": 2000
+                }
+              ]
+            }
+          }
+        }
       },
-      "timestamp": 1758179355,
+      "timestamp": 1758215105,
       "lastUser": "719072181631320145"
     },
     {
@@ -83,15 +112,45 @@
       "emoji": "⏳",
       "enable": false,
       "channels": {
-        "logs": "1415328232835776632",
-        "responsable": "1415328232835776632",
-        "tasks": "1415330443489841153"
+        "logs": "1415329865120481361",
+        "responsable": "1415329865120481361",
+        "tasks": "1415330656392581140",
+        "salaire": "1415330656392581140"
       },
       "lastUser": "719072181631320145",
       "timestamp": 1758125415
     }
   ],
   "lastUser": "719072181631320145",
-  "timestamp": 1758179355,
-  "logs": []
+  "timestamp": 1758215105,
+  "logs": [
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213358,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213363,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213368,
+      "panel": 1,
+      "action": "Édition du salon des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758215101,
+      "panel": 1,
+      "action": "Désactivation du module"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758215105,
+      "panel": 1,
+      "action": "Activation du module"
+    }
+  ]
 }
