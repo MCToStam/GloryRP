@@ -120,13 +120,77 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
     allowedMentions: { parse: [] },
   });
 
-  return (goodContainer = {
+  let responsableChannel;
+  if (panel.channels.responsable) {
+    responsableChannel = client.channels.cache.get(panel.channels.responsable);
+    if (responsableChannel) {
+      const commandes = Object.entries(salaireData)
+        .map(([joueur, salaires]) => {
+          const moisSalaires = salaires[date];
+          if (!moisSalaires) return null;
+          const total = moisSalaires.taches.reduce(
+            (sum, t) => sum + (t.argent || 0),
+            0
+          );
+
+          const cmdDon = panel.salaire.cmd_don
+            .replace("[somme]", total)
+            .replace("[joueur]", joueur);
+
+          return cmdDon;
+        })
+        .filter(Boolean);
+
+      const totalArgent = Object.values(salaireData).reduce((sum, salaires) => {
+        const moisSalaires = salaires[date];
+        if (!moisSalaires) return sum;
+        return (
+          sum + moisSalaires.taches.reduce((s, t) => s + (t.argent || 0), 0)
+        );
+      }, 0);
+
+      const cmdRetrait = panel.salaire.cmd_retrait.replace(
+        "[somme]",
+        totalArgent
+      );
+      commandes.push(cmdRetrait);
+
+      const responsableContainer = {
+        type: 17,
+        accent_color: config.couleur[serveur],
+        components: [
+          {
+            type: 10,
+            content: `## ${panel.emoji ? `${panel.emoji} ` : ""}Salaires ${
+              panel.name
+            } - ${formatDateFr(date)}`,
+          },
+          {
+            type: 14,
+            spacing: SeparatorSpacingSize.Large,
+          },
+          {
+            type: 10,
+            content: commandes.join("\n"),
+          },
+        ],
+      };
+
+      await responsableChannel.send({
+        components: [responsableContainer],
+        flags: MessageFlags.IsComponentsV2,
+        allowedMentions: { parse: [] },
+      });
+    }
+  }
+
+  return {
     type: 17,
     accent_color: config.colors.success,
     components: [
       {
         type: 10,
-        content: "## :white_check_mark: Panel Envoyé",
+        content: "## :white_check_mark: Salaire Envoyé",
       },
       {
         type: 14,
@@ -134,10 +198,14 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
       },
       {
         type: 10,
-        content: `Le panel du rôle-play **${panel.name}** a correctement été envoyé ici :${message.url}`,
+        content: `Le salaire du mois "**${formatDateFr(
+          date
+        )}**" sur le rôle-play **${
+          panel.name
+        }** a correctement été envoyé ici :${message.url}`,
       },
     ],
-  });
+  };
 }
 
 module.exports = { salairePost, formatDateFr };
