@@ -3,7 +3,7 @@ const config = require('../../config.js');
 const log = require('../../utils/modules/logger.js');
 const { getDateTs } = require('../../utils/functions/numbersAndLetters.js');
 const { botLaunch } = require('../../index.js');
-const checkEmojiCache = require('../../utils/functions/emojis.js');
+const { checkEmojiCache } = require('../../utils/functions/emojis.js');
 
 async function getPlayerCount(server) {
 	try {
@@ -72,5 +72,5 @@ module.exports = async (client, interaction) => {
 	setInterval(() => {
 		cycleStatus(client, 0);
 	}, 30000);
-	//checkEmojiCache(client);
+	checkEmojiCache(client);
 };

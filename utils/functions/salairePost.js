@@ -1,5 +1,6 @@
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const config = require("../../config.js");
+const { getEmojiTete } = require("../../utils/functions/emojis.js");
 
 function formatDateFr(date) {
   const [moisStr, annee] = date.split("_");
@@ -68,38 +69,47 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
     });
   }
 
-  const moisData = Object.entries(salaireData)
-    .map(([joueur, salaires]) => {
+  const moisData = await Promise.all(
+    Object.entries(salaireData).map(async ([joueur, salaires]) => {
       const moisSalaires = salaires[date];
       if (!moisSalaires) return null;
       const total = moisSalaires.taches.reduce(
         (sum, t) => sum + (t.argent || 0),
         0
       );
-      return `**${joueur}** : ${total}$`;
+
+      let emoji = "";
+      try {
+        const e = await getEmojiTete(client, joueur);
+        emoji = e.toString();
+      } catch (err) {
+        console.warn(
+          `Impossible de récupérer l'emoji pour ${joueur}:`,
+          err.message
+        );
+      }
+
+      return `${emoji} **${joueur}** : ${total}$`;
     })
-    .filter(Boolean)
-    .join("\n");
+  ).then((results) => results.filter(Boolean).join("\n"));
 
   const panelContainer = {
     type: 17,
     accent_color: config.couleur[serveur],
     components: [
       {
-        type: 14,
-        spacing: SeparatorSpacingSize.Large,
+        type: 10,
+        content: `## ${panel.emoji ? `${panel.emoji} ` : ""}Salaires ${
+          panel.name
+        } - ${formatDateFr(date)}`,
       },
       {
-        type: 10,
-        content: `## Salaires ${panel.emoji ? `${panel.emoji} ` : ""}${panel.name} - ${formatDateFr(date)}`,
+        type: 14,
+        spacing: SeparatorSpacingSize.Large,
       },
       {
         type: 10,
         content: moisData,
-      },
-      {
-        type: 14,
-        spacing: SeparatorSpacingSize.Large,
       },
     ],
   };
