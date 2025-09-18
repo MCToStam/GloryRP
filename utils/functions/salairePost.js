@@ -124,23 +124,6 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
   if (panel.channels.responsable) {
     responsableChannel = client.channels.cache.get(panel.channels.responsable);
     if (responsableChannel) {
-      const commandes = Object.entries(salaireData)
-        .map(([joueur, salaires]) => {
-          const moisSalaires = salaires[date];
-          if (!moisSalaires) return null;
-          const total = moisSalaires.taches.reduce(
-            (sum, t) => sum + (t.argent || 0),
-            0
-          );
-
-          const cmdDon = panel.salaire.cmd_don
-            .replace("[somme]", total)
-            .replace("[joueur]", joueur);
-
-          return cmdDon;
-        })
-        .filter(Boolean);
-
       const totalArgent = Object.values(salaireData).reduce((sum, salaires) => {
         const moisSalaires = salaires[date];
         if (!moisSalaires) return sum;
@@ -149,11 +132,46 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
         );
       }, 0);
 
-      const cmdRetrait = panel.salaire.cmd_retrait.replace(
-        "[somme]",
+      const cmdRetrait = `> 🌐 \`\`${panel.salaire.cmd_retrait.replace(
+        "[argent]",
         totalArgent
+      )}\`\``;
+
+      const commandesJoueurs = await Promise.all(
+        Object.entries(salaireData).map(async ([joueur, salaires]) => {
+          const moisSalaires = salaires[date];
+          if (!moisSalaires) return null;
+
+          const total = moisSalaires.taches.reduce(
+            (sum, t) => sum + (t.argent || 0),
+            0
+          );
+
+          const cmdDon = panel.salaire.cmd_don
+            .replace("[argent]", total)
+            .replace("[joueur]", joueur);
+
+          let emoji = "";
+          try {
+            const e = await getEmojiTete(client, joueur);
+            emoji = e.toString();
+          } catch (err) {
+            console.warn(
+              `Impossible de récupérer l'emoji pour ${joueur}:`,
+              err.message
+            );
+          }
+
+          return `> ${emoji} \`\`${cmdDon}\`\``;
+        })
       );
-      commandes.push(cmdRetrait);
+
+      const commandesJoueursFiltrees = commandesJoueurs.filter(Boolean);
+
+      const commandesFinales = [
+        cmdRetrait,
+        ...commandesJoueursFiltrees.map((c) => `\n${c}`),
+      ];
 
       const responsableContainer = {
         type: 17,
@@ -171,7 +189,7 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
           },
           {
             type: 10,
-            content: commandes.join("\n"),
+            content: commandesFinales.join("\n"),
           },
         ],
       };
