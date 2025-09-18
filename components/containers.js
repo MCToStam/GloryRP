@@ -325,8 +325,8 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
 				],
 				accessory: {
 					type: 2,
-					custom_id: `config-${panelId}-salaire-commande`,
-					label: "Clic ici pour modifier les commandes",
+					custom_id: `cmd_salaire-${panelId}-commande`,
+					label: "🔧 Modifier les commandes",
 					style: ButtonStyle.Primary,
 				},
 			},

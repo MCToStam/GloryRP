@@ -91,7 +91,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
 
   return (goodContainer = {
     type: 17,
-    accent_color: config.colors.sucess,
+    accent_color: config.colors.success,
     components: [
       {
         type: 10,
