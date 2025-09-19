@@ -6,7 +6,7 @@ const {
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
-const { getConfigContainer, getPanelContainer, getChannelContainer, getSalaireContainer } = require("../../components/containers.js");
+const { getConfigContainer, getPanelContainer, getChannelContainer, getSalaireContainer, getEditPanelContainer } = require("../../components/containers.js");
 
 exports.run = async (client, interaction, config) => {
   try {
@@ -50,6 +50,8 @@ exports.run = async (client, interaction, config) => {
       components = await getChannelContainer(panelId, guildColor, updatedPanelDatas);
     } else if (menu === "salaire") {
       components = await getSalaireContainer(panelId, guildColor, updatedPanelDatas);
+    } else if (menu === "edit_panek") {
+      components = await getEditPanelContainer(panelId, guildColor, updatedPanelDatas);
     }
 
     return await interaction.message.edit({ components: [components], allowedMentions: { parse: [] } });

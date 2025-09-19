@@ -1,6 +1,5 @@
 const { getlogContainer } = require("../../components/logContainer.js");
 const { getServerDatas } = require("../../utils/functions/datas.js");
-const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction) => {
   await interaction.deferUpdate();

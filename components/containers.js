@@ -358,4 +358,80 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
   }
 }
 
-module.exports = { getConfigContainer, getPanelContainer, getChannelContainer, getSalaireContainer };
+async function getEditPanelContainer(panelId, guildColor, panelDatas) {
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${panelDatas.emoji} Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 14,
+        divider: false,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: "📡 Statut",
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `toggle-panel-${panelId}-edit_panel`,
+          label: panelDatas.enable ? "Activé" : "Désactivé",
+          emoji: { name: panelDatas.enable ? "✅" : "❌" },
+          style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+        },
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+          type: 1,
+          components: [
+              {
+                  type: 2,
+                  custom_id: `config_panel_rename-${panelId}`,
+                  label: 'Renommer le Rôle-Play',
+                  style: ButtonStyle.Primary,
+              },
+              {
+                  type: 2,
+                  custom_id: `config_panel_emoji-${panelId}`,
+                  label: "Modifier l'Emoji",
+                  style: ButtonStyle.Primary,
+              },
+              {
+                  type: 2,
+                  custom_id: `config_panel_delete-${panelId}`,
+                  label: 'Supprimer le Rôle-Play',
+                  style: ButtonStyle.Danger,
+              },
+          ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  }
+}
+
+module.exports = { getConfigContainer, getPanelContainer, getChannelContainer, getSalaireContainer, getEditPanelContainer };
