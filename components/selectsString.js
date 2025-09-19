@@ -1,3 +1,16 @@
+function parseEmoji(emoji) {
+  const customEmojiMatch = emoji.match(/^<a?:([a-zA-Z0-9_]+):(\d+)>$/);
+  if (customEmojiMatch) {
+    return {
+      name: customEmojiMatch[1],
+      id: customEmojiMatch[2],
+      animated: emoji.startsWith('<a:'),
+    };
+  }
+
+  return { name: emoji };
+}
+
 function getPanelsSelecString(serverDatas) {
   const panelOptions = [];
 
@@ -7,7 +20,7 @@ function getPanelsSelecString(serverDatas) {
         label: `Panel ${panel.name}`,
         value: `config-panel-${panel.id}`,
         description: panel.description || `Configure le panel ${panel.name}`,
-        emoji: { name: panel.emoji },
+        emoji: parseEmoji(panel.emoji),
       });
     }
   }

@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 const {
   getServerDatas,
   getGuildColor,
@@ -31,7 +31,7 @@ exports.run = async (client, interaction, config) => {
     components: [
       {
         type: 10,
-        content: "## :white_check_mark: Commandes Modifiées ",
+        content: "## :white_check_mark: Commandes Modifiées",
       },
       {
         type: 14,

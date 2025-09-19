@@ -1,7 +1,12 @@
 const config = require("../../../config.js");
-const fs = require("fs");
-const path = require("path");
-const { InteractionContextType, SeparatorSpacingSize, ButtonStyle, MessageFlags } = require("discord.js");
+const fs = require("node:fs");
+const path = require("node:path");
+const {
+  InteractionContextType,
+  SeparatorSpacingSize,
+  ButtonStyle,
+  MessageFlags,
+} = require("discord.js");
 const { getServerDatas } = require("../../../utils/functions/datas.js");
 const { getlogContainer } = require("../../../components/logContainer.js");
 
@@ -14,7 +19,7 @@ exports.run = async (client, interaction, config) => {
       components: [
         {
           type: 10,
-          content: '## :no_entry_sign: Compte non Lié',
+          content: "## :no_entry_sign: Compte non Lié",
         },
         {
           type: 14,
@@ -22,26 +27,31 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 10,
-          content: 'Votre compte Discord n\'est pas reconnu, il vous faut être renseigné pour utiliser cette commande. Pour ce faire, il te suffit de te connecter à notre panel de contrôle. Une fois connecté avec ton compte Discord, va dans la partie "Profil" puis tu as un bouton afin de lier ton compte NationsGlory.',
+          content:
+            'Votre compte Discord n\'est pas reconnu, il vous faut être renseigné pour utiliser cette commande. Pour ce faire, il te suffit de te connecter à notre panel de contrôle. Une fois connecté avec ton compte Discord, va dans la partie "Profil" puis tu as un bouton afin de lier ton compte NationsGlory.',
         },
         {
           type: 14,
           spacing: SeparatorSpacingSize.Large,
         },
         {
-            type: 1,
-            components: [
-                {
-                    type: 2,
-                    label: '💻 Accéder au panel',
-                    url: 'https://glorybot.fr',
-                    style: ButtonStyle.Link,
-                },
-            ],
+          type: 1,
+          components: [
+            {
+              type: 2,
+              label: "💻 Accéder au panel",
+              url: "https://glorybot.fr",
+              style: ButtonStyle.Link,
+            },
+          ],
         },
       ],
     };
-    return interaction.reply({ components: [nonLieContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
+    return interaction.reply({
+      components: [nonLieContainer],
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      allowedMentions: { parse: [] },
+    });
   }
 
   if (serv === "permission") {
@@ -51,7 +61,7 @@ exports.run = async (client, interaction, config) => {
       components: [
         {
           type: 10,
-          content: '## :no_entry_sign: Permission Refusée',
+          content: "## :no_entry_sign: Permission Refusée",
         },
         {
           type: 14,
@@ -63,7 +73,11 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-    return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
+    return interaction.reply({
+      components: [permissionContainer],
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      allowedMentions: { parse: [] },
+    });
   }
 
   if (!config.liste_serveur.includes(serv)) {
@@ -73,7 +87,7 @@ exports.run = async (client, interaction, config) => {
       components: [
         {
           type: 10,
-          content: '## :no_entry_sign: Serveur Inconnu',
+          content: "## :no_entry_sign: Serveur Inconnu",
         },
         {
           type: 14,
@@ -85,7 +99,11 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-    return interaction.reply({ components: [unknownServerContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
+    return interaction.reply({
+      components: [unknownServerContainer],
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      allowedMentions: { parse: [] },
+    });
   }
 
   const response = await fetch(
@@ -101,7 +119,7 @@ exports.run = async (client, interaction, config) => {
       components: [
         {
           type: 10,
-          content: '## :no_entry_sign: Permission Refusée',
+          content: "## :no_entry_sign: Permission Refusée",
         },
         {
           type: 14,
@@ -113,7 +131,11 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-    return interaction.reply({ components: [permissionContainer], flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
+    return interaction.reply({
+      components: [permissionContainer],
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      allowedMentions: { parse: [] },
+    });
   }
 
   const panelId = interaction.options.getString("panel").toLowerCase();
@@ -123,7 +145,7 @@ exports.run = async (client, interaction, config) => {
   return interaction.reply({
     components: [logContainer],
     flags: MessageFlags.IsComponentsV2,
-    allowedMentions: { parse: [] }
+    allowedMentions: { parse: [] },
   });
 };
 
@@ -152,7 +174,9 @@ exports.data = {
 
     if (focusedOption.name === "serveur") {
       const response = await fetch(
-        config.glorystaff_url + "/api/get-staff?discordId=" + interaction.user.id
+        config.glorystaff_url +
+          "/api/get-staff?discordId=" +
+          interaction.user.id
       );
       const servers = await response.json();
       const respondDatas = [];
@@ -202,7 +226,15 @@ exports.data = {
       }
 
       try {
-        const filePath = path.join(__dirname, "..", "..", "..", "data", "servers", `${serveur}.json`);
+        const filePath = path.join(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "data",
+          "servers",
+          `${serveur}.json`
+        );
         if (!fs.existsSync(filePath)) {
           return await interaction.respond([
             { name: "Aucun fichier trouvé pour ce serveur", value: "no-file" },
@@ -214,11 +246,14 @@ exports.data = {
 
         if (!json.panels || json.panels.length === 0) {
           return await interaction.respond([
-            { name: "Aucun rôle-play trouvé pour ce serveur", value: "no-panel" },
+            {
+              name: "Aucun rôle-play trouvé pour ce serveur",
+              value: "no-panel",
+            },
           ]);
         }
 
-        const panels = json.panels.map(p => ({
+        const panels = json.panels.map((p) => ({
           name: p.name,
           value: String(p.id),
         }));

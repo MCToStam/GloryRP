@@ -27,7 +27,8 @@ exports.run = async (client, interaction, config) => {
     logMap = {
       logs: "Édition du salon des logs",
       responsable: "Édition du salon de responsable",
-      tasks: "Édition du salon des tâches"
+      tasks: "Édition du salon des tâches",
+      salaire: "Édition du salon de salaire"
     }
     if (!serverDatas.logs) serverDatas.logs = [];
     serverDatas.logs.push({
