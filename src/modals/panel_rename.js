@@ -6,6 +6,7 @@ const {
 } = require("../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const { getEditPanelContainer } = require("../../components/containers.js");
+const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
@@ -34,7 +35,8 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 10,
-          content: "Ce nom est déjà utilisé par un autre rôle-play, veuillez en choisir un autre.",
+          content:
+            "Ce nom est déjà utilisé par un autre rôle-play, veuillez en choisir un autre.",
         },
       ],
     };
@@ -47,6 +49,15 @@ exports.run = async (client, interaction, config) => {
   }
 
   panelDatas.name = new_name;
+  const modifDate = await toTimeStamp(new Date());
+
+  if (!serverDatas.logs) serverDatas.logs = [];
+  serverDatas.logs.push({
+    user: interaction.user.id,
+    timestamp: modifDate,
+    panel: panelId,
+    action: "Renommmage du rôle-play",
+  });
 
   const panelPath = path.join(
     __dirname,
@@ -54,7 +65,11 @@ exports.run = async (client, interaction, config) => {
   );
   fs.writeFileSync(panelPath, JSON.stringify(serverDatas, null, 2), "utf8");
 
-  const goodContainer = await getEditPanelContainer(panelId, guildColor, panelDatas);
+  const goodContainer = await getEditPanelContainer(
+    panelId,
+    guildColor,
+    panelDatas
+  );
   return interaction.update({
     components: [goodContainer],
     flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,

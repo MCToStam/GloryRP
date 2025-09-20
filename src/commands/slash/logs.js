@@ -141,10 +141,12 @@ exports.run = async (client, interaction, config) => {
   const panelId = interaction.options.getString("panel").toLowerCase();
 
   const serverDatas = await getServerDatas(interaction, serv);
-  const logContainer = await getlogContainer(serverDatas, panelId, serv, 1);
+  const { error, component: logContainer } = await getlogContainer(serverDatas, panelId, serv, 1);
   return interaction.reply({
     components: [logContainer],
-    flags: MessageFlags.IsComponentsV2,
+    flags: error
+      ? MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral
+      : MessageFlags.IsComponentsV2,
     allowedMentions: { parse: [] },
   });
 };

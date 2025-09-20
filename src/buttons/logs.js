@@ -16,7 +16,7 @@ exports.run = async (client, interaction) => {
 
   const serverDatas = await getServerDatas(interaction);
 
-  const logContainer = await getlogContainer(serverDatas, panelId, serv, page);
+  const { error, component: logContainer } = await getlogContainer(serverDatas, panelId, serv, page);
 
   await interaction.message.edit({
     components: [logContainer],
