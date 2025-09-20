@@ -5,6 +5,7 @@ const {
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { SeparatorSpacingSize, MessageFlags } = require("discord.js");
+const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[2]);
@@ -18,6 +19,15 @@ exports.run = async (client, interaction, config) => {
 
   panelDatas.salaire.cmd_retrait = cmdRetrait;
   panelDatas.salaire.cmd_don = cmdDon;
+  const modifDate = await toTimeStamp(new Date());
+
+  if (!serverDatas.logs) serverDatas.logs = [];
+  serverDatas.logs.push({
+    user: interaction.user.id,
+    timestamp: modifDate,
+    panel: panelId,
+    action: "Édition des commandes de salaire",
+  });
 
   const panelPath = path.join(
     __dirname,
