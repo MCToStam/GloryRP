@@ -4,7 +4,7 @@ const { MessageFlags } = require("discord.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 const fs = require("node:fs");
 exports.run = async (client, interaction, config) => {
-  const panelId = Number(interaction.customId.split("-")[2]);
+  const panelId = Number(interaction.customId.split("-")[1]);
 
   const serverDatas = await getServerDatas(interaction);
   const serveur = await getGuildColor(interaction);
@@ -27,7 +27,7 @@ exports.run = async (client, interaction, config) => {
 };
 
 exports.data = {
-  name: "send",
+  name: "send_panel",
 };
 
 exports.conf = {

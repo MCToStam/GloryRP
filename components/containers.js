@@ -244,10 +244,17 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
           },
           {
             type: 2,
-            custom_id: `send-panel-${panelId}`,
+            custom_id: `send_panel-${panelId}`,
             label: "💲 Envoyer le panel de tâche",
             style: ButtonStyle.Primary,
             disabled: panelDatas.channels.tasks && panelDatas.enable ? false : true,
+          },
+          {
+            type: 2,
+            custom_id: `send_effectif-${panelId}`,
+            label: "👥 Envoyer l'effectif",
+            style: ButtonStyle.Primary,
+            disabled: panelDatas.channels.effectif && panelDatas.enable ? false : true,
           },
         ],
       },
