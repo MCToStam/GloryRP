@@ -28,7 +28,8 @@ exports.run = async (client, interaction, config) => {
       logs: "Édition du salon des logs",
       responsable: "Édition du salon de responsable",
       tasks: "Édition du salon des tâches",
-      salaire: "Édition du salon de salaire"
+      salaire: "Édition du salon de salaire",
+      effectif: "Édition du salon d'effectif"
     }
     if (!serverDatas.logs) serverDatas.logs = [];
     serverDatas.logs.push({
