@@ -354,6 +354,12 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
           },
           {
             type: 2,
+            custom_id: "aide-salaire",
+            label: "❓ Aide",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
             custom_id: `salairePost-${panelId}`,
             label: "💰 Envoyer les Salaires",
             style: ButtonStyle.Primary,
@@ -412,6 +418,17 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
                   type: 2,
                   custom_id: `config_panel_emoji-${panelId}`,
                   label: "Modifier l'Emoji",
+                  style: ButtonStyle.Primary,
+              },
+          ],
+      },
+      {
+          type: 1,
+          components: [
+              {
+                  type: 2,
+                  custom_id: `config_panel_description-${panelId}`,
+                  label: "Modifier la Description",
                   style: ButtonStyle.Primary,
               },
               {

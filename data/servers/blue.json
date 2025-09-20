@@ -125,7 +125,7 @@
     {
       "id": 3,
       "name": "Test",
-      "description": "",
+      "description": "test",
       "emoji": "",
       "enable": true,
       "tasks": [],
@@ -288,6 +288,12 @@
       "timestamp": 1758359553,
       "panel": 4,
       "action": "Création du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758366757,
+      "panel": 3,
+      "action": "Édition de la description du rôle-play"
     }
   ]
 }
