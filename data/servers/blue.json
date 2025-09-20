@@ -1,1 +1,293 @@
-{"guild":"1415033751733538868","panels":[{"id":1,"name":"Avocat","description":"desc avocat","emoji":"<a:test:1417844331443916860>","enable":true,"tasks":[{"taskId":1,"panelId":1,"name":"Résumé ONU","description":"émoji statique","emoji":"<:channel:1415827516400205894>","type":"1","url":"https://nationsglory.fr/forums/category/recaps-onu.414","salaire":{"lundi":4000,"mardi":4000,"mercredi:":4000,"jeudi":4000,"vendredi":4000,"samedi":4000,"dimanche":4000}},{"taskId":2,"panelId":1,"name":"Plainte Anti-Jeu","description":"émoji de base","emoji":"⏳","type":"1","url":"https://nationsglory.fr/forums/category/recaps-onu.414","salaire":{"lundi":4000,"mardi":4000,"mercredi:":4000,"jeudi":4000,"vendredi":4000,"samedi":4000,"dimanche":4000}},{"taskId":3,"panelId":1,"name":"Plainte Animée","description":"émoji animé","emoji":"<a:test:1417844331443916860>","type":"1","url":"https://nationsglory.fr/forums/category/recaps-onu.414","salaire":{"lundi":4000,"mardi":4000,"mercredi:":4000,"jeudi":4000,"vendredi":4000,"samedi":4000,"dimanche":4000}}],"channels":{"logs":"1415329865120481361","responsable":"1415329865120481361","tasks":"1415329865120481361","salaire":"1415330656392581140","effectif":"1415330443489841153"},"salaire":{"automatique":true,"cmd_retrait":"/econ bank take ONU [argent]","cmd_don":"/eco give [joueur] [argent]","salaire":{"ToStam":{"09_2025":{"taches":[{"nom":"Résumé ONU","lien":"XXX","timestamp":"","status":"accepted","staff":"ToStam","argent":2000}]},"08_2025":{"taches":[{"nom":"Résumé ONU","lien":"XXX","timestamp":"","status":"accepted","staff":"ToStam","argent":2000}]}}}},"timestamp":1758357680,"lastUser":"719072181631320145"},{"id":2,"name":"Journaliste","description":"desc journal","emoji":"⏳","enable":false,"channels":{"logs":"1415329865120481361","responsable":"1415329865120481361","tasks":"1415330656392581140","salaire":"1415330656392581140","effectif":"1415330656392581140"},"lastUser":"719072181631320145","timestamp":1758125415}],"lastUser":"719072181631320145","timestamp":1758357680,"logs":[{"user":"719072181631320145","timestamp":1758213358,"panel":1},{"user":"719072181631320145","timestamp":1758213363,"panel":1},{"user":"719072181631320145","timestamp":1758213368,"panel":1,"action":"Édition du salon des tâches"},{"user":"719072181631320145","timestamp":1758215101,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758215105,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758318660,"panel":1},{"user":"719072181631320145","timestamp":1758356271,"panel":1,"action":"Édition du salon de salaire"},{"user":"719072181631320145","timestamp":1758356276,"panel":1,"action":"Envoie du panel des tâches"},{"user":"719072181631320145","timestamp":1758356526,"panel":1,"action":"Renommmage du rôle-play"},{"user":"719072181631320145","timestamp":1758356531,"panel":1,"action":"Édition de l'émoji du rôle-play"},{"user":"719072181631320145","timestamp":1758356620,"panel":1,"action":"Activation des salaires automatiques"},{"user":"719072181631320145","timestamp":1758356622,"panel":1,"action":"Édition des commandes de salaire"},{"user":"719072181631320145","timestamp":1758357597,"panel":1,"action":"Édition du salon d'effectif"},{"user":"719072181631320145","timestamp":1758357673,"panel":1,"action":"Désactivation du module"},{"user":"719072181631320145","timestamp":1758357675,"panel":1,"action":"Activation du module"},{"user":"719072181631320145","timestamp":1758357680,"panel":1,"action":"Édition du salon d'effectif"},{"user":"719072181631320145","timestamp":1758357683,"panel":1,"action":"Envoie du panel des tâches"},{"user":"719072181631320145","timestamp":1758357740,"panel":1,"action":"Envoie du panel des tâches"}]}
+{
+  "guild": "1415033751733538868",
+  "panels": [
+    {
+      "id": 1,
+      "name": "Avocat",
+      "description": "desc avocat",
+      "emoji": "<a:test:1417844331443916860>",
+      "enable": true,
+      "tasks": [
+        {
+          "taskId": 1,
+          "panelId": 1,
+          "name": "Résumé ONU",
+          "description": "émoji statique",
+          "emoji": "<:channel:1415827516400205894>",
+          "type": "1",
+          "url": "https://nationsglory.fr/forums/category/recaps-onu.414",
+          "salaire": {
+            "lundi": 4000,
+            "mardi": 4000,
+            "mercredi:": 4000,
+            "jeudi": 4000,
+            "vendredi": 4000,
+            "samedi": 4000,
+            "dimanche": 4000
+          }
+        },
+        {
+          "taskId": 2,
+          "panelId": 1,
+          "name": "Plainte Anti-Jeu",
+          "description": "émoji de base",
+          "emoji": "⏳",
+          "type": "1",
+          "url": "https://nationsglory.fr/forums/category/recaps-onu.414",
+          "salaire": {
+            "lundi": 4000,
+            "mardi": 4000,
+            "mercredi:": 4000,
+            "jeudi": 4000,
+            "vendredi": 4000,
+            "samedi": 4000,
+            "dimanche": 4000
+          }
+        },
+        {
+          "taskId": 3,
+          "panelId": 1,
+          "name": "Plainte Animée",
+          "description": "émoji animé",
+          "emoji": "<a:test:1417844331443916860>",
+          "type": "1",
+          "url": "https://nationsglory.fr/forums/category/recaps-onu.414",
+          "salaire": {
+            "lundi": 4000,
+            "mardi": 4000,
+            "mercredi:": 4000,
+            "jeudi": 4000,
+            "vendredi": 4000,
+            "samedi": 4000,
+            "dimanche": 4000
+          }
+        }
+      ],
+      "channels": {
+        "logs": "1415329865120481361",
+        "responsable": "1415329865120481361",
+        "tasks": "1415329865120481361",
+        "salaire": "1415330656392581140",
+        "effectif": "1415330443489841153"
+      },
+      "salaire": {
+        "automatique": true,
+        "cmd_retrait": "/econ bank take ONU [argent]",
+        "cmd_don": "/eco give [joueur] [argent]",
+        "salaire": {
+          "ToStam": {
+            "09_2025": {
+              "taches": [
+                {
+                  "nom": "Résumé ONU",
+                  "lien": "XXX",
+                  "timestamp": "",
+                  "status": "accepted",
+                  "staff": "ToStam",
+                  "argent": 2000
+                }
+              ]
+            },
+            "08_2025": {
+              "taches": [
+                {
+                  "nom": "Résumé ONU",
+                  "lien": "XXX",
+                  "timestamp": "",
+                  "status": "accepted",
+                  "staff": "ToStam",
+                  "argent": 2000
+                }
+              ]
+            }
+          }
+        }
+      },
+      "timestamp": 1758357680,
+      "lastUser": "719072181631320145"
+    },
+    {
+      "id": 2,
+      "name": "Journaliste",
+      "description": "desc journal",
+      "emoji": "⏳",
+      "enable": false,
+      "channels": {
+        "logs": "1415329865120481361",
+        "responsable": "1415329865120481361",
+        "tasks": "1415330656392581140",
+        "salaire": "1415330656392581140",
+        "effectif": "1415330656392581140"
+      },
+      "lastUser": "719072181631320145",
+      "timestamp": 1758125415
+    },
+    {
+      "id": 3,
+      "name": "Test",
+      "description": "",
+      "emoji": "",
+      "enable": true,
+      "tasks": [],
+      "channels": {
+        "logs": false,
+        "responsable": false,
+        "tasks": false,
+        "salaire": false,
+        "effectif": false
+      },
+      "salaire": {
+        "automatique": false,
+        "cmd_retrait": "/econ bank take ONU [argent]",
+        "cmd_don": "/eco give [joueur] [argent]",
+        "salaire": {}
+      },
+      "timestamp": 1758359259,
+      "lastUser": "719072181631320145"
+    },
+    {
+      "id": 4,
+      "name": "ttttttttt",
+      "description": "",
+      "emoji": "",
+      "enable": true,
+      "tasks": [],
+      "channels": {
+        "logs": false,
+        "responsable": false,
+        "tasks": false,
+        "salaire": false,
+        "effectif": false
+      },
+      "salaire": {
+        "automatique": false,
+        "cmd_retrait": "/econ bank take ONU [argent]",
+        "cmd_don": "/eco give [joueur] [argent]",
+        "salaire": {}
+      },
+      "timestamp": 1758359553,
+      "lastUser": "719072181631320145"
+    }
+  ],
+  "lastUser": "719072181631320145",
+  "timestamp": 1758359553,
+  "logs": [
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213358,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213363,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213368,
+      "panel": 1,
+      "action": "Édition du salon des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758215101,
+      "panel": 1,
+      "action": "Désactivation du module"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758215105,
+      "panel": 1,
+      "action": "Activation du module"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758318660,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356271,
+      "panel": 1,
+      "action": "Édition du salon de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356276,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356526,
+      "panel": 1,
+      "action": "Renommmage du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356531,
+      "panel": 1,
+      "action": "Édition de l'émoji du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356620,
+      "panel": 1,
+      "action": "Activation des salaires automatiques"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356622,
+      "panel": 1,
+      "action": "Édition des commandes de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357597,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357673,
+      "panel": 1,
+      "action": "Désactivation du module"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357675,
+      "panel": 1,
+      "action": "Activation du module"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357680,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357683,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357740,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758359259,
+      "panel": 3,
+      "action": "Création du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758359553,
+      "panel": 4,
+      "action": "Création du rôle-play"
+    }
+  ]
+}

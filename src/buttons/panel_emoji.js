@@ -21,7 +21,7 @@ exports.run = async (client, interaction, config) => {
             min_length: 1,
             max_length: 100,
             placeholder: "Ex: ⚖️",
-            value: panelDatas.emoji,
+            ...(panelDatas.emoji ? { value: panelDatas.emoji } : {}),
             required: true,
           },
         ],
