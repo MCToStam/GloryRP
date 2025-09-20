@@ -1,10 +1,11 @@
 function parseEmoji(emoji) {
+  if (!emoji) return null;
   const customEmojiMatch = emoji.match(/^<a?:([a-zA-Z0-9_]+):(\d+)>$/);
   if (customEmojiMatch) {
     return {
       name: customEmojiMatch[1],
       id: customEmojiMatch[2],
-      animated: emoji.startsWith('<a:'),
+      animated: emoji.startsWith("<a:"),
     };
   }
 
@@ -16,36 +17,31 @@ function getPanelsSelecString(serverDatas) {
 
   for (const panel of serverDatas.panels) {
     if (panel.enable) {
-      panelOptions.push({
+      const emoji = parseEmoji(panel.emoji);
+      const option = {
         label: `Panel ${panel.name}`,
         value: `config-panel-${panel.id}`,
         description: panel.description || `Configure le panel ${panel.name}`,
-        emoji: parseEmoji(panel.emoji),
-      });
+      };
+      if (emoji) option.emoji = emoji;
+      panelOptions.push(option);
     }
   }
+
+  panelOptions.push({
+    label: "Créer un rôle-play",
+    value: "create_panel",
+    description: "Créer un nouveau rôle-play",
+    emoji: { id: "1418880845808402492" },
+  });
 
   return {
     type: 3,
     custom_id: "config-panels",
-    placeholder:
-      panelOptions.length === 0
-        ? "Il te faut d'abord activer un rôle-play"
-        : "Choisis un panel à configurer",
+    placeholder: "Choisis un panel à configurer",
     max_values: 1,
-    disabled: panelOptions.length === 0,
-    options:
-      panelOptions.length === 0
-        ? [
-            {
-              label: "Il te faut d'abord activer un rôle-play",
-              value: "no-panel-actived",
-              description:
-                "Tu ne peux pas configurer de panel si aucun n'est actif",
-              emoji: { name: "❌" },
-            },
-          ]
-        : panelOptions,
+    disabled: false,
+    options: panelOptions,
   };
 }
 
