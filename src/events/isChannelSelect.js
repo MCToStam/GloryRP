@@ -4,7 +4,6 @@ const config = require('../../config.js');
 
 module.exports = async (client, interaction) => {
 	const channelSelect = client.container.channelSelects.get(interaction.customId.split('-')[0]);
-	const cmdName = interaction.message.interaction ? interaction.message.interaction.commandName : '?';
 
 	if (!channelSelect) return;
 

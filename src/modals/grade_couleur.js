@@ -49,6 +49,8 @@ exports.run = async (client, interaction, config) => {
     });
   }
 
+  await interaction.deferUpdate()
+
   const guildColor = await getGuildColor(interaction);
   const serverDatas = await getServerDatas(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
@@ -78,7 +80,7 @@ exports.run = async (client, interaction, config) => {
     panelDatas,
     gradeId
   );
-  return interaction.update({
+  return interaction.editReply({
     components: [goodContainer],
     flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
     allowedMentions: { parse: [] },

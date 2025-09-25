@@ -463,7 +463,7 @@ async function getEditGradeContainer(client, panelId, guildColor, panelDatas, gr
             options: [
               ...[5, 4, 3, 2, 1].map((tier) => ({
                 label: `Tier ${tier}`,
-                value: tier,
+                value: `edit_grade_tier-${tier}`,
                 description: `Définir en Tier ${tier}`,
                 default: grade.tier === String(tier),
               })),
@@ -482,6 +482,7 @@ async function getEditGradeContainer(client, panelId, guildColor, panelDatas, gr
             type: 6,
             custom_id: `edit_grade_role-${panelId}-${gradeId}`,
             placeholder: "Sélectionne un rôle...",
+            max_values: 25,
             default_values:
               grade.role?.map((r) => ({
                 id: r,

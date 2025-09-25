@@ -6,6 +6,8 @@ const {
 const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
+  await interaction.deferUpdate()
+  
   const panelId = Number(interaction.values[0].split("-")[1]);
   const gradeId = Number(interaction.values[0].split("-")[2]);
 
@@ -20,7 +22,7 @@ exports.run = async (client, interaction, config) => {
     panelDatas,
     gradeId
   );
-  return interaction.update({
+  return interaction.editReply({
     components: [gradeContainer],
     flags: MessageFlags.IsComponentsV2,
     allowedMentions: { parse: [] },
