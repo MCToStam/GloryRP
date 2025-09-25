@@ -587,7 +587,7 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
               ...gradeOptions,
               {
                 label: "Créer un grade",
-                value: `config_grade_create-${panelId}`,
+                value: `create_grade-${panelId}`,
                 description: "Ajoute un nouveau grade au panel",
                 emoji: { id: "1418880845808402492" },
               },
