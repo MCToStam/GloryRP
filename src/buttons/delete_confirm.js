@@ -36,7 +36,7 @@ exports.run = async (client, interaction, config) => {
       flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
       allowedMentions: { parse: [] },
     });
-    await interaction.message.delete().catch(() => {});
+    return await interaction.message.delete().catch(() => {});
   }
 
   serverDatas.panels.splice(panelIndex, 1);

@@ -7,6 +7,17 @@
       "description": "desc avocat",
       "emoji": "<a:test:1417844331443916860>",
       "enable": true,
+      "grade": [
+        {
+          "gradeId": 1,
+          "nom": "Rédacteur",
+          "couleur": "#FFA500",
+          "tier": "4",
+          "role": [
+            "1415349412619751484"
+          ]
+        }
+      ],
       "tasks": [
         {
           "taskId": 1,
@@ -294,6 +305,42 @@
       "timestamp": 1758366757,
       "panel": 3,
       "action": "Édition de la description du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784387,
+      "panel": 1,
+      "action": "Renommmage du grade Grade 1 en Rédacteur"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784465,
+      "panel": 1,
+      "action": "Renommmage du grade Rédacteur en Rédacteur"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784553,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #FF0000 en undefined"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784587,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #FA0000 en undefined"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784730,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #ffa500 en undefined"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784740,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #FFA500 en undefined"
     }
   ]
 }
