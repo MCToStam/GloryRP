@@ -13,13 +13,22 @@
           "nom": "Rédacteur",
           "couleur": "#FF0002",
           "tier": "5",
-          "role": ["1415349412619751484"],
+          "role": [
+            "1415349412619751484"
+          ],
           "roles": [
             "1415349412619751484",
             "1415349551119859733",
             "1415035439454224469",
             "1415037023328272486"
           ]
+        },
+        {
+          "gradeId": 2,
+          "nom": "Test",
+          "couleur": "#FF0000",
+          "tier": "2",
+          "role": []
         }
       ],
       "tasks": [
@@ -119,7 +128,8 @@
         }
       },
       "timestamp": 1758357680,
-      "lastUser": "719072181631320145"
+      "lastUser": "719072181631320145",
+      "panels": []
     },
     {
       "id": 2,
@@ -185,10 +195,18 @@
     }
   ],
   "lastUser": "719072181631320145",
-  "timestamp": 1758786396,
+  "timestamp": 1758828110,
   "logs": [
-    { "user": "719072181631320145", "timestamp": 1758213358, "panel": 1 },
-    { "user": "719072181631320145", "timestamp": 1758213363, "panel": 1 },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213358,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213363,
+      "panel": 1
+    },
     {
       "user": "719072181631320145",
       "timestamp": 1758213368,
@@ -207,7 +225,11 @@
       "panel": 1,
       "action": "Activation du module"
     },
-    { "user": "719072181631320145", "timestamp": 1758318660, "panel": 1 },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758318660,
+      "panel": 1
+    },
     {
       "user": "719072181631320145",
       "timestamp": 1758356271,
@@ -387,6 +409,24 @@
       "timestamp": 1758821818,
       "panel": 1,
       "action": "Modification des rôles du grade Rédacteur"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758827823,
+      "panel": 2,
+      "action": "Création du grade Test"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758827871,
+      "panel": 3,
+      "action": "Création du grade Testtttt"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758828110,
+      "panel": 2,
+      "action": "Création du grade Test"
     }
   ]
 }

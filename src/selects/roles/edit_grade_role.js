@@ -29,7 +29,7 @@ exports.run = async (client, interaction, config) => {
     action: `Modification des rôles du grade ${grade.nom}`,
   });
 
-  grade.roles = new_roles;
+  grade.role = new_roles;
 
   const panelPath = `data/servers/${guildColor}.json`;
   fs.writeFileSync(panelPath, JSON.stringify(serverDatas));
