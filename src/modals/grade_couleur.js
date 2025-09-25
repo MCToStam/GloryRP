@@ -60,7 +60,7 @@ exports.run = async (client, interaction, config) => {
     user: interaction.user.id,
     timestamp: modifDate,
     panel: panelId,
-    action: `Modification de la couleur du grade ${grade.nom} de ${grade.couleur} en ${grade.new_color}`,
+    action: `Modification de la couleur du grade ${grade.nom} de ${grade.couleur} en ${new_color}`,
   });
 
   grade.couleur = new_color;
