@@ -5,6 +5,7 @@ const {
 } = require("../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const { getGradeContainer } = require("../../components/containers.js");
+const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[2]);
@@ -44,6 +45,17 @@ exports.run = async (client, interaction, config) => {
     });
     return await interaction.message.delete().catch(() => {});
   }
+
+  const modifDate = await toTimeStamp(new Date());
+  const grade = panelDatas.grade.find((g) => g.gradeId === gradeId);
+
+  if (!serverDatas.logs) serverDatas.logs = [];
+  serverDatas.logs.push({
+    user: interaction.user.id,
+    timestamp: modifDate,
+    panel: panelId,
+    action: `Suppression du grade ${grade.nom}`,
+  });
 
   panelDatas.grade.splice(panelIndex, 1);
 

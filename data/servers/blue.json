@@ -7,17 +7,7 @@
       "description": "desc avocat",
       "emoji": "<a:test:1417844331443916860>",
       "enable": true,
-      "grade": [
-        {
-          "gradeId": 1,
-          "nom": "Rédacteur",
-          "couleur": "#FFA500",
-          "tier": "4",
-          "role": [
-            "1415349412619751484"
-          ]
-        }
-      ],
+      "grade": [],
       "tasks": [
         {
           "taskId": 1,
@@ -181,7 +171,7 @@
     }
   ],
   "lastUser": "719072181631320145",
-  "timestamp": 1758359553,
+  "timestamp": 1758786396,
   "logs": [
     {
       "user": "719072181631320145",
@@ -341,6 +331,12 @@
       "timestamp": 1758784740,
       "panel": 1,
       "action": "Modification de la couleur du grade Rédacteur de #FFA500 en undefined"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758786396,
+      "panel": 1,
+      "action": "Suppression du grade Rédacteur"
     }
   ]
 }
