@@ -1,5 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
+const Canvas = require("canvas");
 const { AttachmentBuilder } = require("discord.js");
 
 const cachePath = path.join(__dirname, "..", "..", "data", "emojisCache.json");
@@ -38,6 +39,62 @@ async function getEmojiTete(client, joueur) {
     createdAt: now,
   };
   fs.writeFileSync(cachePath, JSON.stringify(emojisCache, null, 2));
+
+  return emoji;
+}
+
+async function getHexEmoji(client, hexColor) {
+  const guild = await client.guilds.fetch("1349379748576366633");
+  const now = Date.now();
+  const key = hexColor.toLowerCase()
+  const colorKey = hexColor.toLowerCase();
+
+  const existingColorEmoji = Object.values(emojisCache).find(e => e.color === colorKey);
+  if (existingColorEmoji) {
+    const emoji = guild.emojis.cache.get(existingColorEmoji.emojiId);
+    if (emoji) {
+      emojisCache[hexColor] = {
+        emojiId: emoji.id,
+        color: colorKey,
+        createdAt: now
+      };
+      fs.writeFileSync(cachePath, JSON.stringify(emojisCache, null, 2));
+      return emoji;
+    }
+  }
+
+  const canvas = Canvas.createCanvas(32, 32);
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = hexColor;
+  ctx.beginPath();
+  ctx.arc(16, 16, 16, 0, Math.PI * 2);
+  ctx.fill();
+
+  const safeKey = key.toLowerCase().replace(/[^a-z0-9_]/g, "_");
+
+  const attachment = new AttachmentBuilder(canvas.toBuffer("image/png"), { name: `${safeKey}.png` });
+  const emoji = await guild.emojis.create({
+    attachment: attachment.attachment,
+    name: colorKey.replace(/[^a-z0-9_]/gi, "_").slice(0, 32)
+  });
+
+  emojisCache[key] = {
+    emojiId: emoji.id,
+    color: colorKey,
+    createdAt: now
+  };
+  fs.writeFileSync(cachePath, JSON.stringify(emojisCache, null, 2));
+
+  setTimeout(async () => {
+    try {
+      const stillHere = guild.emojis.cache.get(emoji.id);
+      if (stillHere) await stillHere.delete();
+      delete emojisCache[key];
+      fs.writeFileSync(cachePath, JSON.stringify(emojisCache, null, 2));
+    } catch (e) {
+      console.warn(`Erreur suppression emoji ${emoji.id}:`, e.message);
+    }
+  }, 60 * 60 * 1000);
 
   return emoji;
 }
@@ -91,4 +148,4 @@ async function checkEmojiCache(client) {
   } catch (e) {}
 }
 
-module.exports = { checkEmojiCache, getEmojiTete };
+module.exports = { checkEmojiCache, getEmojiTete, getHexEmoji };

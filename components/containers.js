@@ -7,6 +7,21 @@ const {
   userMention,
 } = require("discord.js");
 const { getPanelsSelecString } = require("./selectsString.js");
+const { getHexEmoji } = require("../utils/functions/emojis.js")
+
+function parseEmoji(emoji) {
+  if (!emoji) return null;
+  const customEmojiMatch = emoji.match(/^<a?:([a-zA-Z0-9_]+):(\d+)>$/);
+  if (customEmojiMatch) {
+    return {
+      name: customEmojiMatch[1],
+      id: customEmojiMatch[2],
+      animated: emoji.startsWith("<a:"),
+    };
+  }
+
+  return { name: emoji };
+}
 
 async function getConfigContainer(serverDatas, serv) {
   const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
@@ -61,13 +76,15 @@ async function getConfigContainer(serverDatas, serv) {
 }
 
 async function getPanelContainer(guildColor, panelDatas, panelId) {
-  return panelContainer = {
+  return (panelContainer = {
     type: 17,
     accent_color: config.couleur[guildColor],
     components: [
       {
         type: 10,
-        content: `## ${panelDatas.emoji ? `${panelDatas.emoji} ` : ""}Configuration du Rôle-Play ${panelDatas.name}`,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        }Configuration du Rôle-Play ${panelDatas.name}`,
       },
       {
         type: 14,
@@ -94,69 +111,69 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         spacing: SeparatorSpacingSize.Small,
       },
       {
-          type: 1,
-          components: [
-              {
-                  type: 2,
-                  custom_id: `config_channel-${panelId}`,
-                  label: 'Configurer les Salons',
-                  style: ButtonStyle.Primary,
-              },
-              {
-                  type: 2,
-                  custom_id: `config_grade-${panelId}`,
-                  label: "Configurer les Grades",
-                  style: ButtonStyle.Primary,
-              },
-              {
-                  type: 2,
-                  custom_id: `config_tache-${panelId}`,
-                  label: 'Configurer les Tâches',
-                  style: ButtonStyle.Primary,
-              },
-          ],
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `config_channel-${panelId}`,
+            label: "Configurer les Salons",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config_grade-${panelId}`,
+            label: "Configurer les Grades",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config_tache-${panelId}`,
+            label: "Configurer les Tâches",
+            style: ButtonStyle.Primary,
+          },
+        ],
       },
       {
-          type: 1,
-          components: [
-              {
-                  type: 2,
-                  custom_id: `config_panel-${panelId}`,
-                  label: 'Configurer le Panel',
-                  style: ButtonStyle.Primary,
-              },
-              {
-                  type: 2,
-                  custom_id: `config_salaire-${panelId}`,
-                  label: "Configurer les Salaires",
-                  style: ButtonStyle.Primary,
-              },
-              {
-                  type: 2,
-                  custom_id: `config_boutique-${panelId}`,
-                  label: 'Configurer la Boutique',
-                  style: ButtonStyle.Secondary,
-                  disabled: true,
-              },
-          ],
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `config_panel-${panelId}`,
+            label: "Configurer le Panel",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config_salaire-${panelId}`,
+            label: "Configurer les Salaires",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config_boutique-${panelId}`,
+            label: "Configurer la Boutique",
+            style: ButtonStyle.Secondary,
+            disabled: true,
+          },
+        ],
       },
       {
         type: 14,
         spacing: SeparatorSpacingSize.Small,
       },
       {
-          type: 1,
-          components: [
-              {
-                  type: 2,
-                  custom_id: `return`,
-                  label: "🚪 Retour à l'Acceuil",
-                  style: ButtonStyle.Secondary,
-              },
-          ],
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return`,
+            label: "🚪 Retour à l'Acceuil",
+            style: ButtonStyle.Secondary,
+          },
+        ],
       },
     ],
-  };
+  });
 }
 
 async function getChannelContainer(panelId, guildColor, panelDatas) {
@@ -191,7 +208,7 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
             ].filter(Boolean),
           },
         ],
-      },
+      }
     );
   }
 
@@ -201,7 +218,9 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
     components: [
       {
         type: 10,
-        content: `## ${panelDatas.emoji} Configuration du Panel ${panelDatas.name}`,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
       },
       {
         type: 14,
@@ -247,19 +266,21 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
             custom_id: `send_panel-${panelId}`,
             label: "💲 Envoyer le panel de tâche",
             style: ButtonStyle.Primary,
-            disabled: panelDatas.channels.tasks && panelDatas.enable ? false : true,
+            disabled:
+              panelDatas.channels.tasks && panelDatas.enable ? false : true,
           },
           {
             type: 2,
             custom_id: `send_effectif-${panelId}`,
             label: "👥 Envoyer l'effectif",
             style: ButtonStyle.Primary,
-            disabled: panelDatas.channels.effectif && panelDatas.enable ? false : true,
+            disabled:
+              panelDatas.channels.effectif && panelDatas.enable ? false : true,
           },
         ],
       },
     ],
-  }
+  };
 }
 
 async function getSalaireContainer(panelId, guildColor, panelDatas) {
@@ -269,7 +290,9 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
     components: [
       {
         type: 10,
-        content: `## ${panelDatas.emoji} Configuration du Panel ${panelDatas.name}`,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
       },
       {
         type: 14,
@@ -308,7 +331,8 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
               {
                 label: "Oui",
                 value: `config_salaire-${panelId}-automatique-oui`,
-                description: "Les salaires seront automatiquement envoyé le premier de chaque mois à 10h00",
+                description:
+                  "Les salaires seront automatiquement envoyé le premier de chaque mois à 10h00",
                 emoji: { name: "✅" },
                 default: panelDatas.salaire.automatique === true,
               },
@@ -323,22 +347,23 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
           },
         ],
       },
-			{
-				type: 9,
-				components: [
-					{
-						type: 10,
-						content: "Modifier les commandes de retrait et don d'argent lors des salaires",
-					},
-				],
-				accessory: {
-					type: 2,
-					custom_id: `cmd_salaire-${panelId}-commande`,
-					label: "🔧 Modifier les commandes",
-					style: ButtonStyle.Primary,
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content:
+              "Modifier les commandes de retrait et don d'argent lors des salaires",
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `cmd_salaire-${panelId}-commande`,
+          label: "🔧 Modifier les commandes",
+          style: ButtonStyle.Primary,
           disabled: panelDatas.enable ? false : true,
-				},
-			},
+        },
+      },
       {
         type: 14,
         spacing: SeparatorSpacingSize.Small,
@@ -363,12 +388,224 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
             custom_id: `salairePost-${panelId}`,
             label: "💰 Envoyer les Salaires",
             style: ButtonStyle.Primary,
-            disabled: panelDatas.channels.salaire && panelDatas.enable ? false : true,
+            disabled:
+              panelDatas.channels.salaire && panelDatas.enable ? false : true,
           },
         ],
       },
     ],
-  }
+  };
+}
+
+async function getEditGradeContainer(client, panelId, guildColor, panelDatas, gradeId) {
+  const grade = panelDatas.grade.find((g) => g.gradeId === gradeId);
+
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 14,
+        divider: false,
+        spacing: SeparatorSpacingSize.Small,
+      },
+
+      {
+        type: 9,
+        components: [{ type: 10, content: `**Nom :** ${grade.nom}` }],
+        accessory: {
+          type: 2,
+          custom_id: `edit_grade_nom-${panelId}-${gradeId}`,
+          label: "⚙️ Modifier le Nom",
+          style: ButtonStyle.Primary,
+        },
+      },
+
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Couleur :** ${
+              grade.couleur ? `${await getHexEmoji(client, grade.couleur)} (${grade.couleur}) ` : "Aucune couleur configurée"
+            }`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `edit_grade_couleur-${panelId}-${gradeId}`,
+          label: "🎨 Modifier la Couleur",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 10,
+        content: `**Tier du grade :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `edit_grade_tier-${panelId}-${gradeId}`,
+            placeholder: "Choisis un Tier...",
+            options: [
+              ...[5, 4, 3, 2, 1].map((tier) => ({
+                label: `Tier ${tier}`,
+                value: tier,
+                description: `Définir en Tier ${tier}`,
+                default: grade.tier === String(tier),
+              })),
+            ],
+          },
+        ],
+      },
+      {
+        type: 10,
+        content: `**Rôle(s) attribué(s) lors d'un rank :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 6,
+            custom_id: `edit_grade_role-${panelId}-${gradeId}`,
+            placeholder: "Sélectionne un rôle...",
+            default_values:
+              grade.role?.map((r) => ({
+                id: r,
+                type: "role",
+              })) || [],
+          },
+        ],
+      },
+
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: `grade_delete-${panelId}-${gradeId}`,
+            label: "🗑️ Supprimer le Grade",
+            style: ButtonStyle.Danger,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+async function getGradeContainer(client, panelId, guildColor, panelDatas) {
+  const gradesContent = await Promise.all(
+    panelDatas.grade.map(async (grade) => ({
+      type: 10,
+      content: `- ${
+        grade.couleur ? `${await getHexEmoji(client, grade.couleur)}` : ""
+      } **${grade.nom}**`,
+    }))
+  );
+
+  const gradeOptions = await Promise.all(
+    panelDatas.grade.map(async (grade) => ({
+      label: grade.nom,
+      value: `grade_edit-${panelId}-${grade.gradeId}`,
+      description: `Configure ${grade.nom}`,
+      emoji: grade.couleur
+        ? await getHexEmoji(client, grade.couleur)
+        : undefined,
+    }))
+  );
+
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 14,
+        divider: false,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: "📡 Statut",
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `toggle-panel-${panelId}-salaire`,
+          label: panelDatas.enable ? "Activé" : "Désactivé",
+          emoji: { name: panelDatas.enable ? "✅" : "❌" },
+          style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+        },
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      ...gradesContent,
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `grade_edit-${panelId}`,
+            placeholder: "Choisis un grade...",
+            disabled: !panelDatas.enable,
+            options: [
+              ...gradeOptions,
+              {
+                label: "Créer un grade",
+                value: `config_grade_create-${panelId}`,
+                description: "Ajoute un nouveau grade au panel",
+                emoji: { id: "1418880845808402492" },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  };
 }
 
 async function getEditPanelContainer(panelId, guildColor, panelDatas) {
@@ -378,7 +615,9 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
     components: [
       {
         type: 10,
-        content: `## ${panelDatas.emoji} Configuration du Panel ${panelDatas.name}`,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
       },
       {
         type: 14,
@@ -406,38 +645,38 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
         spacing: SeparatorSpacingSize.Small,
       },
       {
-          type: 1,
-          components: [
-              {
-                  type: 2,
-                  custom_id: `config_panel_rename-${panelId}`,
-                  label: 'Renommer le Rôle-Play',
-                  style: ButtonStyle.Primary,
-              },
-              {
-                  type: 2,
-                  custom_id: `config_panel_emoji-${panelId}`,
-                  label: "Modifier l'Emoji",
-                  style: ButtonStyle.Primary,
-              },
-          ],
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `config_panel_rename-${panelId}`,
+            label: "Renommer le Rôle-Play",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config_panel_emoji-${panelId}`,
+            label: "Modifier l'Emoji",
+            style: ButtonStyle.Primary,
+          },
+        ],
       },
       {
-          type: 1,
-          components: [
-              {
-                  type: 2,
-                  custom_id: `config_panel_description-${panelId}`,
-                  label: "Modifier la Description",
-                  style: ButtonStyle.Primary,
-              },
-              {
-                  type: 2,
-                  custom_id: `config_panel_delete-${panelId}`,
-                  label: 'Supprimer le Rôle-Play',
-                  style: ButtonStyle.Danger,
-              },
-          ],
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `config_panel_description-${panelId}`,
+            label: "Modifier la Description",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config_panel_delete-${panelId}`,
+            label: "Supprimer le Rôle-Play",
+            style: ButtonStyle.Danger,
+          },
+        ],
       },
       {
         type: 14,
@@ -455,7 +694,15 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
         ],
       },
     ],
-  }
+  };
 }
 
-module.exports = { getConfigContainer, getPanelContainer, getChannelContainer, getSalaireContainer, getEditPanelContainer };
+module.exports = {
+  getConfigContainer,
+  getPanelContainer,
+  getChannelContainer,
+  getSalaireContainer,
+  getEditPanelContainer,
+  getGradeContainer,
+  getEditGradeContainer,
+};
