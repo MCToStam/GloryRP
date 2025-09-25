@@ -42,7 +42,7 @@ async function getConfigContainer(serverDatas, serv) {
     },
   }));
 
-  return {
+  const returnComponent = {
     type: 17,
     accent_color: config.couleur[serv],
     components: [
@@ -62,17 +62,22 @@ async function getConfigContainer(serverDatas, serv) {
       {
         type: 1,
         components: [await getPanelsSelecString(serverDatas)],
-      },
-      {
+      }
+    ],
+  };
+
+  if (serverDatas.lastUser && serverDatas.timestamp) {
+    returnComponent.components.push({
         type: 10,
         content:
           "-# Dernières modifications par " +
           userMention(serverDatas.lastUser) +
           " " +
           (await time(serverDatas.timestamp, "R")),
-      },
-    ],
-  };
+      })
+  }
+
+  return returnComponent
 }
 
 async function getPanelContainer(guildColor, panelDatas, panelId) {
