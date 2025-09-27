@@ -5,6 +5,11 @@
   "emoji": false,
   "enable": true,
   "tasks": [],
+  "effectif": {
+    "message": false,
+    "channel": false,
+    "guild": false
+  },
   "channels": {
     "logs": false,
     "responsable": false,
