@@ -1,5 +1,4 @@
 const config = require("../../../config.js");
-const log = require("../../../utils/modules/logger.js");
 const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction) => {

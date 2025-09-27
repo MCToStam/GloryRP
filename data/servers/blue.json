@@ -7,6 +7,11 @@
       "description": "desc avocat",
       "emoji": "<a:test:1417844331443916860>",
       "enable": true,
+      "effectif": {
+        "message": "1421467582317465613",
+        "channel": "1415329865120481361",
+        "guild": "1415033751733538868"
+      },
       "grade": [
         {
           "gradeId": 1,
@@ -21,14 +26,16 @@
             "1415349551119859733",
             "1415035439454224469",
             "1415037023328272486"
-          ]
+          ],
+          "listeRp": []
         },
         {
           "gradeId": 2,
           "nom": "Test",
           "couleur": "#FF0000",
           "tier": "2",
-          "role": []
+          "role": [],
+          "listeRp": []
         }
       ],
       "tasks": [
@@ -91,8 +98,8 @@
         "logs": "1415329865120481361",
         "responsable": "1415329865120481361",
         "tasks": "1415329865120481361",
-        "salaire": "1415330656392581140",
-        "effectif": "1415330443489841153"
+        "salaire": "1415329865120481361",
+        "effectif": "1415329865120481361"
       },
       "salaire": {
         "automatique": false,
@@ -127,7 +134,7 @@
           }
         }
       },
-      "timestamp": 1758357680,
+      "timestamp": 1758965177,
       "lastUser": "719072181631320145",
       "panels": []
     },
@@ -195,7 +202,7 @@
     }
   ],
   "lastUser": "719072181631320145",
-  "timestamp": 1758828110,
+  "timestamp": 1758965177,
   "logs": [
     {
       "user": "719072181631320145",
@@ -427,6 +434,90 @@
       "timestamp": 1758828110,
       "panel": 2,
       "action": "Création du grade Test"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758965173,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758965177,
+      "panel": 1,
+      "action": "Édition du salon de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758972983,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758973432,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758973471,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758973502,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758973622,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758973701,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974006,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974067,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974095,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974152,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974200,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974680,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
     }
   ],
   "historique": [
@@ -512,6 +603,76 @@
       "grade": "Rédacteur",
       "panel": "Avocat",
       "date": 1758964438,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1758974993,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1758975100,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758975178,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758975239,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758975265,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758975353,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758975415,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1758975440,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1758975457,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1758975521,
       "op_id": "719072181631320145"
     }
   ]

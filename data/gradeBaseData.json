@@ -3,5 +3,6 @@
   "nom": false,
   "couleur": false,
   "tier": false,
-  "role": []
+  "role": [],
+  "listeRp": []
 }

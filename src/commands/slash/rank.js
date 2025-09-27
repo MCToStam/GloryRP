@@ -1,6 +1,7 @@
 const config = require("../../../config.js");
 const fs = require("node:fs");
 const path = require("node:path");
+const { updateEffectif } = require("../../../utils/functions/effectif.js");
 const {
   InteractionContextType,
   SeparatorSpacingSize,
@@ -603,6 +604,17 @@ exports.run = async (client, interaction, config) => {
 
     gradeConfig.historique.push(newEntryObj);
 
+    if (!gradeChoisi.listeRp) gradeChoisi.listeRp = [];
+    if (!gradeChoisi.listeRp.includes(membre.id)) {
+      gradeChoisi.listeRp.push(membre.id);
+    }
+
+    for (const g of panel.grade) {
+      if (g.gradeId !== gradeChoisi.gradeId && g.listeRp) {
+        g.listeRp = g.listeRp.filter((id) => id !== membre.id);
+      }
+    }
+
     const filePath = path.join(
       __dirname,
       "..",
@@ -624,7 +636,7 @@ exports.run = async (client, interaction, config) => {
       month: "long",
       year: "numeric",
     });
-    const newEntry = `${config.emojigrade[gradeChoisi.nom] || ""} **${
+    const newEntry = `**${
       gradeChoisi.nom
     } (${panel.name})** : ${today}`;
 
@@ -697,6 +709,8 @@ exports.run = async (client, interaction, config) => {
         );
       }
     }
+
+    await updateEffectif(client, serveur, gradeConfig, panelId);
   } catch (e) {
     console.log(e);
   }
