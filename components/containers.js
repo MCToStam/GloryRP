@@ -9,20 +9,6 @@ const {
 const { getPanelsSelecString } = require("./selectsString.js");
 const { getHexEmoji } = require("../utils/functions/emojis.js")
 
-function parseEmoji(emoji) {
-  if (!emoji) return null;
-  const customEmojiMatch = emoji.match(/^<a?:([a-zA-Z0-9_]+):(\d+)>$/);
-  if (customEmojiMatch) {
-    return {
-      name: customEmojiMatch[1],
-      id: customEmojiMatch[2],
-      animated: emoji.startsWith("<a:"),
-    };
-  }
-
-  return { name: emoji };
-}
-
 async function getConfigContainer(serverDatas, serv) {
   const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
   const panelsComponents = serverDatas.panels.map((panel) => ({
@@ -159,6 +145,23 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
             label: "Configurer la Boutique",
             style: ButtonStyle.Secondary,
             disabled: true,
+          },
+        ],
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `config_depotdeplaint-${panelId}`,
+            label: "Configurer le Dépot de Plainte",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config_candidature-${panelId}`,
+            label: "Configurer les Candidature",
+            style: ButtonStyle.Primary,
           },
         ],
       },
