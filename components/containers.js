@@ -325,6 +325,64 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
         spacing: SeparatorSpacingSize.Small,
       },
       {
+        type: 10,
+        content: `**Salon où sera envoyé les salaires :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 8,
+            custom_id: `config-${panelId}-channel-salaire`,
+            placeholder: panelDatas.enable
+              ? "Définis un salon"
+              : "Il te faut d'abord activer un rôle-play",
+            max_values: 1,
+            disabled: panelDatas.enable ? false : true,
+            channel_types: [ChannelType.GuildText],
+            default_values: [
+              panelDatas.enable && panelDatas.channels.salaire
+                ? {
+                    type: "channel",
+                    id: panelDatas.channels.salaire,
+                  }
+                : undefined,
+            ].filter(Boolean),
+          },
+        ],
+      },
+      {
+        type: 10,
+        content: `**Salon où sera envoyé les commandes à effectuer :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 8,
+            custom_id: `config-${panelId}-channel-responsable`,
+            placeholder: panelDatas.enable
+              ? "Définis un salon"
+              : "Il te faut d'abord activer un rôle-play",
+            max_values: 1,
+            disabled: panelDatas.enable ? false : true,
+            channel_types: [ChannelType.GuildText],
+            default_values: [
+              panelDatas.enable && panelDatas.channels.responsable
+                ? {
+                    type: "channel",
+                    id: panelDatas.channels.responsable,
+                  }
+                : undefined,
+            ].filter(Boolean),
+          },
+        ],
+      },
+      {
+        type: 10,
+        content: `**Envoyer ou non automatiquement les salaires :**`,
+      },
+      {
         type: 1,
         components: [
           {
