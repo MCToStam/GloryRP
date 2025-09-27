@@ -176,12 +176,13 @@ async function updateEffectif(client, serveur, serveurDatas, panelId) {
 
   try {
     const message = await channel.messages.fetch(panel.effectif.message);
-    await message.edit({
-      components: [effectifContainer],
-      allowedMentions: { parse: [] },
-    });
+    if (message) {
+      await message.edit({
+        components: [effectifContainer],
+        allowedMentions: { parse: [] },
+      });
+    }
   } catch (err) {
-    console.error("Erreur lors de la mise à jour du message d'effectif :", err);
   }
 }
 
