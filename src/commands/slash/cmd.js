@@ -1,5 +1,5 @@
 const config = require("../../../config.js");
-const { MessageFlags } = require("discord.js");
+const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 
 exports.run = async (client, interaction) => {
   const subCmd = interaction.options.getSubcommand();
@@ -19,8 +19,8 @@ exports.run = async (client, interaction) => {
     var cmds = slashCmds.filter((c) => c.data.name !== "cmd");
   }
 
-  const deployMsg = `**✅ | Les commandes ont été déployées sur le {{CANAL}} \`{{CANAL_NAME}}\` !**`;
-  const removeMsg = `**✅ | Les commandes présentes sur le {{CANAL}} \`{{CANAL_NAME}}\` ont été supprimées !**`;
+  const deployMsg = `Les commandes ont été déployées sur le {{CANAL}} \`{{CANAL_NAME}}\` !`;
+  const removeMsg = `Les commandes présentes sur le {{CANAL}} \`{{CANAL_NAME}}\` ont été supprimées !`;
 
   if (subCmd === "deploy") {
     if (canal === "global") {
@@ -30,7 +30,25 @@ exports.run = async (client, interaction) => {
           const msg = deployMsg
             .replace("{{CANAL}}", "canal")
             .replace("{{CANAL_NAME}}", "global");
-          interaction.reply({ content: msg, flags: 64 });
+
+          const goodContainer = {
+            type: 17,
+            accent_color: config.colors.success,
+            components: [
+              {
+                type: 10,
+                content: `## :white_check_mark: Succès`,
+              },
+              { type: 14, spacing: SeparatorSpacingSize.Large },
+              { type: 10, content: msg },
+            ],
+          };
+
+          return interaction.reply({
+            components: [goodContainer],
+            allowedMentions: { parse: [] },
+            flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+          });
         })
         .catch((e) => console.error(e));
     } else {
@@ -40,7 +58,24 @@ exports.run = async (client, interaction) => {
           const msg = deployMsg
             .replace("{{CANAL}}", "serveur")
             .replace("{{CANAL_NAME}}", guild.name);
-          interaction.reply({ content: msg, flags: 64 });
+          const goodContainer = {
+            type: 17,
+            accent_color: config.colors.success,
+            components: [
+              {
+                type: 10,
+                content: `## :white_check_mark: Succès`,
+              },
+              { type: 14, spacing: SeparatorSpacingSize.Large },
+              { type: 10, content: msg },
+            ],
+          };
+
+          return interaction.reply({
+            components: [goodContainer],
+            allowedMentions: { parse: [] },
+            flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+          });
         })
         .catch((e) => console.error(e));
     }
@@ -52,7 +87,24 @@ exports.run = async (client, interaction) => {
           const msg = removeMsg
             .replace("{{CANAL}}", "canal")
             .replace("{{CANAL_NAME}}", "global");
-          interaction.reply({ content: msg, flags: 64 });
+          const goodContainer = {
+            type: 17,
+            accent_color: config.colors.success,
+            components: [
+              {
+                type: 10,
+                content: `## :white_check_mark: Succès`,
+              },
+              { type: 14, spacing: SeparatorSpacingSize.Large },
+              { type: 10, content: msg },
+            ],
+          };
+
+          return interaction.reply({
+            components: [goodContainer],
+            allowedMentions: { parse: [] },
+            flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+          });
         })
         .catch((e) => console.error(e));
     } else {
@@ -62,7 +114,24 @@ exports.run = async (client, interaction) => {
           const msg = removeMsg
             .replace("{{CANAL}}", "serveur")
             .replace("{{CANAL_NAME}}", guild.name);
-          interaction.reply({ content: msg, flags: 64 });
+          const goodContainer = {
+            type: 17,
+            accent_color: config.colors.success,
+            components: [
+              {
+                type: 10,
+                content: `## :white_check_mark: Succès`,
+              },
+              { type: 14, spacing: SeparatorSpacingSize.Large },
+              { type: 10, content: msg },
+            ],
+          };
+
+          return interaction.reply({
+            components: [goodContainer],
+            allowedMentions: { parse: [] },
+            flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+          });
         })
         .catch((e) => console.error(e));
     }
@@ -72,9 +141,23 @@ exports.run = async (client, interaction) => {
     const command = slashCmds.get(name);
 
     if (!command) {
+      const erreurContainer = {
+        type: 17,
+        accent_color: config.colors.errord,
+        components: [
+          {
+            type: 10,
+            content: `## :x: Erreur`,
+          },
+          { type: 14, spacing: SeparatorSpacingSize.Large },
+          { type: 10, content: `La commande "${name}" n'existe pas.` },
+        ],
+      };
+
       return interaction.reply({
-        content: `**❌ | \`${name}\` n'existe pas.**`,
-        flags: MessageFlags.Ephemeral,
+        components: [erreurContainer],
+        allowedMentions: { parse: [] },
+        flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
       });
     }
 
@@ -87,9 +170,26 @@ exports.run = async (client, interaction) => {
     const props = require(`${folder}${data}.js`);
     await collection.set(data, props);
 
-    let msg = `**✅ | La commande \`${data}\` a été rechargée !**`;
+    let msg = `La commande \`${data}\` a été rechargée !`;
 
-    return interaction.reply({ content: msg, flags: MessageFlags.Ephemeral });
+    const goodContainer = {
+      type: 17,
+      accent_color: config.colors.success,
+      components: [
+        {
+          type: 10,
+          content: `## :white_check_mark: Succès`,
+        },
+        { type: 14, spacing: SeparatorSpacingSize.Large },
+        { type: 10, content: msg },
+      ],
+    };
+
+    return interaction.reply({
+      components: [goodContainer],
+      allowedMentions: { parse: [] },
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+    });
   }
 };
 
