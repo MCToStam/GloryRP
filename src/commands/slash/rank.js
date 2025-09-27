@@ -585,7 +585,11 @@ exports.run = async (client, interaction, config) => {
             month: "long",
             year: "numeric",
           });
-          return `**${entry.grade} ${
+          return `${
+            entry.type === "up"
+              ? "<:up:1421602529720008824>"
+              : "<:down:1421602527295832290>"
+          } **${entry.grade} ${
             entry.panel ? `(${entry.panel})` : ""
           }** : ${date}`;
         })
@@ -601,6 +605,37 @@ exports.run = async (client, interaction, config) => {
       date: Math.floor(Date.now() / 1000),
       op_id: interaction.user.id,
     };
+
+    let lastEntry = null;
+    if (
+      Array.isArray(gradeConfig.historique) &&
+      gradeConfig.historique.length > 0
+    ) {
+      lastEntry = gradeConfig.historique
+        .filter((e) => e.pseudo?.toLowerCase() === pseudonym.toLowerCase())
+        .sort((a, b) => b.date - a.date)[0];
+    }
+
+    if (lastEntry) {
+      if (lastEntry.grade === "Joueur" && !lastEntry.panel) {
+        newEntryObj.type = "up";
+      } else {
+        const lastPanel = gradeConfig.panels.find(
+          (p) => p.name === lastEntry.panel
+        );
+        if (lastPanel) {
+          const lastGrade = lastPanel.grade.find(
+            (g) => g.nom === lastEntry.grade
+          );
+          if (lastGrade && typeof lastGrade.tier !== "undefined") {
+            newEntryObj.type =
+              Number(lastGrade.tier) < Number(gradeChoisi.tier) ? "up" : "down";
+          }
+        }
+      }
+    } else {
+      newEntryObj.type = "up";
+    }
 
     gradeConfig.historique.push(newEntryObj);
 
@@ -636,9 +671,11 @@ exports.run = async (client, interaction, config) => {
       month: "long",
       year: "numeric",
     });
-    const newEntry = `**${
-      gradeChoisi.nom
-    } (${panel.name})** : ${today}`;
+    const newEntry = `${
+      newEntryObj.type === "up"
+        ? "<:up:1421602529720008824>"
+        : "<:down:1421602527295832290>"
+    } **${gradeChoisi.nom} (${panel.name})** : ${today}`;
 
     historique = historique ? `${historique}\n${newEntry}` : newEntry;
 

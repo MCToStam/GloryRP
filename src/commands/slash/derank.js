@@ -585,7 +585,7 @@ exports.run = async (client, interaction, config) => {
             month: "long",
             year: "numeric",
           });
-          return `**${entry.grade} ${
+          return `${entry.type === "up" ? "<:up:1421602529720008824>" : "<:down:1421602527295832290>"} **${entry.grade} ${
             entry.panel ? `(${entry.panel})` : ""
           }** : ${date}`;
         })
@@ -600,6 +600,7 @@ exports.run = async (client, interaction, config) => {
       panel: false,
       date: Math.floor(Date.now() / 1000),
       op_id: interaction.user.id,
+      type: "down",
     };
 
     gradeConfig.historique.push(newEntryObj);
@@ -631,7 +632,7 @@ exports.run = async (client, interaction, config) => {
       month: "long",
       year: "numeric",
     });
-    const newEntry = `**Joueur** : ${today}`;
+    const newEntry = `<:down:1421602527295832290> **Joueur** : ${today}`;
 
     historique = historique ? `${historique}\n${newEntry}` : newEntry;
 
