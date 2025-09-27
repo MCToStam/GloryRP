@@ -428,5 +428,91 @@
       "panel": 2,
       "action": "Création du grade Test"
     }
+  ],
+  "historique": [
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758962753,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1758963129,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758963167,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758963300,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758963449,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758963518,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758963912,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1758964257,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1758964269,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1758964331,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1758964385,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758964438,
+      "op_id": "719072181631320145"
+    }
   ]
 }
