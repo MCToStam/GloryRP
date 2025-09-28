@@ -211,7 +211,10 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
               : "Il te faut d'abord activer un rôle-play",
             max_values: 1,
             disabled: panelDatas.enable ? false : true,
-            channel_types: [ChannelType.GuildText],
+            channel_types: [
+              ChannelType.GuildText,
+              ChannelType.GuildAnnouncement,
+            ],
             default_values: [
               panelDatas.enable && channelId
                 ? {
@@ -348,7 +351,10 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
               : "Il te faut d'abord activer un rôle-play",
             max_values: 1,
             disabled: panelDatas.enable ? false : true,
-            channel_types: [ChannelType.GuildText],
+            channel_types: [
+              ChannelType.GuildText,
+              ChannelType.GuildAnnouncement,
+            ],
             default_values: [
               panelDatas.enable && panelDatas.channels.salaire
                 ? {
@@ -375,7 +381,10 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
               : "Il te faut d'abord activer un rôle-play",
             max_values: 1,
             disabled: panelDatas.enable ? false : true,
-            channel_types: [ChannelType.GuildText],
+            channel_types: [
+              ChannelType.GuildText,
+              ChannelType.GuildAnnouncement,
+            ],
             default_values: [
               panelDatas.enable && panelDatas.channels.responsable
                 ? {
@@ -742,7 +751,10 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
               : "Il te faut d'abord activer un rôle-play",
             max_values: 1,
             disabled: panelDatas.enable ? false : true,
-            channel_types: [ChannelType.GuildText],
+            channel_types: [
+              ChannelType.GuildText,
+              ChannelType.GuildAnnouncement,
+            ],
             default_values: [
               panelDatas.enable && panelDatas.channels.effectif
                 ? {
