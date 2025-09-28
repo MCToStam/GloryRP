@@ -727,6 +727,37 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
         type: 14,
         spacing: SeparatorSpacingSize.Small,
       },
+      {
+        type: 10,
+        content: `**Salon où sera envoyé l'effectif :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 8,
+            custom_id: `config-${panelId}-channel-effectif`,
+            placeholder: panelDatas.enable
+              ? "Définis un salon"
+              : "Il te faut d'abord activer un rôle-play",
+            max_values: 1,
+            disabled: panelDatas.enable ? false : true,
+            channel_types: [ChannelType.GuildText],
+            default_values: [
+              panelDatas.enable && panelDatas.channels.effectif
+                ? {
+                    type: "channel",
+                    id: panelDatas.channels.effectif,
+                  }
+                : undefined,
+            ].filter(Boolean),
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
       ...(panelDatas.effectif?.button?.length > 0
         ? panelDatas.effectif.button.map((btn, index) => ({
             type: 1,
@@ -769,6 +800,14 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
             custom_id: `return-${panelId}`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: `send_effectif-${panelId}`,
+            label: "👥 Envoyer l'effectif",
+            style: ButtonStyle.Primary,
+            disabled:
+              panelDatas.channels.effectif && panelDatas.enable ? false : true,
           },
           {
             type: 2,
