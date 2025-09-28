@@ -1,4 +1,8 @@
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
+const {
+  MessageFlags,
+  SeparatorSpacingSize,
+  ButtonStyle,
+} = require("discord.js");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
 const config = require("../../config.js");
 const fs = require("node:fs");
@@ -83,6 +87,21 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
       { type: 10, content: effectifContent },
     ],
   };
+
+  const buttons =
+    panel.effectif.button?.map((b, i) => ({
+      type: 2,
+      style: ButtonStyle.Link,
+      label: b.label,
+      url: b.lien,
+    })) || [];
+    
+  if (buttons.length > 0) {
+    effectifContainer.components.push(
+      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 1, components: buttons }
+    );
+  }
 
   const message = await channel.send({
     components: [effectifContainer],
@@ -174,6 +193,21 @@ async function updateEffectif(client, serveur, serveurDatas, panelId) {
     ],
   };
 
+  const buttons =
+    panel.effectif.button?.map((b, i) => ({
+      type: 2,
+      style: ButtonStyle.Link,
+      label: b.label,
+      url: b.lien,
+    })) || [];
+
+  if (buttons.length > 0) {
+    effectifContainer.components.push(
+      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 1, components: buttons }
+    );
+  }
+
   try {
     const message = await channel.messages.fetch(panel.effectif.message);
     if (message) {
@@ -182,8 +216,7 @@ async function updateEffectif(client, serveur, serveurDatas, panelId) {
         allowedMentions: { parse: [] },
       });
     }
-  } catch (err) {
-  }
+  } catch (err) {}
 }
 
 module.exports = { sendEffectif, updateEffectif };
