@@ -7,7 +7,7 @@ const {
   userMention,
 } = require("discord.js");
 const { getPanelsSelecString } = require("./selectsString.js");
-const { getHexEmoji } = require("../utils/functions/emojis.js")
+const { getHexEmoji } = require("../utils/functions/emojis.js");
 
 async function getConfigContainer(serverDatas, serv) {
   const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
@@ -48,22 +48,22 @@ async function getConfigContainer(serverDatas, serv) {
       {
         type: 1,
         components: [await getPanelsSelecString(serverDatas)],
-      }
+      },
     ],
   };
 
   if (serverDatas.lastUser && serverDatas.timestamp) {
     returnComponent.components.push({
-        type: 10,
-        content:
-          "-# Dernières modifications par " +
-          userMention(serverDatas.lastUser) +
-          " " +
-          (await time(serverDatas.timestamp, "R")),
-      })
+      type: 10,
+      content:
+        "-# Dernières modifications par " +
+        userMention(serverDatas.lastUser) +
+        " " +
+        (await time(serverDatas.timestamp, "R")),
+    });
   }
 
-  return returnComponent
+  return returnComponent;
 }
 
 async function getPanelContainer(guildColor, panelDatas, panelId) {
@@ -161,6 +161,12 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
             type: 2,
             custom_id: `config_candidature-${panelId}`,
             label: "Configurer les Candidature",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config_effectif-${panelId}`,
+            label: "Configurer l'Effectif",
             style: ButtonStyle.Primary,
           },
         ],
@@ -463,7 +469,13 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
   };
 }
 
-async function getEditGradeContainer(client, panelId, guildColor, panelDatas, gradeId) {
+async function getEditGradeContainer(
+  client,
+  panelId,
+  guildColor,
+  panelDatas,
+  gradeId
+) {
   const grade = panelDatas.grade.find((g) => g.gradeId === gradeId);
 
   return {
@@ -499,7 +511,11 @@ async function getEditGradeContainer(client, panelId, guildColor, panelDatas, gr
           {
             type: 10,
             content: `**Couleur :** ${
-              grade.couleur ? `${await getHexEmoji(client, grade.couleur)} (${grade.couleur}) ` : "Aucune couleur configurée"
+              grade.couleur
+                ? `${await getHexEmoji(client, grade.couleur)} (${
+                    grade.couleur
+                  }) `
+                : "Aucune couleur configurée"
             }`,
           },
         ],
@@ -675,6 +691,98 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
   };
 }
 
+async function getEffectifContainer(panelId, guildColor, panelDatas) {
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 14,
+        divider: false,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: "📡 Statut",
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `toggle-panel-${panelId}-edit_panel`,
+          label: panelDatas.enable ? "Activé" : "Désactivé",
+          emoji: { name: panelDatas.enable ? "✅" : "❌" },
+          style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+        },
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      ...(panelDatas.effectif?.button?.length > 0
+        ? panelDatas.effectif.button.map((btn, index) => ({
+            type: 1,
+            components: [
+              {
+                type: 2,
+                label: btn.label,
+                style: ButtonStyle.Link,
+                url: btn.lien,
+              },
+              {
+                type: 2,
+                custom_id: `effectif_editbutton-${panelId}-${btn.label}`,
+                label: "Modifier le Bouton",
+                style: ButtonStyle.Primary,
+              },
+              {
+                type: 2,
+                custom_id: `effectif_deletebutton-${panelId}-${btn.label}`,
+                label: "Supprimer le Bouton",
+                style: ButtonStyle.Danger,
+              },
+            ],
+          }))
+        : [
+            {
+              type: 10,
+              content: "Aucun bouton n'a été configuré",
+            },
+          ]),
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: `effectif_addbutton-${panelId}`,
+            label: "➕ Ajouter un Bouton",
+            style: ButtonStyle.Primary,
+            disabled: panelDatas.effectif?.button?.length >= 3,
+          },
+        ],
+      },
+    ],
+  };
+}
+
 async function getEditPanelContainer(panelId, guildColor, panelDatas) {
   return {
     type: 17,
@@ -772,4 +880,5 @@ module.exports = {
   getEditPanelContainer,
   getGradeContainer,
   getEditGradeContainer,
+  getEffectifContainer,
 };
