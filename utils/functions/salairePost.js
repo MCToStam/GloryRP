@@ -1,4 +1,4 @@
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
+const { MessageFlags, SeparatorSpacingSize, ChannelType } = require("discord.js");
 const config = require("../../config.js");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
 
@@ -120,6 +120,10 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
     allowedMentions: { parse: [] },
   });
 
+  if (channel.type === ChannelType.GuildAnnouncement) {
+    await message.crosspost();
+  }
+
   let responsableChannel;
   if (panel.channels.responsable) {
     responsableChannel = client.channels.cache.get(panel.channels.responsable);
@@ -194,11 +198,15 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
         ],
       };
 
-      await responsableChannel.send({
+      const responsableMessage = await responsableChannel.send({
         components: [responsableContainer],
         flags: MessageFlags.IsComponentsV2,
         allowedMentions: { parse: [] },
       });
+
+      if (responsableChannel.type === ChannelType.GuildAnnouncement) {
+        await responsableMessage.crosspost();
+      }
     }
   }
 
