@@ -246,22 +246,6 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
         spacing: SeparatorSpacingSize.Small,
       },
       {
-        type: 9,
-        components: [
-          {
-            type: 10,
-            content: "📡 Statut",
-          },
-        ],
-        accessory: {
-          type: 2,
-          custom_id: `toggle-panel-${panelId}-channel`,
-          label: panelDatas.enable ? "Activé" : "Désactivé",
-          emoji: { name: panelDatas.enable ? "✅" : "❌" },
-          style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
-        },
-      },
-      {
         type: 14,
         spacing: SeparatorSpacingSize.Small,
       },
@@ -316,22 +300,6 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
         type: 14,
         divider: false,
         spacing: SeparatorSpacingSize.Small,
-      },
-      {
-        type: 9,
-        components: [
-          {
-            type: 10,
-            content: "📡 Statut",
-          },
-        ],
-        accessory: {
-          type: 2,
-          custom_id: `toggle-panel-${panelId}-salaire`,
-          label: panelDatas.enable ? "Activé" : "Désactivé",
-          emoji: { name: panelDatas.enable ? "✅" : "❌" },
-          style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
-        },
       },
       {
         type: 14,
@@ -665,22 +633,6 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
         spacing: SeparatorSpacingSize.Small,
       },
       {
-        type: 9,
-        components: [
-          {
-            type: 10,
-            content: "📡 Statut",
-          },
-        ],
-        accessory: {
-          type: 2,
-          custom_id: `toggle-panel-${panelId}-grade`,
-          label: panelDatas.enable ? "Activé" : "Désactivé",
-          emoji: { name: panelDatas.enable ? "✅" : "❌" },
-          style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
-        },
-      },
-      {
         type: 14,
         spacing: SeparatorSpacingSize.Small,
       },
@@ -739,22 +691,6 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
         type: 14,
         divider: false,
         spacing: SeparatorSpacingSize.Small,
-      },
-      {
-        type: 9,
-        components: [
-          {
-            type: 10,
-            content: "📡 Statut",
-          },
-        ],
-        accessory: {
-          type: 2,
-          custom_id: `toggle-panel-${panelId}-effectif`,
-          label: panelDatas.enable ? "Activé" : "Désactivé",
-          emoji: { name: panelDatas.enable ? "✅" : "❌" },
-          style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
-        },
       },
       {
         type: 14,
@@ -874,22 +810,6 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
         type: 14,
         divider: false,
         spacing: SeparatorSpacingSize.Small,
-      },
-      {
-        type: 9,
-        components: [
-          {
-            type: 10,
-            content: "📡 Statut",
-          },
-        ],
-        accessory: {
-          type: 2,
-          custom_id: `toggle-panel-${panelId}-edit_panel`,
-          label: panelDatas.enable ? "Activé" : "Désactivé",
-          emoji: { name: panelDatas.enable ? "✅" : "❌" },
-          style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
-        },
       },
       {
         type: 14,
