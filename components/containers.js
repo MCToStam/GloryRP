@@ -210,6 +210,7 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
             max_values: 1,
+            min_values: 0,
             disabled: panelDatas.enable ? false : true,
             channel_types: [
               ChannelType.GuildText,
@@ -350,6 +351,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
             max_values: 1,
+            min_values: 0,
             disabled: panelDatas.enable ? false : true,
             channel_types: [
               ChannelType.GuildText,
@@ -380,6 +382,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
             max_values: 1,
+            min_values: 0,
             disabled: panelDatas.enable ? false : true,
             channel_types: [
               ChannelType.GuildText,
@@ -771,6 +774,7 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
             max_values: 1,
+            min_values: 0,
             disabled: panelDatas.enable ? false : true,
             channel_types: [
               ChannelType.GuildText,

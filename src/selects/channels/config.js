@@ -11,7 +11,7 @@ const {
 exports.run = async (client, interaction, config) => {
   try {
     await interaction.deferUpdate();
-    const channelId = interaction.values[0];
+    const channelId = interaction.values.length === 0 ? false : interaction.values[0];
     const panelId = Number(interaction.customId.split("-")[1]);
 
     const serverDatas = await getServerDatas(interaction);
