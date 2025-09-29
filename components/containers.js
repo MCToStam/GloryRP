@@ -153,7 +153,7 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `config_depotdeplaint-${panelId}`,
+            custom_id: `config_depotdeplainte-${panelId}`,
             label: "Configurer le Dépot de Plainte",
             style: ButtonStyle.Primary,
           },
@@ -242,11 +242,6 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        divider: false,
-        spacing: SeparatorSpacingSize.Small,
-      },
-      {
-        type: 14,
         spacing: SeparatorSpacingSize.Small,
       },
       ...channelsOptions,
@@ -295,11 +290,6 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
         content: `## ${
           panelDatas.emoji ? `${panelDatas.emoji} ` : ""
         } Configuration du Panel ${panelDatas.name}`,
-      },
-      {
-        type: 14,
-        divider: false,
-        spacing: SeparatorSpacingSize.Small,
       },
       {
         type: 14,
@@ -490,12 +480,6 @@ async function getEditGradeContainer(
         } Configuration du Panel ${panelDatas.name}`,
       },
       {
-        type: 14,
-        divider: false,
-        spacing: SeparatorSpacingSize.Small,
-      },
-
-      {
         type: 9,
         components: [{ type: 10, content: `**Nom :** ${grade.nom}` }],
         accessory: {
@@ -505,7 +489,6 @@ async function getEditGradeContainer(
           style: ButtonStyle.Primary,
         },
       },
-
       {
         type: 9,
         components: [
@@ -629,11 +612,6 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        divider: false,
-        spacing: SeparatorSpacingSize.Small,
-      },
-      {
-        type: 14,
         spacing: SeparatorSpacingSize.Small,
       },
       ...gradesContent,
@@ -686,11 +664,6 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
         content: `## ${
           panelDatas.emoji ? `${panelDatas.emoji} ` : ""
         } Configuration du Panel ${panelDatas.name}`,
-      },
-      {
-        type: 14,
-        divider: false,
-        spacing: SeparatorSpacingSize.Small,
       },
       {
         type: 14,
@@ -808,11 +781,6 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        divider: false,
-        spacing: SeparatorSpacingSize.Small,
-      },
-      {
-        type: 14,
         spacing: SeparatorSpacingSize.Small,
       },
       {
@@ -868,6 +836,195 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
   };
 }
 
+async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Lien Forum :** ${panelDatas.candidature.lien || "Aucun lien configuré"}`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `config_depotdeplainte_lien-${panelId}`,
+          label: "💬 Modifier le lien Forum",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 10,
+        content: `**Salon où sera envoyé les dépôts de plainte :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 8,
+            custom_id: `config-${panelId}-channel-depotdeplainte`,
+            placeholder: panelDatas.enable
+              ? "Définis un salon"
+              : "Il te faut d'abord activer un rôle-play",
+            max_values: 1,
+            min_values: 0,
+            disabled: panelDatas.enable ? false : true,
+            channel_types: [
+              ChannelType.GuildText,
+              ChannelType.GuildAnnouncement,
+              ChannelType.GuildForum,
+            ],
+            default_values: [
+              panelDatas.enable && panelDatas.channels.depotdeplainte
+                ? {
+                    type: "channel",
+                    id: panelDatas.channels.depotdeplainte,
+                  }
+                : undefined,
+            ].filter(Boolean),
+          },
+        ],
+      },
+      {
+        type: 10,
+        content: `**Rôle mentionné lors des dépôts de plainte :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 6,
+            custom_id: `config-${panelId}-role-depotdeplainte`,
+            placeholder: "Sélectionne un rôle...",
+            min_values: 0,
+            max_values: 25,
+            default_values:
+              panelDatas.roles.candidature?.map((r) => ({
+                id: r,
+                type: "role",
+              })) || [],
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+async function getCandidatureContainer(panelId, guildColor, panelDatas) {
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 10,
+        content: `**Salon où sera envoyé les candidatures :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 8,
+            custom_id: `config-${panelId}-channel-candidature`,
+            placeholder: panelDatas.enable
+              ? "Définis un salon"
+              : "Il te faut d'abord activer un rôle-play",
+            max_values: 1,
+            min_values: 0,
+            disabled: panelDatas.enable ? false : true,
+            channel_types: [
+              ChannelType.GuildText,
+              ChannelType.GuildAnnouncement,
+              ChannelType.GuildForum,
+            ],
+            default_values: [
+              panelDatas.enable && panelDatas.channels.candidature
+                ? {
+                    type: "channel",
+                    id: panelDatas.channels.candidature,
+                  }
+                : undefined,
+            ].filter(Boolean),
+          },
+        ],
+      },
+      {
+        type: 10,
+        content: `**Rôle mentionné lors des candidatures :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 6,
+            custom_id: `config-${panelId}-role-candidature`,
+            placeholder: "Sélectionne un rôle...",
+            min_values: 0,
+            max_values: 25,
+            default_values:
+              panelDatas.roles.candidature?.map((r) => ({
+                id: r,
+                type: "role",
+              })) || [],
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  };
+}
+
 module.exports = {
   getConfigContainer,
   getPanelContainer,
@@ -877,4 +1034,6 @@ module.exports = {
   getGradeContainer,
   getEditGradeContainer,
   getEffectifContainer,
+  getCandidatureContainer,
+  getDepotDePlainteContainer,
 };
