@@ -398,6 +398,27 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 10,
+        content: `**Rôle mentionné lors de l'envoie des salaires :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 6,
+            custom_id: `config-${panelId}-role-salaire`,
+            placeholder: "Sélectionne un rôle...",
+            min_values: 0,
+            max_values: 25,
+            default_values:
+              panelDatas.roles.salaire?.map((r) => ({
+                id: r,
+                type: "role",
+              })) || [],
+          },
+        ],
+      },
+      {
+        type: 10,
         content: `**Envoyer ou non automatiquement les salaires :**`,
       },
       {
@@ -650,7 +671,7 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
         ],
         accessory: {
           type: 2,
-          custom_id: `toggle-panel-${panelId}-salaire`,
+          custom_id: `toggle-panel-${panelId}-grade`,
           label: panelDatas.enable ? "Activé" : "Désactivé",
           emoji: { name: panelDatas.enable ? "✅" : "❌" },
           style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
@@ -726,7 +747,7 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
         ],
         accessory: {
           type: 2,
-          custom_id: `toggle-panel-${panelId}-edit_panel`,
+          custom_id: `toggle-panel-${panelId}-effectif`,
           label: panelDatas.enable ? "Activé" : "Désactivé",
           emoji: { name: panelDatas.enable ? "✅" : "❌" },
           style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,

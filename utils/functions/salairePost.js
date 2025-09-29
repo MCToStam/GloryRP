@@ -1,4 +1,8 @@
-const { MessageFlags, SeparatorSpacingSize, ChannelType } = require("discord.js");
+const {
+  MessageFlags,
+  SeparatorSpacingSize,
+  ChannelType,
+} = require("discord.js");
 const config = require("../../config.js");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
 
@@ -114,8 +118,18 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
     ],
   };
 
+  let components = [panelContainer];
+
+  if (panel.roles.salaire && panel.roles.salaire.length > 0) {
+    const roleText = {
+      type: 10,
+      content: panel.roles.salaire.map((val) => `<@&${val}>`).join(" "),
+    };
+    components = [roleText, panelContainer];
+  }
+
   const message = await channel.send({
-    components: [panelContainer],
+    components,
     flags: MessageFlags.IsComponentsV2,
     allowedMentions: { parse: [] },
   });
