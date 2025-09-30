@@ -856,7 +856,7 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 10,
-            content: `**Lien Forum :** ${panelDatas.candidature.lien || "Aucun lien configuré"}`,
+            content: `**Lien Forum :** ${panelDatas.depotdeplainte.lien || "Aucun lien configuré"}`,
           },
         ],
         accessory: {
@@ -952,6 +952,21 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
       {
         type: 14,
         spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Lien Forum :** ${panelDatas.candidature.lien || "Aucun lien configuré"}`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `config_candidature_lien-${panelId}`,
+          label: "💬 Modifier le lien Forum",
+          style: ButtonStyle.Primary,
+        },
       },
       {
         type: 10,

@@ -19,7 +19,10 @@
         ]
       },
       "candidature": {
-        "lien": "https://nationsglory.fr/forums"
+        "lien": "https://nationsglory.fr/forumscan"
+      },
+      "depotdeplainte": {
+        "lien": "https://nationsglory.fr/forums/depottt"
       },
       "grade": [
         {
@@ -122,7 +125,7 @@
         "tasks": "1415329865120481361",
         "salaire": "1415329865120481361",
         "effectif": false,
-        "candidature": false,
+        "candidature": "1415329226420125806",
         "depotdeplainte": "1422255440661840070"
       },
       "salaire": {
@@ -158,7 +161,7 @@
           }
         }
       },
-      "timestamp": 1759162839,
+      "timestamp": 1759258172,
       "lastUser": "719072181631320145",
       "panels": []
     },
@@ -226,7 +229,7 @@
     }
   ],
   "lastUser": "719072181631320145",
-  "timestamp": 1759162839,
+  "timestamp": 1759258172,
   "logs": [
     {
       "user": "719072181631320145",
@@ -820,6 +823,29 @@
     {
       "user": "719072181631320145",
       "timestamp": 1759163067,
+      "panel": 1,
+      "action": "Édition du lien forum de candidature"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759258123,
+      "panel": 1,
+      "action": "Édition du lien forum du dépot de plainte"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759258166,
+      "panel": 1,
+      "action": "Édition du lien forum de candidature"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759258172,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759258176,
       "panel": 1,
       "action": "Édition du lien forum de candidature"
     }
