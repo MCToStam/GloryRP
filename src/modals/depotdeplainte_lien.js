@@ -45,7 +45,7 @@ exports.run = async (client, interaction, config) => {
   const serverDatas = await getServerDatas(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
-  panelDatas.candidature.lien = new_lien;
+  panelDatas.depotdeplainte.lien = new_lien;
   const modifDate = await toTimeStamp(new Date());
 
   if (!serverDatas.logs) serverDatas.logs = [];
@@ -53,7 +53,7 @@ exports.run = async (client, interaction, config) => {
     user: interaction.user.id,
     timestamp: modifDate,
     panel: panelId,
-    action: "Édition du lien forum de candidature",
+    action: "Édition du lien forum du dépot de plainte",
   });
 
   const panelPath = path.join(
