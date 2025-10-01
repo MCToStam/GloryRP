@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const cheerio = require("cheerio");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
+const config = require("../../config.js");
 const {
   MessageFlags,
   SeparatorSpacingSize,
@@ -40,6 +41,90 @@ function parseFrenchDate(dateStr) {
   return Math.floor(date.getTime() / 1000);
 }
 
+async function getCandidatureContent(url, serveur) {
+  try {
+    const threadIdMatch = url.match(/\.([0-9]+)$/);
+    const threadId = threadIdMatch ? threadIdMatch[1] : null;
+    if (!threadId) return "ID du thread introuvable";
+
+    const res = await fetch(url);
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    const contentDiv = $(
+      `#thread-${threadId} .col-lg-10.py-3 > .mb-2.overflow-hidden`
+    ).first();
+    if (!contentDiv.length) return "Contenu de la candidature introuvable";
+
+    const components = [];
+    const children = contentDiv.contents().toArray();
+    let textBuffer = "";
+    let totalLength = 0;
+    const MAX_CHARS = 4000;
+
+    function pushTextBuffer() {
+      if (!textBuffer.trim()) return;
+      const remaining = MAX_CHARS - totalLength;
+      if (remaining <= 0) return;
+
+      let textToPush = textBuffer.trim();
+      if (textToPush.length > remaining) {
+        textToPush = textToPush.slice(0, remaining - 3) + "...";
+      }
+
+      components.push({ type: 10, content: textToPush });
+      totalLength += textToPush.length;
+      textBuffer = "";
+    }
+
+    for (let child of children) {
+      if (totalLength >= MAX_CHARS) break;
+
+      if (child.type === "text") {
+        textBuffer += $(child).text();
+      } else if (child.name === "br") {
+        textBuffer += "\n";
+      } else if (child.name === "span" || child.name === "div" || child.name === "p") {
+        const imgs = $(child).find("img").toArray();
+        const text = $(child).clone().children("img").remove().end().text();
+        if (text) textBuffer += text + "\n";
+
+        if (imgs.length > 0) {
+          pushTextBuffer();
+          for (let img of imgs) {
+            if (totalLength >= MAX_CHARS) break;
+            const imgUrl = $(img).attr("data-src") || $(img).attr("src");
+            if (imgUrl) {
+              components.push({ type: 14, spacing: SeparatorSpacingSize.Small });
+              components.push({ type: 12, items: [{ media: { url: imgUrl } }] });
+            }
+          }
+        }
+      }
+    }
+
+    pushTextBuffer();
+
+    components.forEach(c => {
+      if (c.type === 10) {
+        c.content = c.content.replace(/\u00a0/g, " ");
+        c.content = c.content.replace(/\s*\n\s*/g, "\n");
+        c.content = c.content.replace(/\s{2,}/g, " ");
+        c.content = c.content.replace(/-->\s*\n\s*/g, " --> ");
+      }
+    });
+
+    return {
+      type: 17,
+      accent_color: config.couleur[serveur],
+      components,
+    };
+  } catch (err) {
+    console.error("Erreur récupération candidature :", err);
+    return "Impossible de récupérer le contenu de la candidature.";
+  }
+}
+
 async function sendCandidatures(client, allNew, AllCandidatures) {
   for (const { serveur, panel, candidature } of AllCandidatures) {
     const channelId = panel.channels.candidature;
@@ -67,7 +152,7 @@ async function sendCandidatures(client, allNew, AllCandidatures) {
         components: [
           {
             type: 10,
-            content: `## Candidature ${panel.name} - ${candidature.auteur}`,
+            content: `## Candidature ${panel.name} - [${candidature.auteur}](https://nationsglory.fr/profile/${candidature.auteur})`,
           },
           { type: 14, spacing: SeparatorSpacingSize.Small },
           {
@@ -98,20 +183,48 @@ async function sendCandidatures(client, allNew, AllCandidatures) {
 
       const isNew = !candidature.messageId;
       if (isNew) {
+        const candidatureDetailsContainer = await getCandidatureContent(
+          candidature.lien,
+          serveur
+        );
+
+        let components
+        if (panel.roles.candidature && panel.roles.candidature.length > 0) {
+          const roleText = {
+            type: 10,
+            content: panel.roles.candidature.map((val) => `<@&${val}>`).join(" "),
+          };
+          components = [roleText, candidatureContainer];
+        }
+
         if (channel.type === 0) {
           const sent = await channel.send({
-            components: [candidatureContainer],
+            components,
             flags: MessageFlags.IsComponentsV2,
           });
           candidature.messageId = sent.id;
           candidature.savedBadgeColor = candidature.badgeColor;
+
+          const thread = await sent.startThread({
+            name: `Candidature ${panel.name} - ${candidature.auteur}`,
+          });
+          
+          await thread.send({
+            components: [candidatureDetailsContainer],
+            flags: MessageFlags.IsComponentsV2,
+          });
         } else if (channel.type === 15) {
           const thread = await channel.threads.create({
             name: `Candidature ${panel.name} - ${candidature.auteur}`,
             message: {
-              components: [candidatureContainer],
+              components,
               flags: MessageFlags.IsComponentsV2,
             },
+          });
+
+          await thread.send({
+            components: [candidatureDetailsContainer],
+            flags: MessageFlags.IsComponentsV2,
           });
 
           let mainMessage;
