@@ -1,1 +1,22 @@
-{}
+{
+  "alpha_4": {
+    "emojiId": "1422957852623900682",
+    "nom": "alpha_4",
+    "createdAt": 1759329989251
+  },
+  "frostkingfr": {
+    "emojiId": "1422963625714385019",
+    "nom": "FrostKingFR",
+    "createdAt": 1759331365660
+  },
+  "lelectricien": {
+    "emojiId": "1422963629388726372",
+    "nom": "LeLecTriCien",
+    "createdAt": 1759331366590
+  },
+  "isayahgtv": {
+    "emojiId": "1422963632744169472",
+    "nom": "IsayahGTV",
+    "createdAt": 1759331367454
+  }
+}

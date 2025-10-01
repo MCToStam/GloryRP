@@ -19,7 +19,45 @@
         ]
       },
       "candidature": {
-        "lien": "https://nationsglory.fr/forumscan"
+        "lien": "https://nationsglory.fr/forums/category/recrutement-moderateur.51",
+        "save": [
+          {
+            "titre": "Recrutement Modérateur",
+            "lien": "https://nationsglory.fr/forums/thread/recrutement-moderateur.105599",
+            "auteur": "FrostKingFR",
+            "timestamp": 1705274640,
+            "badgeColor": "#db0a0e",
+            "savedBadgeColor": "#db0a0e",
+            "messageId": "1422967090121543680"
+          },
+          {
+            "titre": "Candidature Modérateure",
+            "lien": "https://nationsglory.fr/forums/thread/candidature-moderateure.138915",
+            "auteur": "LeLecTriCien",
+            "timestamp": 1759177740,
+            "badgeColor": null,
+            "savedBadgeColor": null,
+            "messageId": "1422967090847158363"
+          },
+          {
+            "titre": "Candidature Modérateur - Isayahgtv",
+            "lien": "https://nationsglory.fr/forums/thread/candidature-moderateur-isayahgtv.138896",
+            "auteur": "IsayahGTV",
+            "timestamp": 1759169040,
+            "badgeColor": "#6f6f6f",
+            "savedBadgeColor": "#6f6f6f",
+            "messageId": "1422967091786547242"
+          },
+          {
+            "titre": "recrutement modo",
+            "lien": "https://nationsglory.fr/forums/thread/recrutement-modo.138588",
+            "auteur": "alpha_4",
+            "timestamp": 1758477780,
+            "badgeColor": "#0040ff",
+            "savedBadgeColor": "#0040ff",
+            "messageId": "1422967093141442681"
+          }
+        ]
       },
       "depotdeplainte": {
         "lien": "https://nationsglory.fr/forums/depottt"
@@ -125,7 +163,7 @@
         "tasks": "1415329865120481361",
         "salaire": "1415329865120481361",
         "effectif": false,
-        "candidature": "1415329226420125806",
+        "candidature": "1415329865120481361",
         "depotdeplainte": "1422255440661840070"
       },
       "salaire": {
@@ -164,72 +202,10 @@
       "timestamp": 1759258172,
       "lastUser": "719072181631320145",
       "panels": []
-    },
-    {
-      "id": 2,
-      "name": "Journaliste",
-      "description": "desc journal",
-      "emoji": "⏳",
-      "enable": false,
-      "channels": {
-        "logs": "1415329865120481361",
-        "responsable": "1415329865120481361",
-        "tasks": "1415330656392581140",
-        "salaire": "1415330656392581140",
-        "effectif": "1415330656392581140"
-      },
-      "lastUser": "719072181631320145",
-      "timestamp": 1758125415
-    },
-    {
-      "id": 3,
-      "name": "Test",
-      "description": "test",
-      "emoji": "",
-      "enable": true,
-      "tasks": [],
-      "channels": {
-        "logs": false,
-        "responsable": false,
-        "tasks": false,
-        "salaire": false,
-        "effectif": false
-      },
-      "salaire": {
-        "automatique": false,
-        "cmd_retrait": "/econ bank take ONU [argent]",
-        "cmd_don": "/eco give [joueur] [argent]",
-        "salaire": {}
-      },
-      "timestamp": 1758359259,
-      "lastUser": "719072181631320145"
-    },
-    {
-      "id": 4,
-      "name": "ttttttttt",
-      "description": "",
-      "emoji": "",
-      "enable": true,
-      "tasks": [],
-      "channels": {
-        "logs": false,
-        "responsable": false,
-        "tasks": false,
-        "salaire": false,
-        "effectif": false
-      },
-      "salaire": {
-        "automatique": false,
-        "cmd_retrait": "/econ bank take ONU [argent]",
-        "cmd_don": "/eco give [joueur] [argent]",
-        "salaire": {}
-      },
-      "timestamp": 1758359553,
-      "lastUser": "719072181631320145"
     }
   ],
   "lastUser": "719072181631320145",
-  "timestamp": 1759258172,
+  "timestamp": 1759329914,
   "logs": [
     {
       "user": "719072181631320145",
@@ -338,24 +314,6 @@
     },
     {
       "user": "719072181631320145",
-      "timestamp": 1758359259,
-      "panel": 3,
-      "action": "Création du rôle-play"
-    },
-    {
-      "user": "719072181631320145",
-      "timestamp": 1758359553,
-      "panel": 4,
-      "action": "Création du rôle-play"
-    },
-    {
-      "user": "719072181631320145",
-      "timestamp": 1758366757,
-      "panel": 3,
-      "action": "Édition de la description du rôle-play"
-    },
-    {
-      "user": "719072181631320145",
       "timestamp": 1758784387,
       "panel": 1,
       "action": "Renommmage du grade Grade 1 en Rédacteur"
@@ -443,24 +401,6 @@
       "timestamp": 1758821818,
       "panel": 1,
       "action": "Modification des rôles du grade Rédacteur"
-    },
-    {
-      "user": "719072181631320145",
-      "timestamp": 1758827823,
-      "panel": 2,
-      "action": "Création du grade Test"
-    },
-    {
-      "user": "719072181631320145",
-      "timestamp": 1758827871,
-      "panel": 3,
-      "action": "Création du grade Testtttt"
-    },
-    {
-      "user": "719072181631320145",
-      "timestamp": 1758828110,
-      "panel": 2,
-      "action": "Création du grade Test"
     },
     {
       "user": "719072181631320145",
