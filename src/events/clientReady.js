@@ -4,6 +4,7 @@ const log = require('../../utils/modules/logger.js');
 const { getDateTs } = require('../../utils/functions/numbersAndLetters.js');
 const { botLaunch } = require('../../index.js');
 const { checkEmojiCache } = require('../../utils/functions/emojis.js');
+const { candidature } = require('../../utils/functions/checkCandidature.js')
 
 async function getPlayerCount(server) {
 	try {
@@ -31,6 +32,7 @@ async function cycleStatus(client, statusIndex) {
 }
 
 module.exports = async (client, interaction) => {
+	candidature(client)
 	const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
 	chanCmds.send('**✅ | BOT ON !**');
 
