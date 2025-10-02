@@ -11,7 +11,7 @@ const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
 
-  const new_description = interaction.fields.getTextInputValue("new_description");
+  const new_description = interaction.fields.getTextInputValue("new_description") || false;
 
   const guildColor = await getGuildColor(interaction);
   const serverDatas = await getServerDatas(interaction);

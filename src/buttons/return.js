@@ -1,4 +1,4 @@
-const { getConfigContainer, getPanelContainer } = require("../../components/containers");
+const { getConfigContainer, getPanelContainer, getGradeContainer } = require("../../components/containers");
 const {
   getGuildColor,
   getServerDatas,
@@ -6,10 +6,10 @@ const {
 
 exports.run = async (client, interaction) => {
   await interaction.deferUpdate();
-  const [action, panel] = interaction.customId.split("-");
+  const [action, panel, config] = interaction.customId.split("-");
   const panelId = Number(panel)
 
-  if (action === "return" && !panelId) {
+  if (action === "return" && !panelId && !config) {
     const serverDatas = await getServerDatas(interaction);
     const guildColor = await getGuildColor(interaction);
     const configContainer = await getConfigContainer(serverDatas, guildColor);
@@ -18,7 +18,7 @@ exports.run = async (client, interaction) => {
       components: [configContainer],
       allowedMentions: { parse: [] }
     });
-  } else if (action === "return" && panelId) {
+  } else if (action === "return" && panelId && !config) {
     const guildColor = await getGuildColor(interaction);
     const serverDatas = await getServerDatas(interaction);
     const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
@@ -27,6 +27,20 @@ exports.run = async (client, interaction) => {
 
     await interaction.message.edit({
       components: [panelContainer],
+      allowedMentions: { parse: [] }
+    });
+  } else if (action === "return" && panelId && config) {
+    const guildColor = await getGuildColor(interaction);
+    const serverDatas = await getServerDatas(interaction);
+    const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
+
+    let container
+    if (config === "grade") {
+      container = await getGradeContainer(client, panelId, guildColor, panelDatas);
+    }
+
+    await interaction.message.edit({
+      components: [container],
       allowedMentions: { parse: [] }
     });
   }

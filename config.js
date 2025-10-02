@@ -167,6 +167,8 @@ const config = {
 		tasks: "<:a:1415827516400205894> Salon d'envois où les RP mettent leur tâches via le panel",
 		salaire: "<:a:1415827518057091122> Salon où sera envoyé les salaires",
 		effectif: "<:a:1415827518057091122> Salon où sera envoyé et mit à jour l'effectif",
+		candidature: "<:a:1415827518057091122> Salon où sera envoyé les nouvelles candidatures",
+		depotdeplainte: "<:a:1415827518057091122> Salon où sera envoyé les nouvelles plaintes",
 	},
 	intents: [GatewayIntentBits.Guilds],
 	partials: [Partials.User, Partials.Channel, Partials.GuildMember],
