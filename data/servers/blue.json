@@ -4,8 +4,8 @@
     {
       "id": 1,
       "name": "Avocat",
-      "description": "desc avocat",
-      "emoji": "<a:test:1417844331443916860>",
+      "description": false,
+      "emoji": false,
       "enable": true,
       "effectif": {
         "message": "1421937419892166808",
@@ -822,6 +822,18 @@
       "timestamp": 1759389764,
       "panel": 1,
       "action": "Restauration du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759430865,
+      "panel": 1,
+      "action": "Édition de la description du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759430873,
+      "panel": 1,
+      "action": "Édition de l'émoji du rôle-play"
     }
   ],
   "historique": [

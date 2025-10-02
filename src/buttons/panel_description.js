@@ -18,13 +18,13 @@ exports.run = async (client, interaction, config) => {
             custom_id: "new_description",
             label: "Nouvelle description du rôle-play",
             style: 1,
-            min_length: 1,
+            min_length: 0,
             max_length: 100,
             placeholder: "Ex: Gestion de la Justice du Serveur",
             ...(panelDatas.description
               ? { value: panelDatas.description }
               : {}),
-            required: true,
+            required: false,
           },
         ],
       },

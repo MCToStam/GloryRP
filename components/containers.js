@@ -16,7 +16,7 @@ async function getConfigContainer(serverDatas, serv) {
     components: [
       {
         type: 10,
-        content: `${panel.emoji} Panel ${panel.name} ${
+        content: `${panel.emoji ? `${panel.emoji} ` : ""}Panel ${panel.name} ${
           panel.delete
             ? `\n*Suppression définitive dans <t:${panel.delete}:R> !*`
             : ""
@@ -581,7 +581,7 @@ async function getEditGradeContainer(
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}`,
+            custom_id: `return-${panelId}-grade`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
