@@ -79,7 +79,7 @@ async function getConfigContainer(serverDatas, serv) {
 }
 
 async function getPanelContainer(guildColor, panelDatas, panelId) {
-  return (panelContainer = {
+  return {
     type: 17,
     accent_color: config.couleur[guildColor],
     components: [
@@ -192,14 +192,20 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `return`,
+            custom_id: "return",
             label: "🚪 Retour à l'Acceuil",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: `show_logs-${panelId}`,
+            label: "📜 Afficher les Logs",
             style: ButtonStyle.Secondary,
           },
         ],
       },
     ],
-  });
+  };
 }
 
 async function getChannelContainer(panelId, guildColor, panelDatas) {
