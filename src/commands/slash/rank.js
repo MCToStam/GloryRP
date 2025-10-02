@@ -362,7 +362,7 @@ exports.run = async (client, interaction, config) => {
             ],
           };
 
-          return interaction.reply({
+          return submitted.reply({
             components: [errorContainer],
             flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
             allowedMentions: { parse: [] },
