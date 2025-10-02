@@ -5,6 +5,7 @@ const { getDateTs } = require('../../utils/functions/numbersAndLetters.js');
 const { botLaunch } = require('../../index.js');
 const { checkEmojiCache } = require('../../utils/functions/emojis.js');
 const { candidature } = require('../../utils/functions/checkCandidature.js')
+const { checkDeletePanel } = require('../../utils/functions/checkDeletePanel.js')
 
 async function getPlayerCount(server) {
 	try {
@@ -32,7 +33,8 @@ async function cycleStatus(client, statusIndex) {
 }
 
 module.exports = async (client, interaction) => {
-	candidature(client)
+	await candidature(client)
+	await checkDeletePanel()
 	const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
 	chanCmds.send('**✅ | BOT ON !**');
 

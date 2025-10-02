@@ -16,16 +16,28 @@ async function getConfigContainer(serverDatas, serv) {
     components: [
       {
         type: 10,
-        content: `${panel.emoji} Panel ${panel.name}`,
+        content: `${panel.emoji} Panel ${panel.name} ${
+          panel.delete
+            ? `\n*Suppression définitive dans <t:${panel.delete}:R> !*`
+            : ""
+        }`,
       },
     ],
-    accessory: {
-      type: 2,
-      custom_id: `toggle-panel-${panel.id}-acceuil`,
-      label: panel.enable ? "Activé" : "Désactivé",
-      emoji: { name: panel.enable ? "✅" : "❌" },
-      style: panel.enable ? ButtonStyle.Success : ButtonStyle.Danger,
-    },
+    accessory: panel.delete
+      ? {
+          type: 2,
+          custom_id: `restore-panel-${panel.id}`,
+          label: "Restaurer",
+          emoji: { name: "♻️" },
+          style: ButtonStyle.Primary,
+        }
+      : {
+          type: 2,
+          custom_id: `toggle-panel-${panel.id}-acceuil`,
+          label: panel.enable ? "Activé" : "Désactivé",
+          emoji: { name: panel.enable ? "✅" : "❌" },
+          style: panel.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+        },
   }));
 
   const returnComponent = {
@@ -856,7 +868,9 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 10,
-            content: `**Lien Forum :** ${panelDatas.depotdeplainte.lien || "Aucun lien configuré"}`,
+            content: `**Lien Forum :** ${
+              panelDatas.depotdeplainte.lien || "Aucun lien configuré"
+            }`,
           },
         ],
         accessory: {
@@ -958,7 +972,9 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 10,
-            content: `**Lien Forum :** ${panelDatas.candidature.lien || "Aucun lien configuré"}`,
+            content: `**Lien Forum :** ${
+              panelDatas.candidature.lien || "Aucun lien configuré"
+            }`,
           },
         ],
         accessory: {

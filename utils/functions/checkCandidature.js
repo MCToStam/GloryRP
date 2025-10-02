@@ -321,7 +321,7 @@ async function fetchNewCandidatures() {
   let allNew = [];
   let AllCandidatures = [];
 
-  for (const serverFile of ["blue"]) {
+  for (const serverFile of config.liste_serveur) {
     const filePath = path.join(baseDir, `${serverFile}.json`);
 
     if (!fs.existsSync(filePath)) continue;
@@ -335,7 +335,7 @@ async function fetchNewCandidatures() {
       const hasCandidatureLien = panel.candidature && panel.candidature.lien;
       const hasChannelCandidature =
         panel.channels && panel.channels.candidature;
-      if (!hasCandidatureLien || !hasChannelCandidature) continue;
+      if (!hasCandidatureLien || !hasChannelCandidature || !panel.enable) continue;
 
       try {
         const response = await fetch(panel.candidature.lien);
