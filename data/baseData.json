@@ -4,18 +4,34 @@
   "description": false,
   "emoji": false,
   "enable": true,
-  "tasks": [],
   "effectif": {
     "message": false,
     "channel": false,
-    "guild": false
+    "guild": false,
+    "button": []
+  },
+  "candidature": {
+    "lien": false,
+    "save": []
+  },
+  "depotdeplainte": {
+    "lien": false
+  },
+  "grade": [],
+  "tasks": [],
+  "roles": {
+    "salaire": false,
+    "candidature": false,
+    "depotdeplainte": false
   },
   "channels": {
     "logs": false,
     "responsable": false,
     "tasks": false,
     "salaire": false,
-    "effectif": false
+    "effectif": false,
+    "candidature": false,
+    "depotdeplainte": false
   },
   "salaire": {
     "automatique": false,
@@ -24,5 +40,6 @@
     "salaire": {}
   },
   "timestamp": false,
-  "lastUser": false
+  "lastUser": false,
+  "delete": false
 }

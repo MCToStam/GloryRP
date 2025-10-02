@@ -3,6 +3,7 @@ const path = require("node:path");
 const { getServerDatas } = require("../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const { getConfigContainer } = require("../../components/containers.js");
+const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
@@ -39,9 +40,22 @@ exports.run = async (client, interaction, config) => {
     return await interaction.message.delete().catch(() => {});
   }
 
-  serverDatas.panels.splice(panelIndex, 1);
+  const now = new Date();
+  const modifDate = await toTimeStamp(now);
+  const futureDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const futureTimeStampDate = await toTimeStamp(futureDate);
 
-  serverDatas.logs = serverDatas.logs.filter((log) => log.panel !== panelId);
+  const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
+  panelDatas.delete = futureTimeStampDate;
+  panelDatas.enable = false;
+
+  if (!serverDatas.logs) serverDatas.logs = [];
+  serverDatas.logs.push({
+    user: interaction.user.id,
+    timestamp: modifDate,
+    panel: panelId,
+    action: "Suppression du rôle-play",
+  });
 
   serverDatas.lastUser = interaction.user.id;
   serverDatas.timestamp = Math.floor(Date.now() / 1000);
@@ -67,7 +81,7 @@ exports.run = async (client, interaction, config) => {
       {
         type: 10,
         content:
-          "Le rôle-play a correctement été supprimé ainsi que toutes les données correspondantes.",
+          "Le rôle-play sera correctement supprimé dans exactement 7 jours. Tu pourras donc pendant cette durée restaurer le rôle-play si tu souhaites revenir sur ton choix.",
       },
     ],
   };

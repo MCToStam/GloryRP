@@ -31,22 +31,22 @@
             "messageId": "1422983064119808224"
           },
           {
-            "titre": "Candidature Modérateur - Isayahgtv",
-            "lien": "https://nationsglory.fr/forums/thread/candidature-moderateur-isayahgtv.138896",
-            "auteur": "IsayahGTV",
-            "timestamp": 1759169040,
-            "badgeColor": "#6f6f6f",
-            "savedBadgeColor": "#6f6f6f",
-            "messageId": "1422983075658465331"
-          },
-          {
             "titre": "Candidature Modérateure",
             "lien": "https://nationsglory.fr/forums/thread/candidature-moderateure.138915",
             "auteur": "LeLecTriCien",
             "timestamp": 1759177740,
-            "badgeColor": null,
-            "savedBadgeColor": null,
+            "badgeColor": "#df1b1b",
+            "savedBadgeColor": "#df1b1b",
             "messageId": "1422983069698101315"
+          },
+          {
+            "titre": "Candidature Modérateur - Isayahgtv",
+            "lien": "https://nationsglory.fr/forums/thread/candidature-moderateur-isayahgtv.138896",
+            "auteur": "IsayahGTV",
+            "timestamp": 1759169040,
+            "badgeColor": "#0040ff",
+            "savedBadgeColor": "#6f6f6f",
+            "messageId": "1422983075658465331"
           },
           {
             "titre": "recrutement modo",
@@ -204,11 +204,12 @@
       },
       "timestamp": 1759258172,
       "lastUser": "719072181631320145",
-      "panels": []
+      "panels": [],
+      "delete": false
     }
   ],
   "lastUser": "719072181631320145",
-  "timestamp": 1759329914,
+  "timestamp": 1759391049,
   "logs": [
     {
       "user": "719072181631320145",
@@ -791,6 +792,36 @@
       "timestamp": 1759258176,
       "panel": 1,
       "action": "Édition du lien forum de candidature"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759389207,
+      "panel": 1,
+      "action": "Suppression du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759389280,
+      "panel": 1,
+      "action": "Suppression du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759389591,
+      "panel": 1,
+      "action": "Restauration du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759389693,
+      "panel": 1,
+      "action": "Restauration du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759389764,
+      "panel": 1,
+      "action": "Restauration du rôle-play"
     }
   ],
   "historique": [
