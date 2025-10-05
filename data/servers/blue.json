@@ -104,6 +104,24 @@
             "samedi": 4000,
             "dimanche": 4000
           }
+        },
+        {
+          "taskId": 1,
+          "name": "Plainte Classique",
+          "description": "sah tu connais",
+          "emoji": "🎉",
+          "type": false,
+          "url": false,
+          "salaire": {
+            "lundi": 0,
+            "mardi": 0,
+            "mercredi:": 0,
+            "jeudi": 0,
+            "vendredi": 0,
+            "samedi": 0,
+            "dimanche": 0
+          },
+          "grade": []
         }
       ],
       "roles": {
@@ -169,7 +187,7 @@
     }
   ],
   "lastUser": "719072181631320145",
-  "timestamp": 1759654293,
+  "timestamp": 1759665778,
   "logs": [
     {
       "user": "719072181631320145",
@@ -890,6 +908,12 @@
       "timestamp": 1759661080,
       "panel": 1,
       "action": "Modification du salaire de la tâche Plainte Anti- en 5000 le lundi"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759665778,
+      "panel": 1,
+      "action": "Création de la tâche Plainte Classique"
     }
   ],
   "historique": [
