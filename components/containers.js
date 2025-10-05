@@ -1253,6 +1253,21 @@ async function getEditTacheContainer(
         components: [
           {
             type: 10,
+            content: `**Lien Forum :** ${task.url || "Aucune catégorie forum définie"}`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `edit_tache_lien-${panelId}-${task.taskId}`,
+          label: "🔗 Modifier le Lien Forum",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
             content: `**Salaire :** ${
               task.salaire
                 ? Object.entries(task.salaire)

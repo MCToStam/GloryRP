@@ -74,7 +74,7 @@
           "description": "émoji de baseeeeeeeeeeee",
           "emoji": "🎨",
           "type": "4",
-          "url": "https://nationsglory.fr/forums/category/recaps-onu.414",
+          "url": "https://nationsglory.fr/forums/categor",
           "salaire": {
             "lundi": 5000,
             "mardi": 1,
@@ -914,6 +914,12 @@
       "timestamp": 1759665778,
       "panel": 1,
       "action": "Création de la tâche Plainte Classique"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759667199,
+      "panel": 1,
+      "action": "Modification du lien forum de la tâche Plainte Anti- en https://nationsglory.fr/forums/categor"
     }
   ],
   "historique": [

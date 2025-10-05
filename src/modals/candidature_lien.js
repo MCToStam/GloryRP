@@ -13,7 +13,7 @@ exports.run = async (client, interaction, config) => {
 
   const new_lien = interaction.fields.getTextInputValue("new_lien");
 
-  if (!new_lien.startsWith("https://nationsglory.fr/forums")) {
+  if (!new_lien.startsWith("https://nationsglory.fr/forums/thread")) {
     const errorContainer = {
       type: 17,
       accent_color: config.colors.error,
@@ -29,7 +29,7 @@ exports.run = async (client, interaction, config) => {
         {
           type: 10,
           content:
-            "Le lien doit être une discussion du forum de NationsGlory, donc commençant par l'URL \"https://nationsglory.fr/forums\".",
+            "Le lien doit être une discussion du forum de NationsGlory, donc commençant par l'URL \"https://nationsglory.fr/forums/thread\".",
         },
       ],
     };
