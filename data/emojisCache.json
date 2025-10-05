@@ -1,42 +1,22 @@
 {
-  "frostkingfr": {
-    "emojiId": "1423377012134772738",
-    "nom": "FrostKingFR",
-    "createdAt": 1759429924625
-  },
-  "lelectricien": {
-    "emojiId": "1423377015603728668",
-    "nom": "LeLecTriCien",
-    "createdAt": 1759429925462
-  },
-  "isayahgtv": {
-    "emojiId": "1423377017465995365",
-    "nom": "IsayahGTV",
-    "createdAt": 1759429925901
-  },
-  "alpha_4": {
-    "emojiId": "1423377020964044940",
-    "nom": "alpha_4",
-    "createdAt": 1759429926653
-  },
-  "#ff0002": {
-    "emojiId": "1423380434389307483",
-    "color": "#ff0002",
-    "createdAt": 1759430731240
-  },
   "#ff0000": {
-    "emojiId": "1423380436532592670",
+    "emojiId": "1424331859449614410",
     "color": "#ff0000",
-    "createdAt": 1759430740630
+    "createdAt": 1759657577874
   },
   "#FF0002": {
-    "emojiId": "1423380434389307483",
+    "emojiId": "1424331858388193332",
     "color": "#ff0002",
-    "createdAt": 1759431163508
+    "createdAt": 1759661080568
   },
   "#FF0000": {
-    "emojiId": "1423380436532592670",
+    "emojiId": "1424331859449614410",
     "color": "#ff0000",
-    "createdAt": 1759431163510
+    "createdAt": 1759661080569
+  },
+  "frostkingfr": {
+    "emojiId": "1424340568854757386",
+    "nom": "FrostKingFR",
+    "createdAt": 1759659654535
   }
 }

@@ -22,20 +22,20 @@ exports.run = async (client, interaction, config) => {
     custom_id: `salaire_post-${panelId}`,
     title: "Envoyer le salaire",
     components: [
-    {
+      {
         type: 18,
         label: "Pour quel date envoyer le salaire ?",
         component: {
-        type: 3,
-        custom_id: "date",
-        placeholder: "Sélectionne un mois",
-        options: moisDisponibles.map((mois) => ({
+          type: 3,
+          custom_id: "date",
+          placeholder: "Sélectionne un mois",
+          options: moisDisponibles.map((mois) => ({
             label: formatDateFr(mois),
             value: mois,
             description: "Envoyer le salaire pour ce mois",
-        })),
+          })),
         },
-    },
+      },
     ],
   };
 

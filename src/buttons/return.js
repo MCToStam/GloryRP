@@ -1,4 +1,4 @@
-const { getConfigContainer, getPanelContainer, getGradeContainer } = require("../../components/containers");
+const { getConfigContainer, getPanelContainer, getGradeContainer, getTacheContainer } = require("../../components/containers");
 const {
   getGuildColor,
   getServerDatas,
@@ -37,6 +37,8 @@ exports.run = async (client, interaction) => {
     let container
     if (config === "grade") {
       container = await getGradeContainer(client, panelId, guildColor, panelDatas);
+    } else if (config === "tache") {
+      container = await getTacheContainer(client, panelId, guildColor, panelDatas);
     }
 
     await interaction.message.edit({
