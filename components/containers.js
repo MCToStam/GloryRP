@@ -1218,7 +1218,14 @@ async function getEditTacheContainer(
       },
       {
         type: 9,
-        components: [{ type: 10, content: `**Description :** ${task.description || "Aucune description définie"}` }],
+        components: [
+          {
+            type: 10,
+            content: `**Description :** ${
+              task.description || "Aucune description définie"
+            }`,
+          },
+        ],
         accessory: {
           type: 2,
           custom_id: `edit_tache_description-${panelId}-${task.taskId}`,
@@ -1228,7 +1235,12 @@ async function getEditTacheContainer(
       },
       {
         type: 9,
-        components: [{ type: 10, content: `**Emoji :** ${task.emoji || "Aucun émoji défini"}` }],
+        components: [
+          {
+            type: 10,
+            content: `**Emoji :** ${task.emoji || "Aucun émoji défini"}`,
+          },
+        ],
         accessory: {
           type: 2,
           custom_id: `edit_tache_emoji-${panelId}-${task.taskId}`,
