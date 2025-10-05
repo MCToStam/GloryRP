@@ -70,13 +70,37 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
             custom_id: `panel-tasks-${panel.id}`,
             placeholder: "Choisis une tâche",
             options: panel.tasks
-              .filter(task => task.type !== "4" && task.panelId === panelId)
-              .map(task => ({
-                label: task.name,
-                value: `${panel.id}_${task.taskId.toString()}`,
-                description: task.description || undefined,
-                emoji: task.emoji || undefined,
-              })),
+              .filter(
+                (task) =>
+                  task.type &&
+                  task.grade &&
+                  task.type !== "4" &&
+                  task.panelId === panelId
+              )
+              .map((task) => {
+                let emoji;
+                if (task.emoji) {
+                  const customEmojiMatch = task.emoji.match(
+                    /^<a?:([a-zA-Z0-9_]+):(\d+)>$/
+                  );
+                  if (customEmojiMatch) {
+                    emoji = {
+                      name: customEmojiMatch[1],
+                      id: customEmojiMatch[2],
+                      animated: task.emoji.startsWith("<a:"),
+                    };
+                  } else {
+                    emoji = { name: task.emoji };
+                  }
+                }
+
+                return {
+                  label: task.name,
+                  value: `${panel.id}_${task.taskId}`,
+                  description: task.description || undefined,
+                  ...(emoji ? { emoji } : {}),
+                };
+              }),
           },
         ],
       },
@@ -86,7 +110,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
   const message = await channel.send({
     components: [panelContainer],
     flags: MessageFlags.IsComponentsV2,
-    allowedMentions: { parse: [] }
+    allowedMentions: { parse: [] },
   });
 
   return (goodContainer = {
