@@ -608,14 +608,20 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
   );
 
   const gradeOptions = await Promise.all(
-    panelDatas.grade.map(async (grade) => ({
-      label: grade.nom,
-      value: `grade_edit-${panelId}-${grade.gradeId}`,
-      description: `Configure ${grade.nom}`,
-      emoji: grade.couleur
+    panelDatas.grade.map(async (grade) => {
+      const e = grade.couleur
         ? await getHexEmoji(client, grade.couleur)
-        : undefined,
-    }))
+        : undefined;
+
+      return {
+        label: grade.nom,
+        value: `grade_edit-${panelId}-${grade.gradeId}`,
+        description: `Configure ${grade.nom}`,
+        emoji: e
+          ? { id: e.id, name: e.name, animated: e.animated || false }
+          : undefined,
+      };
+    })
   );
 
   return {
@@ -1062,6 +1068,288 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
   };
 }
 
+async function getTacheContainer(client, panelId, guildColor, panelDatas) {
+  const tasksContent = await Promise.all(
+    panelDatas.tasks.map(async (task) => ({
+      type: 10,
+      content: `- ${task.emoji ? `${task.emoji} ` : ""}**${task.name}**`,
+    }))
+  );
+
+  const taskOptions = await Promise.all(
+    panelDatas.tasks.map(async (task) => {
+      let emoji = undefined;
+
+      if (task.emoji && task.emoji !== false) {
+        const customEmojiMatch = task.emoji.match(
+          /^<a?:([a-zA-Z0-9_]+):(\d+)>$/
+        );
+        if (customEmojiMatch) {
+          emoji = {
+            id: customEmojiMatch[2],
+            name: customEmojiMatch[1],
+            animated: task.emoji.startsWith("<a:"),
+          };
+        } else if (
+          /^\p{Extended_Pictographic}$/u.test(task.emoji) ||
+          task.emoji.length <= 3
+        ) {
+          emoji = { name: task.emoji };
+        } else {
+          emoji = undefined;
+        }
+      }
+
+      return {
+        label: task.name,
+        value: `tache_edit-${panelId}-${task.taskId}`,
+        description: `Configure ${task.name}`,
+        ...(emoji ? { emoji } : {}),
+      };
+    })
+  );
+
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      ...tasksContent,
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `tache_edit-${panelId}`,
+            placeholder: "Choisis une tâche...",
+            disabled: !panelDatas.enable,
+            options: [
+              ...taskOptions,
+              {
+                label: "Créer une tâche",
+                value: `create_tache-${panelId}`,
+                description: "Ajoute un nouveau tâche au panel",
+                emoji: { id: "1418880845808402492" },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+async function getEditTacheContainer(
+  client,
+  panelId,
+  guildColor,
+  panelDatas,
+  tacheId
+) {
+  const task = panelDatas.tasks.find((g) => g.taskId === tacheId);
+
+  const grades = panelDatas.grade || [];
+
+  const gradeOptions = await Promise.all(
+    grades.map(async (grade) => {
+      const e = grade.couleur
+        ? await getHexEmoji(client, grade.couleur)
+        : undefined;
+
+      return {
+        label: grade.nom,
+        value: `edit_tache_grade-${grade.gradeId}`,
+        description: grade.couleur
+          ? `Couleur : ${grade.couleur || "Aucune"} | Tier : ${
+              grade.tier || "Aucun"
+            }`
+          : "Aucune couleur définie",
+        emoji: e
+          ? { id: e.id, name: e.name, animated: e.animated || false }
+          : undefined,
+        default: task.grade?.includes(String(grade.gradeId)) || false,
+      };
+    })
+  );
+
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 9,
+        components: [{ type: 10, content: `**Nom :** ${task.name}` }],
+        accessory: {
+          type: 2,
+          custom_id: `edit_tache_nom-${panelId}-${task.taskId}`,
+          label: "⚙️ Modifier le Nom",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 9,
+        components: [{ type: 10, content: `**Description :** ${task.description || "Aucune description définie"}` }],
+        accessory: {
+          type: 2,
+          custom_id: `edit_tache_description-${panelId}-${task.taskId}`,
+          label: "📜 Modifier la Description",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 9,
+        components: [{ type: 10, content: `**Emoji :** ${task.emoji || "Aucun émoji défini"}` }],
+        accessory: {
+          type: 2,
+          custom_id: `edit_tache_emoji-${panelId}-${task.taskId}`,
+          label: "🎨 Modifier l'Emoji",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Salaire :** ${
+              task.salaire
+                ? Object.entries(task.salaire)
+                    .map(
+                      ([jour, montant]) =>
+                        `\`${jour}\`: ${Number(montant).toLocaleString(
+                          "de-DE"
+                        )}$`
+                    )
+                    .join(" | ")
+                : "Aucun salaire configuré"
+            }`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `edit_tache_salaire-${panelId}-${task.taskId}`,
+          label: "💲 Modifier le Salaire",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 10,
+        content: `**Niveau de vérification :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `edit_tache_verification-${panelId}-${task.taskId}`,
+            placeholder: "Choisis un Niveau de Vérification...",
+            options: [
+              {
+                label: "100% Manuel",
+                value: "edit_tache_verification-1",
+                description: "Tout est entièrement manuel",
+                default: task.type === "1",
+              },
+              {
+                label: "Vérification",
+                value: "edit_tache_verification-2",
+                description: "La tâche est vérifiée avant d'être envoyée",
+                default: task.type === "2",
+              },
+              {
+                label: "Acceptation Automatique",
+                value: "edit_tache_verification-3",
+                description:
+                  "La tâche est automatiquement acceptée si elle est vérifiée",
+                default: task.type === "3",
+              },
+              {
+                label: "Totalement Automatique",
+                value: "edit_tache_verification-4",
+                description:
+                  "Le robot vérifie de lui même les tâches effectuées",
+                default: task.type === "4",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 10,
+        content: `**Grade autorisé :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `edit_tache_grade-${panelId}-${task.taskId}`,
+            placeholder:
+              grades.length === 0
+                ? "Veuillez créer au moins un grade"
+                : "Choisis un ou plusieurs Grades autorisés...",
+            min_values: 0,
+            max_values: grades.length > 0 ? grades.length : 1,
+            options: gradeOptions,
+            disabled: grades.length === 0,
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}-tache`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: `tache_delete-${panelId}-${task.taskId}`,
+            label: "🗑️ Supprimer la Tâche",
+            style: ButtonStyle.Danger,
+          },
+        ],
+      },
+    ],
+  };
+}
+
 module.exports = {
   getConfigContainer,
   getPanelContainer,
@@ -1073,4 +1361,6 @@ module.exports = {
   getEffectifContainer,
   getCandidatureContainer,
   getDepotDePlainteContainer,
+  getTacheContainer,
+  getEditTacheContainer,
 };

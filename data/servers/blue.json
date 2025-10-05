@@ -8,13 +8,17 @@
       "emoji": false,
       "enable": true,
       "effectif": {
-        "message": "1421937419892166808",
+        "message": "1423767453300822198",
         "channel": "1415329865120481361",
         "guild": "1415033751733538868",
         "button": [
           {
             "label": "test",
             "lien": "https://google.com"
+          },
+          {
+            "label": "Recrutement",
+            "lien": "https://test.com"
           }
         ]
       },
@@ -29,33 +33,6 @@
             "badgeColor": "#db0a0e",
             "savedBadgeColor": "#db0a0e",
             "messageId": "1422983064119808224"
-          },
-          {
-            "titre": "Candidature Modérateure",
-            "lien": "https://nationsglory.fr/forums/thread/candidature-moderateure.138915",
-            "auteur": "LeLecTriCien",
-            "timestamp": 1759177740,
-            "badgeColor": "#df1b1b",
-            "savedBadgeColor": "#df1b1b",
-            "messageId": "1422983069698101315"
-          },
-          {
-            "titre": "Candidature Modérateur - Isayahgtv",
-            "lien": "https://nationsglory.fr/forums/thread/candidature-moderateur-isayahgtv.138896",
-            "auteur": "IsayahGTV",
-            "timestamp": 1759169040,
-            "badgeColor": "#0040ff",
-            "savedBadgeColor": "#6f6f6f",
-            "messageId": "1422983075658465331"
-          },
-          {
-            "titre": "recrutement modo",
-            "lien": "https://nationsglory.fr/forums/thread/recrutement-modo.138588",
-            "auteur": "alpha_4",
-            "timestamp": 1758477780,
-            "badgeColor": "#0040ff",
-            "savedBadgeColor": "#0040ff",
-            "messageId": "1422985111590273124"
           }
         ]
       },
@@ -77,7 +54,9 @@
             "1415035439454224469",
             "1415037023328272486"
           ],
-          "listeRp": []
+          "listeRp": [
+            "719072181631320145"
+          ]
         },
         {
           "gradeId": 2,
@@ -85,51 +64,32 @@
           "couleur": "#FF0000",
           "tier": "2",
           "role": [],
-          "listeRp": [
-            "719072181631320145"
-          ]
+          "listeRp": []
         }
       ],
       "tasks": [
         {
-          "taskId": 1,
-          "panelId": 1,
-          "name": "Résumé ONU",
-          "description": "émoji statique",
-          "emoji": "<:channel:1415827516400205894>",
-          "type": "1",
-          "url": "https://nationsglory.fr/forums/category/recaps-onu.414",
-          "salaire": {
-            "lundi": 4000,
-            "mardi": 4000,
-            "mercredi:": 4000,
-            "jeudi": 4000,
-            "vendredi": 4000,
-            "samedi": 4000,
-            "dimanche": 4000
-          }
-        },
-        {
           "taskId": 2,
-          "panelId": 1,
-          "name": "Plainte Anti-Jeu",
-          "description": "émoji de base",
-          "emoji": "⏳",
-          "type": "1",
+          "name": "Plainte Anti-",
+          "description": "émoji de baseeeeeeeeeeee",
+          "emoji": "🎨",
+          "type": "4",
           "url": "https://nationsglory.fr/forums/category/recaps-onu.414",
           "salaire": {
-            "lundi": 4000,
-            "mardi": 4000,
-            "mercredi:": 4000,
-            "jeudi": 4000,
-            "vendredi": 4000,
-            "samedi": 4000,
-            "dimanche": 4000
-          }
+            "lundi": 5000,
+            "mardi": 1,
+            "mercredi:": 1,
+            "jeudi": 1,
+            "vendredi": 1,
+            "samedi": 1,
+            "dimanche": 1
+          },
+          "grade": [
+            "2"
+          ]
         },
         {
           "taskId": 3,
-          "panelId": 1,
           "name": "Plainte Animée",
           "description": "émoji animé",
           "emoji": "<a:test:1417844331443916860>",
@@ -165,7 +125,7 @@
         "responsable": "1415329865120481361",
         "tasks": "1415329865120481361",
         "salaire": "1415329865120481361",
-        "effectif": false,
+        "effectif": "1415329865120481361",
         "candidature": "1415329865120481361",
         "depotdeplainte": "1422255440661840070"
       },
@@ -202,14 +162,14 @@
           }
         }
       },
-      "timestamp": 1759258172,
+      "timestamp": 1759522992,
       "lastUser": "719072181631320145",
       "panels": [],
       "delete": false
     }
   ],
   "lastUser": "719072181631320145",
-  "timestamp": 1759391049,
+  "timestamp": 1759654293,
   "logs": [
     {
       "user": "719072181631320145",
@@ -834,6 +794,102 @@
       "timestamp": 1759430873,
       "panel": 1,
       "action": "Édition de l'émoji du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759522992,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759523010,
+      "panel": 1,
+      "action": "Création du bouton d'effectif Recrutement"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759523013,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759523101,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759654293,
+      "panel": 1,
+      "action": "Suppression de la tâche Résumé ONU"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759654640,
+      "panel": 1,
+      "action": "Renommmage de la tâche Plainte Anti-Jeu en Plainte Anti-"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759654983,
+      "panel": 1,
+      "action": "Modification du niveau de vérification de la tâche Plainte Anti- de 1 en 2"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759654986,
+      "panel": 1,
+      "action": "Modification du niveau de vérification de la tâche Plainte Anti- de 2 en 4"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759655389,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Anti-"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759655515,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Anti-"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759655579,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Anti-"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759655723,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Anti-"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759658375,
+      "panel": 1,
+      "action": "Modification de la description de la tâche Plainte Anti- en émoji de baseeeeeeeeeeee"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759658382,
+      "panel": 1,
+      "action": "Modification de l'émoji de la tâche Plainte Anti- en 🎨"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759661072,
+      "panel": 1,
+      "action": "Modification du salaire de la tâche Plainte Anti- en 1 tous les jours"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759661080,
+      "panel": 1,
+      "action": "Modification du salaire de la tâche Plainte Anti- en 5000 le lundi"
     }
   ],
   "historique": [
@@ -1099,6 +1155,14 @@
       "grade": "Test",
       "panel": "Avocat",
       "date": 1759009407,
+      "op_id": "719072181631320145",
+      "type": "up"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1759523027,
       "op_id": "719072181631320145",
       "type": "up"
     }
