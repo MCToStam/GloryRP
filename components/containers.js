@@ -587,6 +587,12 @@ async function getEditGradeContainer(
           },
           {
             type: 2,
+            custom_id: "aide-grade",
+            label: "❓ Aide",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
             custom_id: `grade_delete-${panelId}-${gradeId}`,
             label: "🗑️ Supprimer le Grade",
             style: ButtonStyle.Danger,
@@ -670,6 +676,12 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}`,
             label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: "aide-grade",
+            label: "❓ Aide",
             style: ButtonStyle.Secondary,
           },
         ],
@@ -958,6 +970,12 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
+          {
+            type: 2,
+            custom_id: "aide-depotdeplainte",
+            label: "❓ Aide",
+            style: ButtonStyle.Secondary,
+          },
         ],
       },
     ],
@@ -1062,6 +1080,12 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
+          {
+            type: 2,
+            custom_id: "aide-candidature",
+            label: "❓ Aide",
+            style: ButtonStyle.Secondary,
+          },
         ],
       },
     ],
@@ -1137,7 +1161,7 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
               {
                 label: "Créer une tâche",
                 value: `create_tache-${panelId}`,
-                description: "Ajoute un nouveau tâche au panel",
+                description: "Ajoute une nouvelle tâche au panel",
                 emoji: { id: "1418880845808402492" },
               },
             ],
@@ -1155,6 +1179,12 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}`,
             label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: "aide-tâche",
+            label: "❓ Aide",
             style: ButtonStyle.Secondary,
           },
         ],
@@ -1253,7 +1283,9 @@ async function getEditTacheContainer(
         components: [
           {
             type: 10,
-            content: `**Lien Forum :** ${task.url || "Aucune catégorie forum définie"}`,
+            content: `**Lien Forum :** ${
+              task.url || "Aucune catégorie forum définie"
+            }`,
           },
         ],
         accessory: {
@@ -1363,6 +1395,12 @@ async function getEditTacheContainer(
             type: 2,
             custom_id: `return-${panelId}-tache`,
             label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: "aide-tâche",
+            label: "❓ Aide",
             style: ButtonStyle.Secondary,
           },
           {
