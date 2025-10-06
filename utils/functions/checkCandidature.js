@@ -354,6 +354,9 @@ async function fetchNewCandidatures() {
               firstBadge.attr("style")?.match(/background:([^;!]+)/)?.[1]
             : null;
 
+          const isPinned = $(el).find("i.mdi.mdi-pin").length > 0;
+          if (isPinned) return;
+
           let auteur = "";
           let dateStr = "";
           if (metaText.startsWith("Posté par")) {
