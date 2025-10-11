@@ -6,7 +6,7 @@ module.exports = async (client, interaction) => {
 	const stringSelect = client.container.stringSelects.get(interaction.values[0].split('-')[0]);
 
 	if (!stringSelect) return;
-	if (interaction.user.id !== interaction.message.interaction.user.id) {
+	if (interaction.message?.interaction && interaction.user.id !== interaction.message.interaction.user.id) {
 		const permissionContainer = {
 			type: 17,
 			accent_color: config.colors.error,

@@ -7,7 +7,7 @@ const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
-  const selectedValues = interaction.fields.getSelectValue("date");
+  const selectedValues = interaction.fields.getStringSelectValues("date");
 
   const date = selectedValues[0];
 

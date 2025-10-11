@@ -1,12 +1,12 @@
 const {
   getGuildColor,
+  saveServerDatas,
   getServerDatas,
 } = require("../../../utils/functions/datas.js");
 const { getSalaireContainer } = require("../../../components/containers");
 const {
   toTimeStamp,
 } = require("../../../utils/functions/numbersAndLetters.js");
-const fs = require("node:fs");
 
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();
@@ -27,9 +27,8 @@ exports.run = async (client, interaction, config) => {
     panel: panelId,
     action: panelDatas.salaire.automatique ? "Activation des salaires automatiques" : "Désactivation des salaires automatiques",
   });
-
-  const panelPath = `data/servers/${guildColor}.json`;
-  fs.writeFileSync(panelPath, JSON.stringify(serverDatas));
+  
+  await saveServerDatas(interaction, serverDatas, guildColor)
   const salaireContainer = await getSalaireContainer(panelId, guildColor, panelDatas);
 
   await interaction.message.edit({

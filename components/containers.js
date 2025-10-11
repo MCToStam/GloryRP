@@ -1187,6 +1187,14 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
             label: "❓ Aide",
             style: ButtonStyle.Secondary,
           },
+          {
+            type: 2,
+            custom_id: `send_panel-${panelId}`,
+            label: "💲 Envoyer le panel de tâche",
+            style: ButtonStyle.Primary,
+            disabled:
+              panelDatas.channels.tasks && panelDatas.enable ? false : true,
+          },
         ],
       },
     ],

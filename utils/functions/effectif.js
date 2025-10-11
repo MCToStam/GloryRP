@@ -4,6 +4,7 @@ const {
   ButtonStyle,
 } = require("discord.js");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
+const { discordLink } = require("../../utils/functions/linkedUser.js");
 const config = require("../../config.js");
 const fs = require("node:fs");
 
@@ -37,16 +38,7 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
     };
   }
 
-  let ngData = {};
-  try {
-    const response = await fetch(`${config.glorybot_url}/api/get-ng`);
-    const json = await response.json();
-    if (json.success && json.data) {
-      ngData = json.data;
-    }
-  } catch (err) {
-    console.error("Erreur API get-ng:", err);
-  }
+  const ngData = await discordLink()
 
   const gradesTriees = panel.grade.sort(
     (a, b) => Number(b.tier) - Number(a.tier)
@@ -142,16 +134,7 @@ async function updateEffectif(client, serveur, serveurDatas, panelId) {
   const channel = client.channels.cache.get(panel.effectif.channel);
   if (!channel) return;
 
-  let ngData = {};
-  try {
-    const response = await fetch(`${config.glorybot_url}/api/get-ng`);
-    const json = await response.json();
-    if (json.success && json.data) {
-      ngData = json.data;
-    }
-  } catch (err) {
-    console.error("Erreur API get-ng:", err);
-  }
+  const ngData = await discordLink()
 
   const gradesTriees = panel.grade.sort(
     (a, b) => Number(b.tier) - Number(a.tier)

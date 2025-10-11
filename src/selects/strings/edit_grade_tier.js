@@ -1,12 +1,12 @@
 const {
   getGuildColor,
+  saveServerDatas,
   getServerDatas,
 } = require("../../../utils/functions/datas.js");
 const { getEditGradeContainer } = require("../../../components/containers.js");
 const {
   toTimeStamp,
 } = require("../../../utils/functions/numbersAndLetters.js");
-const fs = require("node:fs");
 
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();
@@ -31,8 +31,7 @@ exports.run = async (client, interaction, config) => {
 
   grade.tier = new_tier;
 
-  const panelPath = `data/servers/${guildColor}.json`;
-  fs.writeFileSync(panelPath, JSON.stringify(serverDatas));
+  await saveServerDatas(interaction, serverDatas, guildColor)
   const salaireContainer = await getEditGradeContainer(
     client,
     panelId,

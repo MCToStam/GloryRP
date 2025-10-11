@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const {
   getServerDatas,
+  saveServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
@@ -17,7 +18,7 @@ function formatHexColor(input) {
 
 exports.run = async (client, interaction, config) => {
   const nom = interaction.fields.getTextInputValue("nom");
-  const tier = interaction.fields.getSelectValue("tier")[0];
+  const tier = interaction.fields.getStringSelectValues("tier")[0];
   const couleur = formatHexColor(
     interaction.fields.getTextInputValue("couleur")
   );
@@ -124,11 +125,7 @@ exports.run = async (client, interaction, config) => {
   serverDatas.timestamp = modifDate;
   serverDatas.lastUser = interaction.user.id;
 
-  const panelPath = path.join(
-    __dirname,
-    `../../data/servers/${guildColor}.json`
-  );
-  fs.writeFileSync(panelPath, JSON.stringify(serverDatas, null, 2), "utf8");
+  await saveServerDatas(interaction, serverDatas, guildColor)
 
   const goodContainer = await getEditGradeContainer(
     client,

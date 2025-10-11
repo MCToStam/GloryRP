@@ -1,11 +1,7 @@
-const {
-  InteractionContextType,
-  SeparatorSpacingSize,
-  ButtonStyle,
-  MessageFlags,
-} = require("discord.js");
+const { InteractionContextType, MessageFlags } = require("discord.js");
 const { getServerDatas } = require("../../../utils/functions/datas.js");
 const { getConfigContainer } = require("../../../components/containers.js");
+const { discordStaff } = require("../../../utils/functions/linkedUser.js");
 
 exports.run = async (client, interaction, config) => {
   const serv = interaction.options.getString("serveur").toLowerCase();
@@ -15,7 +11,7 @@ exports.run = async (client, interaction, config) => {
   return interaction.reply({
     components: [configContainer],
     flags: MessageFlags.IsComponentsV2,
-    allowedMentions: { parse: [] }
+    allowedMentions: { parse: [] },
   });
 };
 
@@ -33,43 +29,27 @@ exports.data = {
   ],
   contexts: [InteractionContextType.Guild],
   async autocomplete(client, interaction, config) {
-    const response = await fetch(
-      config.glorystaff_url + "/api/get-staff?discordId=" + interaction.user.id
-    );
-    const servers = await response.json();
-    const respondDatas = [];
-    for (serv of servers) {
-      const servname = serv.charAt(0).toUpperCase() + serv.slice(1);
-      respondDatas.push({ name: servname, value: serv });
+    const { pseudonym, servers } = await discordStaff(interaction.user.id);
+    if (!pseudonym) {
+      return await interaction.respond([
+        {
+          name: "Compte NationsGlory non lié, fait le maintenant : https://glorybot.fr",
+          value: "non-lie",
+        },
+      ]);
+    } else if (pseudonym && servers.length === 0) {
+      return await interaction.respond([
+        {
+          name: "Vous n'êtes opérateur d'aucun serveur de NationsGlory.",
+          value: "permission",
+        },
+      ]);
     }
 
-    if (servers.length === 0) {
-      let pseudo;
-      try {
-        const response = await fetch(
-          `${config.glorybot_url}/api/get-ng?discordId=${interaction.user.id}`
-        );
-        const data = await response.json();
-        pseudo = data.pseudo || null;
-      } catch (e) {
-        pseudo = null;
-      }
-      if (!pseudo) {
-        return await interaction.respond([
-          {
-            name: "Compte NationsGlory non lié, fait le maintenant : https://glorybot.fr",
-            value: "non-lie",
-          },
-        ]);
-      } else {
-        return await interaction.respond([
-          {
-            name: "Vous n'êtes staff d'aucun serveur de NationsGlory.",
-            value: "permission",
-          },
-        ]);
-      }
-    }
+    const respondDatas = servers.map((serv) => {
+      const servname = serv.charAt(0).toUpperCase() + serv.slice(1);
+      return { name: servname, value: serv };
+    });
     await interaction.respond(respondDatas);
   },
 };

@@ -1,7 +1,6 @@
-const fs = require("node:fs");
-const path = require("node:path");
 const {
   getServerDatas,
+  saveServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
@@ -61,11 +60,7 @@ exports.run = async (client, interaction, config) => {
 
   tache.name = new_name;
 
-  const panelPath = path.join(
-    __dirname,
-    `../../data/servers/${guildColor}.json`
-  );
-  fs.writeFileSync(panelPath, JSON.stringify(serverDatas, null, 2), "utf8");
+  await saveServerDatas(interaction, serverDatas, guildColor)
 
   const goodContainer = await getEditTacheContainer(
     client,

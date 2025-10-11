@@ -1,8 +1,7 @@
 const { MessageFlags } = require("discord.js");
-const fs = require("node:fs");
-const path = require("node:path");
 const {
   getServerDatas,
+  saveServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
@@ -19,7 +18,6 @@ exports.run = async (client, interaction, config) => {
     const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
     const guildColor = await getGuildColor(interaction);
-    const panelPath = path.join(__dirname, `../../data/servers/${guildColor}.json`);
     const modifDate = await toTimeStamp(new Date());
 
     panelDatas.enable = !panelDatas.enable;
@@ -36,9 +34,9 @@ exports.run = async (client, interaction, config) => {
       action: panelDatas.enable ? "Activation du module" : "Désactivation du module",
     });
 
-    fs.writeFileSync(panelPath, JSON.stringify(serverDatas, null, 2));
+    await saveServerDatas(interaction, serverDatas, guildColor)
 
-    serverDatas = JSON.parse(fs.readFileSync(panelPath, "utf-8"));
+    serverDatas = getServerDatas(interaction, guildColor)
     const updatedPanelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
     let components;
