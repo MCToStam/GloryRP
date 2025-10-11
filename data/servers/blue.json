@@ -8,14 +8,10 @@
       "emoji": false,
       "enable": true,
       "effectif": {
-        "message": "1423767453300822198",
+        "message": "1425890768123592794",
         "channel": "1415329865120481361",
         "guild": "1415033751733538868",
         "button": [
-          {
-            "label": "test",
-            "lien": "https://google.com"
-          },
           {
             "label": "Recrutement",
             "lien": "https://test.com"
@@ -26,13 +22,31 @@
         "lien": "https://nationsglory.fr/forums/category/recrutement-moderateur.51",
         "save": [
           {
-            "titre": "Recrutement Modérateur",
-            "lien": "https://nationsglory.fr/forums/thread/recrutement-moderateur.105599",
-            "auteur": "FrostKingFR",
-            "timestamp": 1705274640,
-            "badgeColor": "#db0a0e",
-            "savedBadgeColor": "#db0a0e",
-            "messageId": "1422983064119808224"
+            "titre": "Je voudrai  être modérateurs",
+            "lien": "https://nationsglory.fr/forums/thread/je-voudrai-etre-moderateurs.139269",
+            "auteur": "Le_BOTT",
+            "timestamp": 1760197380,
+            "badgeColor": "#df1b1b",
+            "savedBadgeColor": "#df1b1b",
+            "messageId": "1426641120141770934"
+          },
+          {
+            "titre": "Candidature Modérateur -> Kosmoxx",
+            "lien": "https://nationsglory.fr/forums/thread/candidature-moderateur-gt-kosmoxx.139254",
+            "auteur": "Kosmoxx",
+            "timestamp": 1760139060,
+            "badgeColor": "#0040ff",
+            "savedBadgeColor": "#0040ff",
+            "messageId": "1426641129666773124"
+          },
+          {
+            "titre": "Candidature modérateur --> Clemdefrance2020",
+            "lien": "https://nationsglory.fr/forums/thread/candidature-moderateur-gt-clemdefrance2020.139165",
+            "auteur": "clemdefrance2020",
+            "timestamp": 1759786140,
+            "badgeColor": "#07cf2f",
+            "savedBadgeColor": "#07cf2f",
+            "messageId": "1425492546238414950"
           }
         ]
       },
@@ -70,11 +84,11 @@
       "tasks": [
         {
           "taskId": 2,
-          "name": "Plainte Anti-",
+          "name": "Plainte Anti-Jeu",
           "description": "émoji de baseeeeeeeeeeee",
           "emoji": "🎨",
-          "type": "4",
-          "url": "https://nationsglory.fr/forums/categor",
+          "type": "3",
+          "url": "https://nationsglory.fr/forums/category/plaintes.984",
           "salaire": {
             "lundi": 5000,
             "mardi": 1,
@@ -85,7 +99,8 @@
             "dimanche": 1
           },
           "grade": [
-            "2"
+            "2",
+            "1"
           ]
         },
         {
@@ -103,25 +118,10 @@
             "vendredi": 4000,
             "samedi": 4000,
             "dimanche": 4000
-          }
-        },
-        {
-          "taskId": 1,
-          "name": "Plainte Classique",
-          "description": "sah tu connais",
-          "emoji": "🎉",
-          "type": false,
-          "url": false,
-          "salaire": {
-            "lundi": 0,
-            "mardi": 0,
-            "mercredi:": 0,
-            "jeudi": 0,
-            "vendredi": 0,
-            "samedi": 0,
-            "dimanche": 0
           },
-          "grade": []
+          "grade": [
+            "1"
+          ]
         }
       ],
       "roles": {
@@ -176,6 +176,34 @@
                   "argent": 2000
                 }
               ]
+            },
+            "10_2025": {
+              "taches": [
+                {
+                  "nom": "Plainte Animée",
+                  "lien": false,
+                  "timestamp": 1760209146811,
+                  "status": "waiting",
+                  "staff": false,
+                  "argent": 0
+                },
+                {
+                  "nom": "Plainte Anti-Jeu",
+                  "lien": "https://nationsglory.fr/forums/thread/plainte-onu-n2347-bunker-illegal-sevan2311.139211",
+                  "timestamp": 1760209220640,
+                  "status": "accepted",
+                  "staff": "automatique",
+                  "argent": 0
+                },
+                {
+                  "nom": "Plainte Animée",
+                  "lien": false,
+                  "timestamp": 1760209272600,
+                  "status": "waiting",
+                  "staff": false,
+                  "argent": 4000
+                }
+              ]
             }
           }
         }
@@ -187,7 +215,7 @@
     }
   ],
   "lastUser": "719072181631320145",
-  "timestamp": 1759665778,
+  "timestamp": 1760029353,
   "logs": [
     {
       "user": "719072181631320145",
@@ -920,6 +948,126 @@
       "timestamp": 1759667199,
       "panel": 1,
       "action": "Modification du lien forum de la tâche Plainte Anti- en https://nationsglory.fr/forums/categor"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759934334,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759934490,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759934580,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759934823,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759934934,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759935058,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Animée"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759935068,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759938198,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759938506,
+      "panel": 1,
+      "action": "Activation des salaires automatiques"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759938512,
+      "panel": 1,
+      "action": "Désactivation des salaires automatiques"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759939126,
+      "panel": 1,
+      "action": "Modification du niveau de vérification de la tâche Plainte Anti- de 4 en 1"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759939135,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759939505,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760028996,
+      "panel": 1,
+      "action": "Renommmage de la tâche Plainte Anti- en Plainte Anti-Jeu"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029122,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Anti-Jeu"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029250,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029262,
+      "panel": 1,
+      "action": "Suppression du bouton d'effectif test"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029330,
+      "panel": 1,
+      "action": "Suppression du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029353,
+      "panel": 1,
+      "action": "Restauration du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029440,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
     }
   ],
   "historique": [
@@ -1195,6 +1343,14 @@
       "date": 1759523027,
       "op_id": "719072181631320145",
       "type": "up"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1760028948,
+      "op_id": "719072181631320145",
+      "type": "down"
     }
   ]
 }

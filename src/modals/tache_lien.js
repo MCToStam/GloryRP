@@ -1,10 +1,9 @@
-const fs = require("node:fs");
-const path = require("node:path");
 const {
   getServerDatas,
+  saveServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
-const { MessageFlags } = require("discord.js");
+const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const { getEditTacheContainer } = require("../../components/containers.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 
@@ -59,11 +58,7 @@ exports.run = async (client, interaction, config) => {
 
   tache.url = new_lien;
 
-  const panelPath = path.join(
-    __dirname,
-    `../../data/servers/${guildColor}.json`
-  );
-  fs.writeFileSync(panelPath, JSON.stringify(serverDatas, null, 2), "utf8");
+  await saveServerDatas(interaction, serverDatas, guildColor)
 
   const goodContainer = await getEditTacheContainer(
     client,

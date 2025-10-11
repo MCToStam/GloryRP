@@ -20,7 +20,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
   }
 
   if (errorMsg) {
-    return (erreurContainer = {
+    return ({
       type: 17,
       accent_color: config.colors.error,
       components: [
@@ -38,6 +38,31 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
         },
       ],
     });
+  }
+
+  const validTasks = panel.tasks
+    .filter(
+      (task) =>
+        task.type &&
+        task.grade &&
+        task.type !== "4" &&
+        (!task.panelId || task.panelId === panelId)
+    )
+    .slice(0, 25);
+
+  if (validTasks.length === 0) {
+    return {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        { type: 10, content: "## :no_entry_sign: Erreur" },
+        { type: 14, spacing: SeparatorSpacingSize.Large },
+        {
+          type: 10,
+          content: `Le panel **${panel.name}** n’a aucune tâche valide à afficher.`,
+        },
+      ],
+    };
   }
 
   const panelContainer = {
@@ -67,40 +92,32 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
         components: [
           {
             type: 3,
-            custom_id: `panel-tasks-${panel.id}`,
+            custom_id: `panel_tasks-${panel.id}`,
             placeholder: "Choisis une tâche",
-            options: panel.tasks
-              .filter(
-                (task) =>
-                  task.type &&
-                  task.grade &&
-                  task.type !== "4" &&
-                  task.panelId === panelId
-              )
-              .map((task) => {
-                let emoji;
-                if (task.emoji) {
-                  const customEmojiMatch = task.emoji.match(
-                    /^<a?:([a-zA-Z0-9_]+):(\d+)>$/
-                  );
-                  if (customEmojiMatch) {
-                    emoji = {
-                      name: customEmojiMatch[1],
-                      id: customEmojiMatch[2],
-                      animated: task.emoji.startsWith("<a:"),
-                    };
-                  } else {
-                    emoji = { name: task.emoji };
-                  }
+            options: validTasks.map((task) => {
+              let emoji;
+              if (task.emoji) {
+                const customEmojiMatch = task.emoji.match(
+                  /^<a?:([a-zA-Z0-9_]+):(\d+)>$/
+                );
+                if (customEmojiMatch) {
+                  emoji = {
+                    name: customEmojiMatch[1],
+                    id: customEmojiMatch[2],
+                    animated: task.emoji.startsWith("<a:"),
+                  };
+                } else {
+                  emoji = { name: task.emoji };
                 }
+              }
 
-                return {
-                  label: task.name,
-                  value: `${panel.id}_${task.taskId}`,
-                  description: task.description || undefined,
-                  ...(emoji ? { emoji } : {}),
-                };
-              }),
+              return {
+                label: task.name.substring(0, 25),
+                value: `panel_tasks-${panelId}-${String(task.taskId)}`,
+                description: task.description || undefined,
+                ...(emoji ? { emoji } : {}),
+              };
+            }),
           },
         ],
       },
@@ -113,7 +130,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
     allowedMentions: { parse: [] },
   });
 
-  return (goodContainer = {
+  return ({
     type: 17,
     accent_color: config.colors.success,
     components: [

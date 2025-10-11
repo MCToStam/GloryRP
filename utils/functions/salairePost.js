@@ -53,7 +53,7 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
   }
 
   if (errorMsg) {
-    return (erreurContainer = {
+    return ({
       type: 17,
       accent_color: config.colors.error,
       components: [
@@ -77,10 +77,16 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
     Object.entries(salaireData).map(async ([joueur, salaires]) => {
       const moisSalaires = salaires[date];
       if (!moisSalaires) return null;
-      const total = moisSalaires.taches.reduce(
+      const tachesValides = moisSalaires.taches.filter(
+        (t) => t.status !== "waiting" && t.status !== "refused"
+      );
+
+      const total = tachesValides.taches.reduce(
         (sum, t) => sum + (t.argent || 0),
         0
       );
+
+      if (total === 0) return null;
 
       let emoji = "";
       try {
@@ -145,9 +151,12 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
       const totalArgent = Object.values(salaireData).reduce((sum, salaires) => {
         const moisSalaires = salaires[date];
         if (!moisSalaires) return sum;
-        return (
-          sum + moisSalaires.taches.reduce((s, t) => s + (t.argent || 0), 0)
+
+        const tachesValides = moisSalaires.taches.filter(
+          (t) => t.status !== "waiting" && t.status !== "refused"
         );
+
+        return sum + tachesValides.reduce((s, t) => s + (t.argent || 0), 0);
       }, 0);
 
       const cmdRetrait = `> 🌐 \`\`${panel.salaire.cmd_retrait.replace(
@@ -160,10 +169,16 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
           const moisSalaires = salaires[date];
           if (!moisSalaires) return null;
 
-          const total = moisSalaires.taches.reduce(
+          const tachesValides = moisSalaires.taches.filter(
+            (t) => t.status !== "waiting" && t.status !== "refused"
+          );
+
+          const total = tachesValides.reduce(
             (sum, t) => sum + (t.argent || 0),
             0
           );
+
+          if (total === 0) return null;
 
           const cmdDon = panel.salaire.cmd_don
             .replace("[argent]", total)

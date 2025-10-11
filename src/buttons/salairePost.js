@@ -11,8 +11,16 @@ exports.run = async (client, interaction, config) => {
   const moisDisponiblesSet = new Set();
 
   Object.values(salaireData).forEach((joueurSalaires) => {
-    Object.keys(joueurSalaires).forEach((mois) => {
-      moisDisponiblesSet.add(mois);
+    Object.entries(joueurSalaires).forEach(([mois, dataMois]) => {
+      if (!dataMois || !Array.isArray(dataMois.taches)) return;
+
+      const aTacheValide = dataMois.taches.some(
+        (t) => t.status !== "waiting" && t.status !== "refused"
+      );
+
+      if (aTacheValide) {
+        moisDisponiblesSet.add(mois);
+      }
     });
   });
 

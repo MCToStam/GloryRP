@@ -1,7 +1,7 @@
 const { MessageFlags, time, userMention } = require("discord.js");
-const fs = require("node:fs");
 const {
   getGuildColor,
+  saveServerDatas,
   getServerDatas,
 } = require("../../../utils/functions/datas.js");
 const {
@@ -21,10 +21,9 @@ exports.run = async (client, interaction, config) => {
     serverDatas.timestamp = modifDate;
     panelDatas.timestamp = modifDate;
     const guildColor = await getGuildColor(interaction);
-    const panelPath = `data/servers/${guildColor}.json`;
 
     const channel = interaction.customId.split("-")[3];
-    logMap = {
+    const logMap = {
       logs: "Édition du salon des logs",
       responsable: "Édition du salon de responsable",
       tasks: "Édition du salon des tâches",
@@ -40,7 +39,7 @@ exports.run = async (client, interaction, config) => {
     });
     panelDatas.channels[channel] = channelId;
 
-    fs.writeFileSync(panelPath, JSON.stringify(serverDatas));
+    await saveServerDatas(interaction, serverDatas, guildColor)
     const components = interaction.message.components.map((row) =>
       row.toJSON()
     );

@@ -1,15 +1,20 @@
-const config = require("../../../config.js");
-const fs = require("node:fs");
 const path = require("node:path");
 const { updateEffectif } = require("../../../utils/functions/effectif.js");
 const { getEmojiTete } = require("../../../utils/functions/emojis.js");
+const {
+  discordStaff,
+  discordLink,
+} = require("../../../utils/functions/linkedUser.js");
 const {
   InteractionContextType,
   SeparatorSpacingSize,
   ButtonStyle,
   MessageFlags,
 } = require("discord.js");
-const { getServerDatas } = require("../../../utils/functions/datas.js");
+const {
+  getServerDatas,
+  saveServerDatas,
+} = require("../../../utils/functions/datas.js");
 const { createCanvas, loadImage } = require("canvas");
 
 function getContrastTextColor(colorNumber) {
@@ -271,18 +276,7 @@ exports.run = async (client, interaction, config) => {
   const tousLesRoles = panel.grade.flatMap((g) => g.roles || []);
   const rolesEnlever = tousLesRoles.filter((r) => !rolesGrade.includes(r));
 
-  let pseudonym;
-  try {
-    const response = await fetch(
-      `${config.glorybot_url}/api/get-ng?discordId=${membre.id}`
-    );
-    if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
-    const data = await response.json();
-
-    pseudonym = data.pseudo || null;
-  } catch (e) {
-    pseudonym = null;
-  }
+  const pseudonym = discordLink(interaction.user.id);
 
   let replyInteraction;
   if (pseudonym) {
@@ -608,18 +602,8 @@ exports.run = async (client, interaction, config) => {
     }
   }
 
-  const filePath = path.join(
-    __dirname,
-    "..",
-    "..",
-    "..",
-    "data",
-    "servers",
-    `${serveur}.json`
-  );
-
   try {
-    fs.writeFileSync(filePath, JSON.stringify(gradeConfig, null, 2), "utf8");
+    await saveServerDatas(interaction, gradeChoisi, serveur);
   } catch (err) {
     console.error("Erreur lors de la sauvegarde de l'historique :", err);
   }
@@ -736,48 +720,28 @@ exports.data = {
     const focusedOption = interaction.options.getFocused(true);
 
     if (focusedOption.name === "serveur") {
-      const response = await fetch(
-        config.glorystaff_url +
-          "/api/get-staff?discordId=" +
-          interaction.user.id
-      );
-      const servers = await response.json();
-      const respondDatas = [];
+      const { pseudonym, servers } = await discordStaff(interaction.user.id);
+      if (!pseudonym) {
+        return await interaction.respond([
+          {
+            name: "Compte NationsGlory non lié, fait le maintenant : https://glorybot.fr",
+            value: "non-lie",
+          },
+        ]);
+      } else if (pseudonym && servers.length === 0) {
+        return await interaction.respond([
+          {
+            name: "Vous n'êtes opérateur d'aucun serveur de NationsGlory.",
+            value: "permission",
+          },
+        ]);
+      }
 
-      for (const serv of servers) {
+      const respondDatas = servers.map((serv) => {
         const servname = serv.charAt(0).toUpperCase() + serv.slice(1);
-        respondDatas.push({ name: servname, value: serv });
-      }
-
-      if (servers.length === 0) {
-        let pseudo;
-        try {
-          const response = await fetch(
-            `${config.glorybot_url}/api/get-ng?discordId=${interaction.user.id}`
-          );
-          const data = await response.json();
-          pseudo = data.pseudo || null;
-        } catch (e) {
-          pseudo = null;
-        }
-        if (!pseudo) {
-          return await interaction.respond([
-            {
-              name: "Compte NationsGlory non lié, fait le maintenant : https://glorybot.fr",
-              value: "non-lie",
-            },
-          ]);
-        } else {
-          return await interaction.respond([
-            {
-              name: "Vous n'êtes staff d'aucun serveur de NationsGlory.",
-              value: "permission",
-            },
-          ]);
-        }
-      }
-
-      return await interaction.respond(respondDatas);
+        return { name: servname, value: serv };
+      });
+      await interaction.respond(respondDatas);
     }
 
     if (focusedOption.name === "grade") {
@@ -798,30 +762,14 @@ exports.data = {
       if (serveur === "permission") {
         return await interaction.respond([
           {
-            name: "Vous n'êtes staff d'aucun serveur de NationsGlory.",
+            name: "Vous n'êtes opérateur d'aucun serveur de NationsGlory.",
             value: "permission",
           },
         ]);
       }
 
       try {
-        const filePath = path.join(
-          __dirname,
-          "..",
-          "..",
-          "..",
-          "data",
-          "servers",
-          `${serveur}.json`
-        );
-        if (!fs.existsSync(filePath)) {
-          return await interaction.respond([
-            { name: "Aucun fichier trouvé pour ce serveur", value: "no-file" },
-          ]);
-        }
-
-        const rawData = fs.readFileSync(filePath, "utf8");
-        const json = JSON.parse(rawData);
+        const json = await getServerDatas(interaction, serveur);
 
         if (!json.panels || json.panels.length === 0) {
           return await interaction.respond([

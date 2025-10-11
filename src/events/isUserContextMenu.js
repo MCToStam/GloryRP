@@ -1,5 +1,6 @@
 const log = require('../../utils/modules/logger.js');
-const { MessageFlags } = require("discord.js");
+const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
+const config = require('../../config.js');
 
 module.exports = async (client, interaction) => {
 	const userCmd = client.container.userCmds.get(interaction.commandName);

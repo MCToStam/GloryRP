@@ -1,7 +1,6 @@
-const fs = require("node:fs");
-const path = require("node:path");
 const {
   getServerDatas,
+  saveServerDatas,
 } = require("../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const { getGradeContainer } = require("../../components/containers.js");
@@ -15,9 +14,7 @@ exports.run = async (client, interaction, config) => {
   const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
-  const panelIndex = panelDatas.grade.findIndex(
-    (x) => x.gradeId === gradeId
-  );
+  const panelIndex = panelDatas.grade.findIndex((x) => x.gradeId === gradeId);
   if (panelIndex === -1) {
     const errorContainer = {
       type: 17,
@@ -62,11 +59,7 @@ exports.run = async (client, interaction, config) => {
   serverDatas.lastUser = interaction.user.id;
   serverDatas.timestamp = Math.floor(Date.now() / 1000);
 
-  const panelPath = path.join(
-    __dirname,
-    `../../data/servers/${guildColor}.json`
-  );
-  fs.writeFileSync(panelPath, JSON.stringify(serverDatas, null, 2));
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = {
     type: 17,

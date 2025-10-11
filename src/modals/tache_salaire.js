@@ -1,7 +1,6 @@
-const fs = require("node:fs");
-const path = require("node:path");
 const {
   getServerDatas,
+  saveServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
@@ -12,7 +11,7 @@ exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
   const taskId = Number(interaction.customId.split("-")[2]);
 
-  const jour = interaction.fields.getSelectValue("jour")[0];
+  const jour = interaction.fields.getStringSelectValues("jour")[0];
   const new_salaire = interaction.fields.getTextInputValue("new_salaire");
 
   const salaireNumber = Number(new_salaire.replace(/\./g, ""));
@@ -31,8 +30,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 10,
-          content:
-            "Le salaire doit être un nombre.",
+          content: "Le salaire doit être un nombre.",
         },
       ],
     };
@@ -50,8 +48,8 @@ exports.run = async (client, interaction, config) => {
   const tache = panelDatas.tasks.find((t) => t.taskId === taskId);
 
   const modifDate = await toTimeStamp(new Date());
-  
-  let jour_text
+
+  let jour_text;
   if (jour.toLowerCase() === "all") {
     jour_text = "tous les jours";
     for (const key of Object.keys(tache.salaire)) {
@@ -77,11 +75,7 @@ exports.run = async (client, interaction, config) => {
     action: `Modification du salaire de la tâche ${tache.name} en ${new_salaire} ${jour_text}`,
   });
 
-  const panelPath = path.join(
-    __dirname,
-    `../../data/servers/${guildColor}.json`
-  );
-  fs.writeFileSync(panelPath, JSON.stringify(serverDatas, null, 2), "utf8");
+  await saveServerDatas(interaction, serverDatas, guildColor)
 
   const goodContainer = await getEditTacheContainer(
     client,

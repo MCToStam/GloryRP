@@ -9,6 +9,7 @@ const {
 } = require("discord.js");
 const { getServerDatas } = require("../../../utils/functions/datas.js");
 const { getlogContainer } = require("../../../components/logContainer.js");
+const { discordStaff } = require("../../../utils/functions/linkedUser.js");
 
 exports.run = async (client, interaction, config) => {
   const serv = interaction.options.getString("serveur").toLowerCase();
@@ -141,7 +142,12 @@ exports.run = async (client, interaction, config) => {
   const panelId = interaction.options.getString("panel").toLowerCase();
 
   const serverDatas = await getServerDatas(interaction, serv);
-  const { error, component: logContainer } = await getlogContainer(serverDatas, panelId, serv, 1);
+  const { error, component: logContainer } = await getlogContainer(
+    serverDatas,
+    panelId,
+    serv,
+    1
+  );
   return interaction.reply({
     components: [logContainer],
     flags: error
@@ -175,48 +181,28 @@ exports.data = {
     const focusedOption = interaction.options.getFocused(true);
 
     if (focusedOption.name === "serveur") {
-      const response = await fetch(
-        config.glorystaff_url +
-          "/api/get-staff?discordId=" +
-          interaction.user.id
-      );
-      const servers = await response.json();
-      const respondDatas = [];
+      const { pseudonym, servers } = await discordStaff(interaction.user.id);
+      if (!pseudonym) {
+        return await interaction.respond([
+          {
+            name: "Compte NationsGlory non lié, fait le maintenant : https://glorybot.fr",
+            value: "non-lie",
+          },
+        ]);
+      } else if (pseudonym && servers.length === 0) {
+        return await interaction.respond([
+          {
+            name: "Vous n'êtes opérateur d'aucun serveur de NationsGlory.",
+            value: "permission",
+          },
+        ]);
+      }
 
-      for (const serv of servers) {
+      const respondDatas = servers.map((serv) => {
         const servname = serv.charAt(0).toUpperCase() + serv.slice(1);
-        respondDatas.push({ name: servname, value: serv });
-      }
-
-      if (servers.length === 0) {
-        let pseudo;
-        try {
-          const response = await fetch(
-            `${config.glorybot_url}/api/get-ng?discordId=${interaction.user.id}`
-          );
-          const data = await response.json();
-          pseudo = data.pseudo || null;
-        } catch (e) {
-          pseudo = null;
-        }
-        if (!pseudo) {
-          return await interaction.respond([
-            {
-              name: "Compte NationsGlory non lié, fait le maintenant : https://glorybot.fr",
-              value: "non-lie",
-            },
-          ]);
-        } else {
-          return await interaction.respond([
-            {
-              name: "Vous n'êtes staff d'aucun serveur de NationsGlory.",
-              value: "permission",
-            },
-          ]);
-        }
-      }
-
-      return await interaction.respond(respondDatas);
+        return { name: servname, value: serv };
+      });
+      await interaction.respond(respondDatas);
     }
 
     if (focusedOption.name === "panel") {
