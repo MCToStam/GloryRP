@@ -315,6 +315,8 @@ exports.run = async (client, interaction, config) => {
 
   const salaireToday = tache.salaire[today] ?? 0;
 
+  let message;
+
   if (tache.type !== "3") {
     const tacheContainer = {
       type: 17,
@@ -381,7 +383,7 @@ exports.run = async (client, interaction, config) => {
       ],
     };
 
-    await respChannel.send({
+    message = await respChannel.send({
       components: [tacheContainer],
       flags: MessageFlags.IsComponentsV2,
       allowedMentions: { parse: [] },
@@ -405,7 +407,7 @@ exports.run = async (client, interaction, config) => {
             interaction.user.id
           }> :\n> Détails : ${
             foundTitre ? foundTitre : details
-          }\n> Salaire Attribué : ${salaireToday}$`,
+          }\n> Salaire Attribué : ${salaireToday}$\n> Acceptée automatiquement`,
         },
         {
           type: 14,
@@ -424,18 +426,12 @@ exports.run = async (client, interaction, config) => {
                   },
                 ]
               : []),
-            {
-              type: 2,
-              custom_id: `task_retirer-${panelId}-${taskId}-${interaction.user.id}`,
-              label: "❌ Retirer la Tâche",
-              style: ButtonStyle.Danger,
-            },
           ],
         },
       ],
     };
 
-    await logsChannel.send({
+    message = await logsChannel.send({
       components: [tacheContainer],
       flags: MessageFlags.IsComponentsV2,
       allowedMentions: { parse: [] },
@@ -454,14 +450,17 @@ exports.run = async (client, interaction, config) => {
 
   panelDatas.salaire.salaire[pseudonym][key].taches.push({
     nom: tache.name,
+    emoji: tache.emoji,
     lien: foundUrl ?? false,
+    details: foundTitre ?? details,
     timestamp: Date.now(),
     status: tache.type === "3" ? "accepted" : "waiting",
     staff: tache.type === "3" ? "automatique" : false,
     argent: salaireToday,
+    messageId: message.id,
   });
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = {
     type: 17,

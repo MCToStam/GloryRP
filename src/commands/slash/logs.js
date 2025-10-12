@@ -107,10 +107,7 @@ exports.run = async (client, interaction, config) => {
     });
   }
 
-  const response = await fetch(
-    config.glorystaff_url + "/api/get-staff?discordId=" + interaction.user.id
-  );
-  const servers = await response.json();
+  const { pseudonym, servers } = await discordStaff(interaction.user.id);
   if (!servers.includes(serv)) {
     const capitalizedServeur = serv.charAt(0).toUpperCase() + serv.slice(1);
     const emojiId = config.emoji[serv.toLowerCase()];
