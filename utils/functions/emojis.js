@@ -8,10 +8,16 @@ let emojisCache = fs.existsSync(cachePath)
   ? JSON.parse(fs.readFileSync(cachePath, "utf8"))
   : {};
 
+let guildCache = null;
+
 async function getEmojiTete(client, joueur) {
-  const guild = await client.guilds.fetch("1349379748576366633");
   const key = joueur.toLowerCase();
   const now = Date.now();
+
+  if (!guildCache) {
+    guildCache = await client.guilds.fetch("1349379748576366633");
+  }
+  const guild = guildCache;
 
   if (emojisCache[key]) {
     const cached = guild.emojis.cache.get(emojisCache[key].emojiId);
@@ -38,16 +44,20 @@ async function getEmojiTete(client, joueur) {
     nom: joueur,
     createdAt: now,
   };
-  fs.writeFileSync(cachePath, JSON.stringify(emojisCache, null, 2));
+  fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
 
   return emoji;
 }
 
 async function getHexEmoji(client, hexColor) {
-  const guild = await client.guilds.fetch("1349379748576366633");
   const now = Date.now();
   const key = hexColor.toLowerCase()
   const colorKey = hexColor.toLowerCase();
+
+  if (!guildCache) {
+    guildCache = await client.guilds.fetch("1349379748576366633");
+  }
+  const guild = guildCache;
 
   const existingColorEmoji = Object.values(emojisCache).find(e => e.color === colorKey);
   if (existingColorEmoji) {
@@ -58,7 +68,7 @@ async function getHexEmoji(client, hexColor) {
         color: colorKey,
         createdAt: now
       };
-      fs.writeFileSync(cachePath, JSON.stringify(emojisCache, null, 2));
+      fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
       return emoji;
     }
   }
@@ -83,14 +93,14 @@ async function getHexEmoji(client, hexColor) {
     color: colorKey,
     createdAt: now
   };
-  fs.writeFileSync(cachePath, JSON.stringify(emojisCache, null, 2));
+  fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
 
   setTimeout(async () => {
     try {
       const stillHere = guild.emojis.cache.get(emoji.id);
       if (stillHere) await stillHere.delete();
       delete emojisCache[key];
-      fs.writeFileSync(cachePath, JSON.stringify(emojisCache, null, 2));
+      fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
     } catch (e) {
       console.warn(`Erreur suppression emoji ${emoji.id}:`, e.message);
     }
@@ -100,7 +110,11 @@ async function getHexEmoji(client, hexColor) {
 }
 
 async function checkEmojiCache(client) {
-  const guild = await client.guilds.fetch("1349379748576366633");
+  if (!guildCache) {
+    guildCache = await client.guilds.fetch("1349379748576366633");
+  }
+  const guild = guildCache;
+
   try {
     const now = Date.now();
 
@@ -136,7 +150,7 @@ async function checkEmojiCache(client) {
               console.log(`🗑️ Emoji ${stillHere.name} supprimé (planifié)`);
             }
             delete emojisCache[key];
-            fs.writeFileSync(cachePath, JSON.stringify(emojisCache, null, 2));
+            fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
           } catch (e) {
             console.warn(`⚠️ Erreur suppression emoji ${emojiId}:`, e.message);
           }
@@ -144,7 +158,7 @@ async function checkEmojiCache(client) {
       }
     }
 
-    fs.writeFileSync(cachePath, JSON.stringify(emojisCache, null, 2));
+    fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
   } catch (e) {}
 }
 

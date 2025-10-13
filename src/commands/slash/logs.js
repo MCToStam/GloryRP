@@ -1,4 +1,3 @@
-const config = require("../../../config.js");
 const fs = require("node:fs");
 const path = require("node:path");
 const {
