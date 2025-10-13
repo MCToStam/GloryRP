@@ -1,17 +1,42 @@
 {
+  "tostam": {
+    "emojiId": "1427357626026426509",
+    "nom": "ToStam",
+    "createdAt": 1760378977447
+  },
   "le_bott": {
-    "emojiId": "1426906918592446505",
+    "emojiId": "1427364676840325252",
     "nom": "Le_BOTT",
-    "createdAt": 1760271519831
+    "createdAt": 1760380658282
   },
   "kosmoxx": {
-    "emojiId": "1426906919507066921",
+    "emojiId": "1427364678098485351",
     "nom": "Kosmoxx",
-    "createdAt": 1760271520182
+    "createdAt": 1760380658660
   },
   "clemdefrance2020": {
-    "emojiId": "1426906921205501964",
+    "emojiId": "1427364679281283145",
     "nom": "clemdefrance2020",
-    "createdAt": 1760271520548
+    "createdAt": 1760380658930
+  },
+  "#ff0002": {
+    "emojiId": "1427370194573201429",
+    "color": "#ff0002",
+    "createdAt": 1760381971106
+  },
+  "#ff0000": {
+    "emojiId": "1427370195915378698",
+    "color": "#ff0000",
+    "createdAt": 1760381973524
+  },
+  "#FF0002": {
+    "emojiId": "1427370194573201429",
+    "color": "#ff0002",
+    "createdAt": 1760381982142
+  },
+  "#FF0000": {
+    "emojiId": "1427370195915378698",
+    "color": "#ff0000",
+    "createdAt": 1760381982143
   }
 }
