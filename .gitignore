@@ -1,2 +1,6 @@
+.vscode
+.env
 package-lock.json
 node_modules/
+components/json/
+eslint.config.mjs
