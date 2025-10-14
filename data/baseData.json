@@ -20,9 +20,9 @@
   "grade": [],
   "tasks": [],
   "roles": {
-    "salaire": false,
-    "candidature": false,
-    "depotdeplainte": false
+    "salaire": [],
+    "candidature": [],
+    "depotdeplainte": []
   },
   "channels": {
     "logs": false,
