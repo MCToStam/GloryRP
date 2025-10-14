@@ -302,7 +302,6 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
     } ${variation}`;
   });
 
-  let chartBuffer = null;
   let attachments = [];
   if (valeurs.length >= 2) {
     const canvas = createCanvas(400, 200);
@@ -370,6 +369,12 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
           label: "⬅️ Retour",
           style: ButtonStyle.Primary,
         },
+        {
+          type: 2,
+          custom_id: `salaire_tache-${joueur}-${panelId}-${serv}-${currentMonth}_${currentYear}`,
+          label: "📜 Afficher les Tâches",
+          style: ButtonStyle.Primary,
+        },
       ],
     }
   );
@@ -384,4 +389,147 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
   };
 }
 
-module.exports = { getSalaireContainer, getJoueurSalaireContainer };
+async function getJoueurTacheContainer(
+  client,
+  joueur,
+  serverDatas,
+  panel,
+  serv,
+  mois = "current"
+) {
+  const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
+  const panelId = Number(panel);
+
+  const panelDatas = serverDatas.panels.find((p) => p.id === panelId);
+  if (!panelDatas) {
+    return {
+      error: true,
+      component: {
+        type: 17,
+        accent_color: config.colors.error,
+        components: [
+          { type: 10, content: "## :no_entry: Panel Introuvable" },
+          { type: 14, spacing: SeparatorSpacingSize.Large },
+          { type: 10, content: `Le panel **${panel}** n'existe pas.` },
+        ],
+      },
+    };
+  }
+
+  const date = new Date();
+  const currentMonth = date.getMonth() + 1;
+  const currentYear = date.getFullYear();
+
+  let targetMonth, targetYear;
+  if (mois === "current") {
+    targetMonth = currentMonth;
+    targetYear = currentYear;
+  } else {
+    const [m, y] = mois.split("_");
+    targetMonth = parseInt(m);
+    targetYear = parseInt(y);
+  }
+
+  const key = `${String(targetMonth).padStart(2, "0")}_${targetYear}`;
+  const joueurSalaire = panelDatas.salaire.salaire[joueur] || {};
+  const tachesData = joueurSalaire[key]?.taches || [];
+
+  const moisNom = nom_mois[targetMonth - 1] || targetMonth;
+
+  const acceptedTasks = tachesData.filter((t) => t.status === "accepted");
+  const waitingTasks = tachesData.filter((t) => t.status === "waiting");
+  const refusedTasks = tachesData.filter((t) => t.status === "refused");
+
+  const formatTache = async (t) => {
+    const argent =
+      t.argent !== null && t.argent !== undefined
+        ? `${t.argent.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}$`
+        : "-";
+    const lien = t.lien ? `[${t.nom}](${t.lien})` : t.nom;
+
+    let staffTexte = "";
+    if (t.staff === "automatique") {
+      staffTexte = "automatiquement";
+    } else if (t.staff) {
+      const emoji = await getEmojiTete(client, t.staff);
+      staffTexte = `par ${emoji} **${t.staff || "inconnu"}**`;
+    }
+
+    if (t.status === "accepted") {
+      return `- **${lien}** : ${argent}, acceptée ${staffTexte}`;
+    } else if (t.status === "waiting") {
+      return `- **${lien}** : ${argent}`;
+    } else {
+      return `- **${lien}** : ${argent}, refusée ${staffTexte}`;
+    }
+  };
+
+  const acceptedLines =
+    acceptedTasks.length > 0
+      ? (await Promise.all(acceptedTasks.map(formatTache))).join("\n")
+      : "_Aucune tâche acceptée ce mois-ci._";
+
+  const waitingLines =
+    waitingTasks.length > 0
+      ? (await Promise.all(waitingTasks.map(formatTache))).join("\n")
+      : "_Aucune tâche en attente ce mois-ci._";
+
+  const refusedLines =
+    refusedTasks.length > 0
+      ? (await Promise.all(refusedTasks.map(formatTache))).join("\n")
+      : "_Aucune tâche refusée ce mois-ci._";
+
+  const { mois_precedent, annee_precedent, mois_suivant, annee_suivant } =
+    getMonthNavigation(targetMonth, targetYear);
+
+  const isCurrentMonth =
+    mois_suivant > currentMonth && annee_suivant === currentYear
+      ? true
+      : annee_suivant > currentYear;
+
+  const components = [
+    {
+      type: 10,
+      content: `## 📝 Tâches du Role-Play ${servName} - ${panelDatas.name} (${moisNom} ${targetYear})`,
+    },
+    { type: 14, spacing: SeparatorSpacingSize.Large },
+    { type: 10, content: `### ✅ Tâches Acceptées\n${acceptedLines}` },
+    { type: 14, spacing: SeparatorSpacingSize.Small },
+    { type: 10, content: `### ⏳ Tâches en Attente\n${waitingLines}` },
+    { type: 14, spacing: SeparatorSpacingSize.Small },
+    { type: 10, content: `### ❌ Tâches Refusées\n${refusedLines}` },
+    { type: 14, spacing: SeparatorSpacingSize.Small },
+    {
+      type: 1,
+      components: [
+        {
+          type: 2,
+          custom_id: `salaire_tache-${joueur}-${panelId}-${serv}-${mois_precedent}_${annee_precedent}`,
+          label: "⬅️ Mois précédent",
+          style: ButtonStyle.Primary,
+        },
+        {
+          type: 2,
+          custom_id: `salaire_tache-${joueur}-${panelId}-${serv}-${mois_suivant}_${annee_suivant}`,
+          label: "➡️ Mois suivant",
+          style: ButtonStyle.Primary,
+          disabled: isCurrentMonth,
+        },
+      ],
+    },
+  ];
+
+  return {
+    component: {
+      type: 17,
+      accent_color: config.couleur[serv],
+      components,
+    },
+  };
+}
+
+module.exports = {
+  getSalaireContainer,
+  getJoueurSalaireContainer,
+  getJoueurTacheContainer,
+};
