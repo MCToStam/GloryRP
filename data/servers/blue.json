@@ -1,6 +1,1328 @@
 {
-  "panels": [],
-  "lastUser": false,
-  "timestamp": false,
-  "logs": []
+  "guild": "1415033751733538868",
+  "panels": [
+    {
+      "id": 1,
+      "name": "Avocat",
+      "description": false,
+      "emoji": false,
+      "enable": true,
+      "effectif": {
+        "message": "1425890768123592794",
+        "channel": "1415329865120481361",
+        "guild": "1415033751733538868",
+        "button": [
+          {
+            "label": "Recrutement",
+            "lien": "https://test.com"
+          }
+        ]
+      },
+      "candidature": {
+        "lien": "https://nationsglory.fr/forums/category/recrutement-moderateur.51",
+        "save": [
+          {
+            "titre": "Je voudrai  être modérateurs",
+            "lien": "https://nationsglory.fr/forums/thread/je-voudrai-etre-moderateurs.139269",
+            "auteur": "Le_BOTT",
+            "timestamp": 1760197380,
+            "badgeColor": "#df1b1b",
+            "savedBadgeColor": "#df1b1b",
+            "messageId": "1426641120141770934"
+          },
+          {
+            "titre": "Candidature Modérateur -> Kosmoxx",
+            "lien": "https://nationsglory.fr/forums/thread/candidature-moderateur-gt-kosmoxx.139254",
+            "auteur": "Kosmoxx",
+            "timestamp": 1760139060,
+            "badgeColor": "#0040ff",
+            "savedBadgeColor": "#0040ff",
+            "messageId": "1426641129666773124"
+          },
+          {
+            "titre": "Candidature modérateur --> Clemdefrance2020",
+            "lien": "https://nationsglory.fr/forums/thread/candidature-moderateur-gt-clemdefrance2020.139165",
+            "auteur": "clemdefrance2020",
+            "timestamp": 1759786140,
+            "badgeColor": "#07cf2f",
+            "savedBadgeColor": "#07cf2f",
+            "messageId": "1425492546238414950"
+          }
+        ]
+      },
+      "depotdeplainte": {
+        "lien": "https://nationsglory.fr/forums/depottt"
+      },
+      "grade": [
+        {
+          "gradeId": 1,
+          "nom": "Rédacteur",
+          "couleur": "#FF0002",
+          "tier": "5",
+          "role": [
+            "1415349412619751484"
+          ],
+          "roles": [
+            "1415349412619751484",
+            "1415349551119859733",
+            "1415035439454224469",
+            "1415037023328272486"
+          ],
+          "listeRp": [
+            "719072181631320145"
+          ]
+        },
+        {
+          "gradeId": 2,
+          "nom": "Test",
+          "couleur": "#FF0000",
+          "tier": "2",
+          "role": [],
+          "listeRp": []
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": 2,
+          "name": "Plainte Anti-Jeu",
+          "description": "émoji de baseeeeeeeeeeee",
+          "emoji": "🎨",
+          "type": "3",
+          "url": "https://nationsglory.fr/forums/category/plaintes.984",
+          "salaire": {
+            "lundi": 5000,
+            "mardi": 1,
+            "mercredi:": 1,
+            "jeudi": 1,
+            "vendredi": 1,
+            "samedi": 1,
+            "dimanche": 1
+          },
+          "grade": [
+            "2",
+            "1"
+          ]
+        },
+        {
+          "taskId": 3,
+          "name": "Plainte Animée",
+          "description": "émoji animé",
+          "emoji": "<a:test:1417844331443916860>",
+          "type": "1",
+          "url": "https://nationsglory.fr/forums/category/recaps-onu.414",
+          "salaire": {
+            "lundi": 4000,
+            "mardi": 4000,
+            "mercredi:": 4000,
+            "jeudi": 4000,
+            "vendredi": 4000,
+            "samedi": 4000,
+            "dimanche": 4000
+          },
+          "grade": [
+            "1"
+          ]
+        }
+      ],
+      "roles": {
+        "salaire": [
+          "1415349551119859733",
+          "1415035439454224469"
+        ],
+        "candidature": [
+          "1415035439454224469",
+          "1415037023328272486"
+        ],
+        "depotdeplainte": [
+          "1415035439454224469",
+          "1415037023328272486"
+        ]
+      },
+      "channels": {
+        "logs": "1415329865120481361",
+        "responsable": "1415329865120481361",
+        "tasks": "1415329865120481361",
+        "salaire": "1415329865120481361",
+        "effectif": "1415329865120481361",
+        "candidature": "1415329865120481361",
+        "depotdeplainte": "1422255440661840070"
+      },
+      "salaire": {
+        "automatique": false,
+        "cmd_retrait": "/econ bank take ONU [argent]",
+        "cmd_don": "/eco give [joueur] [argent]",
+        "salaire": {
+          "ToStam": {
+            "09_2025": {
+              "taches": [
+                {
+                  "nom": "Résumé ONU",
+                  "lien": "XXX",
+                  "timestamp": "",
+                  "status": "accepted",
+                  "staff": "ToStam",
+                  "argent": 2000
+                }
+              ]
+            },
+            "08_2025": {
+              "taches": [
+                {
+                  "nom": "Résumé ONU",
+                  "lien": "XXX",
+                  "timestamp": "",
+                  "status": "accepted",
+                  "staff": "ToStam",
+                  "argent": 2000
+                }
+              ]
+            }
+          }
+        }
+      },
+      "timestamp": 1759522992,
+      "lastUser": "719072181631320145",
+      "panels": [],
+      "delete": false
+    }
+  ],
+  "lastUser": "719072181631320145",
+  "timestamp": 1760029353,
+  "logs": [
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213358,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213363,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758213368,
+      "panel": 1,
+      "action": "Édition du salon des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758215101,
+      "panel": 1,
+      "action": "Désactivation du module"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758215105,
+      "panel": 1,
+      "action": "Activation du module"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758318660,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356271,
+      "panel": 1,
+      "action": "Édition du salon de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356276,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356526,
+      "panel": 1,
+      "action": "Renommmage du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356531,
+      "panel": 1,
+      "action": "Édition de l'émoji du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356620,
+      "panel": 1,
+      "action": "Activation des salaires automatiques"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758356622,
+      "panel": 1,
+      "action": "Édition des commandes de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357597,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357673,
+      "panel": 1,
+      "action": "Désactivation du module"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357675,
+      "panel": 1,
+      "action": "Activation du module"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357680,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357683,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758357740,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784387,
+      "panel": 1,
+      "action": "Renommmage du grade Grade 1 en Rédacteur"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784465,
+      "panel": 1,
+      "action": "Renommmage du grade Rédacteur en Rédacteur"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784553,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #FF0000 en undefined"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784587,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #FA0000 en undefined"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784730,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #ffa500 en undefined"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758784740,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #FFA500 en undefined"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758786396,
+      "panel": 1,
+      "action": "Suppression du grade Rédacteur"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758816985,
+      "panel": 1,
+      "action": "Désactivation des salaires automatiques"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758817178,
+      "panel": 1,
+      "action": "Modification du tier du grade Rédacteur de 4 en 3"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758817201,
+      "panel": 1,
+      "action": "Modification du tier du grade Rédacteur de 3 en 5"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758817229,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #FFA500 en #FF0000"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758817303,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #FF0000 en #FF0000"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758817317,
+      "panel": 1,
+      "action": "Modification de la couleur du grade Rédacteur de #FF0000 en #FF0001"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758821740,
+      "panel": 1,
+      "action": "Modification des rôles du grade Rédacteur"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758821818,
+      "panel": 1,
+      "action": "Modification des rôles du grade Rédacteur"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758965173,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758965177,
+      "panel": 1,
+      "action": "Édition du salon de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758972983,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758973432,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758973471,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758973502,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758973622,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758973701,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974006,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974067,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974095,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974152,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974200,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758974680,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758977588,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1758977599,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759008947,
+      "panel": 1,
+      "action": "Édition du salon de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759008953,
+      "panel": 1,
+      "action": "Édition du salon de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759056779,
+      "panel": 1,
+      "action": "Modification du bouton Recrutement"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759056785,
+      "panel": 1,
+      "action": "Modification du bouton Recrutement"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759056790,
+      "panel": 1,
+      "action": "Modification du bouton Test"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759056924,
+      "panel": 1,
+      "action": "Création du bouton tt"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759056950,
+      "panel": 1,
+      "action": "Modification du bouton tt"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759057000,
+      "panel": 1,
+      "action": "Modification du bouton Google"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759057246,
+      "panel": 1,
+      "action": "Suppression du bouton d'effectif Googleeee"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759057268,
+      "panel": 1,
+      "action": "Suppression du bouton d'effectif Googleeee"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759057338,
+      "panel": 1,
+      "action": "Création du bouton d'effectif t"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759057343,
+      "panel": 1,
+      "action": "Création du bouton d'effectif aaa"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759057345,
+      "panel": 1,
+      "action": "Suppression du bouton d'effectif t"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059089,
+      "panel": 1,
+      "action": "Création du bouton d'effectif t"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059103,
+      "panel": 1,
+      "action": "Création du bouton d'effectif aaaaaaa"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059170,
+      "panel": 1,
+      "action": "Suppression du bouton d'effectif aaaaaaa"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059190,
+      "panel": 1,
+      "action": "Création du bouton d'effectif test"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059484,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059496,
+      "panel": 1,
+      "action": "Suppression du bouton d'effectif t"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059497,
+      "panel": 1,
+      "action": "Suppression du bouton d'effectif aaa"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059500,
+      "panel": 1,
+      "action": "Suppression du bouton d'effectif test"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059506,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059546,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059586,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059606,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059628,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059770,
+      "panel": 1,
+      "action": "Création du bouton d'effectif Google"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059777,
+      "panel": 1,
+      "action": "Modification du bouton d'effectif Google"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059779,
+      "panel": 1,
+      "action": "Suppression du bouton d'effectif Googleee"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759059998,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759060002,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759060005,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759086698,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759086728,
+      "panel": 1,
+      "action": "Création du bouton d'effectif test"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759086768,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759137505,
+      "panel": 1,
+      "action": "Édition du rôle mentionné lors de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759137536,
+      "panel": 1,
+      "action": "Édition du rôle mentionné lors de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759137902,
+      "panel": 1,
+      "action": "Édition du rôle mentionné lors de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759137982,
+      "panel": 1,
+      "action": "Édition du rôle mentionné lors de salaire"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759138463,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759138580,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759138592,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759162836,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759162839,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759163067,
+      "panel": 1,
+      "action": "Édition du lien forum de candidature"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759258123,
+      "panel": 1,
+      "action": "Édition du lien forum du dépot de plainte"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759258166,
+      "panel": 1,
+      "action": "Édition du lien forum de candidature"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759258172,
+      "panel": 1
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759258176,
+      "panel": 1,
+      "action": "Édition du lien forum de candidature"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759389207,
+      "panel": 1,
+      "action": "Suppression du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759389280,
+      "panel": 1,
+      "action": "Suppression du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759389591,
+      "panel": 1,
+      "action": "Restauration du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759389693,
+      "panel": 1,
+      "action": "Restauration du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759389764,
+      "panel": 1,
+      "action": "Restauration du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759430865,
+      "panel": 1,
+      "action": "Édition de la description du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759430873,
+      "panel": 1,
+      "action": "Édition de l'émoji du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759522992,
+      "panel": 1,
+      "action": "Édition du salon d'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759523010,
+      "panel": 1,
+      "action": "Création du bouton d'effectif Recrutement"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759523013,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759523101,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759654293,
+      "panel": 1,
+      "action": "Suppression de la tâche Résumé ONU"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759654640,
+      "panel": 1,
+      "action": "Renommmage de la tâche Plainte Anti-Jeu en Plainte Anti-"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759654983,
+      "panel": 1,
+      "action": "Modification du niveau de vérification de la tâche Plainte Anti- de 1 en 2"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759654986,
+      "panel": 1,
+      "action": "Modification du niveau de vérification de la tâche Plainte Anti- de 2 en 4"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759655389,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Anti-"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759655515,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Anti-"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759655579,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Anti-"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759655723,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Anti-"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759658375,
+      "panel": 1,
+      "action": "Modification de la description de la tâche Plainte Anti- en émoji de baseeeeeeeeeeee"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759658382,
+      "panel": 1,
+      "action": "Modification de l'émoji de la tâche Plainte Anti- en 🎨"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759661072,
+      "panel": 1,
+      "action": "Modification du salaire de la tâche Plainte Anti- en 1 tous les jours"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759661080,
+      "panel": 1,
+      "action": "Modification du salaire de la tâche Plainte Anti- en 5000 le lundi"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759665778,
+      "panel": 1,
+      "action": "Création de la tâche Plainte Classique"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759667199,
+      "panel": 1,
+      "action": "Modification du lien forum de la tâche Plainte Anti- en https://nationsglory.fr/forums/categor"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759934334,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759934490,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759934580,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759934823,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759934934,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759935058,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Animée"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759935068,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759938198,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759938506,
+      "panel": 1,
+      "action": "Activation des salaires automatiques"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759938512,
+      "panel": 1,
+      "action": "Désactivation des salaires automatiques"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759939126,
+      "panel": 1,
+      "action": "Modification du niveau de vérification de la tâche Plainte Anti- de 4 en 1"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759939135,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1759939505,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760028996,
+      "panel": 1,
+      "action": "Renommmage de la tâche Plainte Anti- en Plainte Anti-Jeu"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029122,
+      "panel": 1,
+      "action": "Modification des grades autorisés de la tâche Plainte Anti-Jeu"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029250,
+      "panel": 1,
+      "action": "Envoie de l'effectif"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029262,
+      "panel": 1,
+      "action": "Suppression du bouton d'effectif test"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029330,
+      "panel": 1,
+      "action": "Suppression du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029353,
+      "panel": 1,
+      "action": "Restauration du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760029440,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    }
+  ],
+  "historique": [
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758962753,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1758963129,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758963167,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758963300,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758963449,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758963518,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758963912,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1758964257,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1758964269,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1758964331,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1758964385,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758964438,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1758974993,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1758975100,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758975178,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758975239,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758975265,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758975353,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758975415,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1758975440,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1758975457,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1758975521,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1758977704,
+      "op_id": "719072181631320145"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1759005975,
+      "op_id": "719072181631320145",
+      "type": false
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1759006187,
+      "op_id": "719072181631320145",
+      "type": "down"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1759006212,
+      "op_id": "719072181631320145",
+      "type": "down"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1759006388,
+      "op_id": "719072181631320145",
+      "type": "down"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1759006523,
+      "op_id": "719072181631320145",
+      "type": "down"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1759006632,
+      "op_id": "719072181631320145",
+      "type": "up"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1759007109,
+      "op_id": "719072181631320145",
+      "type": "down"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1759007213,
+      "op_id": "719072181631320145",
+      "type": "down"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1759007954,
+      "op_id": "719072181631320145",
+      "type": "down"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1759008334,
+      "op_id": "719072181631320145",
+      "type": "up"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1759009301,
+      "op_id": "719072181631320145",
+      "type": "down"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Joueur",
+      "panel": false,
+      "date": 1759009341,
+      "op_id": "719072181631320145",
+      "type": "down"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Test",
+      "panel": "Avocat",
+      "date": 1759009407,
+      "op_id": "719072181631320145",
+      "type": "up"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1759523027,
+      "op_id": "719072181631320145",
+      "type": "up"
+    },
+    {
+      "pseudo": "ToStam",
+      "grade": "Rédacteur",
+      "panel": "Avocat",
+      "date": 1760028948,
+      "op_id": "719072181631320145",
+      "type": "down"
+    }
+  ]
 }

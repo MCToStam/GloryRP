@@ -1,22 +1,7 @@
 {
   "tostam": {
-    "emojiId": "1427706787548762272",
+    "emojiId": "1428015791126745310",
     "nom": "ToStam",
-    "createdAt": 1760462223523
-  },
-  "le_bott": {
-    "emojiId": "1427707157637365841",
-    "nom": "Le_BOTT",
-    "createdAt": 1760462311759
-  },
-  "kosmoxx": {
-    "emojiId": "1427707159235530955",
-    "nom": "Kosmoxx",
-    "createdAt": 1760462312093
-  },
-  "clemdefrance2020": {
-    "emojiId": "1427707161043140752",
-    "nom": "clemdefrance2020",
-    "createdAt": 1760462312653
+    "createdAt": 1760535896433
   }
 }
