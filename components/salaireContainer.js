@@ -358,6 +358,21 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
     );
   }
 
+  let latestMonth = currentMonth;
+  let latestYear = currentYear;
+
+  if (sortedSalaire.length > 0) {
+    const [latestKey, latestData] = [...sortedSalaire]
+      .reverse()
+      .find(([, data]) => (data.taches || []).length > 0) || [null, null];
+
+    if (latestKey) {
+      const [moisRec, anneeRec] = latestKey.split("_").map(Number);
+      latestMonth = moisRec;
+      latestYear = anneeRec;
+    }
+  }
+
   components.push(
     { type: 14, spacing: SeparatorSpacingSize.Small },
     {
@@ -371,7 +386,7 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
         },
         {
           type: 2,
-          custom_id: `salaire_tache-${joueur}-${panelId}-${serv}-${currentMonth}_${currentYear}`,
+          custom_id: `salaire_tache-${joueur}-${panelId}-${serv}-${latestMonth}_${latestYear}-true`,
           label: "📜 Afficher les Tâches",
           style: ButtonStyle.Primary,
         },
@@ -490,14 +505,23 @@ async function getJoueurTacheContainer(
   const components = [
     {
       type: 10,
-      content: `## 📝 Tâches du Role-Play ${servName} - ${panelDatas.name} (${moisNom} ${targetYear})`,
+      content: `## 📝 Tâches du Role-Play ${servName} - ${panelDatas.name}`,
     },
     { type: 14, spacing: SeparatorSpacingSize.Large },
-    { type: 10, content: `### <:accepted:1427727438263222424> Tâches Acceptées\n${acceptedLines}` },
+    {
+      type: 10,
+      content: `### <:accepted:1427727438263222424> Tâches Acceptées\n${acceptedLines}`,
+    },
     { type: 14, spacing: SeparatorSpacingSize.Small },
-    { type: 10, content: `### <:waiting:1427727440847044663> Tâches en Attente\n${waitingLines}` },
+    {
+      type: 10,
+      content: `### <:waiting:1427727440847044663> Tâches en Attente\n${waitingLines}`,
+    },
     { type: 14, spacing: SeparatorSpacingSize.Small },
-    { type: 10, content: `### <:refused:1427727444391104704> Tâches Refusées\n${refusedLines}` },
+    {
+      type: 10,
+      content: `### <:refused:1427727444391104704> Tâches Refusées\n${refusedLines}`,
+    },
     { type: 14, spacing: SeparatorSpacingSize.Small },
     {
       type: 1,
@@ -505,13 +529,20 @@ async function getJoueurTacheContainer(
         {
           type: 2,
           custom_id: `salaire_tache-${joueur}-${panelId}-${serv}-${mois_precedent}_${annee_precedent}`,
-          label: "⬅️ Mois précédent",
+          label: "⬅️",
           style: ButtonStyle.Primary,
         },
         {
           type: 2,
+          custom_id: "salaire-status",
+          label: `${moisNom} ${targetYear}`,
+          style: ButtonStyle.Secondary,
+          disabled: true,
+        },
+        {
+          type: 2,
           custom_id: `salaire_tache-${joueur}-${panelId}-${serv}-${mois_suivant}_${annee_suivant}`,
-          label: "➡️ Mois suivant",
+          label: "➡️",
           style: ButtonStyle.Primary,
           disabled: isCurrentMonth,
         },

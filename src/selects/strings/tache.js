@@ -1,10 +1,57 @@
-const { getServerDatas, getGuildColor } = require("../../../utils/functions/datas.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
-const fs = require("node:fs");
+const {
+  getServerDatas,
+  getGuildColor,
+} = require("../../../utils/functions/datas.js");
+const { MessageFlags, SeparatorSpacingSize, ButtonStyle } = require("discord.js");
+const { discordStaff } = require("../../../utils/functions/linkedUser.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.values[0].split("-")[1]);
   const taskId = Number(interaction.values[0].split("-")[2]);
+
+  const { pseudonym, servers } = await discordStaff(interaction.user.id);
+  if (!pseudonym) {
+    const errorContainer = {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        {
+          type: 10,
+          content: `## :x: Compte non Lié`,
+        },
+        {
+          type: 14,
+          spacing: SeparatorSpacingSize.Large,
+        },
+        {
+          type: 10,
+          content:
+            "Ton compte Discord doit être lié à ton compte NationsGlory pour effectuer cette action.",
+        },
+        {
+          type: 14,
+          spacing: SeparatorSpacingSize.Large,
+        },
+        {
+          type: 1,
+          components: [
+            {
+              type: 2,
+              url: "https://glorybot.fr/user/profile",
+              label: "🔗 Lier son Compte",
+              style: ButtonStyle.Link,
+            },
+          ],
+        },
+      ],
+    };
+
+    return await interaction.reply({
+      components: [errorContainer],
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      allowedMentions: { parse: [] },
+    });
+  }
 
   const serverDatas = await getServerDatas(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
@@ -37,6 +84,47 @@ exports.run = async (client, interaction, config) => {
     });
   }
   const tache = panelDatas.tasks.find((t) => t.taskId === taskId);
+
+  const gradesAutorises = tache.grade;
+  const gradesDatas = panelDatas.grade.filter((g) =>
+    gradesAutorises.includes(String(g.gradeId))
+  );
+
+  const userHasAccess = gradesDatas.some((g) =>
+    g.listeRp.includes(interaction.user.id)
+  );
+
+  if (!userHasAccess) {
+    const guildColor = await getGuildColor(interaction);
+    const hasServerAccess = servers.includes(guildColor);
+
+    if (!hasServerAccess) {
+      const errorContainer = {
+        type: 17,
+        accent_color: config.colors.error,
+        components: [
+          {
+            type: 10,
+            content: `## :x: Accès Refusé`,
+          },
+          {
+            type: 14,
+            spacing: SeparatorSpacingSize.Large,
+          },
+          {
+            type: 10,
+            content: "Tu n'es pas autorisé à effectuer cette tâche.",
+          },
+        ],
+      };
+
+      return await interaction.reply({
+        components: [errorContainer],
+        flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+        allowedMentions: { parse: [] },
+      });
+    }
+  }
 
   if ((tache.type === "2" || tache.type === "3") && !tache.url) {
     const errorContainer = {

@@ -35,7 +35,7 @@ exports.run = async (client, interaction, config) => {
     });
   }
 
-  const serveur = await getGuildColor(interaction);
+  const guildColor = await getGuildColor(interaction);
   const { pseudonym, servers } = await discordStaff(interaction.user.id);
   if (!pseudonym) {
     const errorContainer = {
@@ -80,10 +80,10 @@ exports.run = async (client, interaction, config) => {
     });
   }
 
-  if (!servers.includes(serveur)) {
-    const capitalizedServeur =
-      serveur.charAt(0).toUpperCase() + serveur.slice(1);
-    const emojiId = config.emoji[serveur.toLowerCase()];
+  if (!servers.includes(guildColor)) {
+    const capitalizedguildColor =
+      guildColor.charAt(0).toUpperCase() + guildColor.slice(1);
+    const emojiId = config.emoji[guildColor.toLowerCase()];
     const permissionContainer = {
       type: 17,
       accent_color: config.colors.error,
@@ -98,7 +98,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 10,
-          content: `Tu n'as pas la permission d'effectuer cette action pour le serveur <:NG${capitalizedServeur}:${emojiId}> **${capitalizedServeur}** !`,
+          content: `Tu n'as pas la permission d'effectuer cette action pour le serveur <:NG${capitalizedguildColor}:${emojiId}> **${capitalizedguildColor}** !`,
         },
       ],
     };
