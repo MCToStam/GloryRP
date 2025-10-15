@@ -2,7 +2,7 @@ const {
   getServerDatas,
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
+const { MessageFlags, SeparatorSpacingSize, ButtonStyle } = require("discord.js");
 const { discordStaff } = require("../../../utils/functions/linkedUser.js");
 
 exports.run = async (client, interaction, config) => {
@@ -113,7 +113,7 @@ exports.run = async (client, interaction, config) => {
           },
           {
             type: 10,
-            content: `Tu n'es pas autorisé à effectuer cette tâche.`,
+            content: "Tu n'es pas autorisé à effectuer cette tâche.",
           },
         ],
       };
