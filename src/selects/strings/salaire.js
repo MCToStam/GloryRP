@@ -17,7 +17,7 @@ exports.run = async (client, interaction, config) => {
   const serverDatas = await getServerDatas(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
-  panelDatas.salaire.automatique = !panelDatas.salaire.automatique
+  panelDatas.salaire.automatique = !panelDatas.salaire.automatique;
 
   const modifDate = await toTimeStamp(new Date());
   if (!serverDatas.logs) serverDatas.logs = [];
@@ -25,15 +25,21 @@ exports.run = async (client, interaction, config) => {
     user: interaction.user.id,
     timestamp: modifDate,
     panel: panelId,
-    action: panelDatas.salaire.automatique ? "Activation des salaires automatiques" : "Désactivation des salaires automatiques",
+    action: panelDatas.salaire.automatique
+      ? "Activation des salaires automatiques"
+      : "Désactivation des salaires automatiques",
   });
-  
-  await saveServerDatas(interaction, serverDatas, guildColor)
-  const salaireContainer = await getSalaireContainer(panelId, guildColor, panelDatas);
+
+  await saveServerDatas(interaction, serverDatas, guildColor);
+  const salaireContainer = await getSalaireContainer(
+    panelId,
+    guildColor,
+    panelDatas,
+  );
 
   await interaction.message.edit({
     components: [salaireContainer],
-    allowedMentions: { parse: [] }
+    allowedMentions: { parse: [] },
   });
 };
 

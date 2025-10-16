@@ -39,7 +39,7 @@ async function discordStaff(discordId, serveur = "all") {
             headers: {
               Authorization: `Bearer ${config.glorybot_token}`,
             },
-          }
+          },
         );
 
         if (!response.ok) throw new Error(`Erreur serveur ${srv}`);
@@ -57,7 +57,7 @@ async function discordStaff(discordId, serveur = "all") {
       } catch (err) {
         console.error(`Erreur sur le serveur ${srv}:`, err);
       }
-    })
+    }),
   );
 
   return { pseudonym, servers };

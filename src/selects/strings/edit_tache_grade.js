@@ -11,7 +11,7 @@ const {
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();
 
-  const new_grade = interaction.values.map(v => v.split('-').pop());
+  const new_grade = interaction.values.map((v) => v.split("-").pop());
   const panelId = Number(interaction.customId.split("-")[1]);
   const taskId = Number(interaction.customId.split("-")[2]);
 
@@ -31,13 +31,13 @@ exports.run = async (client, interaction, config) => {
 
   tache.grade = new_grade;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
   const tacheContainer = await getEditTacheContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    taskId
+    taskId,
   );
 
   await interaction.message.edit({

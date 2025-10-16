@@ -19,7 +19,8 @@ exports.run = async (client, interaction, config) => {
   const tache = panelDatas.tasks.find((t) => t.taskId === taskId);
 
   const nameExists = panelDatas.tasks.some(
-    (t) => t.taskId !== taskId && t.name.toLowerCase() === new_name.toLowerCase()
+    (t) =>
+      t.taskId !== taskId && t.name.toLowerCase() === new_name.toLowerCase(),
   );
   if (nameExists) {
     const errorContainer = {
@@ -60,14 +61,14 @@ exports.run = async (client, interaction, config) => {
 
   tache.name = new_name;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditTacheContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    taskId
+    taskId,
   );
   return interaction.update({
     components: [goodContainer],

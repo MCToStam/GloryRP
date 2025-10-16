@@ -61,8 +61,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 10,
-          content:
-            "Vous ne pouvez pas créer plus de 3 boutons.",
+          content: "Vous ne pouvez pas créer plus de 3 boutons.",
         },
       ],
     };
@@ -75,7 +74,7 @@ exports.run = async (client, interaction, config) => {
   }
 
   const labelExists = panelDatas.effectif.button.some(
-    (b) => b.label.toLowerCase() === new_label.toLowerCase()
+    (b) => b.label.toLowerCase() === new_label.toLowerCase(),
   );
 
   if (labelExists) {
@@ -118,12 +117,12 @@ exports.run = async (client, interaction, config) => {
 
   panelDatas.effectif.button.push({ label: new_label, lien: new_link });
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEffectifContainer(
     panelId,
     guildColor,
-    panelDatas
+    panelDatas,
   );
   await interaction.update({
     components: [goodContainer],

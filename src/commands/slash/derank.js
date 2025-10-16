@@ -165,7 +165,9 @@ exports.run = async (client, interaction, config) => {
     });
   }
 
-  const { pseudonym: pseudonyme_staff, servers } = await discordStaff(interaction.user.id);
+  const { pseudonym: pseudonyme_staff, servers } = await discordStaff(
+    interaction.user.id,
+  );
   if (!servers.includes(serveur)) {
     const capitalizedServeur =
       serveur.charAt(0).toUpperCase() + serveur.slice(1);
@@ -204,7 +206,7 @@ exports.run = async (client, interaction, config) => {
   const [panelId, gradeId] = grade.split("_");
 
   const panel = gradeConfig.panels.find(
-    (p) => String(p.id) === String(panelId)
+    (p) => String(p.id) === String(panelId),
   );
 
   if (!panel) {
@@ -237,7 +239,7 @@ exports.run = async (client, interaction, config) => {
   }
 
   const gradeChoisi = panel.grade.find(
-    (g) => String(g.gradeId) === String(gradeId)
+    (g) => String(g.gradeId) === String(gradeId),
   );
 
   if (!gradeChoisi) {
@@ -331,7 +333,7 @@ exports.run = async (client, interaction, config) => {
         if (
           typeof data.error === "string" &&
           data.error.startsWith(
-            "L'utilisateur que vous recherchez n'existe pas"
+            "L'utilisateur que vous recherchez n'existe pas",
           )
         ) {
           const errorContainer = {
@@ -420,21 +422,21 @@ exports.run = async (client, interaction, config) => {
     points[2].y,
     points[3].x,
     points[3].y,
-    hexCornerRadius
+    hexCornerRadius,
   );
   ctx.arcTo(
     points[3].x,
     points[3].y,
     points[4].x,
     points[4].y,
-    hexCornerRadius
+    hexCornerRadius,
   );
   ctx.arcTo(
     points[4].x,
     points[4].y,
     points[5].x,
     points[5].y,
-    hexCornerRadius
+    hexCornerRadius,
   );
   ctx.lineTo(points[5].x, points[0].y - topPadding);
   ctx.closePath();
@@ -449,7 +451,7 @@ exports.run = async (client, interaction, config) => {
     hexX + hexWidth / 2 - imgW / 2,
     hexY + hexHeight - imgH + 100,
     imgW,
-    imgH
+    imgH,
   );
   ctx.restore();
 
@@ -476,21 +478,21 @@ exports.run = async (client, interaction, config) => {
     badgeX + badgeWidth,
     badgeY,
     badgeX + badgeWidth,
-    badgeY + badgeRadius
+    badgeY + badgeRadius,
   );
   ctx.lineTo(badgeX + badgeWidth, badgeY + badgeHeight - badgeRadius);
   ctx.quadraticCurveTo(
     badgeX + badgeWidth,
     badgeY + badgeHeight,
     badgeX + badgeWidth - badgeRadius,
-    badgeY + badgeHeight
+    badgeY + badgeHeight,
   );
   ctx.lineTo(badgeX + badgeRadius, badgeY + badgeHeight);
   ctx.quadraticCurveTo(
     badgeX,
     badgeY + badgeHeight,
     badgeX,
-    badgeY + badgeHeight - badgeRadius
+    badgeY + badgeHeight - badgeRadius,
   );
   ctx.lineTo(badgeX, badgeY + badgeRadius);
   ctx.quadraticCurveTo(badgeX, badgeY, badgeX + badgeRadius, badgeY);
@@ -551,7 +553,7 @@ exports.run = async (client, interaction, config) => {
     textStartX,
     subtitleY,
     subtitleMaxWidth,
-    subtitleLineHeight
+    subtitleLineHeight,
   );
 
   const buffer = await canvas.toBuffer("image/png");
@@ -561,7 +563,7 @@ exports.run = async (client, interaction, config) => {
   if (Array.isArray(gradeConfig.historique)) {
     historique = gradeConfig.historique
       .filter(
-        (entry) => entry.pseudo?.toLowerCase() === pseudonym.toLowerCase()
+        (entry) => entry.pseudo?.toLowerCase() === pseudonym.toLowerCase(),
       )
       .map((entry) => {
         const date = new Date(entry.date * 1000).toLocaleDateString("fr-FR", {
@@ -640,7 +642,7 @@ exports.run = async (client, interaction, config) => {
       {
         type: 14,
         spacing: SeparatorSpacingSize.Large,
-      }
+      },
     );
   }
 
@@ -679,7 +681,7 @@ exports.run = async (client, interaction, config) => {
     } catch (err) {
       console.error(
         `Erreur lors de l'attribution ou le retrait des rôles à ${member.user.tag} sur ${guild.name} :`,
-        err
+        err,
       );
     }
   }

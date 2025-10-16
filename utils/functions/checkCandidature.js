@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const cheerio = require("cheerio");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
+const { saveServerDatas, getServerDatas } = require("./datas.js");
 const config = require("../../config.js");
 const {
   MessageFlags,
@@ -36,7 +37,7 @@ function parseFrenchDate(dateStr) {
     monthIndex,
     Number(jour),
     Number(heure),
-    Number(minute)
+    Number(minute),
   );
   return Math.floor(date.getTime() / 1000);
 }
@@ -52,7 +53,7 @@ async function getCandidatureContent(url, serveur) {
     const $ = cheerio.load(html);
 
     const contentDiv = $(
-      `#thread-${threadId} .col-lg-10.py-3 > .mb-2.overflow-hidden`
+      `#thread-${threadId} .col-lg-10.py-3 > .mb-2.overflow-hidden`,
     ).first();
     if (!contentDiv.length) return "Contenu de la candidature introuvable";
 
@@ -84,7 +85,11 @@ async function getCandidatureContent(url, serveur) {
         textBuffer += $(child).text();
       } else if (child.name === "br") {
         textBuffer += "\n";
-      } else if (child.name === "span" || child.name === "div" || child.name === "p") {
+      } else if (
+        child.name === "span" ||
+        child.name === "div" ||
+        child.name === "p"
+      ) {
         const imgs = $(child).find("img").toArray();
         const text = $(child).clone().children("img").remove().end().text();
         if (text) textBuffer += text + "\n";
@@ -95,8 +100,14 @@ async function getCandidatureContent(url, serveur) {
             if (totalLength >= MAX_CHARS) break;
             const imgUrl = $(img).attr("data-src") || $(img).attr("src");
             if (imgUrl) {
-              components.push({ type: 14, spacing: SeparatorSpacingSize.Small });
-              components.push({ type: 12, items: [{ media: { url: imgUrl } }] });
+              components.push({
+                type: 14,
+                spacing: SeparatorSpacingSize.Small,
+              });
+              components.push({
+                type: 12,
+                items: [{ media: { url: imgUrl } }],
+              });
             }
           }
         }
@@ -105,7 +116,7 @@ async function getCandidatureContent(url, serveur) {
 
     pushTextBuffer();
 
-    components.forEach(c => {
+    components.forEach((c) => {
       if (c.type === 10) {
         c.content = c.content.replace(/\u00a0/g, " ");
         c.content = c.content.replace(/\s*\n\s*/g, "\n");
@@ -125,7 +136,7 @@ async function getCandidatureContent(url, serveur) {
   }
 }
 
-async function sendCandidatures(client, allNew, AllCandidatures) {
+async function sendCandidatures(client, AllCandidatures) {
   for (const { serveur, panel, candidature } of AllCandidatures) {
     const channelId = panel.channels.candidature;
 
@@ -159,7 +170,7 @@ async function sendCandidatures(client, allNew, AllCandidatures) {
             type: 10,
             content: `${await getEmojiTete(
               client,
-              candidature.auteur
+              candidature.auteur,
             )} **Auteur :** ${candidature.auteur}`,
           },
           {
@@ -185,14 +196,16 @@ async function sendCandidatures(client, allNew, AllCandidatures) {
       if (isNew) {
         const candidatureDetailsContainer = await getCandidatureContent(
           candidature.lien,
-          serveur
+          serveur,
         );
 
-        let components
+        let components;
         if (panel.roles.candidature && panel.roles.candidature.length > 0) {
           const roleText = {
             type: 10,
-            content: panel.roles.candidature.map((val) => `<@&${val}>`).join(" "),
+            content: panel.roles.candidature
+              .map((val) => `<@&${val}>`)
+              .join(" "),
           };
           components = [roleText, candidatureContainer];
         }
@@ -208,7 +221,7 @@ async function sendCandidatures(client, allNew, AllCandidatures) {
           const thread = await sent.startThread({
             name: `Candidature ${panel.name} - ${candidature.auteur}`,
           });
-          
+
           await thread.send({
             components: [candidatureDetailsContainer],
             flags: MessageFlags.IsComponentsV2,
@@ -240,7 +253,7 @@ async function sendCandidatures(client, allNew, AllCandidatures) {
             candidature.savedBadgeColor = candidature.badgeColor;
           } else {
             console.warn(
-              "Impossible de récupérer le message principal du thread forum"
+              "Impossible de récupérer le message principal du thread forum",
             );
           }
         } else {
@@ -258,7 +271,7 @@ async function sendCandidatures(client, allNew, AllCandidatures) {
             .catch(() => null);
         } else if (channel.type === 15) {
           const thread = channel.threads.cache.find(
-            (t) => t.id === candidature.messageId
+            (t) => t.id === candidature.messageId,
           );
 
           if (thread) {
@@ -281,7 +294,7 @@ async function sendCandidatures(client, allNew, AllCandidatures) {
     } catch (err) {
       console.error(
         `❌ Erreur envoi/édition candidature dans ${channelId}`,
-        err
+        err,
       );
     }
   }
@@ -290,15 +303,12 @@ async function sendCandidatures(client, allNew, AllCandidatures) {
 
   const serveurs = [...new Set(AllCandidatures.map((c) => c.serveur))];
 
-  for (const serverFile of serveurs) {
-    const filePath = path.join(baseDir, `${serverFile}.json`);
-    if (!fs.existsSync(filePath)) continue;
-
-    const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  for (const serveur of serveurs) {
+    const data = await getServerDatas(false, serveur);
 
     for (const panelData of data.panels) {
       const allCandsForPanel = AllCandidatures.filter(
-        (c) => c.panel.name === panelData.name && c.serveur === serverFile
+        (c) => c.panel.name === panelData.name && c.serveur === serveur,
       );
 
       panelData.candidature.save = allCandsForPanel.map((c) => ({
@@ -312,21 +322,16 @@ async function sendCandidatures(client, allNew, AllCandidatures) {
       }));
     }
 
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
+    await saveServerDatas(false, data, serveur);
   }
 }
 
 async function fetchNewCandidatures() {
   const baseDir = path.join(__dirname, "..", "..", "data", "servers");
-  let allNew = [];
   let AllCandidatures = [];
 
-  for (const serverFile of config.liste_serveur) {
-    const filePath = path.join(baseDir, `${serverFile}.json`);
-
-    if (!fs.existsSync(filePath)) continue;
-
-    const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  for (const serveur of config.liste_serveur) {
+    const data = await getServerDatas(false, serveur);
     if (!data.panels) continue;
 
     let modified = false;
@@ -335,7 +340,8 @@ async function fetchNewCandidatures() {
       const hasCandidatureLien = panel.candidature && panel.candidature.lien;
       const hasChannelCandidature =
         panel.channels && panel.channels.candidature;
-      if (!hasCandidatureLien || !hasChannelCandidature || !panel.enable) continue;
+      if (!hasCandidatureLien || !hasChannelCandidature || !panel.enable)
+        continue;
 
       try {
         const response = await fetch(panel.candidature.lien);
@@ -371,7 +377,7 @@ async function fetchNewCandidatures() {
 
           if (titre) {
             const existing = panel.candidature.save.find(
-              (c) => c.lien === "https://nationsglory.fr" + lien
+              (c) => c.lien === "https://nationsglory.fr" + lien,
             );
 
             const candidatureObj = {
@@ -387,7 +393,7 @@ async function fetchNewCandidatures() {
             candidatures.push(candidatureObj);
 
             AllCandidatures.push({
-              serveur: serverFile,
+              serveur: serveur,
               panel: panel,
               candidature: candidatureObj,
             });
@@ -398,7 +404,7 @@ async function fetchNewCandidatures() {
 
         for (const cand of candidatures) {
           const existing = panel.candidature.save.find(
-            (c) => c.lien === cand.lien
+            (c) => c.lien === cand.lien,
           );
           if (existing) {
             existing.badgeColor = cand.badgeColor;
@@ -406,29 +412,28 @@ async function fetchNewCandidatures() {
             modified = true;
           } else {
             panel.candidature.save.push(cand);
-            allNew.push({ panel: panel, candidatures: [cand] });
             modified = true;
           }
         }
       } catch (err) {
         console.error(
           `❌ Erreur fetch candidatures ${panel.candidature.lien}`,
-          err.message
+          err.message,
         );
       }
     }
 
     if (modified) {
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
+      await saveServerDatas(false, data, serveur);
     }
   }
 
-  return { allNew, AllCandidatures };
+  return AllCandidatures;
 }
 
-async function candidature(client) {
-  const { allNew, AllCandidatures } = await fetchNewCandidatures();
-  await sendCandidatures(client, allNew, AllCandidatures);
+async function checkCandidature(client) {
+  const AllCandidatures = await fetchNewCandidatures();
+  await sendCandidatures(client, AllCandidatures);
 }
 
-module.exports = { candidature };
+module.exports = { checkCandidature };

@@ -5,7 +5,8 @@ const {
 } = require("../../components/salaireContainer.js");
 
 exports.run = async (client, interaction, config) => {
-  const [_, joueur, panelId, serv, date, first] = interaction.customId.split("-");
+  const [_, joueur, panelId, serv, date, first] =
+    interaction.customId.split("-");
   const serverDatas = await getServerDatas(interaction, serv);
 
   const { error, component: salaireContainer } = await getJoueurTacheContainer(
@@ -14,7 +15,7 @@ exports.run = async (client, interaction, config) => {
     serverDatas,
     panelId,
     serv,
-    date
+    date,
   );
 
   if (first) {

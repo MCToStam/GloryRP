@@ -5,7 +5,7 @@ exports.run = async (client, interaction) => {
   await interaction.deferUpdate();
 
   const [_, type, serv, currentPage, panel] = interaction.customId.split("-");
-  const panelId = Number(panel)
+  const panelId = Number(panel);
   let page = parseInt(currentPage, 10);
 
   if (type === "prev") {
@@ -16,11 +16,16 @@ exports.run = async (client, interaction) => {
 
   const serverDatas = await getServerDatas(interaction);
 
-  const { error, component: logContainer } = await getlogContainer(serverDatas, panelId, serv, page);
+  const { error, component: logContainer } = await getlogContainer(
+    serverDatas,
+    panelId,
+    serv,
+    page,
+  );
 
   await interaction.message.edit({
     components: [logContainer],
-    allowedMentions: { parse: [] }
+    allowedMentions: { parse: [] },
   });
 };
 

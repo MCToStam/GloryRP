@@ -20,7 +20,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
   }
 
   if (errorMsg) {
-    return ({
+    return {
       type: 17,
       accent_color: config.colors.error,
       components: [
@@ -37,7 +37,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
           content: errorMsg,
         },
       ],
-    });
+    };
   }
 
   const validTasks = panel.tasks
@@ -46,7 +46,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
         task.type &&
         task.grade &&
         task.type !== "4" &&
-        (!task.panelId || task.panelId === panelId)
+        (!task.panelId || task.panelId === panelId),
     )
     .slice(0, 25);
 
@@ -98,7 +98,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
               let emoji;
               if (task.emoji) {
                 const customEmojiMatch = task.emoji.match(
-                  /^<a?:([a-zA-Z0-9_]+):(\d+)>$/
+                  /^<a?:([a-zA-Z0-9_]+):(\d+)>$/,
                 );
                 if (customEmojiMatch) {
                   emoji = {
@@ -130,7 +130,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
     allowedMentions: { parse: [] },
   });
 
-  return ({
+  return {
     type: 17,
     accent_color: config.colors.success,
     components: [
@@ -147,7 +147,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
         content: `Le panel du rôle-play **${panel.name}** a correctement été envoyé ici :${message.url}`,
       },
     ],
-  });
+  };
 }
 
 module.exports = { sendPanelTasks };

@@ -19,7 +19,7 @@ exports.run = async (client, interaction, config) => {
     guildColor,
     serverDatas,
     panelId,
-    date
+    date,
   );
   return interaction.reply({
     components: [container],

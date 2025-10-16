@@ -1,4 +1,8 @@
-const { getServerDatas, saveServerDatas, getGuildColor } = require("../../utils/functions/datas.js");
+const {
+  getServerDatas,
+  saveServerDatas,
+  getGuildColor,
+} = require("../../utils/functions/datas.js");
 const { sendEffectif } = require("../../utils/functions/effectif.js");
 const { MessageFlags } = require("discord.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
@@ -19,10 +23,19 @@ exports.run = async (client, interaction, config) => {
     action: "Envoie de l'effectif",
   });
 
-  await saveServerDatas(interaction, serverDatas, serveur)
+  await saveServerDatas(interaction, serverDatas, serveur);
 
-  const responseContainer = await sendEffectif(client, serveur, serverDatas, panelId)
-  return interaction.reply({ components: [responseContainer], allowedMentions: { parse: [] }, flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral });
+  const responseContainer = await sendEffectif(
+    client,
+    serveur,
+    serverDatas,
+    panelId,
+  );
+  return interaction.reply({
+    components: [responseContainer],
+    allowedMentions: { parse: [] },
+    flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+  });
 };
 
 exports.data = {

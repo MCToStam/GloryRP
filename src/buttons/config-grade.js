@@ -11,12 +11,17 @@ exports.run = async (client, interaction, config) => {
   const guildColor = await getGuildColor(interaction);
   const serverDatas = await getServerDatas(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
-  
-  const gradeContainer = await getGradeContainer(client, panelId, guildColor, panelDatas)
+
+  const gradeContainer = await getGradeContainer(
+    client,
+    panelId,
+    guildColor,
+    panelDatas,
+  );
 
   await interaction.message.edit({
     components: [gradeContainer],
-    allowedMentions: { parse: [] }
+    allowedMentions: { parse: [] },
   });
 };
 

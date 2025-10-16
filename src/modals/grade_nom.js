@@ -19,7 +19,8 @@ exports.run = async (client, interaction, config) => {
   const grade = panelDatas.grade.find((g) => g.gradeId === gradeId);
 
   const nameExists = panelDatas.grade.some(
-    (g) => g.gradeId !== gradeId && g.nom.toLowerCase() === new_name.toLowerCase()
+    (g) =>
+      g.gradeId !== gradeId && g.nom.toLowerCase() === new_name.toLowerCase(),
   );
   if (nameExists) {
     const errorContainer = {
@@ -60,14 +61,14 @@ exports.run = async (client, interaction, config) => {
 
   grade.nom = new_name;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditGradeContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    gradeId
+    gradeId,
   );
   return interaction.update({
     components: [goodContainer],

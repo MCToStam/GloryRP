@@ -16,7 +16,7 @@ exports.run = async (client, interaction, config) => {
   const guildColor = await getGuildColor(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
   const button = panelDatas.effectif.button.find(
-    (b) => b.label === buttonLabel
+    (b) => b.label === buttonLabel,
   );
 
   const modifDate = await toTimeStamp(new Date());
@@ -30,16 +30,16 @@ exports.run = async (client, interaction, config) => {
   });
 
   const buttonIndex = panelDatas.effectif.button.findIndex(
-    (b) => b.label === buttonLabel
+    (b) => b.label === buttonLabel,
   );
   panelDatas.effectif.button.splice(buttonIndex, 1);
-  
-  await saveServerDatas(interaction, serverDatas, guildColor)
+
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEffectifContainer(
     panelId,
     guildColor,
-    panelDatas
+    panelDatas,
   );
   await interaction.update({
     components: [goodContainer],

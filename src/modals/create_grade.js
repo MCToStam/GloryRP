@@ -20,7 +20,7 @@ exports.run = async (client, interaction, config) => {
   const nom = interaction.fields.getTextInputValue("nom");
   const tier = interaction.fields.getStringSelectValues("tier")[0];
   const couleur = formatHexColor(
-    interaction.fields.getTextInputValue("couleur")
+    interaction.fields.getTextInputValue("couleur"),
   );
   const panelId = Number(interaction.customId.split("-")[1]);
 
@@ -56,7 +56,7 @@ exports.run = async (client, interaction, config) => {
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
   const nameExists = panelDatas.grade.some(
-    (p) => p.nom.toLowerCase() === nom.toLowerCase()
+    (p) => p.nom.toLowerCase() === nom.toLowerCase(),
   );
   if (nameExists) {
     const errorContainer = {
@@ -93,7 +93,7 @@ exports.run = async (client, interaction, config) => {
     "..",
     "..",
     "data",
-    "gradeBaseData.json"
+    "gradeBaseData.json",
   );
   const baseData = JSON.parse(fs.readFileSync(basePath, "utf8"));
 
@@ -125,14 +125,14 @@ exports.run = async (client, interaction, config) => {
   serverDatas.timestamp = modifDate;
   serverDatas.lastUser = interaction.user.id;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditGradeContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    newId
+    newId,
   );
 
   return interaction.update({

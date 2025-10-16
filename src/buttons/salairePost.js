@@ -15,7 +15,7 @@ exports.run = async (client, interaction, config) => {
       if (!dataMois || !Array.isArray(dataMois.taches)) return;
 
       const aTacheValide = dataMois.taches.some(
-        (t) => t.status !== "waiting" && t.status !== "refused"
+        (t) => t.status !== "waiting" && t.status !== "refused",
       );
 
       if (aTacheValide) {
