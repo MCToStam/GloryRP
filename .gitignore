@@ -2,4 +2,6 @@
 .env
 package-lock.json
 node_modules/
-//data
+components/json/
+eslint.config.mjs
+data/

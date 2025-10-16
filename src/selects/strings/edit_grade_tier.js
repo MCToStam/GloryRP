@@ -1,37 +1,49 @@
-const { getGuildColor, saveServerDatas, getServerDatas } = require('../../../utils/functions/datas.js');
-const { getEditGradeContainer } = require('../../../components/containers.js');
-const { toTimeStamp } = require('../../../utils/functions/numbersAndLetters.js');
+const {
+  getGuildColor,
+  saveServerDatas,
+  getServerDatas,
+} = require("../../../utils/functions/datas.js");
+const { getEditGradeContainer } = require("../../../components/containers.js");
+const {
+  toTimeStamp,
+} = require("../../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {
-	await interaction.deferUpdate();
+  await interaction.deferUpdate();
 
-	const new_tier = interaction.values[0].split('-')[1];
-	const panelId = Number(interaction.customId.split('-')[1]);
-	const gradeId = Number(interaction.customId.split('-')[2]);
+  const new_tier = interaction.values[0].split("-")[1];
+  const panelId = Number(interaction.customId.split("-")[1]);
+  const gradeId = Number(interaction.customId.split("-")[2]);
 
-	const guildColor = await getGuildColor(interaction);
-	const serverDatas = await getServerDatas(interaction);
-	const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
-	const grade = panelDatas.grade.find((g) => g.gradeId === gradeId);
-	const modifDate = await toTimeStamp(new Date());
+  const guildColor = await getGuildColor(interaction);
+  const serverDatas = await getServerDatas(interaction);
+  const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
+  const grade = panelDatas.grade.find((g) => g.gradeId === gradeId);
+  const modifDate = await toTimeStamp(new Date());
 
-	if (!serverDatas.logs) serverDatas.logs = [];
-	serverDatas.logs.push({
-		user: interaction.user.id,
-		timestamp: modifDate,
-		panel: panelId,
-		action: `Modification du tier du grade ${grade.nom} de ${grade.tier} en ${new_tier}`,
-	});
+  if (!serverDatas.logs) serverDatas.logs = [];
+  serverDatas.logs.push({
+    user: interaction.user.id,
+    timestamp: modifDate,
+    panel: panelId,
+    action: `Modification du tier du grade ${grade.nom} de ${grade.tier} en ${new_tier}`,
+  });
 
-	grade.tier = new_tier;
+  grade.tier = new_tier;
 
-	await saveServerDatas(interaction, serverDatas, guildColor);
-	const salaireContainer = await getEditGradeContainer(client, panelId, guildColor, panelDatas, gradeId);
+  await saveServerDatas(interaction, serverDatas, guildColor);
+  const salaireContainer = await getEditGradeContainer(
+    client,
+    panelId,
+    guildColor,
+    panelDatas,
+    gradeId,
+  );
 
-	await interaction.message.edit({
-		components: [salaireContainer],
-		allowedMentions: { parse: [] },
-	});
+  await interaction.message.edit({
+    components: [salaireContainer],
+    allowedMentions: { parse: [] },
+  });
 };
 
-exports.data = { name: 'edit_grade_tier' };
+exports.data = { name: "edit_grade_tier" };

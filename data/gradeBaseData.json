@@ -1,8 +1,8 @@
 {
-	"gradeId": false,
-	"nom": false,
-	"couleur": false,
-	"tier": false,
-	"role": [],
-	"listeRp": []
+  "gradeId": false,
+  "nom": false,
+  "couleur": false,
+  "tier": false,
+  "role": [],
+  "listeRp": []
 }

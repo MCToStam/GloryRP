@@ -1,26 +1,33 @@
-const { getGuildColor, getServerDatas } = require('../../utils/functions/datas.js');
-const { getEffectifContainer } = require('../../components/containers.js');
+const {
+  getGuildColor,
+  getServerDatas,
+} = require("../../utils/functions/datas.js");
+const { getEffectifContainer } = require("../../components/containers.js");
 
 exports.run = async (client, interaction, config) => {
-	await interaction.deferUpdate();
-	const panelId = Number(interaction.customId.split('-')[1]);
+  await interaction.deferUpdate();
+  const panelId = Number(interaction.customId.split("-")[1]);
 
-	const guildColor = await getGuildColor(interaction);
-	const serverDatas = await getServerDatas(interaction);
-	const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
+  const guildColor = await getGuildColor(interaction);
+  const serverDatas = await getServerDatas(interaction);
+  const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
-	const effectifContainer = await getEffectifContainer(panelId, guildColor, panelDatas);
+  const effectifContainer = await getEffectifContainer(
+    panelId,
+    guildColor,
+    panelDatas,
+  );
 
-	await interaction.message.edit({
-		components: [effectifContainer],
-		allowedMentions: { parse: [] },
-	});
+  await interaction.message.edit({
+    components: [effectifContainer],
+    allowedMentions: { parse: [] },
+  });
 };
 
 exports.data = {
-	name: 'config_effectif',
+  name: "config_effectif",
 };
 
 exports.conf = {
-	type: 'Button',
+  type: "Button",
 };
