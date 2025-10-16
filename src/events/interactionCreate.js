@@ -33,6 +33,7 @@ module.exports = async (client, interaction) => {
 			//-UserSelect
 		} else if (interaction.componentType === 6) {
 			//-RoleSelect
+			return client.emit('isRoleSelect', interaction);
 		} else if (interaction.componentType === 7) {
 			//-MentionableSelect
 		} else if (interaction.componentType === 8) {
