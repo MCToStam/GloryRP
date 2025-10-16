@@ -25,7 +25,7 @@ exports.run = async (client, interaction) => {
   if (subCmd === "deploy") {
     if (canal === "global") {
       return globalCmds
-        .set(cmds.filter((c) => c.data.name === c.data.name).map((c) => c.data))
+        .set(cmds.filter((c) => c.data.name !== "cmd").map((c) => c.data))
         .then(() => {
           const msg = deployMsg
             .replace("{{CANAL}}", "canal")
@@ -275,7 +275,7 @@ exports.data = {
 
       const cmdsDatas = slashCmds
         .filter((x) =>
-          x.data.name.toLowerCase().includes(focusedValue.value.toLowerCase()),
+          x.data.name.toLowerCase().includes(focusedValue.value.toLowerCase())
         )
         .map((x) => ({ name: x.data.name, value: x.data.name }))
         .slice(0, 25);
@@ -288,7 +288,7 @@ exports.data = {
         .filter(
           (g) =>
             g.name.toLowerCase().includes(focusedValue.value.toLowerCase()) ||
-            g.id.includes(focusedValue.value),
+            g.id.includes(focusedValue.value)
         )
         .map((g) => ({
           name: `${g.name} (${g.id})`,
