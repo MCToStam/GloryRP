@@ -1,21 +1,12 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const config = require("../../config.js");
+const { saveServerDatas, getServerDatas } = require("./datas.js");
 
 async function checkDeletePanel() {
   for (const serveur of config.liste_serveur) {
     try {
-      const filePath = path.join(
-        __dirname,
-        "..",
-        "..",
-        "data",
-        "servers",
-        `${serveur}.json`,
-      );
-      if (!fs.existsSync(filePath)) continue;
-
-      const serverDatas = JSON.parse(fs.readFileSync(filePath, "utf8"));
+      const serverDatas = await getServerDatas(false, serveur);
       let modified = false;
 
       const toDelete = [];
@@ -43,11 +34,7 @@ async function checkDeletePanel() {
       }
 
       if (modified) {
-        fs.writeFileSync(
-          filePath,
-          JSON.stringify(serverDatas, null, 2),
-          "utf8",
-        );
+        await saveServerDatas(false, serverDatas, serveur);
       }
     } catch (err) {
       console.error(`[ERREUR] checkDeletePanel sur ${serveur}:`, err);

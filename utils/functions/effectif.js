@@ -6,7 +6,7 @@ const {
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
 const { discordLink } = require("../../utils/functions/linkedUser.js");
 const config = require("../../config.js");
-const fs = require("node:fs");
+const { saveServerDatas } = require("./datas.js");
 
 async function sendEffectif(client, serveur, serveurDatas, panelId) {
   const panel = serveurDatas.panels.find((p) => p.id === panelId);
@@ -104,8 +104,7 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
   panel.effectif.message = message.id;
   panel.effectif.channel = message.channelId;
   panel.effectif.guild = message.guildId;
-  const panelPath = `data/servers/${serveur}.json`;
-  fs.writeFileSync(panelPath, JSON.stringify(serveurDatas));
+  await saveServerDatas(false, serveurDatas, serveur);
 
   return {
     type: 17,

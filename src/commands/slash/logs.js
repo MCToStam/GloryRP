@@ -1,5 +1,3 @@
-const fs = require("node:fs");
-const path = require("node:path");
 const {
   InteractionContextType,
   SeparatorSpacingSize,
@@ -210,23 +208,7 @@ exports.data = {
       }
 
       try {
-        const filePath = path.join(
-          __dirname,
-          "..",
-          "..",
-          "..",
-          "data",
-          "servers",
-          `${serveur}.json`,
-        );
-        if (!fs.existsSync(filePath)) {
-          return await interaction.respond([
-            { name: "Aucun fichier trouvé pour ce serveur", value: "no-file" },
-          ]);
-        }
-
-        const rawData = fs.readFileSync(filePath, "utf8");
-        const json = JSON.parse(rawData);
+        const json = await getServerDatas(false, serveur);
 
         if (!json.panels || json.panels.length === 0) {
           return await interaction.respond([

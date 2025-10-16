@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const cheerio = require("cheerio");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
+const { saveServerDatas, getServerDatas } = require("./datas.js");
 const config = require("../../config.js");
 const {
   MessageFlags,
@@ -302,15 +303,12 @@ async function sendCandidatures(client, AllCandidatures) {
 
   const serveurs = [...new Set(AllCandidatures.map((c) => c.serveur))];
 
-  for (const serverFile of serveurs) {
-    const filePath = path.join(baseDir, `${serverFile}.json`);
-    if (!fs.existsSync(filePath)) continue;
-
-    const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  for (const serveur of serveurs) {
+    const data = await getServerDatas(false, serveur);
 
     for (const panelData of data.panels) {
       const allCandsForPanel = AllCandidatures.filter(
-        (c) => c.panel.name === panelData.name && c.serveur === serverFile,
+        (c) => c.panel.name === panelData.name && c.serveur === serveur,
       );
 
       panelData.candidature.save = allCandsForPanel.map((c) => ({
@@ -324,7 +322,7 @@ async function sendCandidatures(client, AllCandidatures) {
       }));
     }
 
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
+    await saveServerDatas(false, data, serveur);
   }
 }
 
@@ -332,12 +330,8 @@ async function fetchNewCandidatures() {
   const baseDir = path.join(__dirname, "..", "..", "data", "servers");
   let AllCandidatures = [];
 
-  for (const serverFile of config.liste_serveur) {
-    const filePath = path.join(baseDir, `${serverFile}.json`);
-
-    if (!fs.existsSync(filePath)) continue;
-
-    const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  for (const serveur of config.liste_serveur) {
+    const data = await getServerDatas(false, serveur);
     if (!data.panels) continue;
 
     let modified = false;
@@ -399,7 +393,7 @@ async function fetchNewCandidatures() {
             candidatures.push(candidatureObj);
 
             AllCandidatures.push({
-              serveur: serverFile,
+              serveur: serveur,
               panel: panel,
               candidature: candidatureObj,
             });
@@ -430,7 +424,7 @@ async function fetchNewCandidatures() {
     }
 
     if (modified) {
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
+      await saveServerDatas(false, data, serveur);
     }
   }
 
