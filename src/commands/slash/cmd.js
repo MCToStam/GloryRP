@@ -1,6 +1,5 @@
 const config = require('../../../config.js');
-const log = require('../../../utils/modules/logger.js');
-const { MessageFlags } = require('discord.js');
+const { MessageFlags, SeparatorSpacingSize } = require('discord.js');
 
 exports.run = async (client, interaction) => {
 	const subCmd = interaction.options.getSubcommand();
@@ -20,8 +19,8 @@ exports.run = async (client, interaction) => {
 		var cmds = slashCmds.filter((c) => c.data.name !== 'cmd');
 	}
 
-	const deployMsg = `**✅ | Les commandes ont été déployées sur le {{CANAL}} \`{{CANAL_NAME}}\` !**`;
-	const removeMsg = `**✅ | Les commandes présentes sur le {{CANAL}} \`{{CANAL_NAME}}\` ont été supprimées !**`;
+	const deployMsg = `Les commandes ont été déployées sur le {{CANAL}} \`{{CANAL_NAME}}\` !`;
+	const removeMsg = `Les commandes présentes sur le {{CANAL}} \`{{CANAL_NAME}}\` ont été supprimées !`;
 
 	if (subCmd === 'deploy') {
 		if (canal === 'global') {
@@ -29,7 +28,25 @@ exports.run = async (client, interaction) => {
 				.set(cmds.filter((c) => c.data.name === 'ping').map((c) => c.data))
 				.then(() => {
 					const msg = deployMsg.replace('{{CANAL}}', 'canal').replace('{{CANAL_NAME}}', 'global');
-					interaction.reply({ content: msg, flags: 64 });
+
+					const goodContainer = {
+						type: 17,
+						accent_color: config.colors.success,
+						components: [
+							{
+								type: 10,
+								content: `## :white_check_mark: Succès`,
+							},
+							{ type: 14, spacing: SeparatorSpacingSize.Large },
+							{ type: 10, content: msg },
+						],
+					};
+
+					return interaction.reply({
+						components: [goodContainer],
+						allowedMentions: { parse: [] },
+						flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+					});
 				})
 				.catch((e) => console.error(e));
 		} else {
@@ -37,7 +54,24 @@ exports.run = async (client, interaction) => {
 				.set(cmds.map((c) => c.data))
 				.then(() => {
 					const msg = deployMsg.replace('{{CANAL}}', 'serveur').replace('{{CANAL_NAME}}', guild.name);
-					interaction.reply({ content: msg, flags: 64 });
+					const goodContainer = {
+						type: 17,
+						accent_color: config.colors.success,
+						components: [
+							{
+								type: 10,
+								content: `## :white_check_mark: Succès`,
+							},
+							{ type: 14, spacing: SeparatorSpacingSize.Large },
+							{ type: 10, content: msg },
+						],
+					};
+
+					return interaction.reply({
+						components: [goodContainer],
+						allowedMentions: { parse: [] },
+						flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+					});
 				})
 				.catch((e) => console.error(e));
 		}
@@ -47,7 +81,24 @@ exports.run = async (client, interaction) => {
 				.set([])
 				.then(() => {
 					const msg = removeMsg.replace('{{CANAL}}', 'canal').replace('{{CANAL_NAME}}', 'global');
-					interaction.reply({ content: msg, flags: 64 });
+					const goodContainer = {
+						type: 17,
+						accent_color: config.colors.success,
+						components: [
+							{
+								type: 10,
+								content: `## :white_check_mark: Succès`,
+							},
+							{ type: 14, spacing: SeparatorSpacingSize.Large },
+							{ type: 10, content: msg },
+						],
+					};
+
+					return interaction.reply({
+						components: [goodContainer],
+						allowedMentions: { parse: [] },
+						flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+					});
 				})
 				.catch((e) => console.error(e));
 		} else {
@@ -55,7 +106,24 @@ exports.run = async (client, interaction) => {
 				.set(cmds.filter((c) => c.data.name === 'cmd').map((c) => c.data))
 				.then(() => {
 					const msg = removeMsg.replace('{{CANAL}}', 'serveur').replace('{{CANAL_NAME}}', guild.name);
-					interaction.reply({ content: msg, flags: 64 });
+					const goodContainer = {
+						type: 17,
+						accent_color: config.colors.success,
+						components: [
+							{
+								type: 10,
+								content: `## :white_check_mark: Succès`,
+							},
+							{ type: 14, spacing: SeparatorSpacingSize.Large },
+							{ type: 10, content: msg },
+						],
+					};
+
+					return interaction.reply({
+						components: [goodContainer],
+						allowedMentions: { parse: [] },
+						flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+					});
 				})
 				.catch((e) => console.error(e));
 		}
@@ -65,9 +133,23 @@ exports.run = async (client, interaction) => {
 		const command = slashCmds.get(name);
 
 		if (!command) {
+			const erreurContainer = {
+				type: 17,
+				accent_color: config.colors.errord,
+				components: [
+					{
+						type: 10,
+						content: `## :x: Erreur`,
+					},
+					{ type: 14, spacing: SeparatorSpacingSize.Large },
+					{ type: 10, content: `La commande "${name}" n'existe pas.` },
+				],
+			};
+
 			return interaction.reply({
-				content: `**❌ | \`${name}\` n'existe pas.**`,
-				flags: MessageFlags.Ephemeral,
+				components: [erreurContainer],
+				allowedMentions: { parse: [] },
+				flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
 			});
 		}
 
@@ -80,9 +162,26 @@ exports.run = async (client, interaction) => {
 		const props = require(`${folder}${data}.js`);
 		await collection.set(data, props);
 
-		let msg = `**✅ | La commande \`${data}\` a été rechargée !**`;
+		let msg = `La commande \`${data}\` a été rechargée !`;
 
-		return interaction.reply({ content: msg, flags: MessageFlags.Ephemeral });
+		const goodContainer = {
+			type: 17,
+			accent_color: config.colors.success,
+			components: [
+				{
+					type: 10,
+					content: `## :white_check_mark: Succès`,
+				},
+				{ type: 14, spacing: SeparatorSpacingSize.Large },
+				{ type: 10, content: msg },
+			],
+		};
+
+		return interaction.reply({
+			components: [goodContainer],
+			allowedMentions: { parse: [] },
+			flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+		});
 	}
 };
 
@@ -93,12 +192,12 @@ exports.data = {
 		{
 			type: 1,
 			name: 'deploy',
-			description: '⛔ Déploiement des commandes.',
+			description: '⛔ Déploiement des commandes',
 			options: [
 				{
 					type: 3,
 					name: 'canal',
-					description: 'Canal de déploiement.',
+					description: 'Canal de déploiement',
 					choices: [
 						{
 							name: 'global',
@@ -110,7 +209,8 @@ exports.data = {
 				{
 					type: 3,
 					name: 'server',
-					description: 'Id du serveur.',
+					description: 'ID du serveur',
+					autocomplete: true,
 					required: false,
 				},
 			],
@@ -118,12 +218,12 @@ exports.data = {
 		{
 			type: 1,
 			name: 'remove',
-			description: '⛔ Supression des commandes.',
+			description: '⛔ Supression des commandes',
 			options: [
 				{
 					type: 3,
 					name: 'canal',
-					description: 'Canal de supression.',
+					description: 'Canal de supression',
 					choices: [
 						{
 							name: 'global',
@@ -135,7 +235,8 @@ exports.data = {
 				{
 					type: 3,
 					name: 'server',
-					description: 'Id du serveur.',
+					description: 'ID du serveur',
+					autocomplete: true,
 					required: false,
 				},
 			],
@@ -143,12 +244,12 @@ exports.data = {
 		{
 			type: 1,
 			name: 'edit',
-			description: "⛔ Édition d'une commande.",
+			description: "⛔ Édition d'une commande",
 			options: [
 				{
 					type: 3,
 					name: 'name',
-					description: 'Nom de la commande.',
+					description: 'Nom de la commande',
 					autocomplete: true,
 					required: true,
 				},
@@ -157,17 +258,32 @@ exports.data = {
 	],
 	contexts: [0],
 	async autocomplete(client, interaction) {
-		const focusedValue = interaction.options.getFocused();
-		const { container } = client;
-		const slashCmds = container.slashCmds;
-		const cmdsDatas = await slashCmds
-			.filter((x) => x.data.name.toLowerCase().includes(focusedValue.toLowerCase()))
-			.map((x) => {
-				return { name: x.data.name, value: x.data.name };
-			})
-			.slice(0, 25);
+		const focusedValue = interaction.options.getFocused(true);
+		const optionName = focusedValue.name;
 
-		await interaction.respond(cmdsDatas);
+		if (optionName === 'name') {
+			const { container } = client;
+			const slashCmds = container.slashCmds;
+
+			const cmdsDatas = slashCmds
+				.filter((x) => x.data.name.toLowerCase().includes(focusedValue.value.toLowerCase()))
+				.map((x) => ({ name: x.data.name, value: x.data.name }))
+				.slice(0, 25);
+
+			return interaction.respond(cmdsDatas);
+		}
+
+		if (optionName === 'server') {
+			const servers = client.guilds.cache
+				.filter((g) => g.name.toLowerCase().includes(focusedValue.value.toLowerCase()) || g.id.includes(focusedValue.value))
+				.map((g) => ({
+					name: `${g.name} (${g.id})`,
+					value: g.id,
+				}))
+				.slice(0, 25);
+
+			return interaction.respond(servers);
+		}
 	},
 };
 

@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 function getDateTs(date, style, style2) {
 	const dateMomented = typeof date === 'object' ? date : new Date(moment(date));
 	const milliseconds = dateMomented.getTime() / 1000;
