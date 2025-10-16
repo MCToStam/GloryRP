@@ -31,13 +31,13 @@ exports.run = async (client, interaction, config) => {
 
   grade.tier = new_tier;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
   const salaireContainer = await getEditGradeContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    gradeId
+    gradeId,
   );
 
   await interaction.message.edit({

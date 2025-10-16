@@ -5,7 +5,14 @@ const config = require("../../config.js");
 async function checkDeletePanel() {
   for (const serveur of config.liste_serveur) {
     try {
-      const filePath = path.join(__dirname, "..", "..", "data", "servers", `${serveur}.json`);
+      const filePath = path.join(
+        __dirname,
+        "..",
+        "..",
+        "data",
+        "servers",
+        `${serveur}.json`,
+      );
       if (!fs.existsSync(filePath)) continue;
 
       const serverDatas = JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -17,7 +24,9 @@ async function checkDeletePanel() {
         if (panel.delete) {
           const now = Math.floor(Date.now() / 1000);
           if (now >= panel.delete) {
-            console.log(`[CHECK] Suppression du panel ${panel.id} sur ${serveur}`);
+            console.log(
+              `[CHECK] Suppression du panel ${panel.id} sur ${serveur}`,
+            );
             toDelete.push(panel.id);
             modified = true;
           }
@@ -25,12 +34,20 @@ async function checkDeletePanel() {
       }
 
       if (toDelete.length > 0) {
-        serverDatas.logs = serverDatas.logs.filter((log) => !toDelete.includes(log.panel));
-        serverDatas.panels = serverDatas.panels.filter((p) => !toDelete.includes(p.id));
+        serverDatas.logs = serverDatas.logs.filter(
+          (log) => !toDelete.includes(log.panel),
+        );
+        serverDatas.panels = serverDatas.panels.filter(
+          (p) => !toDelete.includes(p.id),
+        );
       }
 
       if (modified) {
-        fs.writeFileSync(filePath, JSON.stringify(serverDatas, null, 2), "utf8");
+        fs.writeFileSync(
+          filePath,
+          JSON.stringify(serverDatas, null, 2),
+          "utf8",
+        );
       }
     } catch (err) {
       console.error(`[ERREUR] checkDeletePanel sur ${serveur}:`, err);

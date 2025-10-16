@@ -6,7 +6,9 @@ exports.run = async (client, interaction, config) => {
 
   const serverDatas = await getServerDatas(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
-  const button = panelDatas.effectif.button.find((b) => b.label === buttonLabel);
+  const button = panelDatas.effectif.button.find(
+    (b) => b.label === buttonLabel,
+  );
 
   const modal = {
     custom_id: `effectif_editbutton-${panelId}-${buttonLabel}`,

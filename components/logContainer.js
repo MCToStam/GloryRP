@@ -54,9 +54,9 @@ async function getlogContainer(serverDatas, panel, serv, page = 1) {
       pageLogs.map(async (log) => {
         return `- ${userMention(log.user)} : **${log.action}** ${await time(
           log.timestamp,
-          "R"
+          "R",
         )}`;
-      })
+      }),
     );
   }
 

@@ -36,7 +36,7 @@ async function getSalaireContainer(
   serverDatas,
   panel,
   serv,
-  mois = "current"
+  mois = "current",
 ) {
   const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
   const panelId = Number(panel);
@@ -115,14 +115,14 @@ async function getSalaireContainer(
         console.warn(
           "Impossible de récupérer l'emoji tête pour",
           roleplayName,
-          err
+          err,
         );
       }
 
       salaireLines.push(
         `${emojiString}**${roleplayName}** : ${
           total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "$"
-        } ( ${taches.length} tâche${taches.length > 1 ? "s" : ""} )`
+        } ( ${taches.length} tâche${taches.length > 1 ? "s" : ""} )`,
       );
 
       const option = {
@@ -216,7 +216,7 @@ async function getSalaireContainer(
             options: selectOptions,
           },
         ],
-      }
+      },
     );
   }
 
@@ -354,7 +354,7 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
   if (attachments.length) {
     components.push(
       { type: 14, spacing: SeparatorSpacingSize.Small },
-      { type: 12, items: [{ media: { url: "attachment://salaire.png" } }] }
+      { type: 12, items: [{ media: { url: "attachment://salaire.png" } }] },
     );
   }
 
@@ -391,7 +391,7 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
           style: ButtonStyle.Primary,
         },
       ],
-    }
+    },
   );
 
   return {
@@ -410,7 +410,7 @@ async function getJoueurTacheContainer(
   serverDatas,
   panel,
   serv,
-  mois = "current"
+  mois = "current",
 ) {
   const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
   const panelId = Number(panel);

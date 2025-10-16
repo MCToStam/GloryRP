@@ -36,7 +36,7 @@ function parseFrenchDate(dateStr) {
     monthIndex,
     Number(jour),
     Number(heure),
-    Number(minute)
+    Number(minute),
   );
   return Math.floor(date.getTime() / 1000);
 }
@@ -52,7 +52,7 @@ async function getCandidatureContent(url, serveur) {
     const $ = cheerio.load(html);
 
     const contentDiv = $(
-      `#thread-${threadId} .col-lg-10.py-3 > .mb-2.overflow-hidden`
+      `#thread-${threadId} .col-lg-10.py-3 > .mb-2.overflow-hidden`,
     ).first();
     if (!contentDiv.length) return "Contenu de la candidature introuvable";
 
@@ -169,7 +169,7 @@ async function sendCandidatures(client, AllCandidatures) {
             type: 10,
             content: `${await getEmojiTete(
               client,
-              candidature.auteur
+              candidature.auteur,
             )} **Auteur :** ${candidature.auteur}`,
           },
           {
@@ -195,7 +195,7 @@ async function sendCandidatures(client, AllCandidatures) {
       if (isNew) {
         const candidatureDetailsContainer = await getCandidatureContent(
           candidature.lien,
-          serveur
+          serveur,
         );
 
         let components;
@@ -252,7 +252,7 @@ async function sendCandidatures(client, AllCandidatures) {
             candidature.savedBadgeColor = candidature.badgeColor;
           } else {
             console.warn(
-              "Impossible de récupérer le message principal du thread forum"
+              "Impossible de récupérer le message principal du thread forum",
             );
           }
         } else {
@@ -270,7 +270,7 @@ async function sendCandidatures(client, AllCandidatures) {
             .catch(() => null);
         } else if (channel.type === 15) {
           const thread = channel.threads.cache.find(
-            (t) => t.id === candidature.messageId
+            (t) => t.id === candidature.messageId,
           );
 
           if (thread) {
@@ -293,7 +293,7 @@ async function sendCandidatures(client, AllCandidatures) {
     } catch (err) {
       console.error(
         `❌ Erreur envoi/édition candidature dans ${channelId}`,
-        err
+        err,
       );
     }
   }
@@ -310,7 +310,7 @@ async function sendCandidatures(client, AllCandidatures) {
 
     for (const panelData of data.panels) {
       const allCandsForPanel = AllCandidatures.filter(
-        (c) => c.panel.name === panelData.name && c.serveur === serverFile
+        (c) => c.panel.name === panelData.name && c.serveur === serverFile,
       );
 
       panelData.candidature.save = allCandsForPanel.map((c) => ({
@@ -383,7 +383,7 @@ async function fetchNewCandidatures() {
 
           if (titre) {
             const existing = panel.candidature.save.find(
-              (c) => c.lien === "https://nationsglory.fr" + lien
+              (c) => c.lien === "https://nationsglory.fr" + lien,
             );
 
             const candidatureObj = {
@@ -410,7 +410,7 @@ async function fetchNewCandidatures() {
 
         for (const cand of candidatures) {
           const existing = panel.candidature.save.find(
-            (c) => c.lien === cand.lien
+            (c) => c.lien === cand.lien,
           );
           if (existing) {
             existing.badgeColor = cand.badgeColor;
@@ -424,7 +424,7 @@ async function fetchNewCandidatures() {
       } catch (err) {
         console.error(
           `❌ Erreur fetch candidatures ${panel.candidature.lien}`,
-          err.message
+          err.message,
         );
       }
     }

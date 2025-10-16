@@ -21,7 +21,9 @@ exports.run = async (client, interaction, config) => {
             min_length: 1,
             max_length: 200,
             placeholder: "Ex: https://nationsglory.fr/forums",
-            ...(panelDatas.depotdeplainte.lien ? { value: panelDatas.depotdeplainte.lien } : {}),
+            ...(panelDatas.depotdeplainte.lien
+              ? { value: panelDatas.depotdeplainte.lien }
+              : {}),
             required: true,
           },
         ],

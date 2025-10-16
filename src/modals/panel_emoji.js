@@ -27,12 +27,12 @@ exports.run = async (client, interaction, config) => {
     action: "Édition de l'émoji du rôle-play",
   });
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditPanelContainer(
     panelId,
     guildColor,
-    panelDatas
+    panelDatas,
   );
   return interaction.update({
     components: [goodContainer],

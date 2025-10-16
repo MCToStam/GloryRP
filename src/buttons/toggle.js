@@ -5,7 +5,10 @@ const {
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
-const { getConfigContainer, getPanelContainer } = require("../../components/containers.js");
+const {
+  getConfigContainer,
+  getPanelContainer,
+} = require("../../components/containers.js");
 
 exports.run = async (client, interaction, config) => {
   try {
@@ -31,23 +34,31 @@ exports.run = async (client, interaction, config) => {
       user: interaction.user.id,
       timestamp: modifDate,
       panel: panelId,
-      action: panelDatas.enable ? "Activation du module" : "Désactivation du module",
+      action: panelDatas.enable
+        ? "Activation du module"
+        : "Désactivation du module",
     });
 
-    await saveServerDatas(interaction, serverDatas, guildColor)
+    await saveServerDatas(interaction, serverDatas, guildColor);
 
-    serverDatas = getServerDatas(interaction, guildColor)
+    serverDatas = getServerDatas(interaction, guildColor);
     const updatedPanelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
     let components;
     if (menu === "acceuil") {
       components = await getConfigContainer(serverDatas, guildColor);
     } else if (menu === "panel") {
-      components = await getPanelContainer(guildColor, updatedPanelDatas, panelId);
+      components = await getPanelContainer(
+        guildColor,
+        updatedPanelDatas,
+        panelId,
+      );
     }
 
-    return await interaction.message.edit({ components: [components], allowedMentions: { parse: [] } });
-
+    return await interaction.message.edit({
+      components: [components],
+      allowedMentions: { parse: [] },
+    });
   } catch (e) {
     console.error(e);
     return interaction.reply({

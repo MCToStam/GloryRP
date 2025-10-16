@@ -2,7 +2,9 @@ const {
   getGuildColor,
   getServerDatas,
 } = require("../../utils/functions/datas.js");
-const { getDepotDePlainteContainer } = require("../../components/containers.js");
+const {
+  getDepotDePlainteContainer,
+} = require("../../components/containers.js");
 
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();
@@ -11,12 +13,16 @@ exports.run = async (client, interaction, config) => {
   const guildColor = await getGuildColor(interaction);
   const serverDatas = await getServerDatas(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
-  
-  const channelContainer = await getDepotDePlainteContainer(panelId, guildColor, panelDatas)
+
+  const channelContainer = await getDepotDePlainteContainer(
+    panelId,
+    guildColor,
+    panelDatas,
+  );
 
   await interaction.message.edit({
     components: [channelContainer],
-    allowedMentions: { parse: [] }
+    allowedMentions: { parse: [] },
   });
 };
 

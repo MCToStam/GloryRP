@@ -144,7 +144,7 @@ exports.run = async (client, interaction, config) => {
     client,
     serverDatas,
     panelId,
-    serv
+    serv,
   );
   return interaction.reply({
     components: [salaireContainer],
@@ -219,7 +219,7 @@ exports.data = {
           "..",
           "data",
           "servers",
-          `${serveur}.json`
+          `${serveur}.json`,
         );
         if (!fs.existsSync(filePath)) {
           return await interaction.respond([

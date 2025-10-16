@@ -44,14 +44,16 @@ async function getEmojiTete(client, joueur) {
     nom: joueur,
     createdAt: now,
   };
-  fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
+  fs.promises
+    .writeFile(cachePath, JSON.stringify(emojisCache, null, 2))
+    .catch(console.error);
 
   return emoji;
 }
 
 async function getHexEmoji(client, hexColor) {
   const now = Date.now();
-  const key = hexColor.toLowerCase()
+  const key = hexColor.toLowerCase();
   const colorKey = hexColor.toLowerCase();
 
   if (!guildCache) {
@@ -59,16 +61,20 @@ async function getHexEmoji(client, hexColor) {
   }
   const guild = guildCache;
 
-  const existingColorEmoji = Object.values(emojisCache).find(e => e.color === colorKey);
+  const existingColorEmoji = Object.values(emojisCache).find(
+    (e) => e.color === colorKey,
+  );
   if (existingColorEmoji) {
     const emoji = guild.emojis.cache.get(existingColorEmoji.emojiId);
     if (emoji) {
       emojisCache[hexColor] = {
         emojiId: emoji.id,
         color: colorKey,
-        createdAt: now
+        createdAt: now,
       };
-      fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
+      fs.promises
+        .writeFile(cachePath, JSON.stringify(emojisCache, null, 2))
+        .catch(console.error);
       return emoji;
     }
   }
@@ -82,29 +88,38 @@ async function getHexEmoji(client, hexColor) {
 
   const safeKey = key.toLowerCase().replace(/[^a-z0-9_]/g, "_");
 
-  const attachment = new AttachmentBuilder(canvas.toBuffer("image/png"), { name: `${safeKey}.png` });
+  const attachment = new AttachmentBuilder(canvas.toBuffer("image/png"), {
+    name: `${safeKey}.png`,
+  });
   const emoji = await guild.emojis.create({
     attachment: attachment.attachment,
-    name: colorKey.replace(/[^a-z0-9_]/gi, "_").slice(0, 32)
+    name: colorKey.replace(/[^a-z0-9_]/gi, "_").slice(0, 32),
   });
 
   emojisCache[key] = {
     emojiId: emoji.id,
     color: colorKey,
-    createdAt: now
+    createdAt: now,
   };
-  fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
+  fs.promises
+    .writeFile(cachePath, JSON.stringify(emojisCache, null, 2))
+    .catch(console.error);
 
-  setTimeout(async () => {
-    try {
-      const stillHere = guild.emojis.cache.get(emoji.id);
-      if (stillHere) await stillHere.delete();
-      delete emojisCache[key];
-      fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
-    } catch (e) {
-      console.warn(`Erreur suppression emoji ${emoji.id}:`, e.message);
-    }
-  }, 60 * 60 * 1000);
+  setTimeout(
+    async () => {
+      try {
+        const stillHere = guild.emojis.cache.get(emoji.id);
+        if (stillHere) await stillHere.delete();
+        delete emojisCache[key];
+        fs.promises
+          .writeFile(cachePath, JSON.stringify(emojisCache, null, 2))
+          .catch(console.error);
+      } catch (e) {
+        console.warn(`Erreur suppression emoji ${emoji.id}:`, e.message);
+      }
+    },
+    60 * 60 * 1000,
+  );
 
   return emoji;
 }
@@ -136,7 +151,7 @@ async function checkEmojiCache(client) {
         } catch (e) {
           console.warn(
             `⚠️ Impossible de supprimer l'emoji ${emojiId}:`,
-            e.message
+            e.message,
           );
         }
         delete emojisCache[key];
@@ -150,7 +165,9 @@ async function checkEmojiCache(client) {
               console.log(`🗑️ Emoji ${stillHere.name} supprimé (planifié)`);
             }
             delete emojisCache[key];
-            fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
+            fs.promises
+              .writeFile(cachePath, JSON.stringify(emojisCache, null, 2))
+              .catch(console.error);
           } catch (e) {
             console.warn(`⚠️ Erreur suppression emoji ${emojiId}:`, e.message);
           }
@@ -158,7 +175,9 @@ async function checkEmojiCache(client) {
       }
     }
 
-    fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2)).catch(console.error);
+    fs.promises
+      .writeFile(cachePath, JSON.stringify(emojisCache, null, 2))
+      .catch(console.error);
   } catch (e) {}
 }
 

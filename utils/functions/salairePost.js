@@ -32,13 +32,13 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
 
   const salaireData = panel.salaire?.salaire || {};
   const dateExiste = Object.values(salaireData).some((staffSalaires) =>
-    Object.keys(staffSalaires).includes(date)
+    Object.keys(staffSalaires).includes(date),
   );
 
   let errorMsg;
   if (!dateExiste) {
     errorMsg = `Aucun salaire n'a été enregistré pour le mois "**${formatDateFr(
-      date
+      date,
     )}**" dans le panel **${panel.name}**.`;
   }
 
@@ -53,7 +53,7 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
   }
 
   if (errorMsg) {
-    return ({
+    return {
       type: 17,
       accent_color: config.colors.error,
       components: [
@@ -70,7 +70,7 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
           content: errorMsg,
         },
       ],
-    });
+    };
   }
 
   const moisData = await Promise.all(
@@ -78,12 +78,12 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
       const moisSalaires = salaires[date];
       if (!moisSalaires) return null;
       const tachesValides = moisSalaires.taches.filter(
-        (t) => t.status !== "waiting" && t.status !== "refused"
+        (t) => t.status !== "waiting" && t.status !== "refused",
       );
 
       const total = tachesValides.taches.reduce(
         (sum, t) => sum + (t.argent || 0),
-        0
+        0,
       );
 
       if (total === 0) return null;
@@ -95,12 +95,12 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
       } catch (err) {
         console.warn(
           `Impossible de récupérer l'emoji pour ${joueur}:`,
-          err.message
+          err.message,
         );
       }
 
       return `${emoji} **${joueur}** : ${total}$`;
-    })
+    }),
   ).then((results) => results.filter(Boolean).join("\n"));
 
   const panelContainer = {
@@ -153,7 +153,7 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
         if (!moisSalaires) return sum;
 
         const tachesValides = moisSalaires.taches.filter(
-          (t) => t.status !== "waiting" && t.status !== "refused"
+          (t) => t.status !== "waiting" && t.status !== "refused",
         );
 
         return sum + tachesValides.reduce((s, t) => s + (t.argent || 0), 0);
@@ -161,7 +161,7 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
 
       const cmdRetrait = `> 🌐 \`\`${panel.salaire.cmd_retrait.replace(
         "[argent]",
-        totalArgent
+        totalArgent,
       )}\`\``;
 
       const commandesJoueurs = await Promise.all(
@@ -170,12 +170,12 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
           if (!moisSalaires) return null;
 
           const tachesValides = moisSalaires.taches.filter(
-            (t) => t.status !== "waiting" && t.status !== "refused"
+            (t) => t.status !== "waiting" && t.status !== "refused",
           );
 
           const total = tachesValides.reduce(
             (sum, t) => sum + (t.argent || 0),
-            0
+            0,
           );
 
           if (total === 0) return null;
@@ -191,12 +191,12 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
           } catch (err) {
             console.warn(
               `Impossible de récupérer l'emoji pour ${joueur}:`,
-              err.message
+              err.message,
             );
           }
 
           return `> ${emoji} \`\`${cmdDon}\`\``;
-        })
+        }),
       );
 
       const commandesJoueursFiltrees = commandesJoueurs.filter(Boolean);
@@ -254,7 +254,7 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
       {
         type: 10,
         content: `Le salaire du mois "**${formatDateFr(
-          date
+          date,
         )}**" sur le rôle-play **${
           panel.name
         }** a correctement été envoyé ici :${message.url}`,

@@ -18,7 +18,9 @@ exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
   const gradeId = Number(interaction.customId.split("-")[2]);
 
-  const new_color = formatHexColor(interaction.fields.getTextInputValue("new_color"));
+  const new_color = formatHexColor(
+    interaction.fields.getTextInputValue("new_color"),
+  );
 
   if (!new_color) {
     const errorContainer = {
@@ -35,8 +37,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 10,
-          content:
-            "La couleur doit être au format hexadecimal.",
+          content: "La couleur doit être au format hexadecimal.",
         },
       ],
     };
@@ -48,7 +49,7 @@ exports.run = async (client, interaction, config) => {
     });
   }
 
-  await interaction.deferUpdate()
+  await interaction.deferUpdate();
 
   const guildColor = await getGuildColor(interaction);
   const serverDatas = await getServerDatas(interaction);
@@ -66,14 +67,14 @@ exports.run = async (client, interaction, config) => {
 
   grade.couleur = new_color;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditGradeContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    gradeId
+    gradeId,
   );
   return interaction.editReply({
     components: [goodContainer],

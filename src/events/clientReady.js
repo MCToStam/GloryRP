@@ -8,10 +8,13 @@ const log = require("../../utils/modules/logger.js");
 const { getDateTs } = require("../../utils/functions/numbersAndLetters.js");
 const { botLaunch } = require("../../index.js");
 const { checkEmojiCache } = require("../../utils/functions/emojis.js");
-const cron = require('node-cron');
+const cron = require("node-cron");
 const {
   checkCandidature,
 } = require("../../utils/functions/checkCandidature.js");
+const {
+  checkDepotDePlainte,
+} = require("../../utils/functions/checkDepotDePlainte.js");
 const {
   checkDeletePanel,
 } = require("../../utils/functions/checkDeletePanel.js");
@@ -19,7 +22,7 @@ const {
 async function getPlayerCount(server) {
   try {
     var response = await fetch(
-      `${config.glorybot_url}/api/joueurConnecte?serveur=${server}&administrator=true`
+      `${config.glorybot_url}/api/joueurConnecte?serveur=${server}&administrator=true`,
     );
     var response = await response.json();
     if (
@@ -51,7 +54,6 @@ async function cycleStatus(client, statusIndex) {
 }
 
 module.exports = async (client, interaction) => {
-  await checkDeletePanel();
   const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
   chanCmds.send("**✅ | BOT ON !**");
 
@@ -88,10 +90,10 @@ module.exports = async (client, interaction) => {
 
   log(
     `${client.user.username} est pret en ${latence.toFixed(
-      1
+      1,
     )}s, sur ${guilds} serveurs et ${usersCount} utilisateurs.`,
     "READY",
-    "green"
+    "green",
   );
 
   await cycleStatus(client, 0);
@@ -103,12 +105,15 @@ module.exports = async (client, interaction) => {
 
   cron.schedule("*/30 * * * *", async () => {
     try {
+      await checkDeletePanel();
+      await checkDepotDePlainte(client);
       await checkCandidature(client);
     } catch (err) {
       log(
-        "Erreur lors de la vérification des candidatures :" + err,
+        "Erreur lors de la vérification des candidatures, dépot de plainte ou de suppression d'un panel :" +
+          err,
         "ERROR",
-        "red"
+        "red",
       );
     }
   });

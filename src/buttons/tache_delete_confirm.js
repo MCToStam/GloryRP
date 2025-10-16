@@ -89,21 +89,20 @@ exports.run = async (client, interaction, config) => {
 
   setTimeout(async () => {
     const msg = await interaction.channel.messages.fetch(
-      interaction.message.id
+      interaction.message.id,
     );
     if (msg) await msg.delete().catch(() => {});
   }, 5000);
 
   const repliedMessageId = interaction.message.reference?.messageId;
   if (repliedMessageId) {
-    const originalMessage = await interaction.channel.messages.fetch(
-      repliedMessageId
-    );
+    const originalMessage =
+      await interaction.channel.messages.fetch(repliedMessageId);
     const configContainer = await getTacheContainer(
       client,
       panelId,
       guildColor,
-      panelDatas
+      panelDatas,
     );
     await originalMessage.edit({
       components: [configContainer],

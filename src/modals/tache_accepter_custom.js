@@ -228,7 +228,7 @@ exports.run = async (client, interaction, config) => {
           });
 
           tache.status = "accepted";
-          tache.argent = Number(new_salaire)
+          tache.argent = Number(new_salaire);
           tache.staff = pseudonym;
           tache.messageId = message.id;
           found = true;

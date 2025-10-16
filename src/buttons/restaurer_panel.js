@@ -1,4 +1,8 @@
-const { getServerDatas, saveServerDatas, getGuildColor } = require("../../utils/functions/datas.js");
+const {
+  getServerDatas,
+  saveServerDatas,
+  getGuildColor,
+} = require("../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const { getConfigContainer } = require("../../components/containers.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
@@ -55,7 +59,7 @@ exports.run = async (client, interaction, config) => {
   serverDatas.lastUser = interaction.user.id;
   serverDatas.timestamp = Math.floor(Date.now() / 1000);
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const configContainer = await getConfigContainer(serverDatas, guildColor);
 

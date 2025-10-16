@@ -10,7 +10,8 @@ const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
 
-  const new_description = interaction.fields.getTextInputValue("new_description") || false;
+  const new_description =
+    interaction.fields.getTextInputValue("new_description") || false;
 
   const guildColor = await getGuildColor(interaction);
   const serverDatas = await getServerDatas(interaction);
@@ -27,12 +28,12 @@ exports.run = async (client, interaction, config) => {
     action: "Édition de la description du rôle-play",
   });
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditPanelContainer(
     panelId,
     guildColor,
-    panelDatas
+    panelDatas,
   );
   return interaction.update({
     components: [goodContainer],
