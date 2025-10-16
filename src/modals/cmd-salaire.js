@@ -28,7 +28,7 @@ exports.run = async (client, interaction, config) => {
     action: "Édition des commandes de salaire",
   });
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = {
     type: 17,

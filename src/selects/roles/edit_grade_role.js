@@ -30,14 +30,14 @@ exports.run = async (client, interaction, config) => {
   });
 
   grade.role = new_roles;
-  
-  await saveServerDatas(interaction, serverDatas, guildColor)
+
+  await saveServerDatas(interaction, serverDatas, guildColor);
   const salaireContainer = await getEditGradeContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    gradeId
+    gradeId,
   );
 
   await interaction.message.edit({

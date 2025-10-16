@@ -28,7 +28,7 @@ exports.run = async (client, interaction, config) => {
         {
           type: 10,
           content:
-            "Le lien doit être une discussion du forum de NationsGlory, donc commençant par l'URL \"https://nationsglory.fr/forums/thread\".",
+            'Le lien doit être une discussion du forum de NationsGlory, donc commençant par l\'URL "https://nationsglory.fr/forums/thread".',
         },
       ],
     };
@@ -55,12 +55,12 @@ exports.run = async (client, interaction, config) => {
     action: "Édition du lien forum de candidature",
   });
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getCandidatureContainer(
     panelId,
     guildColor,
-    panelDatas
+    panelDatas,
   );
   return interaction.update({
     components: [goodContainer],

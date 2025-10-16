@@ -21,7 +21,9 @@ exports.run = async (client, interaction, config) => {
             min_length: 1,
             max_length: 200,
             placeholder: "Ex: https://nationsglory.fr/forums",
-            ...(panelDatas.candidature.lien ? { value: panelDatas.candidature.lien } : {}),
+            ...(panelDatas.candidature.lien
+              ? { value: panelDatas.candidature.lien }
+              : {}),
             required: true,
           },
         ],

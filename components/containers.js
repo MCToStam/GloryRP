@@ -11,34 +11,45 @@ const { getHexEmoji } = require("../utils/functions/emojis.js");
 
 async function getConfigContainer(serverDatas, serv) {
   const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
-  const panelsComponents = serverDatas.panels.map((panel) => ({
-    type: 9,
-    components: [
-      {
-        type: 10,
-        content: `${panel.emoji ? `${panel.emoji} ` : ""}Panel ${panel.name} ${
-          panel.delete
-            ? `\n*Suppression définitive dans <t:${panel.delete}:R> !*`
-            : ""
-        }`,
-      },
-    ],
-    accessory: panel.delete
-      ? {
-          type: 2,
-          custom_id: `restore-panel-${panel.id}`,
-          label: "Restaurer",
-          emoji: { name: "♻️" },
-          style: ButtonStyle.Primary,
-        }
-      : {
-          type: 2,
-          custom_id: `toggle-panel-${panel.id}-acceuil`,
-          label: panel.enable ? "Activé" : "Désactivé",
-          emoji: { name: panel.enable ? "✅" : "❌" },
-          style: panel.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+  let panelsComponents = [];
+
+  if (serverDatas.panels.length === 0) {
+    panelsComponents.push({
+      type: 10,
+      content: "Aucun panel configuré pour le moment.",
+    });
+  } else {
+    panelsComponents = serverDatas.panels.map((panel) => ({
+      type: 9,
+      components: [
+        {
+          type: 10,
+          content: `${panel.emoji ? `${panel.emoji} ` : ""}Panel ${
+            panel.name
+          } ${
+            panel.delete
+              ? `\n*Suppression définitive dans <t:${panel.delete}:R> !*`
+              : ""
+          }`,
         },
-  }));
+      ],
+      accessory: panel.delete
+        ? {
+            type: 2,
+            custom_id: `restore-panel-${panel.id}`,
+            label: "Restaurer",
+            emoji: { name: "♻️" },
+            style: ButtonStyle.Primary,
+          }
+        : {
+            type: 2,
+            custom_id: `toggle-panel-${panel.id}-acceuil`,
+            label: panel.enable ? "Activé" : "Désactivé",
+            emoji: { name: panel.enable ? "✅" : "❌" },
+            style: panel.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+          },
+    }));
+  }
 
   const returnComponent = {
     type: 17,
@@ -244,7 +255,7 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
             ].filter(Boolean),
           },
         ],
-      }
+      },
     );
   }
 
@@ -483,7 +494,7 @@ async function getEditGradeContainer(
   panelId,
   guildColor,
   panelDatas,
-  gradeId
+  gradeId,
 ) {
   const grade = panelDatas.grade.find((g) => g.gradeId === gradeId);
 
@@ -610,7 +621,7 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
       content: `- ${
         grade.couleur ? `${await getHexEmoji(client, grade.couleur)}` : ""
       } **${grade.nom}**`,
-    }))
+    })),
   );
 
   const gradeOptions = await Promise.all(
@@ -627,7 +638,7 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
           ? { id: e.id, name: e.name, animated: e.animated || false }
           : undefined,
       };
-    })
+    }),
   );
 
   return {
@@ -1097,7 +1108,7 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
     panelDatas.tasks.map(async (task) => ({
       type: 10,
       content: `- ${task.emoji ? `${task.emoji} ` : ""}**${task.name}**`,
-    }))
+    })),
   );
 
   const taskOptions = await Promise.all(
@@ -1106,7 +1117,7 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
 
       if (task.emoji && task.emoji !== false) {
         const customEmojiMatch = task.emoji.match(
-          /^<a?:([a-zA-Z0-9_]+):(\d+)>$/
+          /^<a?:([a-zA-Z0-9_]+):(\d+)>$/,
         );
         if (customEmojiMatch) {
           emoji = {
@@ -1130,7 +1141,7 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
         description: `Configure ${task.name}`,
         ...(emoji ? { emoji } : {}),
       };
-    })
+    }),
   );
 
   return {
@@ -1206,7 +1217,7 @@ async function getEditTacheContainer(
   panelId,
   guildColor,
   panelDatas,
-  tacheId
+  tacheId,
 ) {
   const task = panelDatas.tasks.find((g) => g.taskId === tacheId);
 
@@ -1231,7 +1242,7 @@ async function getEditTacheContainer(
           : undefined,
         default: task.grade?.includes(String(grade.gradeId)) || false,
       };
-    })
+    }),
   );
 
   return {
@@ -1314,8 +1325,8 @@ async function getEditTacheContainer(
                     .map(
                       ([jour, montant]) =>
                         `\`${jour}\`: ${Number(montant).toLocaleString(
-                          "de-DE"
-                        )}$`
+                          "de-DE",
+                        )}$`,
                     )
                     .join(" | ")
                 : "Aucun salaire configuré"

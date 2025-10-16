@@ -6,8 +6,8 @@ const {
 const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
-  await interaction.deferUpdate()
-  
+  await interaction.deferUpdate();
+
   const panelId = Number(interaction.values[0].split("-")[1]);
   const tacheId = Number(interaction.values[0].split("-")[2]);
 
@@ -20,7 +20,7 @@ exports.run = async (client, interaction, config) => {
     panelId,
     guildColor,
     panelDatas,
-    tacheId
+    tacheId,
   );
   return interaction.editReply({
     components: [tacheContainer],

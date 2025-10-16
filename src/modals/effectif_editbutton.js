@@ -47,13 +47,13 @@ exports.run = async (client, interaction, config) => {
   const serverDatas = await getServerDatas(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
   const button = panelDatas.effectif.button.find(
-    (b) => b.label === buttonLabel
+    (b) => b.label === buttonLabel,
   );
 
   const labelExists = panelDatas.effectif.button.some(
     (b) =>
       b.label.toLowerCase() === new_label.toLowerCase() &&
-      b.label !== button.label
+      b.label !== button.label,
   );
 
   if (labelExists) {
@@ -97,12 +97,12 @@ exports.run = async (client, interaction, config) => {
   button.label = new_label;
   button.lien = new_link;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEffectifContainer(
     panelId,
     guildColor,
-    panelDatas
+    panelDatas,
   );
   await interaction.update({
     components: [goodContainer],

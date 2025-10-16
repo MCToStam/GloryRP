@@ -2,7 +2,11 @@ const {
   getServerDatas,
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
-const { MessageFlags, SeparatorSpacingSize, ButtonStyle } = require("discord.js");
+const {
+  MessageFlags,
+  SeparatorSpacingSize,
+  ButtonStyle,
+} = require("discord.js");
 const { discordStaff } = require("../../../utils/functions/linkedUser.js");
 
 exports.run = async (client, interaction, config) => {
@@ -87,11 +91,11 @@ exports.run = async (client, interaction, config) => {
 
   const gradesAutorises = tache.grade;
   const gradesDatas = panelDatas.grade.filter((g) =>
-    gradesAutorises.includes(String(g.gradeId))
+    gradesAutorises.includes(String(g.gradeId)),
   );
 
   const userHasAccess = gradesDatas.some((g) =>
-    g.listeRp.includes(interaction.user.id)
+    g.listeRp.includes(interaction.user.id),
   );
 
   if (!userHasAccess) {

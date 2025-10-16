@@ -11,12 +11,16 @@ exports.run = async (client, interaction, config) => {
   const guildColor = await getGuildColor(interaction);
   const serverDatas = await getServerDatas(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
-  
-  const effectifContainer = await getEffectifContainer(panelId, guildColor, panelDatas)
+
+  const effectifContainer = await getEffectifContainer(
+    panelId,
+    guildColor,
+    panelDatas,
+  );
 
   await interaction.message.edit({
     components: [effectifContainer],
-    allowedMentions: { parse: [] }
+    allowedMentions: { parse: [] },
   });
 };
 

@@ -30,14 +30,14 @@ exports.run = async (client, interaction, config) => {
 
   tache.emoji = new_emoji;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditTacheContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    taskId
+    taskId,
   );
   return interaction.update({
     components: [goodContainer],

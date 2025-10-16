@@ -11,7 +11,7 @@ exports.run = async (client, interaction, config) => {
     serverDatas,
     panelId,
     serv,
-    date
+    date,
   );
   return interaction.update({
     components: [salaireContainer],

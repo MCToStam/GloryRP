@@ -14,7 +14,7 @@ module.exports = async (client, guild) => {
       type: AuditLogEvent.BotAdd,
     });
     const botAddLog = auditLogs.entries.find(
-      (entry) => entry.target.id === client.user.id
+      (entry) => entry.target.id === client.user.id,
     );
     const inviter = botAddLog?.executor;
 
@@ -33,7 +33,10 @@ module.exports = async (client, guild) => {
           { type: 10, content },
         ],
       };
-      await logChannel.send({ components: [container], flags: MessageFlags.IsComponentsV2 });
+      await logChannel.send({
+        components: [container],
+        flags: MessageFlags.IsComponentsV2,
+      });
     };
 
     if (!pseudonym) {
@@ -73,7 +76,7 @@ module.exports = async (client, guild) => {
       await sendLog(
         "## :x: Accès Refusé",
         `Tentative d'invitation par <@${inviter.id}> sur le serveur **${guild.name}**.\n> Membres : ${guild.memberCount}\n> Propriétaire : <@${guild.ownerId}>\n> Date de création : <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`,
-        config.colors.error
+        config.colors.error,
       );
       return;
     }
@@ -116,7 +119,7 @@ module.exports = async (client, guild) => {
       await sendLog(
         "## :x: Accès Refusé",
         `Tentative d'invitation par <@${inviter.id}> sur le serveur **${guild.name}**.\n> Membres : ${guild.memberCount}\n> Propriétaire : <@${guild.ownerId}>\n> Date de création : <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`,
-        config.colors.error
+        config.colors.error,
       );
       return;
     }
@@ -125,10 +128,10 @@ module.exports = async (client, guild) => {
       "## ✅ Accès Autorisé",
       `GloryRP a été invité par <@${inviter.id}>.\n\n> Nom : ${guild.name.replace(
         /_/g,
-        "\\_"
+        "\\_",
       )}\n> Membres : ${guild.memberCount}\n> Propriétaire : <@${
         guild.ownerId
-      }>\n> Date de création : <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`
+      }>\n> Date de création : <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`,
     );
   } catch (err) {
     console.error("Erreur lors du traitement de l'invitation :", err);
