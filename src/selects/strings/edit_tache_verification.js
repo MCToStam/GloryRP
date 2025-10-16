@@ -30,14 +30,14 @@ exports.run = async (client, interaction, config) => {
   });
 
   tache.type = new_type;
-  
-  await saveServerDatas(interaction, serverDatas, guildColor)
+
+  await saveServerDatas(interaction, serverDatas, guildColor);
   const tacheContainer = await getEditTacheContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    taskId
+    taskId,
   );
 
   await interaction.message.edit({

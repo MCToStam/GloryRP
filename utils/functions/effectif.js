@@ -38,10 +38,10 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
     };
   }
 
-  const ngData = await discordLink()
+  const ngData = await discordLink();
 
   const gradesTriees = panel.grade.sort(
-    (a, b) => Number(b.tier) - Number(a.tier)
+    (a, b) => Number(b.tier) - Number(a.tier),
   );
 
   let effectifContent = "";
@@ -53,7 +53,7 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
       for (const joueur of grade.listeRp) {
         const emojiTete = await getEmojiTete(client, ngData[joueur]);
         mentionsArray.push(
-          `${emojiTete} <@${joueur}> ➤ ${ngData[joueur] || "Inconnu"}`
+          `${emojiTete} <@${joueur}> ➤ ${ngData[joueur] || "Inconnu"}`,
         );
       }
     }
@@ -87,11 +87,11 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
       label: b.label,
       url: b.lien,
     })) || [];
-    
+
   if (buttons.length > 0) {
     effectifContainer.components.push(
       { type: 14, spacing: SeparatorSpacingSize.Large },
-      { type: 1, components: buttons }
+      { type: 1, components: buttons },
     );
   }
 
@@ -134,10 +134,10 @@ async function updateEffectif(client, serveur, serveurDatas, panelId) {
   const channel = client.channels.cache.get(panel.effectif.channel);
   if (!channel) return;
 
-  const ngData = await discordLink()
+  const ngData = await discordLink();
 
   const gradesTriees = panel.grade.sort(
-    (a, b) => Number(b.tier) - Number(a.tier)
+    (a, b) => Number(b.tier) - Number(a.tier),
   );
 
   let effectifContent = "";
@@ -149,7 +149,7 @@ async function updateEffectif(client, serveur, serveurDatas, panelId) {
       for (const joueur of grade.listeRp) {
         const emojiTete = await getEmojiTete(client, ngData[joueur]);
         mentionsArray.push(
-          `${emojiTete} <@${joueur}> ➤ ${ngData[joueur] || "Inconnu"}`
+          `${emojiTete} <@${joueur}> ➤ ${ngData[joueur] || "Inconnu"}`,
         );
       }
     }
@@ -187,7 +187,7 @@ async function updateEffectif(client, serveur, serveurDatas, panelId) {
   if (buttons.length > 0) {
     effectifContainer.components.push(
       { type: 14, spacing: SeparatorSpacingSize.Large },
-      { type: 1, components: buttons }
+      { type: 1, components: buttons },
     );
   }
 

@@ -24,8 +24,8 @@ exports.run = async (client, interaction, config) => {
 
     const type = interaction.customId.split("-")[3];
     const logMap = {
-      salaire: "Édition du rôle mentionné lors de salaire"
-    }
+      salaire: "Édition du rôle mentionné lors de salaire",
+    };
     if (!serverDatas.logs) serverDatas.logs = [];
     serverDatas.logs.push({
       user: interaction.user.id,
@@ -35,9 +35,9 @@ exports.run = async (client, interaction, config) => {
     });
     panelDatas.roles[type] = rolesId;
 
-    await saveServerDatas(interaction, serverDatas, guildColor)
+    await saveServerDatas(interaction, serverDatas, guildColor);
     const components = interaction.message.components.map((row) =>
-      row.toJSON()
+      row.toJSON(),
     );
     for (const row of components) {
       for (const comp of row.components.filter((x) => x.type == 10)) {
@@ -52,7 +52,7 @@ exports.run = async (client, interaction, config) => {
     }
     await interaction.message.edit({
       components: components,
-      allowedMentions: { parse: [] }
+      allowedMentions: { parse: [] },
     });
   } catch (e) {
     console.error(e);

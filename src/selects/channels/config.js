@@ -11,7 +11,8 @@ const {
 exports.run = async (client, interaction, config) => {
   try {
     await interaction.deferUpdate();
-    const channelId = interaction.values.length === 0 ? false : interaction.values[0];
+    const channelId =
+      interaction.values.length === 0 ? false : interaction.values[0];
     const panelId = Number(interaction.customId.split("-")[1]);
 
     const serverDatas = await getServerDatas(interaction);
@@ -28,8 +29,8 @@ exports.run = async (client, interaction, config) => {
       responsable: "Édition du salon de responsable",
       tasks: "Édition du salon des tâches",
       salaire: "Édition du salon de salaire",
-      effectif: "Édition du salon d'effectif"
-    }
+      effectif: "Édition du salon d'effectif",
+    };
     if (!serverDatas.logs) serverDatas.logs = [];
     serverDatas.logs.push({
       user: interaction.user.id,
@@ -39,9 +40,9 @@ exports.run = async (client, interaction, config) => {
     });
     panelDatas.channels[channel] = channelId;
 
-    await saveServerDatas(interaction, serverDatas, guildColor)
+    await saveServerDatas(interaction, serverDatas, guildColor);
     const components = interaction.message.components.map((row) =>
-      row.toJSON()
+      row.toJSON(),
     );
     for (const row of components) {
       for (const comp of row.components.filter((x) => x.type == 10)) {
@@ -56,7 +57,7 @@ exports.run = async (client, interaction, config) => {
     }
     await interaction.message.edit({
       components: components,
-      allowedMentions: { parse: [] }
+      allowedMentions: { parse: [] },
     });
   } catch (e) {
     console.error(e);

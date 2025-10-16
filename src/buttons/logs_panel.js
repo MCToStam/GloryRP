@@ -1,5 +1,8 @@
 const { getlogContainer } = require("../../components/logContainer.js");
-const { getServerDatas, getGuildColor } = require("../../utils/functions/datas.js");
+const {
+  getServerDatas,
+  getGuildColor,
+} = require("../../utils/functions/datas.js");
 const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction) => {
@@ -10,7 +13,12 @@ exports.run = async (client, interaction) => {
   const serverDatas = await getServerDatas(interaction);
   const guildColor = await getGuildColor(interaction);
 
-  const { error, component: logContainer } = await getlogContainer(serverDatas, panelId, guildColor, 1);
+  const { error, component: logContainer } = await getlogContainer(
+    serverDatas,
+    panelId,
+    guildColor,
+    1,
+  );
   return interaction.editReply({
     components: [logContainer],
     flags: error

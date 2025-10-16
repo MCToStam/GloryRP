@@ -1,4 +1,7 @@
-const { getServerDatas, saveServerDatas } = require("../../utils/functions/datas.js");
+const {
+  getServerDatas,
+  saveServerDatas,
+} = require("../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const { getConfigContainer } = require("../../components/containers.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
@@ -57,8 +60,8 @@ exports.run = async (client, interaction, config) => {
 
   serverDatas.lastUser = interaction.user.id;
   serverDatas.timestamp = Math.floor(Date.now() / 1000);
-  
-  await saveServerDatas(interaction, serverDatas, guildColor)
+
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = {
     type: 17,
@@ -88,16 +91,15 @@ exports.run = async (client, interaction, config) => {
 
   setTimeout(async () => {
     const msg = await interaction.channel.messages.fetch(
-      interaction.message.id
+      interaction.message.id,
     );
     if (msg) await msg.delete().catch(() => {});
   }, 5000);
 
   const repliedMessageId = interaction.message.reference?.messageId;
   if (repliedMessageId) {
-    const originalMessage = await interaction.channel.messages.fetch(
-      repliedMessageId
-    );
+    const originalMessage =
+      await interaction.channel.messages.fetch(repliedMessageId);
     const configContainer = await getConfigContainer(serverDatas, guildColor);
     await originalMessage.edit({
       components: [configContainer],

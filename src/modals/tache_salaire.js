@@ -75,14 +75,14 @@ exports.run = async (client, interaction, config) => {
     action: `Modification du salaire de la tâche ${tache.name} en ${new_salaire} ${jour_text}`,
   });
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditTacheContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    taskId
+    taskId,
   );
   return interaction.update({
     components: [goodContainer],

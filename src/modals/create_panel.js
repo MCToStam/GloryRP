@@ -18,7 +18,7 @@ exports.run = async (client, interaction, config) => {
   const serverDatas = await getServerDatas(interaction);
 
   const nameExists = serverDatas.panels.some(
-    (p) => p.name.toLowerCase() === nom.toLowerCase()
+    (p) => p.name.toLowerCase() === nom.toLowerCase(),
   );
   if (nameExists) {
     const errorContainer = {
@@ -83,7 +83,7 @@ exports.run = async (client, interaction, config) => {
   serverDatas.timestamp = modifDate;
   serverDatas.lastUser = interaction.user.id;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getPanelContainer(guildColor, newPanel, newId);
 

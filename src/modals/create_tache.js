@@ -11,7 +11,8 @@ const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {
   const nom = interaction.fields.getTextInputValue("nom");
-  const description = interaction.fields.getTextInputValue("description") || false;
+  const description =
+    interaction.fields.getTextInputValue("description") || false;
   const emoji = interaction.fields.getTextInputValue("emoji") || false;
   const panelId = Number(interaction.customId.split("-")[1]);
 
@@ -20,7 +21,7 @@ exports.run = async (client, interaction, config) => {
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
   const nameExists = panelDatas.tasks.some(
-    (p) => p.name.toLowerCase() === nom.toLowerCase()
+    (p) => p.name.toLowerCase() === nom.toLowerCase(),
   );
   if (nameExists) {
     const errorContainer = {
@@ -57,7 +58,7 @@ exports.run = async (client, interaction, config) => {
     "..",
     "..",
     "data",
-    "tacheBaseData.json"
+    "tacheBaseData.json",
   );
   const baseData = JSON.parse(fs.readFileSync(basePath, "utf8"));
 
@@ -87,14 +88,14 @@ exports.run = async (client, interaction, config) => {
   serverDatas.timestamp = modifDate;
   serverDatas.lastUser = interaction.user.id;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditTacheContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    newId
+    newId,
   );
 
   return interaction.update({

@@ -1,5 +1,12 @@
-const { getServerDatas, getGuildColor } = require("../../utils/functions/datas.js");
-const { MessageFlags, ButtonStyle, SeparatorSpacingSize } = require("discord.js");
+const {
+  getServerDatas,
+  getGuildColor,
+} = require("../../utils/functions/datas.js");
+const {
+  MessageFlags,
+  ButtonStyle,
+  SeparatorSpacingSize,
+} = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
@@ -31,21 +38,21 @@ exports.run = async (client, interaction, config) => {
         spacing: SeparatorSpacingSize.Large,
       },
       {
-          type: 1,
-          components: [
-              {
-                  type: 2,
-                  custom_id: `tache_delete_confirm-${tache.taskId}-${panelId}-${guildColor}`,
-                  label: 'Oui, Supprimer',
-                  style: ButtonStyle.Danger,
-              },
-              {
-                  type: 2,
-                  custom_id: `delete_cancel`,
-                  label: "Annuler",
-                  style: ButtonStyle.Success,
-              },
-          ],
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `tache_delete_confirm-${tache.taskId}-${panelId}-${guildColor}`,
+            label: "Oui, Supprimer",
+            style: ButtonStyle.Danger,
+          },
+          {
+            type: 2,
+            custom_id: `delete_cancel`,
+            label: "Annuler",
+            style: ButtonStyle.Success,
+          },
+        ],
       },
     ],
   };

@@ -17,7 +17,7 @@ exports.run = async (client, interaction, config) => {
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
   const nameExists = serverDatas.panels.some(
-    (p) => p.id !== panelId && p.name.toLowerCase() === new_name.toLowerCase()
+    (p) => p.id !== panelId && p.name.toLowerCase() === new_name.toLowerCase(),
   );
   if (nameExists) {
     const errorContainer = {
@@ -58,12 +58,12 @@ exports.run = async (client, interaction, config) => {
     action: "Renommmage du rôle-play",
   });
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditPanelContainer(
     panelId,
     guildColor,
-    panelDatas
+    panelDatas,
   );
   return interaction.update({
     components: [goodContainer],

@@ -13,7 +13,10 @@ exports.run = async (client, interaction, config) => {
 
   const new_lien = interaction.fields.getTextInputValue("new_link") || false;
 
-  if (new_lien && !new_lien.startsWith("https://nationsglory.fr/forums/category")) {
+  if (
+    new_lien &&
+    !new_lien.startsWith("https://nationsglory.fr/forums/category")
+  ) {
     const errorContainer = {
       type: 17,
       accent_color: config.colors.error,
@@ -29,7 +32,7 @@ exports.run = async (client, interaction, config) => {
         {
           type: 10,
           content:
-            "Le lien doit être une catégorie du forum de NationsGlory, donc commençant par l'URL \"https://nationsglory.fr/forums/category\".",
+            'Le lien doit être une catégorie du forum de NationsGlory, donc commençant par l\'URL "https://nationsglory.fr/forums/category".',
         },
       ],
     };
@@ -58,14 +61,14 @@ exports.run = async (client, interaction, config) => {
 
   tache.url = new_lien;
 
-  await saveServerDatas(interaction, serverDatas, guildColor)
+  await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditTacheContainer(
     client,
     panelId,
     guildColor,
     panelDatas,
-    taskId
+    taskId,
   );
   return interaction.update({
     components: [goodContainer],
