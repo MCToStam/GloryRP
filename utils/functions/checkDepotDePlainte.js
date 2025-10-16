@@ -1,8 +1,7 @@
 const config = require("../../config.js");
-const fs = require("node:fs");
-const path = require("node:path");
 const cheerio = require("cheerio");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
+const { saveServerDatas, getServerDatas } = require("./datas.js");
 const {
   MessageFlags,
   SeparatorSpacingSize,
@@ -120,18 +119,8 @@ async function fetchNewMessages(urlLien, savedIds) {
 }
 
 async function checkDepotDePlainte(client) {
-  const baseDir = path.join(__dirname, "..", "..", "data", "servers");
-
-  for (const serverFile of config.liste_serveur) {
-    const filePath = path.join(baseDir, `${serverFile}.json`);
-    if (!fs.existsSync(filePath)) continue;
-
-    let data;
-    try {
-      data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-    } catch {
-      continue;
-    }
+  for (const serveur of config.liste_serveur) {
+    const data = await getServerDatas(false, serveur);
 
     if (!Array.isArray(data.panels)) continue;
 
@@ -174,7 +163,7 @@ async function checkDepotDePlainte(client) {
 
         const depotdeplainteContainer = {
           type: 17,
-          accent_color: config.couleur[serverFile],
+          accent_color: config.couleur[serveur],
           components: [
             {
               type: 10,
@@ -230,11 +219,10 @@ async function checkDepotDePlainte(client) {
 
     if (hasChanges) {
       try {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
-        console.log(`Fichier mis à jour: ${filePath}`);
+        await saveServerDatas(false, data, serveur);
       } catch (err) {
         console.error(
-          `Erreur lors de la sauvegarde du fichier ${filePath}:`,
+          `Erreur lors de la sauvegarde du fichier ${serveur}:`,
           err,
         );
       }
