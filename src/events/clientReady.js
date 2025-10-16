@@ -1,80 +1,115 @@
-const { ActivityType, SeparatorSpacingSize, MessageFlags } = require('discord.js');
-const config = require('../../config.js');
-const log = require('../../utils/modules/logger.js');
-const { getDateTs } = require('../../utils/functions/numbersAndLetters.js');
-const { botLaunch } = require('../../index.js');
-const { checkEmojiCache } = require('../../utils/functions/emojis.js');
-const { candidature } = require('../../utils/functions/checkCandidature.js')
-const { checkDeletePanel } = require('../../utils/functions/checkDeletePanel.js')
+const {
+  ActivityType,
+  SeparatorSpacingSize,
+  MessageFlags,
+} = require("discord.js");
+const config = require("../../config.js");
+const log = require("../../utils/modules/logger.js");
+const { getDateTs } = require("../../utils/functions/numbersAndLetters.js");
+const { botLaunch } = require("../../index.js");
+const { checkEmojiCache } = require("../../utils/functions/emojis.js");
+const cron = require('node-cron');
+const {
+  checkCandidature,
+} = require("../../utils/functions/checkCandidature.js");
+const {
+  checkDeletePanel,
+} = require("../../utils/functions/checkDeletePanel.js");
 
 async function getPlayerCount(server) {
-	try {
-		var response = await fetch(`${config.glorybot_url}/api/joueurConnecte?serveur=${server}&administrator=true`);
-		var response = await response.json();
-		if (Array.isArray(response) && response.length > 0 && response[0].nombre !== undefined) {
-			return response[0].nombre;
-		}
-	} catch (error) {}
-	return null;
+  try {
+    var response = await fetch(
+      `${config.glorybot_url}/api/joueurConnecte?serveur=${server}&administrator=true`
+    );
+    var response = await response.json();
+    if (
+      Array.isArray(response) &&
+      response.length > 0 &&
+      response[0].nombre !== undefined
+    ) {
+      return response[0].nombre;
+    }
+  } catch (error) {}
+  return null;
 }
 
 async function cycleStatus(client, statusIndex) {
-	const server = config.liste_serveur[statusIndex];
-	const playerCount = await getPlayerCount(server);
+  const server = config.liste_serveur[statusIndex];
+  const playerCount = await getPlayerCount(server);
 
-	const statusName = playerCount !== null ? `${playerCount} joueurs connectés sur NationsGlory ${server.toUpperCase()}` : `NationsGlory`;
+  const statusName =
+    playerCount !== null
+      ? `${playerCount} joueurs connectés sur NationsGlory ${server.toUpperCase()}`
+      : `NationsGlory`;
 
-	client.user.setPresence({
-		activities: [{ name: statusName, type: ActivityType.Watching }],
-		status: 'online',
-	});
+  client.user.setPresence({
+    activities: [{ name: statusName, type: ActivityType.Watching }],
+    status: "online",
+  });
 
-	statusIndex = (statusIndex + 1) % config.liste_serveur.length;
+  statusIndex = (statusIndex + 1) % config.liste_serveur.length;
 }
 
 module.exports = async (client, interaction) => {
-	await candidature(client)
-	await checkDeletePanel()
-	const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
-	chanCmds.send('**✅ | BOT ON !**');
+  await checkDeletePanel();
+  const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
+  chanCmds.send("**✅ | BOT ON !**");
 
-	const botStart = new Date();
-	const latence = (botStart.getTime() - botLaunch[0].getTime()) / 1000;
+  const botStart = new Date();
+  const latence = (botStart.getTime() - botLaunch[0].getTime()) / 1000;
 
-	const chanStatus = client.channels.cache.get(config.salon.dev.statut);
-	const guilds = client.guilds.cache.size;
-	const usersCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0);
+  const chanStatus = client.channels.cache.get(config.salon.dev.statut);
+  const guilds = client.guilds.cache.size;
+  const usersCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0);
 
-	const readyContainer = {
-		type: 17,
-		accent_color: config.colors.statut,
-		components: [
-			{
-				type: 10,
-				content: `## :robot: | Robot lancé en ${latence.toFixed(1)}s`,
-			},
-			{
-				type: 14,
-				spacing: SeparatorSpacingSize.Large,
-			},
-			{
-				type: 10,
-				content: getDateTs(client.readyAt, 'R'),
-			},
-		],
-	};
-	chanStatus.send({ components: [readyContainer], flags: MessageFlags.IsComponentsV2, allowedMentions: { parse: [] } });
+  const readyContainer = {
+    type: 17,
+    accent_color: config.colors.statut,
+    components: [
+      {
+        type: 10,
+        content: `## :robot: | Robot lancé en ${latence.toFixed(1)}s`,
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Large,
+      },
+      {
+        type: 10,
+        content: getDateTs(client.readyAt, "R"),
+      },
+    ],
+  };
+  chanStatus.send({
+    components: [readyContainer],
+    flags: MessageFlags.IsComponentsV2,
+    allowedMentions: { parse: [] },
+  });
 
-	log(
-		`${client.user.username} est pret en ${latence.toFixed(1)}s, sur ${guilds} serveurs et ${usersCount} utilisateurs.`,
-		'READY',
-		'green'
-	);
+  log(
+    `${client.user.username} est pret en ${latence.toFixed(
+      1
+    )}s, sur ${guilds} serveurs et ${usersCount} utilisateurs.`,
+    "READY",
+    "green"
+  );
 
-	await cycleStatus(client, 0);
+  await cycleStatus(client, 0);
 
-	setInterval(() => {
-		cycleStatus(client, 0);
-	}, 30000);
-	checkEmojiCache(client);
+  setInterval(() => {
+    cycleStatus(client, 0);
+  }, 30000);
+  checkEmojiCache(client);
+
+  cron.schedule("*/30 * * * *", async () => {
+    try {
+      await checkCandidature(client);
+    } catch (err) {
+      log(
+        "Erreur lors de la vérification des candidatures :" + err,
+        "ERROR",
+        "red"
+      );
+    }
+  });
 };
