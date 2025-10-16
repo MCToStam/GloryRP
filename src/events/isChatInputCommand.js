@@ -122,4 +122,40 @@ module.exports = async (client, interaction) => {
     }
     log(e, "error", "red");
   }
+
+  const channel = await client.channels.fetch(config.log_channels.command);
+
+  const logContainer = {
+    type: 17,
+    accent_color: config.colors.success,
+    components: [
+      {
+        type: 10,
+        content: "## 📗 Log",
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 10,
+        content: `**👷 Utilisateur :** ${
+          interaction.user.globalName?.replace(/_/g, "\\_") ||
+          interaction.user.username
+        } (<@${interaction.user.id}>)\n**🔧 Valeur :** /${
+          interaction.commandName
+        } ${
+          interaction.options.data
+            .map((option) => `<${option.name}: ${option.value}>`)
+            .join(" ") || ""
+        }`,
+      },
+    ],
+  };
+
+  await channel.send({
+    components: [logContainer],
+    flags: MessageFlags.IsComponentsV2,
+    allowedMentions: { parse: [] },
+  });
 };

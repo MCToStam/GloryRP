@@ -20,7 +20,9 @@ module.exports = async (client, guild) => {
 
     const { pseudonym, servers } = await discordStaff(inviter.id);
 
-    const logChannel = await client.channels.fetch("1428042447665107096");
+    const logChannel = await client.channels.fetch(
+      config.log_channels.invitationBot,
+    );
 
     const sendLog = async (title, content, color = config.colors.success) => {
       if (!logChannel?.isTextBased()) return;
@@ -75,7 +77,13 @@ module.exports = async (client, guild) => {
 
       await sendLog(
         "## :x: Accès Refusé",
-        `Tentative d'invitation par <@${inviter.id}> sur le serveur **${guild.name}**.\n> Membres : ${guild.memberCount}\n> Propriétaire : <@${guild.ownerId}>\n> Date de création : <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`,
+        `Tentative d'invitation par <@${inviter.id}> sur le serveur **${
+          guild.name
+        }**.\n> Membres : ${guild.memberCount}\n> Propriétaire : <@${
+          guild.ownerId
+        }>\n> Date de création : <t:${Math.floor(
+          guild.createdTimestamp / 1000,
+        )}:R>`,
         config.colors.error,
       );
       return;
@@ -118,20 +126,62 @@ module.exports = async (client, guild) => {
 
       await sendLog(
         "## :x: Accès Refusé",
-        `Tentative d'invitation par <@${inviter.id}> sur le serveur **${guild.name}**.\n> Membres : ${guild.memberCount}\n> Propriétaire : <@${guild.ownerId}>\n> Date de création : <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`,
+        `Tentative d'invitation par <@${inviter.id}> sur le serveur **${
+          guild.name
+        }**.\n> Membres : ${guild.memberCount}\n> Propriétaire : <@${
+          guild.ownerId
+        }>\n> Date de création : <t:${Math.floor(
+          guild.createdTimestamp / 1000,
+        )}:R>`,
         config.colors.error,
       );
       return;
     }
 
+    const goodContainer = {
+      type: 17,
+      accent_color: config.colors.success,
+      components: [
+        { type: 10, content: `## 🎉 Merci d'avoir invité GloryRP` },
+        { type: 14, spacing: SeparatorSpacingSize.Large },
+        {
+          type: 10,
+          content:
+            "Nous vous remercions pour l'interet que vous portez à l'égard de notre travail. Afin d'utiliser au mieux ce robot, il n'est constitué d'uniquement 5 commandes :\n- ``/config`` : Permet de configurer tous vos rôle-play\n- ``/logs`` : Affiche la liste des dernières modifications sur les différents rôle-play\n- ``/salaire`` : Regarde le salaire des mois ainsi que d'un joueur en particulier avec un graphique ainsi que la liste de ses tâches\n- ``/rank`` : Nécessaire pour que vos joueurs soient comptés comme ayant un grade, branché avec le système de permission- ``/derank`` : Comme précédement, commandes obligatoires, elles affiches aussi une affiche et l'historique des grades",
+        },
+        { type: 14, spacing: SeparatorSpacingSize.Large },
+        {
+          type: 1,
+          components: [
+            {
+              type: 2,
+              url: "https://discord.gg/tFkb9nYSd8",
+              label: "Discord Support",
+              emoji: "1307452239052279858",
+              style: ButtonStyle.Link,
+            },
+          ],
+        },
+      ],
+    };
+
+    await inviter.send({
+      components: [goodContainer],
+      flags: MessageFlags.IsComponentsV2,
+      allowedMentions: { parse: [] },
+    });
+
     await sendLog(
       "## ✅ Accès Autorisé",
-      `GloryRP a été invité par <@${inviter.id}>.\n\n> Nom : ${guild.name.replace(
-        /_/g,
-        "\\_",
-      )}\n> Membres : ${guild.memberCount}\n> Propriétaire : <@${
+      `GloryRP a été invité par <@${
+        inviter.id
+      }>.\n\n> Nom : ${guild.name.replace(/_/g, "\\_")}\n> Membres : ${
+        guild.memberCount
+      }\n> Propriétaire : <@${
         guild.ownerId
-      }>\n> Date de création : <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`,
+      }>\n> Date de création : <t:${Math.floor(
+        guild.createdTimestamp / 1000,
+      )}:R>`,
     );
   } catch (err) {
     console.error("Erreur lors du traitement de l'invitation :", err);

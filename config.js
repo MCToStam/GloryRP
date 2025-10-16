@@ -4,6 +4,13 @@ const config = {
   developpeur: ["506118119216119810", "719072181631320145"],
   guilds: { dev: "1415033751733538868" },
   colors: { statut: 0x480ca8, error: 0xff0000, success: 0x3fff00 },
+  log_channels: {
+    command: "1428358647460663316",
+    button: "1428358662262489119",
+    selectMenu: "1428358686925131776",
+    modal: "1428358710853369938",
+    invitationBot: "1428042447665107096",
+  },
   glorybot_url: "http://fi2.bot-hosting.net:20247",
   glorystaff_url: "http://fi2.bot-hosting.net:21319",
   glorybot_token: "33:$+gj{csMS75.,9sWd7?^rVaE9%7HMRcU3Pj-8",
