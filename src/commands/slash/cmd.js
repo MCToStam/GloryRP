@@ -275,7 +275,7 @@ exports.data = {
 
       const cmdsDatas = slashCmds
         .filter((x) =>
-          x.data.name.toLowerCase().includes(focusedValue.value.toLowerCase())
+          x.data.name.toLowerCase().includes(focusedValue.value.toLowerCase()),
         )
         .map((x) => ({ name: x.data.name, value: x.data.name }))
         .slice(0, 25);
@@ -288,7 +288,7 @@ exports.data = {
         .filter(
           (g) =>
             g.name.toLowerCase().includes(focusedValue.value.toLowerCase()) ||
-            g.id.includes(focusedValue.value)
+            g.id.includes(focusedValue.value),
         )
         .map((g) => ({
           name: `${g.name} (${g.id})`,
