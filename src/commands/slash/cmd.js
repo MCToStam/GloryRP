@@ -25,7 +25,7 @@ exports.run = async (client, interaction) => {
   if (subCmd === "deploy") {
     if (canal === "global") {
       return globalCmds
-        .set(cmds.filter((c) => c.data.name === c.data.name).map((c) => c.data))
+        .set(cmds.filter((c) => c.data.name !== "cmd").map((c) => c.data))
         .then(() => {
           const msg = deployMsg
             .replace("{{CANAL}}", "canal")

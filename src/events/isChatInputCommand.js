@@ -6,6 +6,19 @@ const {
 const config = require("../../config.js");
 const log = require("../../utils/modules/logger.js");
 
+function formatOptions(options) {
+  return options
+    .map((opt) => {
+      if (opt.type === 1 || opt.type === 2) {
+        const sub = formatOptions(opt.options || []);
+        return `${opt.name}${sub ? " " + sub : ""}`;
+      } else {
+        return `<${opt.name}: ${opt.value}>`;
+      }
+    })
+    .join(" ");
+}
+
 module.exports = async (client, interaction) => {
   const slashCmd = client.container.slashCmds.get(interaction.commandName);
   if (!slashCmd) return;
@@ -122,4 +135,39 @@ module.exports = async (client, interaction) => {
     }
     log(e, "error", "red");
   }
+
+  const channel = await client.channels.fetch(config.log_channels.command);
+
+  const formattedOptions = formatOptions(interaction.options.data);
+  const commandPath = `/${interaction.commandName}${
+    formattedOptions ? " " + formattedOptions : ""
+  }`;
+
+  const logContainer = {
+    type: 17,
+    accent_color: config.colors.success,
+    components: [
+      {
+        type: 10,
+        content: "## 📗 Log",
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 10,
+        content: `**👷 Utilisateur :** ${
+          interaction.user.globalName?.replace(/_/g, "\\_") ||
+          interaction.user.username
+        } (<@${interaction.user.id}>)\n**🔧 Valeur :** ${commandPath}`,
+      },
+    ],
+  };
+
+  await channel.send({
+    components: [logContainer],
+    flags: MessageFlags.IsComponentsV2,
+    allowedMentions: { parse: [] },
+  });
 };

@@ -1223,27 +1223,37 @@ async function getEditTacheContainer(
 
   const grades = panelDatas.grade || [];
 
-  const gradeOptions = await Promise.all(
-    grades.map(async (grade) => {
-      const e = grade.couleur
-        ? await getHexEmoji(client, grade.couleur)
-        : undefined;
+  const gradeOptions =
+    grades.length > 0
+      ? await Promise.all(
+          grades.map(async (grade) => {
+            const e = grade.couleur
+              ? await getHexEmoji(client, grade.couleur)
+              : undefined;
 
-      return {
-        label: grade.nom,
-        value: `edit_tache_grade-${grade.gradeId}`,
-        description: grade.couleur
-          ? `Couleur : ${grade.couleur || "Aucune"} | Tier : ${
-              grade.tier || "Aucun"
-            }`
-          : "Aucune couleur définie",
-        emoji: e
-          ? { id: e.id, name: e.name, animated: e.animated || false }
-          : undefined,
-        default: task.grade?.includes(String(grade.gradeId)) || false,
-      };
-    }),
-  );
+            return {
+              label: grade.nom,
+              value: `edit_tache_grade-${grade.gradeId}`,
+              description: grade.couleur
+                ? `Couleur : ${grade.couleur || "Aucune"} | Tier : ${
+                    grade.tier || "Aucun"
+                  }`
+                : "Aucune couleur définie",
+              emoji: e
+                ? { id: e.id, name: e.name, animated: e.animated || false }
+                : undefined,
+              default: task.grade?.includes(String(grade.gradeId)) || false,
+            };
+          }),
+        )
+      : [
+          {
+            label: "Aucun grade configuré",
+            value: "aucun_grade_configure",
+            description: "Veuillez créer au moins un grade avant de continuer",
+            default: false,
+          },
+        ];
 
   return {
     type: 17,
