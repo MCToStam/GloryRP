@@ -245,6 +245,56 @@ exports.run = async (client, interaction, config) => {
         ) {
           found = true;
           foundUrl = `https://nationsglory.fr${href}`;
+
+          if (foundUrl) {
+            const isAlreadyAccepted = Object.values(panelDatas.salaire.salaire)
+              .flatMap((user) => Object.values(user))
+              .flatMap((entry) => entry.taches)
+              .some((t) => t.status === "accepted" && t.lien === foundUrl);
+
+            if (isAlreadyAccepted) {
+              const errorContainer = {
+                type: 17,
+                accent_color: config.colors.error,
+                components: [
+                  {
+                    type: 10,
+                    content: `## :x: Lien déjà Utilisé`,
+                  },
+                  {
+                    type: 14,
+                    spacing: SeparatorSpacingSize.Large,
+                  },
+                  {
+                    type: 10,
+                    content: `Une tâche avec ce lien a déjà été acceptée.`,
+                  },
+                  {
+                    type: 14,
+                    spacing: SeparatorSpacingSize.Small,
+                  },
+                  {
+                    type: 1,
+                    components: [
+                      {
+                        type: 2,
+                        url: foundUrl,
+                        label: "🔗 Voir la Discussion Forum",
+                        style: ButtonStyle.Link,
+                      },
+                    ],
+                  },
+                ],
+              };
+
+              return await interaction.reply({
+                components: [errorContainer],
+                flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+                allowedMentions: { parse: [] },
+              });
+            }
+          }
+
           foundTitre = titre;
 
           const row = $el.closest("tr");
