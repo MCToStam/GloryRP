@@ -1,4 +1,5 @@
-const { MessageFlags, time, userMention } = require("discord.js");
+const { MessageFlags } = require("discord.js");
+const { getChannelContainer } = require("../../../components/containers.js");
 const {
   getGuildColor,
   saveServerDatas,
@@ -41,22 +42,14 @@ exports.run = async (client, interaction, config) => {
     panelDatas.channels[channel] = channelId;
 
     await saveServerDatas(interaction, serverDatas, guildColor);
-    const components = interaction.message.components.map((row) =>
-      row.toJSON(),
+
+    const salonContainer = await getChannelContainer(
+      panelId,
+      guildColor,
+      panelDatas,
     );
-    for (const row of components) {
-      for (const comp of row.components.filter((x) => x.type == 10)) {
-        if (comp.content.startsWith("-# Dernières modifications par ")) {
-          comp.content =
-            "-# Dernières modifications par " +
-            userMention(panelDatas.lastUser) +
-            " " +
-            (await time(panelDatas.timestamp, "R"));
-        }
-      }
-    }
     await interaction.message.edit({
-      components: components,
+      components: [salonContainer],
       allowedMentions: { parse: [] },
     });
   } catch (e) {
