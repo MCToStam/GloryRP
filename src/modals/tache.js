@@ -9,9 +9,8 @@ const {
   SeparatorSpacingSize,
   ButtonStyle,
 } = require("discord.js");
-const fs = require("node:fs");
-const path = require("node:path");
 const cheerio = require("cheerio");
+const { getEmojiTete } = require("../../utils/functions/emojis.js");
 
 exports.run = async (client, interaction, config) => {
   const pseudonym = await discordLink(interaction.user.id);
@@ -229,10 +228,13 @@ exports.run = async (client, interaction, config) => {
       let found = false;
       const detailsLower = details.toLowerCase();
 
-      $("a.stretched-link[title]").each((i, el) => {
-        const titre = $(el).attr("title")?.trim();
-        const href = $(el).attr("href")?.trim();
-        if (!titre || !href) return;
+      const elements = $("a.stretched-link[title]").toArray();
+
+      for (const el of elements) {
+        const $el = $(el);
+        const titre = $el.attr("title")?.trim();
+        const href = $el.attr("href")?.trim();
+        if (!titre || !href) continue;
 
         const titreLower = titre.toLowerCase();
         const hrefLower = href.toLowerCase();
@@ -243,9 +245,117 @@ exports.run = async (client, interaction, config) => {
         ) {
           found = true;
           foundUrl = `https://nationsglory.fr${href}`;
+
+          if (foundUrl) {
+            const isAlreadyAccepted = Object.values(panelDatas.salaire.salaire)
+              .flatMap((user) => Object.values(user))
+              .flatMap((entry) => entry.taches)
+              .some((t) => t.status === "accepted" && t.lien === foundUrl);
+
+            if (isAlreadyAccepted) {
+              const errorContainer = {
+                type: 17,
+                accent_color: config.colors.error,
+                components: [
+                  {
+                    type: 10,
+                    content: `## :x: Lien déjà Utilisé`,
+                  },
+                  {
+                    type: 14,
+                    spacing: SeparatorSpacingSize.Large,
+                  },
+                  {
+                    type: 10,
+                    content: `Une tâche avec ce lien a déjà été acceptée.`,
+                  },
+                  {
+                    type: 14,
+                    spacing: SeparatorSpacingSize.Small,
+                  },
+                  {
+                    type: 1,
+                    components: [
+                      {
+                        type: 2,
+                        url: foundUrl,
+                        label: "🔗 Voir la Discussion Forum",
+                        style: ButtonStyle.Link,
+                      },
+                    ],
+                  },
+                ],
+              };
+
+              return await interaction.reply({
+                components: [errorContainer],
+                flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+                allowedMentions: { parse: [] },
+              });
+            }
+          }
+
           foundTitre = titre;
+
+          const row = $el.closest("tr");
+
+          const auteur = row
+            .find(
+              "th.position-relative.pl-4 a.text-muted.stretched-link.position-relative",
+            )
+            .first()
+            .text()
+            .trim();
+
+          if (auteur !== pseudonym) {
+            const errorContainer = {
+              type: 17,
+              accent_color: config.colors.error,
+              components: [
+                {
+                  type: 10,
+                  content: `## :x: Auteur non Valide`,
+                },
+                {
+                  type: 14,
+                  spacing: SeparatorSpacingSize.Large,
+                },
+                {
+                  type: 10,
+                  content: `Vous n'êtes pas l'auteur de la dicussion citée qui est ${await getEmojiTete(
+                    client,
+                    auteur,
+                  )} **${auteur}**, ton pseudonyme à toi est ${await getEmojiTete(
+                    client,
+                    pseudonym,
+                  )} **${pseudonym}**.`,
+                },
+                {
+                  type: 14,
+                  spacing: SeparatorSpacingSize.Small,
+                },
+                {
+                  type: 1,
+                  components: [
+                    {
+                      type: 2,
+                      url: foundUrl,
+                      label: "Aller sur la Discussion Forum",
+                      style: ButtonStyle.Link,
+                    },
+                  ],
+                },
+              ],
+            };
+
+            return await interaction.reply({
+              components: [errorContainer],
+              flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+              allowedMentions: { parse: [] },
+            });
+          }
         }
-      });
+      }
 
       if (!found) {
         const errorContainer = {
