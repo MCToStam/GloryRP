@@ -53,30 +53,23 @@ async function getEmojiTete(client, joueur) {
 
 async function getHexEmoji(client, hexColor) {
   const now = Date.now();
-  const key = hexColor.toLowerCase();
-  const colorKey = hexColor.toLowerCase();
+  const key = hexColor.toLowerCase().replace(/[^a-z0-9_]/g, "_");
 
   if (!guildCache) {
     guildCache = await client.guilds.fetch("1349379748576366633");
   }
   const guild = guildCache;
 
-  const existingColorEmoji = Object.values(emojisCache).find(
-    (e) => e.color === colorKey,
-  );
-  if (existingColorEmoji) {
-    const emoji = guild.emojis.cache.get(existingColorEmoji.emojiId);
-    if (emoji) {
-      emojisCache[hexColor] = {
-        emojiId: emoji.id,
-        color: colorKey,
-        createdAt: now,
-      };
-      fs.promises
-        .writeFile(cachePath, JSON.stringify(emojisCache, null, 2))
-        .catch(console.error);
-      return emoji;
-    }
+  const cached = emojisCache[key];
+  if (cached) {
+    const emoji = guild.emojis.cache.get(cached.emojiId);
+    if (emoji) return emoji;
+
+    delete emojisCache[key];
+    await fs.promises.writeFile(
+      cachePath,
+      JSON.stringify(emojisCache, null, 2),
+    );
   }
 
   const canvas = Canvas.createCanvas(32, 32);
@@ -86,36 +79,31 @@ async function getHexEmoji(client, hexColor) {
   ctx.arc(16, 16, 16, 0, Math.PI * 2);
   ctx.fill();
 
-  const safeKey = key.toLowerCase().replace(/[^a-z0-9_]/g, "_");
-
   const attachment = new AttachmentBuilder(canvas.toBuffer("image/png"), {
-    name: `${safeKey}.png`,
+    name: `${key}.png`,
   });
+
   const emoji = await guild.emojis.create({
     attachment: attachment.attachment,
-    name: colorKey.replace(/[^a-z0-9_]/gi, "_").slice(0, 32),
+    name: key.slice(0, 32),
   });
 
-  emojisCache[key] = {
-    emojiId: emoji.id,
-    color: colorKey,
-    createdAt: now,
-  };
-  fs.promises
-    .writeFile(cachePath, JSON.stringify(emojisCache, null, 2))
-    .catch(console.error);
+  emojisCache[key] = { emojiId: emoji.id, color: hexColor, createdAt: now };
+  await fs.promises.writeFile(cachePath, JSON.stringify(emojisCache, null, 2));
 
   setTimeout(
     async () => {
       try {
         const stillHere = guild.emojis.cache.get(emoji.id);
         if (stillHere) await stillHere.delete();
-        delete emojisCache[key];
-        fs.promises
-          .writeFile(cachePath, JSON.stringify(emojisCache, null, 2))
-          .catch(console.error);
       } catch (e) {
         console.warn(`Erreur suppression emoji ${emoji.id}:`, e.message);
+      } finally {
+        delete emojisCache[key];
+        await fs.promises.writeFile(
+          cachePath,
+          JSON.stringify(emojisCache, null, 2),
+        );
       }
     },
     60 * 60 * 1000,
