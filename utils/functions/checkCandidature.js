@@ -299,8 +299,6 @@ async function sendCandidatures(client, AllCandidatures) {
     }
   }
 
-  const baseDir = path.join(__dirname, "..", "..", "data", "servers");
-
   const serveurs = [...new Set(AllCandidatures.map((c) => c.serveur))];
 
   for (const serveur of serveurs) {
@@ -327,7 +325,6 @@ async function sendCandidatures(client, AllCandidatures) {
 }
 
 async function fetchNewCandidatures() {
-  const baseDir = path.join(__dirname, "..", "..", "data", "servers");
   let AllCandidatures = [];
 
   for (const serveur of config.liste_serveur) {
@@ -344,6 +341,13 @@ async function fetchNewCandidatures() {
         continue;
 
       try {
+        let lastTimestamp = null;
+        if (panel.candidature.save.length > 0) {
+          lastTimestamp = panel.candidature.save.reduce((max, msg) => {
+            return msg.timestamp && msg.timestamp > max ? msg.timestamp : max;
+          }, 0);
+        }
+
         const response = await fetch(panel.candidature.lien);
         const html = await response.text();
         const $ = cheerio.load(html);
@@ -374,6 +378,15 @@ async function fetchNewCandidatures() {
           }
 
           const timestamp = parseFrenchDate(dateStr);
+
+          const now = Math.floor(Date.now() / 1000);
+          const delay45min = 45 * 60;
+
+          if (lastTimestamp) {
+            if (timestamp <= lastTimestamp) return;
+          } else {
+            if (now - timestamp > delay45min) return;
+          }
 
           if (titre) {
             const existing = panel.candidature.save.find(

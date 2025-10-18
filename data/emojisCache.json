@@ -1,22 +1,12 @@
 {
-  "#ff0000": {
-    "emojiId": "1428855368095633532",
-    "color": "#ff0000",
-    "createdAt": 1760736060884
-  },
-  "#FF0000": {
-    "emojiId": "1428855368095633532",
-    "color": "#ff0000",
-    "createdAt": 1760736406559
-  },
-  "frostkingfr": {
-    "emojiId": "1428858061346308128",
-    "nom": "FrostKingFR",
-    "createdAt": 1760736709265
-  },
   "tostam": {
-    "emojiId": "1428858062705397780",
+    "emojiId": "1429016725105672275",
     "nom": "ToStam",
-    "createdAt": 1760736709717
+    "createdAt": 1760774536813
+  },
+  "_ff0000": {
+    "emojiId": "1429020657122934836",
+    "color": "#FF0000",
+    "createdAt": 1760775474121
   }
 }

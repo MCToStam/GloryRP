@@ -2,7 +2,7 @@
   "panels": [
     {
       "id": 1,
-      "name": "test",
+      "name": "Avocat",
       "description": "",
       "emoji": "",
       "enable": true,
@@ -79,6 +79,36 @@
         "cmd_don": "/eco give [joueur] [argent]",
         "salaire": {
           "ToStam": {
+            "08_2025": {
+              "taches": [
+                {
+                  "nom": "test",
+                  "emoji": false,
+                  "lien": "https://nationsglory.fr/forums/thread/comment-annuler-une-demande-de-guerre.105607",
+                  "details": "Comment annuler une demande de guerre",
+                  "timestamp": 1760736382079,
+                  "status": "accepted",
+                  "staff": "Sparky",
+                  "argent": 23000,
+                  "messageId": "1428856687313551430"
+                }
+              ]
+            },
+            "09_2025": {
+              "taches": [
+                {
+                  "nom": "test",
+                  "emoji": false,
+                  "lien": "https://nationsglory.fr/forums/thread/comment-annuler-une-demande-de-guerre.105607",
+                  "details": "Comment annuler une demande de guerre",
+                  "timestamp": 1760736382079,
+                  "status": "accepted",
+                  "staff": "MisterSand",
+                  "argent": 8000,
+                  "messageId": "1428856687313551430"
+                }
+              ]
+            },
             "10_2025": {
               "taches": [
                 {
@@ -87,9 +117,9 @@
                   "lien": "https://nationsglory.fr/forums/thread/comment-annuler-une-demande-de-guerre.105607",
                   "details": "Comment annuler une demande de guerre",
                   "timestamp": 1760736382079,
-                  "status": "waiting",
-                  "staff": false,
-                  "argent": 0,
+                  "status": "accepted",
+                  "staff": "iBalix",
+                  "argent": 10000,
                   "messageId": "1428856687313551430"
                 }
               ]
@@ -233,6 +263,18 @@
     {
       "user": "719072181631320145",
       "timestamp": 1760737089,
+      "panel": 1,
+      "action": "Envoie du panel des tâches"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760774641,
+      "panel": 1,
+      "action": "Renommmage du rôle-play"
+    },
+    {
+      "user": "719072181631320145",
+      "timestamp": 1760774777,
       "panel": 1,
       "action": "Envoie du panel des tâches"
     }
