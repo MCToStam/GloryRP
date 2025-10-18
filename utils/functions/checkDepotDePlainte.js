@@ -8,7 +8,7 @@ const {
   ButtonStyle,
 } = require("discord.js");
 
-async function fetchNewMessages(urlLien, savedIds) {
+async function fetchNewMessages(urlLien, savedIds, lastTimestamp) {
   const newMessages = [];
   const savedSet = new Set(savedIds.map(String));
 
@@ -87,6 +87,15 @@ async function fetchNewMessages(urlLien, savedIds) {
           }
         }
 
+        const now = Math.floor(Date.now() / 1000);
+        const delay45min = 45 * 60;
+
+        if (lastTimestamp) {
+          if (timestamp <= lastTimestamp) return;
+        } else {
+          if (now - timestamp > delay45min) return;
+        }
+
         let lien = null;
         if (idAttr) {
           lien = urlLien.replace(/\/$/, "") + "#" + idAttr;
@@ -146,9 +155,17 @@ async function checkDepotDePlainte(client) {
       if (!Array.isArray(panel.depotdeplainte.save))
         panel.depotdeplainte.save = [];
 
+      let lastTimestamp = null;
+      if (panel.depotdeplainte.save.length > 0) {
+        lastTimestamp = panel.depotdeplainte.save.reduce((max, msg) => {
+          return msg.timestamp && msg.timestamp > max ? msg.timestamp : max;
+        }, 0);
+      }
+
       const nouveauxMessages = await fetchNewMessages(
         panel.depotdeplainte.lien,
         panel.depotdeplainte.save.map((m) => m.id),
+        lastTimestamp,
       );
 
       if (nouveauxMessages.length > 0) {
