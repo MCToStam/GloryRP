@@ -630,13 +630,20 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
         ? await getHexEmoji(client, grade.couleur)
         : undefined;
 
+      let emoji;
+      if (e) {
+        if (e.id && /^\d+$/.test(e.id)) {
+          emoji = { id: e.id, name: e.name, animated: e.animated || false };
+        } else {
+          emoji = { name: e.name || e };
+        }
+      }
+
       return {
         label: grade.nom,
         value: `grade_edit-${panelId}-${grade.gradeId}`,
         description: `Configure ${grade.nom}`,
-        emoji: e
-          ? { id: e.id, name: e.name, animated: e.animated || false }
-          : undefined,
+        emoji,
       };
     }),
   );
@@ -1231,6 +1238,19 @@ async function getEditTacheContainer(
               ? await getHexEmoji(client, grade.couleur)
               : undefined;
 
+            let emoji;
+            if (e) {
+              if (e.id && /^\d+$/.test(e.id)) {
+                emoji = {
+                  id: e.id,
+                  name: e.name,
+                  animated: e.animated || false,
+                };
+              } else {
+                emoji = { name: e.name || e };
+              }
+            }
+
             return {
               label: grade.nom,
               value: `edit_tache_grade-${grade.gradeId}`,
@@ -1239,9 +1259,7 @@ async function getEditTacheContainer(
                     grade.tier || "Aucun"
                   }`
                 : "Aucune couleur définie",
-              emoji: e
-                ? { id: e.id, name: e.name, animated: e.animated || false }
-                : undefined,
+              emoji,
               default: task.grade?.includes(String(grade.gradeId)) || false,
             };
           }),
