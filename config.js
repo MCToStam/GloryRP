@@ -89,6 +89,8 @@ const config = {
     logs: "<:a:1415827520347050148> Salon de logs où les tâches acceptées sont envoyées",
     responsable:
       "<:a:1415827518057091122> Salon d'acceptation où le responsable reçoit les tâches à valider",
+    cmd_salaire:
+      "<:a:1415827518057091122> Salon où le responsable reçoit les commandes de salaires à effectuer",
     tasks:
       "<:a:1415827516400205894> Salon d'envois où les RP mettent leur tâches via le panel",
     salaire: "<:a:1415827518057091122> Salon où sera envoyé les salaires",
