@@ -145,8 +145,8 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
   }
 
   let responsableChannel;
-  if (panel.channels.responsable) {
-    responsableChannel = client.channels.cache.get(panel.channels.responsable);
+  if (panel.channels.cmd_salaire) {
+    responsableChannel = client.channels.cache.get(panel.channels.cmd_salaire);
     if (responsableChannel) {
       const totalArgent = Object.values(salaireData).reduce((sum, salaires) => {
         const moisSalaires = salaires[date];

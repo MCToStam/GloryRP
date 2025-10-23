@@ -333,7 +333,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 8,
-            custom_id: `config-${panelId}-channel-salaire`,
+            custom_id: `config-${panelId}-channel-salaire-salaire`,
             placeholder: panelDatas.enable
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
@@ -364,7 +364,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 8,
-            custom_id: `config-${panelId}-channel-responsable`,
+            custom_id: `config-${panelId}-channel-cmd_salaire-salaire`,
             placeholder: panelDatas.enable
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
@@ -376,10 +376,10 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
               ChannelType.GuildAnnouncement,
             ],
             default_values: [
-              panelDatas.enable && panelDatas.channels.responsable
+              panelDatas.enable && panelDatas.channels.cmd_salaire
                 ? {
                     type: "channel",
-                    id: panelDatas.channels.responsable,
+                    id: panelDatas.channels.cmd_salaire,
                   }
                 : undefined,
             ].filter(Boolean),
@@ -732,7 +732,7 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 8,
-            custom_id: `config-${panelId}-channel-effectif`,
+            custom_id: `config-${panelId}-channel-effectif-effectif`,
             placeholder: panelDatas.enable
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
@@ -931,7 +931,7 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 8,
-            custom_id: `config-${panelId}-channel-depotdeplainte`,
+            custom_id: `config-${panelId}-channel-depotdeplainte-depotdeplainte`,
             placeholder: panelDatas.enable
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
@@ -1041,7 +1041,7 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 8,
-            custom_id: `config-${panelId}-channel-candidature`,
+            custom_id: `config-${panelId}-channel-candidature-candidature`,
             placeholder: panelDatas.enable
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
