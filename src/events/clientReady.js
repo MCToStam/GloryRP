@@ -9,6 +9,7 @@ const { getDateTs } = require("../../utils/functions/numbersAndLetters.js");
 const { botLaunch } = require("../../index.js");
 const { checkEmojiCache } = require("../../utils/functions/emojis.js");
 const { salaireAutomatique } = require("../../utils/functions/salairePost.js");
+const { updateLogo } = require("../../utils/functions/updateLogo.js");
 const cron = require("node-cron");
 const {
   checkCandidature,
@@ -128,4 +129,8 @@ module.exports = async (client, interaction) => {
       timezone: "Europe/Paris",
     },
   );
+
+  cron.schedule("0 0 * * *", async () => {
+    await updateLogo(client, config);
+  });
 };

@@ -10,7 +10,7 @@ const {
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
-  const tacheId = Number(interaction.customId.split("-")[1]);
+  const tacheId = Number(interaction.customId.split("-")[2]);
 
   const serverDatas = await getServerDatas(interaction);
   const guildColor = await getGuildColor(interaction);
@@ -31,7 +31,9 @@ exports.run = async (client, interaction, config) => {
       },
       {
         type: 10,
-        content: `Supprimer la tâche **${tache.name}** est irréversible et toutes les données stockées seront supprimées ! Êtes-vous sûr de vouloir continuer ?`,
+        content: `Supprimer la tâche ${tache.emoji ? `${tache.emoji} ` : ""}**${
+          tache.name
+        }** est irréversible et toutes les données stockées seront supprimées ! Êtes-vous sûr de vouloir continuer ?`,
       },
       {
         type: 14,

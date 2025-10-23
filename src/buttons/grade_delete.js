@@ -10,7 +10,7 @@ const {
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
-  const gradeId = Number(interaction.customId.split("-")[1]);
+  const gradeId = Number(interaction.customId.split("-")[2]);
 
   const serverDatas = await getServerDatas(interaction);
   const guildColor = await getGuildColor(interaction);
