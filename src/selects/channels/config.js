@@ -37,6 +37,7 @@ exports.run = async (client, interaction, config) => {
 
     const logMap = {
       logs: "Édition du salon des logs",
+      cmd_salaire: "Édition du salon des commandes de salaire",
       responsable: "Édition du salon de responsable",
       tasks: "Édition du salon des tâches",
       salaire: "Édition du salon de salaire",
