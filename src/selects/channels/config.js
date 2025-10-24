@@ -68,7 +68,7 @@ exports.run = async (client, interaction, config) => {
     } else if (typeReturn === "salaire") {
       container = await getSalaireContainer(panelId, guildColor, panelDatas);
     } else if (typeReturn === "effectif") {
-      container = await getSalaireContainer(panelId, guildColor, panelDatas);
+      container = await getEffectifContainer(panelId, guildColor, panelDatas);
     } else if (typeReturn === "depotdeplainte") {
       container = await getDepotDePlainteContainer(
         panelId,
