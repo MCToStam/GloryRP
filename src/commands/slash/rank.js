@@ -275,7 +275,7 @@ exports.run = async (client, interaction, config) => {
   const tousLesRoles = panel.grade.flatMap((g) => g.roles || []);
   const rolesEnlever = tousLesRoles.filter((r) => !rolesGrade.includes(r));
 
-  const pseudonym = await discordLink(membre.id);
+  let pseudonym = await discordLink(membre.id);
 
   let replyInteraction;
   if (pseudonym) {

@@ -52,7 +52,6 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
     if (grade.listeRp && grade.listeRp.length > 0) {
       for (const joueur of grade.listeRp) {
         const pseudo = ngData.data[joueur];
-        console.log(ngData);
 
         if (pseudo) {
           const emojiTete = await getEmojiTete(client, pseudo);
@@ -152,7 +151,6 @@ async function updateEffectif(client, serveur, serveurDatas, panelId) {
     if (grade.listeRp && grade.listeRp.length > 0) {
       for (const joueur of grade.listeRp) {
         const pseudo = ngData.data[joueur];
-        console.log(ngData);
 
         if (pseudo) {
           const emojiTete = await getEmojiTete(client, pseudo);
