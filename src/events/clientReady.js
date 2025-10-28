@@ -104,6 +104,7 @@ module.exports = async (client, interaction) => {
     cycleStatus(client, 0);
   }, 30000);
   checkEmojiCache(client);
+  checkDeletePanel();
 
   cron.schedule("*/30 * * * *", async () => {
     try {

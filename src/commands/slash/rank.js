@@ -98,8 +98,8 @@ exports.run = async (client, interaction, config) => {
           components: [
             {
               type: 2,
-              label: "💻 Accéder au panel",
-              url: "https://glorybot.fr",
+              url: "https://glorybot.fr/user/profile",
+              label: "🔗 Lier son Compte",
               style: ButtonStyle.Link,
             },
           ],
