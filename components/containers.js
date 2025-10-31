@@ -1137,8 +1137,6 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
           task.emoji.length <= 3
         ) {
           emoji = { name: task.emoji };
-        } else {
-          emoji = undefined;
         }
       }
 
@@ -1150,6 +1148,17 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
       };
     }),
   );
+
+  const canCreateTask = taskOptions.length < 25;
+
+  if (canCreateTask) {
+    taskOptions.push({
+      label: "Créer une tâche",
+      value: `create_tache-${panelId}`,
+      description: "Ajoute une nouvelle tâche au panel",
+      emoji: { id: "1418880845808402492" },
+    });
+  }
 
   return {
     type: 17,
@@ -1174,15 +1183,7 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
             custom_id: `tache_edit-${panelId}`,
             placeholder: "Choisis une tâche...",
             disabled: !panelDatas.enable,
-            options: [
-              ...taskOptions,
-              {
-                label: "Créer une tâche",
-                value: `create_tache-${panelId}`,
-                description: "Ajoute une nouvelle tâche au panel",
-                emoji: { id: "1418880845808402492" },
-              },
-            ],
+            options: taskOptions,
           },
         ],
       },
