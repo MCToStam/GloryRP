@@ -1114,7 +1114,7 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
   const tasksContent = await Promise.all(
     panelDatas.tasks.map(async (task) => ({
       type: 10,
-      content: `- ${task.emoji ? `${task.emoji} ` : ""}**${task.name}**`,
+      content: `- ${task.emoji ? `${task.emoji} ` : ""}**${task.name.slice(0, 100)}**`,
     })),
   );
 
