@@ -14,6 +14,8 @@ const config = {
   glorybot_url: "http://fi2.bot-hosting.net:20247",
   glorystaff_url: "http://fi2.bot-hosting.net:21319",
   glorybot_token: "33:$+gj{csMS75.,9sWd7?^rVaE9%7HMRcU3Pj-8",
+  ng_token:
+    "NGAPI_w%1luu(@f1vXeO1cG^eqZbD91gYE^pf899f1095021d88d9976b9de42510a602d",
   liste_serveur: [
     "blue",
     "orange",
