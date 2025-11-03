@@ -66,7 +66,7 @@ exports.run = async (client, interaction, config) => {
             min_length: 1,
             max_length: 100,
             placeholder: "Ex: #FF0000",
-            required: false,
+            required: true,
           },
         ],
       },

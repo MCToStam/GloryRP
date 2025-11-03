@@ -1,5 +1,3 @@
-const fs = require("node:fs");
-const path = require("node:path");
 const cheerio = require("cheerio");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
 const { saveServerDatas, getServerDatas } = require("./datas.js");
@@ -52,13 +50,12 @@ async function getCandidatureContent(url, serveur) {
     const html = await res.text();
     const $ = cheerio.load(html);
 
-    const contentDiv = $(
-      `#thread-${threadId} .col-lg-10.py-3 > .mb-2.overflow-hidden`,
-    ).first();
-    if (!contentDiv.length) return "Contenu de la candidature introuvable";
+    const contentDivs = $(
+      `#thread-${threadId} .col-lg-10.py-3 .mb-2.overflow-hidden`,
+    );
+    if (!contentDivs.length) return "Contenu de la candidature introuvable";
 
     const components = [];
-    const children = contentDiv.contents().toArray();
     let textBuffer = "";
     let totalLength = 0;
     const MAX_CHARS = 4000;
@@ -78,50 +75,45 @@ async function getCandidatureContent(url, serveur) {
       textBuffer = "";
     }
 
-    for (let child of children) {
-      if (totalLength >= MAX_CHARS) break;
+    function processNode(node) {
+      if (totalLength >= MAX_CHARS) return;
 
-      if (child.type === "text") {
-        textBuffer += $(child).text();
-      } else if (child.name === "br") {
+      if (node.type === "text") {
+        textBuffer += $(node).text();
+      } else if (node.name === "br") {
         textBuffer += "\n";
-      } else if (
-        child.name === "span" ||
-        child.name === "div" ||
-        child.name === "p"
-      ) {
-        const imgs = $(child).find("img").toArray();
-        const text = $(child).clone().children("img").remove().end().text();
-        if (text) textBuffer += text + "\n";
-
-        if (imgs.length > 0) {
-          pushTextBuffer();
-          for (let img of imgs) {
-            if (totalLength >= MAX_CHARS) break;
-            const imgUrl = $(img).attr("data-src") || $(img).attr("src");
-            if (imgUrl) {
-              components.push({
-                type: 14,
-                spacing: SeparatorSpacingSize.Small,
-              });
-              components.push({
-                type: 12,
-                items: [{ media: { url: imgUrl } }],
-              });
-            }
-          }
+      } else if (node.name === "img") {
+        pushTextBuffer();
+        const imgUrl = $(node).attr("data-src") || $(node).attr("src");
+        if (imgUrl) {
+          components.push({
+            type: 14,
+            spacing: SeparatorSpacingSize.Small,
+          });
+          components.push({
+            type: 12,
+            items: [{ media: { url: imgUrl } }],
+          });
         }
+      } else if (node.children && node.children.length > 0) {
+        for (let child of node.children) processNode(child);
       }
+    }
+
+    for (const contentDiv of contentDivs.toArray()) {
+      processNode(contentDiv);
+      textBuffer += "\n\n";
     }
 
     pushTextBuffer();
 
     components.forEach((c) => {
       if (c.type === 10) {
-        c.content = c.content.replace(/\u00a0/g, " ");
-        c.content = c.content.replace(/\s*\n\s*/g, "\n");
-        c.content = c.content.replace(/\s{2,}/g, " ");
-        c.content = c.content.replace(/-->\s*\n\s*/g, " --> ");
+        c.content = c.content
+          .replace(/\u00a0/g, " ")
+          .replace(/\s*\n\s*/g, "\n")
+          .replace(/\s{2,}/g, " ")
+          .replace(/-->\s*\n\s*/g, " --> ");
       }
     });
 
@@ -157,39 +149,112 @@ async function sendCandidatures(client, AllCandidatures) {
         ? parseInt(candidature.badgeColor.replace("#", ""), 16)
         : 0x6f6f6f;
 
+      const response = await fetch(
+        `https://publicapi.nationsglory.fr/user/${candidature.auteur}`,
+        {
+          headers: {
+            Authorization: `Bearer ${config.ng_token}`,
+            accept: "application/json",
+          },
+        },
+      );
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (err) {
+        data = null;
+      }
+
+      const components = [
+        {
+          type: 10,
+          content: `## Candidature ${panel.name} - [${candidature.auteur}](https://nationsglory.fr/profile/${candidature.auteur})`,
+        },
+        { type: 14, spacing: SeparatorSpacingSize.Small },
+        {
+          type: 10,
+          content: `${await getEmojiTete(
+            client,
+            candidature.auteur,
+          )} **Auteur :** ${candidature.auteur}`,
+        },
+        {
+          type: 10,
+          content: `🗓️ **Date de création :** <t:${candidature.timestamp}:R>`,
+        },
+      ];
+
+      if (data && data.servers[serveur]) {
+        const lastConnectionDate = new Date(
+          `${data.servers[serveur].last_connection} UTC`,
+        );
+        const lastConnectionTimestamp = Math.floor(
+          lastConnectionDate.getTime() / 1000,
+        );
+
+        let seconds = parseInt(data.servers[serveur].playtime, 10);
+
+        const years = Math.floor(seconds / (365 * 24 * 60 * 60));
+        seconds %= 365 * 24 * 60 * 60;
+
+        const months = Math.floor(seconds / (30 * 24 * 60 * 60));
+        seconds %= 30 * 24 * 60 * 60;
+
+        const days = Math.floor(seconds / (24 * 60 * 60));
+        seconds %= 24 * 60 * 60;
+
+        const hours = Math.floor(seconds / 3600);
+        seconds %= 3600;
+
+        const minutes = Math.floor(seconds / 60);
+        seconds %= 60;
+
+        const parts = [];
+        if (years) parts.push(`${years} an${years > 1 ? "s" : ""}`);
+        if (months) parts.push(`${months} mois`);
+        if (days) parts.push(`${days} jour${days > 1 ? "s" : ""}`);
+        if (hours) parts.push(`${hours}h`);
+        if (minutes) parts.push(`${minutes}m`);
+        if (seconds) parts.push(`${seconds}s`);
+
+        const playtimeFormatted = parts.length ? parts.join(" ") : "0s";
+
+        components.push(
+          {
+            type: 10,
+            content: `⏱️ **Temps de Jeu ${
+              serveur.charAt(0).toUpperCase() + serveur.slice(1)
+            } :** ${playtimeFormatted}`,
+          },
+          {
+            type: 10,
+            content: `🔙 **Dernière Connexion ${
+              serveur.charAt(0).toUpperCase() + serveur.slice(1)
+            } :** <t:${lastConnectionTimestamp}:R>`,
+          },
+        );
+      }
+
+      components.push(
+        { type: 14, spacing: SeparatorSpacingSize.Small },
+        {
+          type: 1,
+          components: [
+            {
+              type: 2,
+              url: candidature.lien,
+              label: "Aller sur la Candidature",
+              style: ButtonStyle.Link,
+            },
+          ],
+        },
+      );
+
       const candidatureContainer = {
         type: 17,
         accent_color: accentColor,
-        components: [
-          {
-            type: 10,
-            content: `## Candidature ${panel.name} - [${candidature.auteur}](https://nationsglory.fr/profile/${candidature.auteur})`,
-          },
-          { type: 14, spacing: SeparatorSpacingSize.Small },
-          {
-            type: 10,
-            content: `${await getEmojiTete(
-              client,
-              candidature.auteur,
-            )} **Auteur :** ${candidature.auteur}`,
-          },
-          {
-            type: 10,
-            content: `🗓️ **Date de création :** <t:${candidature.timestamp}:R>`,
-          },
-          { type: 14, spacing: SeparatorSpacingSize.Small },
-          {
-            type: 1,
-            components: [
-              {
-                type: 2,
-                url: candidature.lien,
-                label: "Aller sur la Candidature",
-                style: ButtonStyle.Link,
-              },
-            ],
-          },
-        ],
+        components: components,
       };
 
       const isNew = !candidature.messageId;
@@ -299,8 +364,6 @@ async function sendCandidatures(client, AllCandidatures) {
     }
   }
 
-  const baseDir = path.join(__dirname, "..", "..", "data", "servers");
-
   const serveurs = [...new Set(AllCandidatures.map((c) => c.serveur))];
 
   for (const serveur of serveurs) {
@@ -327,7 +390,6 @@ async function sendCandidatures(client, AllCandidatures) {
 }
 
 async function fetchNewCandidatures() {
-  const baseDir = path.join(__dirname, "..", "..", "data", "servers");
   let AllCandidatures = [];
 
   for (const serveur of config.liste_serveur) {
@@ -344,6 +406,13 @@ async function fetchNewCandidatures() {
         continue;
 
       try {
+        let lastTimestamp = null;
+        if (panel.candidature.save.length > 0) {
+          lastTimestamp = panel.candidature.save.reduce((max, msg) => {
+            return msg.timestamp && msg.timestamp > max ? msg.timestamp : max;
+          }, 0);
+        }
+
         const response = await fetch(panel.candidature.lien);
         const html = await response.text();
         const $ = cheerio.load(html);

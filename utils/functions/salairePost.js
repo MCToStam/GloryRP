@@ -5,6 +5,23 @@ const {
 } = require("discord.js");
 const config = require("../../config.js");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
+const { getServerDatas } = require("../../utils/functions/datas.js");
+
+async function salaireAutomatique(client) {
+  const today = new Date();
+  const mois = today.getMonth() + 1;
+  const annee = today.getFullYear();
+  const date = `${mois.toString().padStart(2, "0")}_${annee}`;
+
+  for (const serveur of config.liste_serveur) {
+    const serveurDatas = await getServerDatas(false, serveur);
+    for (const panel of serveurDatas.panels) {
+      if (panel.salaire?.automatique) {
+        await salairePost(client, serveur, serveurDatas, panel.id, date);
+      }
+    }
+  }
+}
 
 function formatDateFr(date) {
   const [moisStr, annee] = date.split("_");
@@ -81,10 +98,7 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
         (t) => t.status !== "waiting" && t.status !== "refused",
       );
 
-      const total = tachesValides.taches.reduce(
-        (sum, t) => sum + (t.argent || 0),
-        0,
-      );
+      const total = tachesValides.reduce((sum, t) => sum + (t.argent || 0), 0);
 
       if (total === 0) return null;
 
@@ -145,8 +159,8 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
   }
 
   let responsableChannel;
-  if (panel.channels.responsable) {
-    responsableChannel = client.channels.cache.get(panel.channels.responsable);
+  if (panel.channels.cmd_salaire) {
+    responsableChannel = client.channels.cache.get(panel.channels.cmd_salaire);
     if (responsableChannel) {
       const totalArgent = Object.values(salaireData).reduce((sum, salaires) => {
         const moisSalaires = salaires[date];
@@ -263,4 +277,4 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
   };
 }
 
-module.exports = { salairePost, formatDateFr };
+module.exports = { salairePost, formatDateFr, salaireAutomatique };

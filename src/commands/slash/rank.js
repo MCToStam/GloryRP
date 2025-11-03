@@ -98,8 +98,8 @@ exports.run = async (client, interaction, config) => {
           components: [
             {
               type: 2,
-              label: "💻 Accéder au panel",
-              url: "https://glorybot.fr",
+              url: "https://glorybot.fr/user/profile",
+              label: "🔗 Lier son Compte",
               style: ButtonStyle.Link,
             },
           ],
@@ -275,7 +275,7 @@ exports.run = async (client, interaction, config) => {
   const tousLesRoles = panel.grade.flatMap((g) => g.roles || []);
   const rolesEnlever = tousLesRoles.filter((r) => !rolesGrade.includes(r));
 
-  const pseudonym = await discordLink(interaction.user.id);
+  let pseudonym = await discordLink(membre.id);
 
   let replyInteraction;
   if (pseudonym) {
@@ -366,7 +366,6 @@ exports.run = async (client, interaction, config) => {
       await submitted.deferReply();
       replyInteraction = submitted;
     } catch (e) {
-      console.log("Modal non soumis ou erreur :", e);
       return interaction.followUp({
         content:
           "Vous n'avez pas renseigné de pseudonyme ou le délai est écoulé. La commande a été annulée.",
