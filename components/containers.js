@@ -333,7 +333,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 8,
-            custom_id: `config-${panelId}-channel-salaire`,
+            custom_id: `config-${panelId}-channel-salaire-salaire`,
             placeholder: panelDatas.enable
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
@@ -364,7 +364,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 8,
-            custom_id: `config-${panelId}-channel-responsable`,
+            custom_id: `config-${panelId}-channel-cmd_salaire-salaire`,
             placeholder: panelDatas.enable
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
@@ -376,10 +376,10 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
               ChannelType.GuildAnnouncement,
             ],
             default_values: [
-              panelDatas.enable && panelDatas.channels.responsable
+              panelDatas.enable && panelDatas.channels.cmd_salaire
                 ? {
                     type: "channel",
-                    id: panelDatas.channels.responsable,
+                    id: panelDatas.channels.cmd_salaire,
                   }
                 : undefined,
             ].filter(Boolean),
@@ -630,13 +630,20 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
         ? await getHexEmoji(client, grade.couleur)
         : undefined;
 
+      let emoji;
+      if (e) {
+        if (e.id && /^\d+$/.test(e.id)) {
+          emoji = { id: e.id, name: e.name, animated: e.animated || false };
+        } else {
+          emoji = { name: e.name || e };
+        }
+      }
+
       return {
         label: grade.nom,
         value: `grade_edit-${panelId}-${grade.gradeId}`,
         description: `Configure ${grade.nom}`,
-        emoji: e
-          ? { id: e.id, name: e.name, animated: e.animated || false }
-          : undefined,
+        emoji,
       };
     }),
   );
@@ -725,7 +732,7 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 8,
-            custom_id: `config-${panelId}-channel-effectif`,
+            custom_id: `config-${panelId}-channel-effectif-effectif`,
             placeholder: panelDatas.enable
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
@@ -924,7 +931,7 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 8,
-            custom_id: `config-${panelId}-channel-depotdeplainte`,
+            custom_id: `config-${panelId}-channel-depotdeplainte-depotdeplainte`,
             placeholder: panelDatas.enable
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
@@ -1034,7 +1041,7 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 8,
-            custom_id: `config-${panelId}-channel-candidature`,
+            custom_id: `config-${panelId}-channel-candidature-candidature`,
             placeholder: panelDatas.enable
               ? "Définis un salon"
               : "Il te faut d'abord activer un rôle-play",
@@ -1107,7 +1114,7 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
   const tasksContent = await Promise.all(
     panelDatas.tasks.map(async (task) => ({
       type: 10,
-      content: `- ${task.emoji ? `${task.emoji} ` : ""}**${task.name}**`,
+      content: `- ${task.emoji ? `${task.emoji} ` : ""}**${task.name.slice(0, 100)}**`,
     })),
   );
 
@@ -1130,8 +1137,6 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
           task.emoji.length <= 3
         ) {
           emoji = { name: task.emoji };
-        } else {
-          emoji = undefined;
         }
       }
 
@@ -1143,6 +1148,17 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
       };
     }),
   );
+
+  const canCreateTask = taskOptions.length < 25;
+
+  if (canCreateTask) {
+    taskOptions.push({
+      label: "Créer une tâche",
+      value: `create_tache-${panelId}`,
+      description: "Ajoute une nouvelle tâche au panel",
+      emoji: { id: "1418880845808402492" },
+    });
+  }
 
   return {
     type: 17,
@@ -1167,15 +1183,7 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
             custom_id: `tache_edit-${panelId}`,
             placeholder: "Choisis une tâche...",
             disabled: !panelDatas.enable,
-            options: [
-              ...taskOptions,
-              {
-                label: "Créer une tâche",
-                value: `create_tache-${panelId}`,
-                description: "Ajoute une nouvelle tâche au panel",
-                emoji: { id: "1418880845808402492" },
-              },
-            ],
+            options: taskOptions,
           },
         ],
       },
@@ -1223,27 +1231,48 @@ async function getEditTacheContainer(
 
   const grades = panelDatas.grade || [];
 
-  const gradeOptions = await Promise.all(
-    grades.map(async (grade) => {
-      const e = grade.couleur
-        ? await getHexEmoji(client, grade.couleur)
-        : undefined;
+  const gradeOptions =
+    grades.length > 0
+      ? await Promise.all(
+          grades.map(async (grade) => {
+            const e = grade.couleur
+              ? await getHexEmoji(client, grade.couleur)
+              : undefined;
 
-      return {
-        label: grade.nom,
-        value: `edit_tache_grade-${grade.gradeId}`,
-        description: grade.couleur
-          ? `Couleur : ${grade.couleur || "Aucune"} | Tier : ${
-              grade.tier || "Aucun"
-            }`
-          : "Aucune couleur définie",
-        emoji: e
-          ? { id: e.id, name: e.name, animated: e.animated || false }
-          : undefined,
-        default: task.grade?.includes(String(grade.gradeId)) || false,
-      };
-    }),
-  );
+            let emoji;
+            if (e) {
+              if (e.id && /^\d+$/.test(e.id)) {
+                emoji = {
+                  id: e.id,
+                  name: e.name,
+                  animated: e.animated || false,
+                };
+              } else {
+                emoji = { name: e.name || e };
+              }
+            }
+
+            return {
+              label: grade.nom,
+              value: `edit_tache_grade-${grade.gradeId}`,
+              description: grade.couleur
+                ? `Couleur : ${grade.couleur || "Aucune"} | Tier : ${
+                    grade.tier || "Aucun"
+                  }`
+                : "Aucune couleur définie",
+              emoji,
+              default: task.grade?.includes(String(grade.gradeId)) || false,
+            };
+          }),
+        )
+      : [
+          {
+            label: "Aucun grade configuré",
+            value: "aucun_grade_configure",
+            description: "Veuillez créer au moins un grade avant de continuer",
+            default: false,
+          },
+        ];
 
   return {
     type: 17,

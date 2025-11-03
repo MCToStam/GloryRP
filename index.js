@@ -1,5 +1,4 @@
-if (Number(process.version.slice(1).split(".")[0]) < 19)
-  throw new Error("Node 19.x is required. Update Node on your system.");
+if (Number(process.version.slice(1).split(".")[0]) < 19) throw new Error("Node 19.x is required. Update Node on your system.");
 require("dotenv").config({ quiet: true });
 
 const { Client, Collection, IntentsBitField } = require("discord.js");
@@ -54,9 +53,7 @@ const init = async () => {
   await load("roleSelects", "./src/selects/roles", "Role select");
   await load("modals", "./src/modals", "Modals");
 
-  const eventFiles = readdirSync("./src/events/").filter((file) =>
-    file.endsWith(".js"),
-  );
+  const eventFiles = readdirSync("./src/events/").filter((file) => file.endsWith(".js"));
 
   for (const file of eventFiles) {
     const eventName = file.split(".")[0];
@@ -65,7 +62,7 @@ const init = async () => {
     client.on(eventName, event.bind(null, client));
   }
 
-  client.login().then(async () => {
+  client.login(); /*.then(async () => {
     const config = require("./config.js");
     const guild = client.guilds.cache.get(config.guilds.dev);
     const guildCmds = guild.commands;
@@ -74,7 +71,7 @@ const init = async () => {
     await guildCmds
       .set(cmdSlashs.map((c) => c.data))
       .catch((e) => console.log(e));
-  });
+  });*/
   log(`Node ${process.version} !`, "READY", "green");
 };
 

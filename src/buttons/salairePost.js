@@ -1,5 +1,6 @@
 const { getServerDatas } = require("../../utils/functions/datas.js");
 const { formatDateFr } = require("../../utils/functions/salairePost.js");
+const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
@@ -25,6 +26,33 @@ exports.run = async (client, interaction, config) => {
   });
 
   const moisDisponibles = Array.from(moisDisponiblesSet).sort();
+
+  if (moisDisponibles.length === 0) {
+    const erreurContainer = {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        {
+          type: 10,
+          content: `## :x: Aucun Salaire`,
+        },
+        {
+          type: 14,
+          spacing: SeparatorSpacingSize.Large,
+        },
+        {
+          type: 10,
+          content: "Aucun salaire ne peut être donné.",
+        },
+      ],
+    };
+
+    return await interaction.reply({
+      components: [erreurContainer],
+      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      allowedMentions: { parse: [] },
+    });
+  }
 
   const modal = {
     custom_id: `salaire_post-${panelId}`,
@@ -55,5 +83,5 @@ exports.data = {
 };
 
 exports.conf = {
-  type: "Button",
+  type: "User",
 };

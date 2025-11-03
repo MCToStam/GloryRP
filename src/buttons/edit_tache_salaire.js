@@ -31,7 +31,7 @@ exports.run = async (client, interaction, config) => {
               description: "Modifier le salaire de la tâche envoyé le lundi",
             },
             {
-              label: "Marde",
+              label: "Mardi",
               value: "mardi",
               description: "Modifier le salaire de la tâche envoyé le mardi",
             },
@@ -89,5 +89,5 @@ exports.data = {
 };
 
 exports.conf = {
-  type: "Button",
+  type: "User",
 };

@@ -92,7 +92,9 @@ async function getSalaireContainer(
   for (const [roleplayName, roleplayData] of Object.entries(salaire)) {
     if (roleplayData[moisKey]) {
       const taches = roleplayData[moisKey].taches || [];
-      const total = taches.reduce((sum, t) => sum + (t.argent || 0), 0);
+      const total = taches
+        .filter((t) => t.status !== "refused" && t.status !== "waiting")
+        .reduce((sum, t) => sum + (t.argent || 0), 0);
 
       let emojiObj = null;
       let emojiString = "";
@@ -119,10 +121,14 @@ async function getSalaireContainer(
         );
       }
 
+      const tachesCount = taches.filter(
+        (t) => !["refused", "waiting", "bonus", "malus"].includes(t.status),
+      ).length;
+
       salaireLines.push(
         `${emojiString}**${roleplayName}** : ${
           total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "$"
-        } ( ${taches.length} tâche${taches.length > 1 ? "s" : ""} )`,
+        } ( ${tachesCount} tâche${tachesCount > 1 ? "s" : ""} )`,
       );
 
       const option = {
@@ -274,7 +280,7 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
     const moisNom = nom_mois[moisIndex] || mois;
 
     const total = (data.taches || [])
-      .filter((t) => t.status === "accepted")
+      .filter((t) => t.status !== "refused" && t.status !== "waiting")
       .reduce((acc, t) => acc + (t.argent || 0), 0);
 
     labels.push(`${moisNom} ${annee}`);
@@ -454,6 +460,9 @@ async function getJoueurTacheContainer(
   const acceptedTasks = tachesData.filter((t) => t.status === "accepted");
   const waitingTasks = tachesData.filter((t) => t.status === "waiting");
   const refusedTasks = tachesData.filter((t) => t.status === "refused");
+  const bonusMalusTasks = tachesData.filter(
+    (t) => t.status === "bonus" || t.status === "malus",
+  );
 
   const formatTache = async (t) => {
     const argent =
@@ -474,8 +483,12 @@ async function getJoueurTacheContainer(
       return `- **${lien}** : ${argent}, acceptée ${staffTexte}`;
     } else if (t.status === "waiting") {
       return `- **${lien}** : ${argent}`;
-    } else {
+    } else if (t.status === "refused") {
       return `- **${lien}** : ${argent}, refusée ${staffTexte}`;
+    } else if (t.status === "bonus") {
+      return `- **${lien}** : Bonus de ${argent} ${staffTexte}`;
+    } else if (t.status === "malus") {
+      return `- **${lien}** : Malus de ${argent} ${staffTexte}`;
     }
   };
 
@@ -493,6 +506,11 @@ async function getJoueurTacheContainer(
     refusedTasks.length > 0
       ? (await Promise.all(refusedTasks.map(formatTache))).join("\n")
       : "_Aucune tâche refusée ce mois-ci._";
+
+  const bonusMalusLines =
+    bonusMalusTasks.length > 0
+      ? (await Promise.all(bonusMalusTasks.map(formatTache))).join("\n")
+      : "_Aucun bonus ou malus ce mois-ci._";
 
   const { mois_precedent, annee_precedent, mois_suivant, annee_suivant } =
     getMonthNavigation(targetMonth, targetYear);
@@ -521,6 +539,29 @@ async function getJoueurTacheContainer(
     {
       type: 10,
       content: `### <:refused:1427727444391104704> Tâches Refusées\n${refusedLines}`,
+    },
+    { type: 14, spacing: SeparatorSpacingSize.Small },
+    {
+      type: 10,
+      content: `### Bonus & Malus\n${bonusMalusLines}`,
+    },
+    { type: 14, spacing: SeparatorSpacingSize.Small },
+    {
+      type: 1,
+      components: [
+        {
+          type: 2,
+          custom_id: `salaire_tache_ajout-bonus-${joueur}-${panelId}-${serv}-${mois}`,
+          label: "Ajouter un Bonus",
+          style: ButtonStyle.Success,
+        },
+        {
+          type: 2,
+          custom_id: `salaire_tache_ajout-malus-${joueur}-${panelId}-${serv}-${mois}`,
+          label: "Ajouter un Malus",
+          style: ButtonStyle.Danger,
+        },
+      ],
     },
     { type: 14, spacing: SeparatorSpacingSize.Small },
     {

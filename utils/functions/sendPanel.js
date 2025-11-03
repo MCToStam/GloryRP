@@ -48,7 +48,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
         task.type !== "4" &&
         (!task.panelId || task.panelId === panelId),
     )
-    .slice(0, 25);
+    .slice(0, 100);
 
   if (validTasks.length === 0) {
     return {

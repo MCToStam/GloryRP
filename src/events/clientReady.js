@@ -8,6 +8,8 @@ const log = require("../../utils/modules/logger.js");
 const { getDateTs } = require("../../utils/functions/numbersAndLetters.js");
 const { botLaunch } = require("../../index.js");
 const { checkEmojiCache } = require("../../utils/functions/emojis.js");
+const { salaireAutomatique } = require("../../utils/functions/salairePost.js");
+const { updateLogo } = require("../../utils/functions/updateLogo.js");
 const cron = require("node-cron");
 const {
   checkCandidature,
@@ -103,6 +105,7 @@ module.exports = async (client, interaction) => {
   }, 30000);
   checkEmojiCache(client);
 
+  await checkCandidature(client);
   cron.schedule("*/30 * * * *", async () => {
     try {
       await checkDeletePanel();
@@ -116,5 +119,19 @@ module.exports = async (client, interaction) => {
         "red",
       );
     }
+  });
+
+  cron.schedule(
+    "0 10 1 * *",
+    async () => {
+      await salaireAutomatique(client);
+    },
+    {
+      timezone: "Europe/Paris",
+    },
+  );
+
+  cron.schedule("0 0 * * *", async () => {
+    await updateLogo(client, config);
   });
 };

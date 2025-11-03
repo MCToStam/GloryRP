@@ -51,10 +51,14 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
 
     if (grade.listeRp && grade.listeRp.length > 0) {
       for (const joueur of grade.listeRp) {
-        const emojiTete = await getEmojiTete(client, ngData[joueur]);
-        mentionsArray.push(
-          `${emojiTete} <@${joueur}> ➤ ${ngData[joueur] || "Inconnu"}`,
-        );
+        const pseudo = ngData.data[joueur];
+
+        if (pseudo) {
+          const emojiTete = await getEmojiTete(client, pseudo);
+          mentionsArray.push(`${emojiTete} <@${joueur}> ➤ ${pseudo}`);
+        } else {
+          mentionsArray.push(`<@${joueur}>`);
+        }
       }
     }
 
@@ -146,10 +150,14 @@ async function updateEffectif(client, serveur, serveurDatas, panelId) {
 
     if (grade.listeRp && grade.listeRp.length > 0) {
       for (const joueur of grade.listeRp) {
-        const emojiTete = await getEmojiTete(client, ngData[joueur]);
-        mentionsArray.push(
-          `${emojiTete} <@${joueur}> ➤ ${ngData[joueur] || "Inconnu"}`,
-        );
+        const pseudo = ngData.data[joueur];
+
+        if (pseudo) {
+          const emojiTete = await getEmojiTete(client, pseudo);
+          mentionsArray.push(`${emojiTete} <@${joueur}> ➤ ${pseudo}`);
+        } else {
+          mentionsArray.push(`<@${joueur}>`);
+        }
       }
     }
 

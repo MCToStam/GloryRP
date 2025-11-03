@@ -98,8 +98,8 @@ exports.run = async (client, interaction, config) => {
           components: [
             {
               type: 2,
-              label: "💻 Accéder au panel",
-              url: "https://glorybot.fr",
+              url: "https://glorybot.fr/user/profile",
+              label: "🔗 Lier son Compte",
               style: ButtonStyle.Link,
             },
           ],
@@ -275,7 +275,7 @@ exports.run = async (client, interaction, config) => {
   const tousLesRoles = panel.grade.flatMap((g) => g.roles || []);
   const rolesEnlever = tousLesRoles.filter((r) => !rolesGrade.includes(r));
 
-  const pseudonym = discordLink(interaction.user.id);
+  let pseudonym = await discordLink(membre.id);
 
   let replyInteraction;
   if (pseudonym) {
@@ -443,6 +443,7 @@ exports.run = async (client, interaction, config) => {
   ctx.clip();
 
   const avatar = await loadImage(avatarUrl);
+
   const imgH = 882;
   const ratio = avatar.width / avatar.height;
   const imgW = imgH * ratio;
@@ -601,11 +602,7 @@ exports.run = async (client, interaction, config) => {
     }
   }
 
-  try {
-    await saveServerDatas(interaction, gradeChoisi, serveur);
-  } catch (err) {
-    console.error("Erreur lors de la sauvegarde de l'historique :", err);
-  }
+  await saveServerDatas(interaction, gradeConfig, serveur);
 
   const today = new Date().toLocaleDateString("fr-FR", {
     day: "numeric",

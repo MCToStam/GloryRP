@@ -57,5 +57,5 @@ exports.data = {
 };
 
 exports.conf = {
-  type: "Button",
+  type: "User",
 };
