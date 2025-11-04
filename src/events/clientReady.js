@@ -1,8 +1,4 @@
-const {
-  ActivityType,
-  SeparatorSpacingSize,
-  MessageFlags,
-} = require("discord.js");
+const { SeparatorSpacingSize, MessageFlags } = require("discord.js");
 const config = require("../../config.js");
 const log = require("../../utils/modules/logger.js");
 const { getDateTs } = require("../../utils/functions/numbersAndLetters.js");
@@ -21,39 +17,7 @@ const {
   checkDeletePanel,
 } = require("../../utils/functions/checkDeletePanel.js");
 
-async function getPlayerCount(server) {
-  try {
-    var response = await fetch(
-      `${config.glorybot_url}/api/joueurConnecte?serveur=${server}&administrator=true`,
-    );
-    var response = await response.json();
-    if (
-      Array.isArray(response) &&
-      response.length > 0 &&
-      response[0].nombre !== undefined
-    ) {
-      return response[0].nombre;
-    }
-  } catch (error) {}
-  return null;
-}
-
-async function cycleStatus(client, statusIndex) {
-  const server = config.liste_serveur[statusIndex];
-  const playerCount = await getPlayerCount(server);
-
-  const statusName =
-    playerCount !== null
-      ? `${playerCount} joueurs connectés sur NationsGlory ${server.toUpperCase()}`
-      : `NationsGlory`;
-
-  client.user.setPresence({
-    activities: [{ name: statusName, type: ActivityType.Watching }],
-    status: "online",
-  });
-
-  statusIndex = (statusIndex + 1) % config.liste_serveur.length;
-}
+const { cycleStatus } = require("../../utils/functions/basics.js");
 
 module.exports = async (client, interaction) => {
   const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
@@ -91,9 +55,7 @@ module.exports = async (client, interaction) => {
   });
 
   log(
-    `${client.user.username} est pret en ${latence.toFixed(
-      1,
-    )}s, sur ${guilds} serveurs et ${usersCount} utilisateurs.`,
+    `${client.user.username} est pret en ${latence.toFixed(1)}s, sur ${guilds} serveurs et ${usersCount} utilisateurs.`,
     "READY",
     "green",
   );

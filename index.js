@@ -65,7 +65,7 @@ const init = async () => {
     client.on(eventName, event.bind(null, client));
   }
 
-  client.login().then(async () => {
+  client.login(); /*.then(async () => {
     const config = require("./config.js");
     const guild = client.guilds.cache.get(config.guilds.dev);
     const guildCmds = guild.commands;
@@ -74,7 +74,7 @@ const init = async () => {
     await guildCmds
       .set(cmdSlashs.map((c) => c.data))
       .catch((e) => console.log(e));
-  });
+  });*/
   log(`Node ${process.version} !`, "READY", "green");
 };
 

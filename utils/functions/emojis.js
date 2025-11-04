@@ -5,6 +5,7 @@ const config = require("../../config");
 
 const cachePath = path.join(__dirname, "..", "..", "data", "emojisCache.json");
 let emojisCache = JSON.parse(fs.readFileSync(cachePath, "utf8"));
+const pendingEmojis = {};
 
 async function saveCache() {
   await fs.promises
@@ -115,6 +116,8 @@ async function getHexEmoji(client, hexColor) {
 
   if (!client.application) await client.application.fetch();
 
+  if (pendingEmojis[key]) return pendingEmojis[key];
+
   if (emojisCache[key]) {
     try {
       const emoji = await client.application.emojis.fetch(
@@ -127,26 +130,35 @@ async function getHexEmoji(client, hexColor) {
     }
   }
 
-  const canvas = Canvas.createCanvas(32, 32);
-  const ctx = canvas.getContext("2d");
-  ctx.fillStyle = hexColor;
-  ctx.beginPath();
-  ctx.arc(16, 16, 16, 0, Math.PI * 2);
-  ctx.fill();
+  pendingEmojis[key] = (async () => {
+    const canvas = Canvas.createCanvas(32, 32);
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = hexColor;
+    ctx.beginPath();
+    ctx.arc(16, 16, 16, 0, Math.PI * 2);
+    ctx.fill();
 
-  const buffer = canvas.toBuffer("image/png");
+    const buffer = canvas.toBuffer("image/png");
 
-  const emoji = await client.application.emojis.create({
-    name: key.slice(0, 32),
-    attachment: buffer,
-  });
+    const emoji = await client.application.emojis.create({
+      name: key.slice(0, 32),
+      attachment: buffer,
+    });
 
-  emojisCache[key] = { emojiId: emoji.id, color: hexColor, createdAt: now };
-  await saveCache();
+    emojisCache[key] = { emojiId: emoji.id, color: hexColor, createdAt: now };
+    await saveCache();
 
-  scheduleDeleteEmoji(client, key, emoji.id);
+    scheduleDeleteEmoji(client, key, emoji.id);
 
-  return emoji;
+    return emoji;
+  })();
+
+  try {
+    const emoji = await pendingEmojis[key];
+    return emoji;
+  } finally {
+    delete pendingEmojis[key];
+  }
 }
 
 async function checkEmojiCache(client) {
