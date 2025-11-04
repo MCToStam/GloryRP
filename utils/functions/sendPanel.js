@@ -79,9 +79,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
       },
       {
         type: 10,
-        content:
-          panel.panel_message ||
-          "Quand vous effectuez une tâche, il est nécessaire de le noter en cliquant sur le bouton correspondant !",
+        content: panel.texte_tache,
       },
       {
         type: 14,

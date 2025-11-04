@@ -1174,6 +1174,23 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
         type: 14,
         spacing: SeparatorSpacingSize.Small,
       },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Texte Affiché :** ${
+              panelDatas.texte_tache || "Aucun texte affiché n'est configuré"
+            }`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `edit_tache_texte-${panelId}`,
+          label: "🔠 Modifier le Texte Affiché",
+          style: ButtonStyle.Primary,
+        },
+      },
       ...tasksContent,
       {
         type: 1,

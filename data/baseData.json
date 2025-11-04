@@ -1,0 +1,46 @@
+{
+  "id": false,
+  "name": false,
+  "description": false,
+  "emoji": false,
+  "enable": true,
+  "effectif": {
+    "message": false,
+    "channel": false,
+    "guild": false,
+    "button": []
+  },
+  "candidature": {
+    "lien": false,
+    "save": []
+  },
+  "depotdeplainte": {
+    "lien": false
+  },
+  "grade": [],
+  "tasks": [],
+  "roles": {
+    "salaire": [],
+    "candidature": [],
+    "depotdeplainte": []
+  },
+  "channels": {
+    "logs": false,
+    "cmd_salaire": false,
+    "responsable": false,
+    "tasks": false,
+    "salaire": false,
+    "effectif": false,
+    "candidature": false,
+    "depotdeplainte": false
+  },
+  "salaire": {
+    "automatique": false,
+    "cmd_retrait": "/econ bank take ONU [argent]",
+    "cmd_don": "/eco give [joueur] [argent]",
+    "salaire": {}
+  },
+  "timestamp": false,
+  "lastUser": false,
+  "delete": false
+}
