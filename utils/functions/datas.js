@@ -1,54 +1,44 @@
-const { MessageFlags } = require("discord.js");
 const config = require("../../config.js");
 const fs = require("node:fs");
 
 async function getGuildColor(interaction) {
-  try {
-    const color = interaction.message.components[0].data.accent_color;
+  if (!interaction?.message?.components?.[0]?.data?.accent_color) return null;
 
-    return Object.keys(config.couleur).find((key) => {
-      const hexValue = config.couleur[key];
+  const color = interaction.message.components[0].data.accent_color;
+
+  return (
+    Object.entries(config.couleur).find(([key, hexValue]) => {
       const decimalValue =
         typeof hexValue === "string" ? parseInt(hexValue, 16) : hexValue;
       return decimalValue === color;
-    });
-  } catch (e) {
-    console.error(e);
-    return interaction.reply({
-      content: `:x: **| Une erreur a eu lieu lors de la récupération de vos données !**`,
-      flags: MessageFlags.Ephemeral,
-    });
-  }
+    })?.[0] ?? null
+  );
 }
 
 async function getServerDatas(interaction, serveur = null) {
   if (!serveur) {
     serveur = await getGuildColor(interaction);
+    if (!serveur) return null;
   }
-  const serverPath = `data/servers/${serveur}.json`;
+
   try {
-    const rawDatas = fs.readFileSync(serverPath);
-    const jsonDatas = await JSON.parse(rawDatas);
-    return jsonDatas;
+    const rawDatas = fs.readFileSync(`data/servers/${serveur}.json`, "utf-8");
+    return JSON.parse(rawDatas);
   } catch (e) {
-    console.error(e);
-    return interaction.reply({
-      content: `:x: **| Une erreur a eu lieu lors de la récupération de vos données !**`,
-      flags: MessageFlags.Ephemeral,
-    });
+    return null;
   }
 }
 
 async function saveServerDatas(interaction, datas, serveur = null) {
   if (!serveur) {
     serveur = await getGuildColor(interaction);
+    if (!serveur) return;
   }
-  const serverPath = `data/servers/${serveur}.json`;
-  try {
-    fs.writeFileSync(serverPath, JSON.stringify(datas, null, 2));
-  } catch (e) {
-    console.error(e);
-  }
+
+  fs.writeFileSync(
+    `data/servers/${serveur}.json`,
+    JSON.stringify(datas, null, 2),
+  );
 }
 
 module.exports = { getServerDatas, saveServerDatas, getGuildColor };

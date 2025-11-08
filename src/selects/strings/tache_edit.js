@@ -12,7 +12,7 @@ exports.run = async (client, interaction, config) => {
   const tacheId = Number(interaction.values[0].split("-")[2]);
 
   const guildColor = await getGuildColor(interaction);
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
   const tacheContainer = await getEditTacheContainer(

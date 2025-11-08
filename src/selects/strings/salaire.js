@@ -14,7 +14,7 @@ exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.values[0].split("-")[1]);
 
   const guildColor = await getGuildColor(interaction);
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
   panelDatas.salaire.automatique = !panelDatas.salaire.automatique;

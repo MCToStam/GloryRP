@@ -16,7 +16,7 @@ exports.run = async (client, interaction, config) => {
 
   const new_salaire = interaction.fields.getTextInputValue("new_salaire") || 0;
 
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const guildColor = await getGuildColor(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelIdNumber);
 

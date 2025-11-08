@@ -129,19 +129,19 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `config_channel-${panelId}`,
+            custom_id: `config-channel-${panelId}`,
             label: "Configurer les Salons",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_grade-${panelId}`,
+            custom_id: `config-grade-${panelId}`,
             label: "Configurer les Grades",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_tache-${panelId}`,
+            custom_id: `config-tache-${panelId}`,
             label: "Configurer les Tâches",
             style: ButtonStyle.Primary,
           },
@@ -152,19 +152,19 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `config_panel-${panelId}`,
+            custom_id: `config-panel-${panelId}`,
             label: "Configurer le Panel",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_salaire-${panelId}`,
+            custom_id: `config-salaire-${panelId}`,
             label: "Configurer les Salaires",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_resumeonu-${panelId}`,
+            custom_id: `config-resumeonu-${panelId}`,
             label: "Configurer le Résumé ONU",
             style: ButtonStyle.Secondary,
             disabled: true,
@@ -176,19 +176,19 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `config_depotdeplainte-${panelId}`,
+            custom_id: `config-depotdeplainte-${panelId}`,
             label: "Configurer le Dépot de Plainte",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_candidature-${panelId}`,
+            custom_id: `config-candidature-${panelId}`,
             label: "Configurer les Candidature",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_effectif-${panelId}`,
+            custom_id: `config-effectif-${panelId}`,
             label: "Configurer l'Effectif",
             style: ButtonStyle.Primary,
           },
@@ -1170,7 +1170,7 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
   };
 }
 
-async function getTacheContainer(client, panelId, guildColor, panelDatas) {
+async function getTacheContainer(panelId, guildColor, panelDatas) {
   const tasksContent = await Promise.all(
     panelDatas.tasks.map(async (task) => ({
       type: 10,
