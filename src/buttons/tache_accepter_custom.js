@@ -80,7 +80,7 @@ exports.run = async (client, interaction, config) => {
     });
   }
 
-  const tache = panelDatas.tasks.find((t) => t.taskId === taskId);
+  const tache = panelDatas.tasks.find((t) => t.taskId === Number(taskId));
 
   const gradesAutorises = tache.grade_valider;
   const gradesDatas = panelDatas.grade.filter((g) =>

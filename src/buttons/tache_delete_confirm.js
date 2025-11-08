@@ -99,7 +99,6 @@ exports.run = async (client, interaction, config) => {
     const originalMessage =
       await interaction.channel.messages.fetch(repliedMessageId);
     const configContainer = await getTacheContainer(
-      client,
       panelId,
       guildColor,
       panelDatas,

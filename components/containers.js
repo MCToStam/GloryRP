@@ -129,19 +129,19 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `config_channel-${panelId}`,
+            custom_id: `config-channel-${panelId}`,
             label: "Configurer les Salons",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_grade-${panelId}`,
+            custom_id: `config-grade-${panelId}`,
             label: "Configurer les Grades",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_tache-${panelId}`,
+            custom_id: `config-tache-${panelId}`,
             label: "Configurer les Tâches",
             style: ButtonStyle.Primary,
           },
@@ -152,20 +152,20 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `config_panel-${panelId}`,
+            custom_id: `config-panel-${panelId}`,
             label: "Configurer le Panel",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_salaire-${panelId}`,
+            custom_id: `config-salaire-${panelId}`,
             label: "Configurer les Salaires",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_boutique-${panelId}`,
-            label: "Configurer la Boutique",
+            custom_id: `config-resumeonu-${panelId}`,
+            label: "Configurer le Résumé ONU",
             style: ButtonStyle.Secondary,
             disabled: true,
           },
@@ -176,19 +176,19 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `config_depotdeplainte-${panelId}`,
+            custom_id: `config-depotdeplainte-${panelId}`,
             label: "Configurer le Dépot de Plainte",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_candidature-${panelId}`,
+            custom_id: `config-candidature-${panelId}`,
             label: "Configurer les Candidature",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_effectif-${panelId}`,
+            custom_id: `config-effectif-${panelId}`,
             label: "Configurer l'Effectif",
             style: ButtonStyle.Primary,
           },
@@ -1000,6 +1000,66 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
   };
 }
 
+async function getResumeONUContainer(panelId, guildColor, panelDatas) {
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Lien Forum :** ${
+              panelDatas.resumeonu.lien || "Aucun lien configuré"
+            }`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `config_resumeonu_lien-${panelId}`,
+          label: "💬 Modifier le lien Forum",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            url: `https://static.nationsglory.fr/resume-onu/${guildColor}.png`,
+            label: "Voir le Résumé ONU",
+            style: ButtonStyle.Link,
+            disabled: !panelDatas.resumeonu.found,
+          },
+          {
+            type: 2,
+            custom_id: "aide-resumeonu",
+            label: "❓ Aide",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  };
+}
+
 async function getCandidatureContainer(panelId, guildColor, panelDatas) {
   return {
     type: 17,
@@ -1110,7 +1170,7 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
   };
 }
 
-async function getTacheContainer(client, panelId, guildColor, panelDatas) {
+async function getTacheContainer(panelId, guildColor, panelDatas) {
   const tasksContent = await Promise.all(
     panelDatas.tasks.map(async (task) => ({
       type: 10,
@@ -1180,7 +1240,8 @@ async function getTacheContainer(client, panelId, guildColor, panelDatas) {
           {
             type: 10,
             content: `**Texte Affiché :** ${
-              panelDatas.texte_tache || "Aucun texte affiché n'est configuré"
+              panelDatas.panel_tache.description ||
+              "Aucun texte affiché n'est configuré"
             }`,
           },
         ],
@@ -1554,6 +1615,7 @@ module.exports = {
   getGradeContainer,
   getEditGradeContainer,
   getEffectifContainer,
+  getResumeONUContainer,
   getCandidatureContainer,
   getDepotDePlainteContainer,
   getTacheContainer,

@@ -4,6 +4,7 @@ const {
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { discordLink } = require("../../utils/functions/linkedUser.js");
+const { updatePanelTasks } = require("../../utils/functions/sendPanel.js");
 const {
   MessageFlags,
   SeparatorSpacingSize,
@@ -593,11 +594,13 @@ exports.run = async (client, interaction, config) => {
     ],
   };
 
-  return await interaction.reply({
+  await interaction.reply({
     components: [goodContainer],
     flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
     allowedMentions: { parse: [] },
   });
+
+  await updatePanelTasks(client, guildColor, serverDatas, panelId);
 };
 
 exports.data = { name: "panel_tasks" };

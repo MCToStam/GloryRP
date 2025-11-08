@@ -52,7 +52,7 @@ exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();
 
   const guildColor = await getGuildColor(interaction);
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
   const grade = panelDatas.grade.find((g) => g.gradeId === gradeId);
   const modifDate = await toTimeStamp(new Date());

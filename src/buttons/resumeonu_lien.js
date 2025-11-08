@@ -7,8 +7,8 @@ exports.run = async (client, interaction, config) => {
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
   const modal = {
-    custom_id: `config_candidature_lien-${panelId}`,
-    title: "Modifie le lien forum des Candidatures",
+    custom_id: `config_resumeonu_lien-${panelId}`,
+    title: "Modifie le lien forum du Résumé ONU",
     components: [
       {
         type: 1,
@@ -21,8 +21,8 @@ exports.run = async (client, interaction, config) => {
             min_length: 1,
             max_length: 200,
             placeholder: "Ex: https://nationsglory.fr/forums",
-            ...(panelDatas.candidature.lien
-              ? { value: panelDatas.candidature.lien }
+            ...(panelDatas.resumeonu.lien
+              ? { value: panelDatas.resumeonu.lien }
               : {}),
             required: true,
           },
@@ -35,7 +35,7 @@ exports.run = async (client, interaction, config) => {
 };
 
 exports.data = {
-  name: "config_candidature_lien",
+  name: "config_resumeonu_lien",
 };
 
 exports.conf = {

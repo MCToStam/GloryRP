@@ -15,8 +15,8 @@ exports.run = async (client, interaction) => {
   const panelId = Number(panel);
 
   if (action === "return" && !panelId && !config) {
-    const serverDatas = await getServerDatas(interaction);
     const guildColor = await getGuildColor(interaction);
+    const serverDatas = await getServerDatas(interaction, guildColor);
     const configContainer = await getConfigContainer(serverDatas, guildColor);
 
     await interaction.message.edit({
@@ -25,7 +25,7 @@ exports.run = async (client, interaction) => {
     });
   } else if (action === "return" && panelId && !config) {
     const guildColor = await getGuildColor(interaction);
-    const serverDatas = await getServerDatas(interaction);
+    const serverDatas = await getServerDatas(interaction, guildColor);
     const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
     const panelContainer = await getPanelContainer(
@@ -40,7 +40,7 @@ exports.run = async (client, interaction) => {
     });
   } else if (action === "return" && panelId && config) {
     const guildColor = await getGuildColor(interaction);
-    const serverDatas = await getServerDatas(interaction);
+    const serverDatas = await getServerDatas(interaction, guildColor);
     const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
     let container;
@@ -52,12 +52,7 @@ exports.run = async (client, interaction) => {
         panelDatas,
       );
     } else if (config === "tache") {
-      container = await getTacheContainer(
-        client,
-        panelId,
-        guildColor,
-        panelDatas,
-      );
+      container = await getTacheContainer(panelId, guildColor, panelDatas);
     }
 
     await interaction.message.edit({

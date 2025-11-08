@@ -14,7 +14,7 @@ exports.run = async (client, interaction) => {
     page = page + 1;
   }
 
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, serv);
 
   const { error, component: logContainer } = await getlogContainer(
     serverDatas,

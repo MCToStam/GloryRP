@@ -22,8 +22,8 @@ exports.run = async (client, interaction, config) => {
             max_length: 1000,
             placeholder:
               "Ex: Quand vous effectuez une tâche, il est nécessaire de le noter en cliquant sur le bouton...",
-            ...(panelDatas.texte_tache
-              ? { value: panelDatas.texte_tache }
+            ...(panelDatas.panel_tache.description
+              ? { value: panelDatas.panel_tache.description }
               : {}),
             required: true,
           },

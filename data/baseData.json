@@ -4,6 +4,12 @@
   "description": false,
   "emoji": false,
   "enable": true,
+  "panel_tache": {
+    "description": false,
+    "messageId": false,
+    "channelId": false,
+    "guildId": false
+  },
   "effectif": {
     "message": false,
     "channel": false,
@@ -13,6 +19,10 @@
   "candidature": {
     "lien": false,
     "save": []
+  },
+  "resumeonu": {
+    "lien": false,
+    "found": false
   },
   "depotdeplainte": {
     "lien": false
