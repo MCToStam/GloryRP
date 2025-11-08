@@ -80,7 +80,18 @@ exports.run = async (client, interaction, config) => {
     });
   }
 
-  if (!servers.includes(guildColor)) {
+  const tache = panelDatas.tasks.find((t) => t.taskId === taskId);
+
+  const gradesAutorises = tache.grade_valider;
+  const gradesDatas = panelDatas.grade.filter((g) =>
+    gradesAutorises.includes(String(g.gradeId)),
+  );
+
+  const userHasAccess = gradesDatas.some((g) =>
+    g.listeRp.includes(interaction.user.id),
+  );
+
+  if (!servers.includes(guildColor) && !userHasAccess) {
     const capitalizedguildColor =
       guildColor.charAt(0).toUpperCase() + guildColor.slice(1);
     const emojiId = config.emoji[guildColor.toLowerCase()];

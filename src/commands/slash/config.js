@@ -30,15 +30,18 @@ exports.data = {
   contexts: [InteractionContextType.Guild],
   async autocomplete(client, interaction, config) {
     const { pseudonym, servers } = await discordStaff(interaction.user.id);
+
     if (!pseudonym) {
-      return await interaction.respond([
+      return interaction.respond([
         {
-          name: "Compte NationsGlory non lié, fait le maintenant : https://glorybot.fr",
+          name: "Compte NationsGlory non lié, fais-le maintenant : https://glorybot.fr",
           value: "non-lie",
         },
       ]);
-    } else if (pseudonym && servers.length === 0) {
-      return await interaction.respond([
+    }
+
+    if (!servers || servers.length === 0) {
+      return interaction.respond([
         {
           name: "Vous n'êtes opérateur d'aucun serveur de NationsGlory.",
           value: "permission",
@@ -46,11 +49,16 @@ exports.data = {
       ]);
     }
 
-    const respondDatas = servers.map((serv) => {
-      const servname = serv.charAt(0).toUpperCase() + serv.slice(1);
-      return { name: servname, value: serv };
-    });
-    await interaction.respond(respondDatas);
+    const focusedValue = interaction.options.getFocused()?.toLowerCase() ?? "";
+    const filtered = servers
+      .filter((serv) => serv.toLowerCase().includes(focusedValue))
+      .slice(0, 25)
+      .map((serv) => ({
+        name: serv.charAt(0).toUpperCase() + serv.slice(1),
+        value: serv,
+      }));
+
+    await interaction.respond(filtered);
   },
 };
 
