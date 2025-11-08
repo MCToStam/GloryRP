@@ -13,7 +13,7 @@ exports.run = async (client, interaction, config) => {
   const new_name = interaction.fields.getTextInputValue("new_name");
 
   const guildColor = await getGuildColor(interaction);
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
   const nameExists = serverDatas.panels.some(

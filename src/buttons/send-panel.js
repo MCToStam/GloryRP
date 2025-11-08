@@ -10,8 +10,8 @@ const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
 
-  const serverDatas = await getServerDatas(interaction);
   const serveur = await getGuildColor(interaction);
+  const serverDatas = await getServerDatas(interaction, serveur);
 
   const modifDate = await toTimeStamp(new Date());
 

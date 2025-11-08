@@ -1,19 +1,16 @@
 const config = require("../../config.js");
 
-async function discordLink(discordId = null) {
-  try {
-    let url = `${config.glorybot_url}/api/get-ng`;
-    if (discordId !== null) {
-      url += `?discordId=${encodeURIComponent(discordId)}`;
-    }
+async function discordLink(discordId) {
+  const url = new URL(`${config.glorybot_url}/api/get-ng`);
+  if (discordId) url.searchParams.set("discordId", discordId);
 
+  try {
     const response = await fetch(url);
     if (!response.ok) return null;
 
     const data = await response.json();
-
-    return discordId !== null ? data.pseudo || null : data;
-  } catch (e) {
+    return discordId ? (data.pseudo ?? null) : data;
+  } catch {
     return null;
   }
 }
@@ -30,31 +27,25 @@ async function discordStaff(discordId, serveur = "all") {
 
   try {
     const response = await fetch(`${config.glorybot_url}/api/allStaff`, {
-      headers: {
-        Authorization: `Bearer ${config.glorybot_token}`,
-      },
+      headers: { Authorization: `Bearer ${config.glorybot_token}` },
     });
-
-    if (!response.ok) throw new Error(`Erreur API allStaff`);
+    if (!response.ok) return { pseudonym, servers: [] };
 
     const allStaffData = await response.json();
 
-    const servers = [];
+    const staffMap = new Map(allStaffData.map((s) => [s.serveur, s]));
 
-    for (const srv of serveurs) {
-      const data = allStaffData.find((s) => s.serveur === srv);
-      if (!data) continue;
+    const servers = serveurs.filter((srv) => {
+      const data = staffMap.get(srv);
+      if (!data) return false;
 
-      const isAdmin = data.administrateur?.includes(pseudonym);
-      const isSuperMod = data.super_moderateur?.includes(pseudonym);
-
-      if (isAdmin || isSuperMod) {
-        servers.push(srv);
-      }
-    }
+      return [data.administrateur, data.super_moderateur].some((list) =>
+        list?.includes(pseudonym),
+      );
+    });
 
     return { pseudonym, servers };
-  } catch (err) {
+  } catch {
     return { pseudonym, servers: [] };
   }
 }

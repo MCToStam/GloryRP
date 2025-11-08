@@ -12,7 +12,7 @@ exports.run = async (client, interaction, config) => {
   const date = selectedValues[0];
 
   const guildColor = await getGuildColor(interaction);
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
 
   const container = await salairePost(
     client,

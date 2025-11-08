@@ -15,7 +15,7 @@ exports.run = async (client, interaction, config) => {
     interaction.fields.getTextInputValue("new_description") || false;
 
   const guildColor = await getGuildColor(interaction);
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
   const tache = panelDatas.tasks.find((t) => t.taskId === taskId);
 

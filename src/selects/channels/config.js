@@ -27,13 +27,13 @@ exports.run = async (client, interaction, config) => {
     const channelId =
       interaction.values.length === 0 ? false : interaction.values[0];
 
-    const serverDatas = await getServerDatas(interaction);
+    const guildColor = await getGuildColor(interaction);
+    const serverDatas = await getServerDatas(interaction, guildColor);
     const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
     const modifDate = await toTimeStamp(new Date());
     serverDatas.timestamp = modifDate;
     panelDatas.timestamp = modifDate;
-    const guildColor = await getGuildColor(interaction);
 
     const logMap = {
       logs: "Édition du salon des logs",

@@ -4,6 +4,7 @@ const {
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { discordStaff } = require("../../utils/functions/linkedUser.js");
+const { updatePanelTasks } = require("../../utils/functions/sendPanel.js");
 const {
   MessageFlags,
   SeparatorSpacingSize,
@@ -16,7 +17,7 @@ exports.run = async (client, interaction, config) => {
 
   const new_salaire = interaction.fields.getTextInputValue("new_salaire") || 0;
 
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const guildColor = await getGuildColor(interaction);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelIdNumber);
 
@@ -273,10 +274,12 @@ exports.run = async (client, interaction, config) => {
     ],
   };
 
-  return await interaction.reply({
+  await interaction.reply({
     components: [successContainer],
     flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
   });
+
+  await updatePanelTasks(client, guildColor, serverDatas, panelId);
 };
 
 exports.data = {
