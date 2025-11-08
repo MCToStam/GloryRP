@@ -4,6 +4,7 @@ const {
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { discordStaff } = require("../../utils/functions/linkedUser.js");
+const { updatePanelTasks } = require("../../utils/functions/sendPanel.js");
 const {
   MessageFlags,
   SeparatorSpacingSize,
@@ -141,7 +142,7 @@ exports.run = async (client, interaction, config) => {
     });
   }
 
-  const tache = panelDatas.tasks.find((t) => t.taskId === taskId);
+  const tache = panelDatas.tasks.find((t) => t.taskId === Number(taskId));
 
   const gradesAutorises = tache.grade_valider;
   const gradesDatas = panelDatas.grade.filter((g) =>
@@ -280,10 +281,12 @@ exports.run = async (client, interaction, config) => {
     ],
   };
 
-  return await interaction.reply({
+  await interaction.reply({
     components: [successContainer],
     flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
   });
+
+  await updatePanelTasks(client, guildColor, serverDatas, panelId);
 };
 
 exports.data = {
