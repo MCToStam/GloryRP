@@ -1,5 +1,3 @@
-const { getServerDatas } = require("../../utils/functions/datas.js");
-
 exports.run = async (client, interaction, config) => {
   const [_, type, joueur, panelId, serv, mois] =
     interaction.customId.split("-");

@@ -11,8 +11,8 @@ const {
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
 
-  const serverDatas = await getServerDatas(interaction);
   const guildColor = await getGuildColor(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
   const deleteContainer = {

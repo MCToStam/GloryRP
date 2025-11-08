@@ -45,7 +45,7 @@ exports.run = async (client, interaction, config) => {
   }
 
   const guildColor = await getGuildColor(interaction);
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
   const tache = panelDatas.tasks.find((t) => t.taskId === taskId);
 

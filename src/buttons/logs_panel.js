@@ -10,8 +10,8 @@ exports.run = async (client, interaction) => {
 
   const panelId = Number(interaction.customId.split("-")[1]);
 
-  const serverDatas = await getServerDatas(interaction);
   const guildColor = await getGuildColor(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
 
   const { error, component: logContainer } = await getlogContainer(
     serverDatas,

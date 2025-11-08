@@ -15,7 +15,7 @@ exports.run = async (client, interaction, config) => {
   const emoji = interaction.fields.getTextInputValue("emoji");
 
   const guildColor = await getGuildColor(interaction);
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
 
   const nameExists = serverDatas.panels.some(
     (p) => p.name.toLowerCase() === nom.toLowerCase(),

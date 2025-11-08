@@ -10,8 +10,8 @@ const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[2]);
 
-  const serverDatas = await getServerDatas(interaction);
   const guildColor = await getGuildColor(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
 
   const panelIndex = serverDatas.panels.findIndex((x) => x.id === panelId);
   if (panelIndex === -1) {

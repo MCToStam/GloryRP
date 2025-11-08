@@ -9,7 +9,7 @@ exports.run = async (client, interaction, config) => {
   const panelId = interaction.customId.split("-")[2];
   const serv = interaction.customId.split("-")[3];
 
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, serv);
   await interaction.deferUpdate();
 
   const { component: salaireContainer, attachments } =

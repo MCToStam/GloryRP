@@ -47,7 +47,7 @@ exports.run = async (client, interaction, config) => {
   }
 
   const guildColor = await getGuildColor(interaction);
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === Number(panelId));
 
   panelDatas.salaire.salaire[joueur][mois].taches.push({

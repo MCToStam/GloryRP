@@ -12,7 +12,7 @@ exports.run = async (client, interaction, config) => {
   const new_texte = interaction.fields.getTextInputValue("new_texte");
 
   const guildColor = await getGuildColor(interaction);
-  const serverDatas = await getServerDatas(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
   panelDatas.texte_tache = new_texte;
@@ -29,7 +29,6 @@ exports.run = async (client, interaction, config) => {
   await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getTacheContainer(
-    client,
     panelId,
     guildColor,
     panelDatas,
