@@ -15,7 +15,7 @@ exports.run = async (client, interaction, config) => {
   const serverDatas = await getServerDatas(interaction, guildColor);
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
-  panelDatas.texte_tache = new_texte;
+  panelDatas.panel_tache.description = new_texte;
   const modifDate = await toTimeStamp(new Date());
 
   if (!serverDatas.logs) serverDatas.logs = [];

@@ -1240,7 +1240,8 @@ async function getTacheContainer(panelId, guildColor, panelDatas) {
           {
             type: 10,
             content: `**Texte Affiché :** ${
-              panelDatas.texte_tache || "Aucun texte affiché n'est configuré"
+              panelDatas.panel_tache.description ||
+              "Aucun texte affiché n'est configuré"
             }`,
           },
         ],
