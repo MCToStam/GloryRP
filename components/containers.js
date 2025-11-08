@@ -1291,6 +1291,50 @@ async function getEditTacheContainer(
           },
         ];
 
+  const gradeOptions_valider =
+    grades.length > 0
+      ? await Promise.all(
+          grades.map(async (grade) => {
+            const e = grade.couleur
+              ? await getHexEmoji(client, grade.couleur)
+              : undefined;
+
+            let emoji;
+            if (e) {
+              if (e.id && /^\d+$/.test(e.id)) {
+                emoji = {
+                  id: e.id,
+                  name: e.name,
+                  animated: e.animated || false,
+                };
+              } else {
+                emoji = { name: e.name || e };
+              }
+            }
+
+            return {
+              label: grade.nom,
+              value: `edit_tache_grade-${grade.gradeId}`,
+              description: grade.couleur
+                ? `Couleur : ${grade.couleur || "Aucune"} | Tier : ${
+                    grade.tier || "Aucun"
+                  }`
+                : "Aucune couleur définie",
+              emoji,
+              default:
+                task.grade_valider?.includes(String(grade.gradeId)) || false,
+            };
+          }),
+        )
+      : [
+          {
+            label: "Aucun grade configuré",
+            value: "aucun_grade_configure",
+            description: "Veuillez créer au moins un grade avant de continuer",
+            default: false,
+          },
+        ];
+
   return {
     type: 17,
     accent_color: config.couleur[guildColor],
@@ -1430,14 +1474,14 @@ async function getEditTacheContainer(
       },
       {
         type: 10,
-        content: `**Grade autorisé :**`,
+        content: `**Grade autorisé à effectuer la tâche :**`,
       },
       {
         type: 1,
         components: [
           {
             type: 3,
-            custom_id: `edit_tache_grade-${panelId}-${task.taskId}`,
+            custom_id: `edit_tache_grade-${panelId}-${task.taskId}-effectier`,
             placeholder:
               grades.length === 0
                 ? "Veuillez créer au moins un grade"
@@ -1445,6 +1489,27 @@ async function getEditTacheContainer(
             min_values: 0,
             max_values: grades.length > 0 ? grades.length : 1,
             options: gradeOptions,
+            disabled: grades.length === 0,
+          },
+        ],
+      },
+      {
+        type: 10,
+        content: `**Grade autorisé à accepter ou refuser la tâche :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `edit_tache_grade-${panelId}-${task.taskId}-valider`,
+            placeholder:
+              grades.length === 0
+                ? "Veuillez créer au moins un grade"
+                : "Choisis un ou plusieurs Grades autorisés...",
+            min_values: 0,
+            max_values: grades.length > 0 ? grades.length : 1,
+            options: gradeOptions_valider,
             disabled: grades.length === 0,
           },
         ],
