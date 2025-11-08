@@ -28,39 +28,35 @@ async function discordStaff(discordId, serveur = "all") {
     return { pseudonym, servers: serveurs };
   }
 
-  const servers = [];
+  try {
+    const response = await fetch(`${config.glorybot_url}/api/allStaff`, {
+      headers: {
+        Authorization: `Bearer ${config.glorybot_token}`,
+      },
+    });
 
-  await Promise.all(
-    serveurs.map(async (srv) => {
-      try {
-        const response = await fetch(
-          `${config.glorybot_url}/api/serveur?serveur=${srv}`,
-          {
-            headers: {
-              Authorization: `Bearer ${config.glorybot_token}`,
-            },
-          },
-        );
+    if (!response.ok) throw new Error(`Erreur API allStaff`);
 
-        if (!response.ok) throw new Error(`Erreur serveur ${srv}`);
+    const allStaffData = await response.json();
 
-        const data = await response.json();
+    const servers = [];
 
-        const isAdmin =
-          data.staff?.administrateur?.includes(pseudonym) ?? false;
-        const isSuperMod =
-          data.staff?.super_moderateur?.includes(pseudonym) ?? false;
+    for (const srv of serveurs) {
+      const data = allStaffData.find((s) => s.serveur === srv);
+      if (!data) continue;
 
-        if (isAdmin || isSuperMod) {
-          servers.push(srv);
-        }
-      } catch (err) {
-        console.error(`Erreur sur le serveur ${srv}:`, err);
+      const isAdmin = data.administrateur?.includes(pseudonym);
+      const isSuperMod = data.super_moderateur?.includes(pseudonym);
+
+      if (isAdmin || isSuperMod) {
+        servers.push(srv);
       }
-    }),
-  );
+    }
 
-  return { pseudonym, servers };
+    return { pseudonym, servers };
+  } catch (err) {
+    return { pseudonym, servers: [] };
+  }
 }
 
 module.exports = { discordLink, discordStaff };
