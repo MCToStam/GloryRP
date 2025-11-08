@@ -164,8 +164,8 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
           },
           {
             type: 2,
-            custom_id: `config_boutique-${panelId}`,
-            label: "Configurer la Boutique",
+            custom_id: `config_resumeonu-${panelId}`,
+            label: "Configurer le Résumé ONU",
             style: ButtonStyle.Secondary,
             disabled: true,
           },
@@ -1000,6 +1000,66 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
   };
 }
 
+async function getResumeONUContainer(panelId, guildColor, panelDatas) {
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          panelDatas.emoji ? `${panelDatas.emoji} ` : ""
+        } Configuration du Panel ${panelDatas.name}`,
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Lien Forum :** ${
+              panelDatas.resumeonu.lien || "Aucun lien configuré"
+            }`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `config_resumeonu_lien-${panelId}`,
+          label: "💬 Modifier le lien Forum",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${panelId}`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            url: `https://static.nationsglory.fr/resume-onu/${guildColor}.png`,
+            label: "Voir le Résumé ONU",
+            style: ButtonStyle.Link,
+            disabled: !panelDatas.resumeonu.found,
+          },
+          {
+            type: 2,
+            custom_id: "aide-resumeonu",
+            label: "❓ Aide",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  };
+}
+
 async function getCandidatureContainer(panelId, guildColor, panelDatas) {
   return {
     type: 17,
@@ -1554,6 +1614,7 @@ module.exports = {
   getGradeContainer,
   getEditGradeContainer,
   getEffectifContainer,
+  getResumeONUContainer,
   getCandidatureContainer,
   getDepotDePlainteContainer,
   getTacheContainer,
