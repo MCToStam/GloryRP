@@ -293,7 +293,11 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
             label: "💲 Envoyer le panel de tâche",
             style: ButtonStyle.Primary,
             disabled:
-              panelDatas.channels.tasks && panelDatas.enable ? false : true,
+              panelDatas.channels.tasks &&
+              panelDatas.enable &&
+              panelDatas.panel_tache.description
+                ? false
+                : true,
           },
           {
             type: 2,
@@ -1290,7 +1294,11 @@ async function getTacheContainer(panelId, guildColor, panelDatas) {
             label: "💲 Envoyer le panel de tâche",
             style: ButtonStyle.Primary,
             disabled:
-              panelDatas.channels.tasks && panelDatas.enable ? false : true,
+              panelDatas.channels.tasks &&
+              panelDatas.enable &&
+              panelDatas.panel_tache.description
+                ? false
+                : true,
           },
         ],
       },
