@@ -4,9 +4,11 @@ package-lock.json
 node_modules/
 components/json/
 eslint.config.mjs
+
 data/*
 !data/logo/
 data/logo/*
 !data/logo/*.png
+
 prettierrc.json
 README.md
