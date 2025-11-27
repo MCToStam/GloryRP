@@ -16,6 +16,9 @@ const {
 const {
   checkDeletePanel,
 } = require("../../utils/functions/checkDeletePanel.js");
+const {
+  cacheApiGloryBot,
+} = require("../../utils/functions/cacheApiGloryBot.js");
 
 const { cycleStatus } = require("../../utils/functions/basics.js");
 
@@ -87,6 +90,16 @@ module.exports = async (client, interaction) => {
     "0 10 1 * *",
     async () => {
       await salaireAutomatique(client);
+    },
+    {
+      timezone: "Europe/Paris",
+    },
+  );
+
+  cron.schedule(
+    "0 0,12 * * *",
+    async () => {
+      await cacheApiGloryBot();
     },
     {
       timezone: "Europe/Paris",
