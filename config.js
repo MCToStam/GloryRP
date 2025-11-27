@@ -11,7 +11,7 @@ const config = {
     modal: "1428358710853369938",
     invitationBot: "1428042447665107096",
   },
-  glorybot_url: "https://73314.site.bot-hosting.net",
+  glorybot_url: "http://fi2.bot-hosting.net:20247",
   glorystaff_url: "http://fi2.bot-hosting.net:21319",
   glorybot_token: "33:$+gj{csMS75.,9sWd7?^rVaE9%7HMRcU3Pj-8",
   ng_token:
