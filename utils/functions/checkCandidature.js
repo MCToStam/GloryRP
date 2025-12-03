@@ -153,7 +153,7 @@ async function sendCandidatures(client, AllCandidatures) {
         `https://publicapi.nationsglory.fr/user/${candidature.auteur}`,
         {
           headers: {
-            Authorization: `Bearer ${config.apitoken_backup}`,
+            Authorization: `Bearer ${config.ng_token}`,
             accept: "application/json",
           },
         },
@@ -161,22 +161,10 @@ async function sendCandidatures(client, AllCandidatures) {
 
       const responseDouble = await fetch(
         `https://apiv2.nationsglory.fr/plugins/api/user/all/${candidature.auteur}/check_if_unique`,
-        {
-          headers: {
-            Authorization: `Bearer ${config.apitoken_backup}`,
-            accept: "application/json",
-          },
-        },
       );
 
       const responsePunisher = await fetch(
         `https://apiv2.nationsglory.fr/plugins/api/user/all/${candidature.auteur}/get_punisher/1`,
-        {
-          headers: {
-            Authorization: `Bearer ${config.apitoken_backup}`,
-            accept: "application/json",
-          },
-        },
       );
 
       let doubleData = null;
@@ -317,7 +305,10 @@ async function sendCandidatures(client, AllCandidatures) {
 
             components.push({
               type: 10,
-              content: `🚫 **Dernière Sanction :** ${type} : ${reason} par ${await getEmojiTete(client, auteur)} ${auteur} <t:${timestamp}:R>`,
+              content: `🚫 **Dernière Sanction :** ${type} : ${reason} par ${await getEmojiTete(
+                client,
+                auteur,
+              )} ${auteur} <t:${timestamp}:R>`,
             });
           }
         }
