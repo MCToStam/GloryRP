@@ -3,7 +3,8 @@ if (Number(process.version.slice(1).split(".")[0]) < 19)
 require("dotenv").config({ quiet: true });
 
 const { Client, Collection, IntentsBitField } = require("discord.js");
-const { readdirSync } = require("fs");
+const { readdirSync, statSync } = require("node:fs");
+const pathModule = require("node:path");
 const { intents, partials } = require("./config.js");
 const log = require("./utils/modules/logger.js");
 const botLaunch = [];
@@ -33,13 +34,33 @@ client.container = {
 };
 
 const init = async () => {
-  async function load(type, path, typeLog) {
-    const files = readdirSync(path).filter((file) => file.endsWith(".js"));
+  async function load(type, dirPath, typeLog) {
+    function getFilesRecursively(dir) {
+      let results = [];
+      const list = readdirSync(dir);
+
+      for (const file of list) {
+        const fullPath = pathModule.join(dir, file);
+        const stat = statSync(fullPath);
+
+        if (stat.isDirectory()) {
+          results = results.concat(getFilesRecursively(fullPath));
+        } else if (file.endsWith(".js")) {
+          results.push(fullPath);
+        }
+      }
+
+      return results;
+    }
+
+    const files = getFilesRecursively(dirPath);
 
     for (const file of files) {
-      const command = require(`${path}/${file}`);
-      const commandName = file.split(".")[0];
-      log(`Loading ${typeLog}: ${commandName}. 👌`, "LOG", "gray");
+      const fullPath = pathModule.resolve(file);
+      const command = require(fullPath);
+      const commandName = pathModule.basename(file, ".js");
+
+      log(`✅ Chargement ${typeLog}: ${commandName}`, "LOG", "gray");
       client.container[type].set(command.data.name, command);
     }
   }
