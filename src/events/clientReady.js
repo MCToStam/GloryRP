@@ -84,7 +84,7 @@ module.exports = async (client, interaction) => {
       );
     }
   });
-  
+
   cron.schedule(
     "0 10 1 * *",
     async () => {
