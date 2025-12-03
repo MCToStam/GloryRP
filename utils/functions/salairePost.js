@@ -9,7 +9,7 @@ const { getServerDatas } = require("../../utils/functions/datas.js");
 
 async function salaireAutomatique(client) {
   const today = new Date();
-  const mois = today.getMonth() + 1;
+  const mois = today.getMonth();
   const annee = today.getFullYear();
   const date = `${mois.toString().padStart(2, "0")}_${annee}`;
 
