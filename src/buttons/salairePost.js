@@ -81,7 +81,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "salairePost",
 };
-
-exports.conf = {
-  type: "User",
-};

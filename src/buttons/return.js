@@ -65,7 +65,3 @@ exports.run = async (client, interaction) => {
 exports.data = {
   name: "return",
 };
-
-exports.conf = {
-  type: "User",
-};

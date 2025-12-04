@@ -41,7 +41,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "send_panel",
 };
-
-exports.conf = {
-  type: "User",
-};

@@ -4,7 +4,8 @@ const { getServerDatas } = require("../../utils/functions/datas.js");
 exports.run = async (client, interaction) => {
   await interaction.deferUpdate();
 
-  const [_, type, serv, currentPage, panel] = interaction.customId.split("-");
+  const [_, type, serv, currentPage, panel, typeConfig] =
+    interaction.customId.split("-");
   const panelId = Number(panel);
   let page = parseInt(currentPage, 10);
 
@@ -21,6 +22,7 @@ exports.run = async (client, interaction) => {
     panelId,
     serv,
     page,
+    typeConfig,
   );
 
   await interaction.message.edit({
@@ -31,8 +33,4 @@ exports.run = async (client, interaction) => {
 
 exports.data = {
   name: "logs",
-};
-
-exports.conf = {
-  type: "User",
 };

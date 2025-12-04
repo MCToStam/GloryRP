@@ -53,7 +53,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "effectif_deletebutton",
 };
-
-exports.conf = {
-  type: "User",
-};

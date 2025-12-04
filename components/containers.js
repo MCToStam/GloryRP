@@ -6,14 +6,17 @@ const {
   time,
   userMention,
 } = require("discord.js");
-const { getPanelsSelecString } = require("./selectsString.js");
+const {
+  getPanelsSelecString,
+  getBoutiquesSelecString,
+} = require("./selectsString.js");
 const { getHexEmoji } = require("../utils/functions/emojis.js");
 
 async function getConfigContainer(serverDatas, serv) {
   const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
-  let panelsComponents = [];
 
-  if (serverDatas.panels.length === 0) {
+  let panelsComponents = [];
+  if (!serverDatas.panels || serverDatas.panels.length === 0) {
     panelsComponents.push({
       type: 10,
       content: "Aucun panel configuré pour le moment.",
@@ -51,6 +54,45 @@ async function getConfigContainer(serverDatas, serv) {
     }));
   }
 
+  let boutiquesComponents = [];
+  if (!serverDatas.boutiques || serverDatas.boutiques.length === 0) {
+    boutiquesComponents.push({
+      type: 10,
+      content: "Aucune boutique configurée pour le moment.",
+    });
+  } else {
+    boutiquesComponents = serverDatas.boutiques.map((shop) => ({
+      type: 9,
+      components: [
+        {
+          type: 10,
+          content: `${shop.emoji ? `${shop.emoji} ` : ""}Boutique ${
+            shop.name
+          } ${
+            shop.delete
+              ? `\n*Suppression définitive dans <t:${shop.delete}:R> !*`
+              : ""
+          }`,
+        },
+      ],
+      accessory: shop.delete
+        ? {
+            type: 2,
+            custom_id: `restore-boutique-${shop.id}`,
+            label: "Restaurer",
+            emoji: { name: "♻️" },
+            style: ButtonStyle.Primary,
+          }
+        : {
+            type: 2,
+            custom_id: `toggle-boutique-${shop.id}-acceuil`,
+            label: shop.enable ? "Activée" : "Désactivée",
+            emoji: { name: shop.enable ? "✅" : "❌" },
+            style: shop.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+          },
+    }));
+  }
+
   const returnComponent = {
     type: 17,
     accent_color: config.couleur[serv],
@@ -59,19 +101,21 @@ async function getConfigContainer(serverDatas, serv) {
         type: 10,
         content: "## :gear: Configuration du Role-Play " + servName,
       },
-      {
-        type: 14,
-        spacing: SeparatorSpacingSize.Large,
-      },
+      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 10, content: "### 🧩 Panels configurés :" },
       ...panelsComponents,
       {
-        type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        type: 1,
+        components: [getPanelsSelecString(serverDatas)],
       },
+      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 10, content: "### 🛒 Boutiques configurées :" },
+      ...boutiquesComponents,
       {
         type: 1,
-        components: [await getPanelsSelecString(serverDatas)],
+        components: [getBoutiquesSelecString(serverDatas)],
       },
+      { type: 14, spacing: SeparatorSpacingSize.Large },
     ],
   };
 
@@ -82,7 +126,7 @@ async function getConfigContainer(serverDatas, serv) {
         "-# Dernières modifications par " +
         userMention(serverDatas.lastUser) +
         " " +
-        (await time(serverDatas.timestamp, "R")),
+        time(serverDatas.timestamp, "R"),
     });
   }
 
@@ -209,7 +253,109 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
           },
           {
             type: 2,
-            custom_id: `show_logs-${panelId}`,
+            custom_id: `show_logs-panel-${panelId}`,
+            label: "📜 Afficher les Logs",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+async function getBoutiqueContainer(guildColor, boutiqueDatas, boutiqueId) {
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          boutiqueDatas.emoji ? `${boutiqueDatas.emoji} ` : ""
+        }Configuration de la Boutique ${boutiqueDatas.name}`,
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: "📡 Statut",
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `toggle-boutique-${boutiqueId}-boutique`,
+          label: boutiqueDatas.enable ? "Activé" : "Désactivé",
+          emoji: { name: boutiqueDatas.enable ? "✅" : "❌" },
+          style: boutiqueDatas.enable
+            ? ButtonStyle.Success
+            : ButtonStyle.Danger,
+        },
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `config-categorie-${boutiqueId}`,
+            label: "Configurer les Catégories",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config-article-${boutiqueId}`,
+            label: "Configurer les Articles",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config-reduction-${boutiqueId}`,
+            label: "Configurer les Réductions",
+            style: ButtonStyle.Primary,
+          },
+        ],
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `config-boutique-${boutiqueId}`,
+            label: "Configurer la Boutique",
+            style: ButtonStyle.Primary,
+          },
+          {
+            type: 2,
+            custom_id: `config-payement-${boutiqueId}`,
+            label: "Configurer le Payement",
+            style: ButtonStyle.Primary,
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: "return",
+            label: "🚪 Retour à l'Acceuil",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: `show_logs-boutique-${boutiqueId}`,
             label: "📜 Afficher les Logs",
             style: ButtonStyle.Secondary,
           },
@@ -1617,6 +1763,7 @@ async function getEditTacheContainer(
 module.exports = {
   getConfigContainer,
   getPanelContainer,
+  getBoutiqueContainer,
   getChannelContainer,
   getSalaireContainer,
   getEditPanelContainer,

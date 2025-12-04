@@ -69,7 +69,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "tache_delete",
 };
-
-exports.conf = {
-  type: "User",
-};

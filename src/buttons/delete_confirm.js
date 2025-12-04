@@ -112,7 +112,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "delete_confirm",
 };
-
-exports.conf = {
-  type: "User",
-};

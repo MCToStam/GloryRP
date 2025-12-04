@@ -55,7 +55,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "effectif_editbutton",
 };
-
-exports.conf = {
-  type: "User",
-};

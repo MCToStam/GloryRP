@@ -6,11 +6,14 @@ const {
   ButtonStyle,
 } = require("discord.js");
 
-async function getlogContainer(serverDatas, panel, serv, page = 1) {
+async function getlogContainer(serverDatas, panel, serv, page = 1, type) {
   const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
   const panelId = Number(panel);
 
-  const panelInfo = serverDatas.panels.find((p) => p.id === panelId);
+  const panelInfo =
+    type === "panel"
+      ? serverDatas.panels.find((p) => p.id === panelId)
+      : serverDatas.boutiques.find((p) => p.id === panelId);
   if (!panelInfo) {
     return {
       error: true,
@@ -35,7 +38,7 @@ async function getlogContainer(serverDatas, panel, serv, page = 1) {
     };
   }
 
-  const logs = (serverDatas.logs || []).filter((log) => log.panel === panelId);
+  const logs = (serverDatas.logs || []).filter((log) => log[type] === panelId);
 
   const logsPerPage = 10;
   const totalPages = Math.max(1, Math.ceil(logs.length / logsPerPage));
@@ -70,7 +73,7 @@ async function getlogContainer(serverDatas, panel, serv, page = 1) {
       components: [
         {
           type: 10,
-          content: "## 📝 Logs du Role-Play " + servName + " - " + panelLabel,
+          content: `## 📝 Logs ${type === "panel" ? "du Role-Play" : "de la Boutique"} ${servName} - ${panelLabel}`,
         },
         {
           type: 14,
@@ -89,7 +92,7 @@ async function getlogContainer(serverDatas, panel, serv, page = 1) {
           components: [
             {
               type: 2,
-              custom_id: `logs-prev-${serv}-${page}-${panelId}`,
+              custom_id: `logs-prev-${serv}-${page}-${panelId}-${type}`,
               label: "⬅️",
               style: ButtonStyle.Primary,
               disabled: page <= 1,
@@ -103,7 +106,7 @@ async function getlogContainer(serverDatas, panel, serv, page = 1) {
             },
             {
               type: 2,
-              custom_id: `logs-next-${serv}-${page}-${panelId}`,
+              custom_id: `logs-next-${serv}-${page}-${panelId}-${type}`,
               label: "➡️",
               style: ButtonStyle.Primary,
               disabled: page >= totalPages,

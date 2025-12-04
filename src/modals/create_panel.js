@@ -50,7 +50,13 @@ exports.run = async (client, interaction, config) => {
 
   const modifDate = await toTimeStamp(new Date());
 
-  const basePath = path.join(__dirname, "..", "..", "data", "baseData.json");
+  const basePath = path.join(
+    __dirname,
+    "..",
+    "..",
+    "data",
+    "panelBaseData.json",
+  );
   const baseData = JSON.parse(fs.readFileSync(basePath, "utf8"));
 
   if (!serverDatas.panels) serverDatas.panels = [];

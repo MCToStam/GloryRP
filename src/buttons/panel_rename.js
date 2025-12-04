@@ -35,7 +35,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "config_panel_rename",
 };
-
-exports.conf = {
-  type: "User",
-};

@@ -37,7 +37,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "edit_grade_couleur",
 };
-
-exports.conf = {
-  type: "User",
-};
