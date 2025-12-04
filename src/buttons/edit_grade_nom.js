@@ -37,7 +37,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "edit_grade_nom",
 };
-
-exports.conf = {
-  type: "User",
-};

@@ -8,7 +8,8 @@ const { MessageFlags } = require("discord.js");
 exports.run = async (client, interaction) => {
   await interaction.deferReply();
 
-  const panelId = Number(interaction.customId.split("-")[1]);
+  const type = interaction.customId.split("-")[1];
+  const panelId = Number(interaction.customId.split("-")[2]);
 
   const guildColor = await getGuildColor(interaction);
   const serverDatas = await getServerDatas(interaction, guildColor);
@@ -18,6 +19,7 @@ exports.run = async (client, interaction) => {
     panelId,
     guildColor,
     1,
+    type,
   );
   return interaction.editReply({
     components: [logContainer],
@@ -30,8 +32,4 @@ exports.run = async (client, interaction) => {
 
 exports.data = {
   name: "show_logs",
-};
-
-exports.conf = {
-  type: "User",
 };

@@ -37,7 +37,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "config_resumeonu_lien",
 };
-
-exports.conf = {
-  type: "User",
-};

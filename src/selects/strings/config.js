@@ -2,22 +2,28 @@ const {
   getGuildColor,
   getServerDatas,
 } = require("../../../utils/functions/datas.js");
-const { getPanelContainer } = require("../../../components/containers");
+const {
+  getPanelContainer,
+  getBoutiqueContainer,
+} = require("../../../components/containers");
 
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();
 
+  const type = interaction.customId.split("-")[1];
   const panelId = Number(interaction.values[0].split("-")[2]);
 
   const guildColor = await getGuildColor(interaction);
   const serverDatas = await getServerDatas(interaction, guildColor);
-  const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
+  const panelDatas =
+    type === "panel"
+      ? serverDatas.panels.find((x) => x.id === panelId)
+      : serverDatas.boutiques.find((x) => x.id === panelId);
 
-  const panelContainer = await getPanelContainer(
-    guildColor,
-    panelDatas,
-    panelId,
-  );
+  const panelContainer =
+    type === "panels"
+      ? await getPanelContainer(guildColor, panelDatas, panelId)
+      : await getBoutiqueContainer(guildColor, panelDatas, panelId);
 
   await interaction.message.edit({
     components: [panelContainer],

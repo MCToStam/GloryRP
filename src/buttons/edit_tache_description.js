@@ -37,7 +37,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "edit_tache_description",
 };
-
-exports.conf = {
-  type: "User",
-};

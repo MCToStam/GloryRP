@@ -292,7 +292,3 @@ exports.run = async (client, interaction, config) => {
 exports.data = {
   name: "task_accepter",
 };
-
-exports.conf = {
-  type: "Button",
-};

@@ -7,32 +7,40 @@ const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 const {
   getConfigContainer,
   getPanelContainer,
+  getBoutiqueContainer,
 } = require("../../components/containers.js");
 
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();
 
-  const panelId = Number(interaction.customId.split("-")[2]);
+  const type = interaction.customId.split("-")[1];
+  const itemId = Number(interaction.customId.split("-")[2]);
   const menu = interaction.customId.split("-")[3];
 
   const guildColor = await getGuildColor(interaction);
   let serverDatas = await getServerDatas(interaction, guildColor);
-  const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
+
+  const datasArray =
+    type === "panel" ? serverDatas.panels : serverDatas.boutiques;
+
+  const itemDatas = datasArray.find((x) => x.id === itemId);
+  if (!itemDatas) return;
 
   const modifDate = await toTimeStamp(new Date());
 
-  panelDatas.enable = !panelDatas.enable;
+  itemDatas.enable = !itemDatas.enable;
+  itemDatas.timestamp = modifDate;
+  itemDatas.lastUser = interaction.user.id;
+
   serverDatas.timestamp = modifDate;
   serverDatas.lastUser = interaction.user.id;
-  panelDatas.timestamp = modifDate;
-  panelDatas.lastUser = interaction.user.id;
 
   if (!serverDatas.logs) serverDatas.logs = [];
   serverDatas.logs.push({
     user: interaction.user.id,
     timestamp: modifDate,
-    panel: panelId,
-    action: panelDatas.enable
+    [type]: itemId,
+    action: itemDatas.enable
       ? "Activation du module"
       : "Désactivation du module",
   });
@@ -40,20 +48,26 @@ exports.run = async (client, interaction, config) => {
   await saveServerDatas(interaction, serverDatas, guildColor);
 
   serverDatas = await getServerDatas(interaction, guildColor);
-  const updatedPanelDatas = serverDatas.panels.find((x) => x.id === panelId);
+
+  const updatedItemDatas =
+    type === "panel"
+      ? serverDatas.panels.find((x) => x.id === itemId)
+      : serverDatas.boutiques.find((x) => x.id === itemId);
 
   let components;
   if (menu === "acceuil") {
     components = await getConfigContainer(serverDatas, guildColor);
   } else if (menu === "panel") {
-    components = await getPanelContainer(
+    components = await getPanelContainer(guildColor, updatedItemDatas, itemId);
+  } else if (menu === "boutique") {
+    components = await getBoutiqueContainer(
       guildColor,
-      updatedPanelDatas,
-      panelId,
+      updatedItemDatas,
+      itemId,
     );
   }
 
-  return await interaction.message.edit({
+  return interaction.message.edit({
     components: [components],
     allowedMentions: { parse: [] },
   });
@@ -61,8 +75,4 @@ exports.run = async (client, interaction, config) => {
 
 exports.data = {
   name: "toggle",
-};
-
-exports.conf = {
-  type: "User",
 };

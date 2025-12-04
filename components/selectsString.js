@@ -45,4 +45,38 @@ function getPanelsSelecString(serverDatas) {
   };
 }
 
-module.exports = { getPanelsSelecString };
+function getBoutiquesSelecString(serverDatas) {
+  const boutiqueOptions = [];
+
+  for (const boutique of serverDatas.boutiques) {
+    if (boutique.enable) {
+      const emoji = parseEmoji(boutique.emoji);
+      const option = {
+        label: `Boutique ${boutique.name}`,
+        value: `config-boutique-${boutique.id}`,
+        description:
+          boutique.description || `Configure le panel ${boutique.name}`,
+      };
+      if (emoji) option.emoji = emoji;
+      boutiqueOptions.push(option);
+    }
+  }
+
+  boutiqueOptions.push({
+    label: "Créer une boutique",
+    value: "create_boutique",
+    description: "Créer une nouvelle boutique",
+    emoji: { id: "1418880845808402492" },
+  });
+
+  return {
+    type: 3,
+    custom_id: "config-boutiques",
+    placeholder: "Choisis une boutique à configurer",
+    max_values: 1,
+    disabled: false,
+    options: boutiqueOptions,
+  };
+}
+
+module.exports = { getPanelsSelecString, getBoutiquesSelecString };

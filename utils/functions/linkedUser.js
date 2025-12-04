@@ -1,3 +1,5 @@
+const fs = require("node:fs");
+const path = require("node:path");
 const config = require("../../config.js");
 
 async function discordLink(discordId) {
@@ -17,7 +19,9 @@ async function discordLink(discordId) {
   } catch (err) {}
 
   try {
-    const localData = (await getData("data/data/api_get_ng.json")) ?? {};
+    const localData = JSON.parse(
+      fs.readFileSync("../../data/data/api_get_ng.json", "utf8"),
+    );
     return discordId ? (localData[discordId] ?? {}) : localData;
   } catch (err) {
     console.error(
@@ -60,7 +64,9 @@ async function discordStaff(discordId, serveur = "all") {
     );
 
     try {
-      allStaff = getData("data/api_api_all_staff.json");
+      allStaff = JSON.parse(
+        fs.readFileSync("../../data/data/api_api_all_staff.json", "utf8"),
+      );
     } catch (fileErr) {
       console.error(
         "❌ Erreur lors de la récupération du fichier local :",
