@@ -133,7 +133,7 @@ exports.run = async (client, interaction, config) => {
     });
   }
 
-  const panelId = interaction.options.getString("panel").toLowerCase();
+  const [type, panelId] = interaction.options.getString("panel").split("-");
 
   const serverDatas = await getServerDatas(interaction, serv);
   const { error, component: logContainer } = await getlogContainer(
@@ -141,6 +141,7 @@ exports.run = async (client, interaction, config) => {
     panelId,
     serv,
     1,
+    type,
   );
   return interaction.reply({
     components: [logContainer],
@@ -216,6 +217,9 @@ exports.data = {
         ]);
       }
 
+      const focusedValue =
+        interaction.options.getFocused()?.toLowerCase() ?? "";
+
       try {
         const json = await getServerDatas(false, serveur);
 
@@ -229,12 +233,22 @@ exports.data = {
         }
 
         const panels = json.panels.map((p) => ({
-          name: p.name,
-          value: String(p.id),
+          name: `[Rôle-Play] ${p.name}`,
+          value: `panel-${String(p.id)}`,
         }));
 
-        return await interaction.respond(panels.slice(0, 25));
+        const boutiques = json.boutiques.map((b) => ({
+          name: `[Boutique] ${b.name}`,
+          value: `boutique-${String(b.id)}`,
+        }));
+
+        const donnee = [...panels, ...boutiques].filter((data) =>
+          data.name.toLowerCase().includes(focusedValue),
+        );
+
+        return await interaction.respond(donnee.slice(0, 25));
       } catch (err) {
+        console.log(err);
         return await interaction.respond([
           { name: "Erreur lors de la lecture des panels", value: "error" },
         ]);

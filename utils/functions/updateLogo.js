@@ -4,32 +4,54 @@ require("dotenv").config();
 
 async function updateLogo(client, config) {
   const token = process.env.DISCORD_TOKEN;
-  const cache = JSON.parse(fs.readFileSync("./data/logo/serveur.json", "utf8"));
+  const cachePath = "./data/logo/serveur.json";
+  const cache = JSON.parse(fs.readFileSync(cachePath, "utf8"));
+
   const guildsToKeep = new Set();
+  const channelCache = new Map();
+
+  async function patchAvatar(guildId, avatarBase64, reason) {
+    const res = await fetch(
+      `https://discord.com/api/v10/guilds/${guildId}/members/@me`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bot ${token}`,
+          "Content-Type": "application/json",
+          "X-Audit-Log-Reason": reason,
+        },
+        body: JSON.stringify({ avatar: avatarBase64 }),
+      },
+    );
+
+    return res.ok;
+  }
 
   for (const serveur of config.liste_serveur) {
     try {
       const data = await getServerDatas(false, serveur);
-      if (!data?.panels?.length) {
-        continue;
-      }
+      if (!data?.panels?.length) continue;
 
       const logoPath = `./data/logo/${serveur}.png`;
-      if (!fs.existsSync(logoPath)) {
-        continue;
-      }
+      if (!fs.existsSync(logoPath)) continue;
 
       const imageBase64 =
-        "data:image/png;base64," + fs.readFileSync(logoPath).toString("base64");
+        "data:image/png;base64," + fs.readFileSync(logoPath, "base64");
 
       const guildIds = new Set();
+
       for (const panel of data.panels) {
         if (!panel.channels) continue;
+
         for (const channelId of Object.values(panel.channels)) {
           if (!channelId) continue;
-          const channel = await client.channels
-            .fetch(channelId)
-            .catch(() => null);
+
+          let channel = channelCache.get(channelId);
+          if (!channel) {
+            channel = await client.channels.fetch(channelId).catch(() => null);
+            channelCache.set(channelId, channel);
+          }
+
           if (channel?.guild) guildIds.add(channel.guild.id);
         }
       }
@@ -37,35 +59,19 @@ async function updateLogo(client, config) {
       for (const guildId of guildIds) {
         guildsToKeep.add(guildId);
 
-        if (cache[guildId] === serveur) {
-          continue;
-        }
+        if (cache[guildId] === serveur) continue;
 
-        const res = await fetch(
-          `https://discord.com/api/v10/guilds/${guildId}/members/@me`,
-          {
-            method: "PATCH",
-            headers: {
-              Authorization: `Bot ${token}`,
-              "Content-Type": "application/json",
-              "X-Audit-Log-Reason": `Mise à jour automatique du logo ${serveur}`,
-            },
-            body: JSON.stringify({ avatar: imageBase64 }),
-          },
+        const ok = await patchAvatar(
+          guildId,
+          imageBase64,
+          `Mise à jour automatique du logo ${serveur}`,
         );
 
-        if (!res.ok) {
-          const err = await res.text();
-          continue;
+        if (ok) {
+          cache[guildId] = serveur;
         }
-
-        cache[guildId] = serveur;
-        fs.writeFileSync(
-          "./data/logo/serveur.json",
-          JSON.stringify(cache, null, 2),
-        );
       }
-    } catch (err) {}
+    } catch (e) {}
   }
 
   const allGuilds = await client.guilds.fetch();
@@ -73,33 +79,17 @@ async function updateLogo(client, config) {
   for (const [guildId] of allGuilds) {
     if (!guildsToKeep.has(guildId) && cache[guildId]) {
       try {
-        const res = await fetch(
-          `https://discord.com/api/v10/guilds/${guildId}/members/@me`,
-          {
-            method: "PATCH",
-            headers: {
-              Authorization: `Bot ${token}`,
-              "Content-Type": "application/json",
-              "X-Audit-Log-Reason": "Suppression de l’avatar",
-            },
-            body: JSON.stringify({ avatar: null }),
-          },
-        );
+        const ok = await patchAvatar(guildId, null, "Suppression de l’avatar");
 
-        if (!res.ok) {
-          const err = await res.text();
-          continue;
+        if (ok) {
+          delete cache[guildId];
+          await new Promise((r) => setTimeout(r, 1500));
         }
-
-        delete cache[guildId];
-        fs.writeFileSync(
-          "./data/logo/serveur.json",
-          JSON.stringify(cache, null, 2),
-        );
-        await new Promise((r) => setTimeout(r, 1500));
-      } catch (err) {}
+      } catch (e) {}
     }
   }
+
+  fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2));
 }
 
 module.exports = { updateLogo };
