@@ -3,46 +3,8 @@ const config = require("../../config.js");
 const { saveServerDatas } = require("../../utils/functions/datas.js");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
 
-async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
-  const panel = serveurDatas.panels.find((p) => p.id === panelId);
-
-  let errorMsg;
-  if (!panel.tasks || panel.tasks.length === 0) {
-    errorMsg = `Le panel **${panel.name}** n’a aucune tâche définie.`;
-  }
-
-  let channel;
-  if (panel.channels.tasks) {
-    channel = client.channels.cache.get(panel.channels.tasks);
-    if (!channel) {
-      errorMsg = `Le salon du panel **${panel.name}** n'est pas valide.`;
-    }
-  } else {
-    errorMsg = `Le panel **${panel.name}** n’a aucune salon défini.`;
-  }
-
-  if (errorMsg) {
-    return {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Erreur",
-        },
-        {
-          type: 14,
-          spacing: SeparatorSpacingSize.Large,
-        },
-        {
-          type: 10,
-          content: errorMsg,
-        },
-      ],
-    };
-  }
-
-  const validTasks = panel.tasks
+function getValidTasks(panel, panelId) {
+  return panel.tasks
     .filter(
       (task) =>
         task.type &&
@@ -51,209 +13,44 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
         (!task.panelId || task.panelId === panelId),
     )
     .slice(0, 100);
-
-  if (validTasks.length === 0) {
-    return {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        { type: 10, content: "## :no_entry_sign: Erreur" },
-        { type: 14, spacing: SeparatorSpacingSize.Large },
-        {
-          type: 10,
-          content: `Le panel **${panel.name}** n’a aucune tâche valide à afficher.`,
-        },
-      ],
-    };
-  }
-
-  let attenteTachesTexte = "Aucune tâche en attente.";
-
-  if (panel.panel_tache.description.includes("[attenteTache]")) {
-    const tachesEnAttente = Object.entries(panel.salaire.salaire || {}).flatMap(
-      ([pseudoRp, pseudoRpData]) =>
-        Object.values(pseudoRpData || {}).flatMap((month) =>
-          (month.taches || [])
-            .filter((t) => t.status === "waiting")
-            .map((t) => ({
-              tache: t,
-              pseudoRp,
-            })),
-        ),
-    );
-
-    if (tachesEnAttente.length > 0) {
-      const textes = await Promise.all(
-        tachesEnAttente.map(async ({ tache, pseudoRp }) => {
-          const emojiTete = await getEmojiTete(client, pseudoRp);
-          return `**${tache.nom}**, demandé par ${emojiTete} **${pseudoRp}**${
-            tache.details
-              ? `\n➩ *${
-                  tache.lien
-                    ? `[${tache.details}](${tache.lien})`
-                    : `${tache.details}`
-                }*`
-              : ""
-          }`;
-        }),
-      );
-      attenteTachesTexte = textes.join("\n");
-    }
-  }
-
-  const panelTexte = panel.panel_tache.description.includes("[attenteTache]")
-    ? panel.panel_tache.description.replace(
-        "[attenteTache]",
-        attenteTachesTexte,
-      )
-    : panel.panel_tache.description;
-
-  const panelContainer = {
-    type: 17,
-    accent_color: config.couleur[serveur],
-    components: [
-      {
-        type: 10,
-        content: `## ${panel.emoji ? `${panel.emoji} ` : ""}${panel.name}`,
-      },
-      {
-        type: 14,
-        spacing: SeparatorSpacingSize.Large,
-      },
-      {
-        type: 10,
-        content: panelTexte,
-      },
-      {
-        type: 14,
-        spacing: SeparatorSpacingSize.Large,
-      },
-      {
-        type: 1,
-        components: [
-          {
-            type: 3,
-            custom_id: `panel_tasks-${panel.id}`,
-            placeholder: "Choisis une tâche",
-            options: validTasks.map((task) => {
-              let emoji;
-              if (task.emoji) {
-                const customEmojiMatch = task.emoji.match(
-                  /^<a?:([a-zA-Z0-9_]+):(\d+)>$/,
-                );
-                if (customEmojiMatch) {
-                  emoji = {
-                    name: customEmojiMatch[1],
-                    id: customEmojiMatch[2],
-                    animated: task.emoji.startsWith("<a:"),
-                  };
-                } else {
-                  emoji = { name: task.emoji };
-                }
-              }
-
-              return {
-                label: task.name.substring(0, 25),
-                value: `panel_tasks-${panelId}-${String(task.taskId)}`,
-                description: task.description || undefined,
-                ...(emoji ? { emoji } : {}),
-              };
-            }),
-          },
-        ],
-      },
-    ],
-  };
-
-  const message = await channel.send({
-    components: [panelContainer],
-    flags: MessageFlags.IsComponentsV2,
-    allowedMentions: { parse: [] },
-  });
-
-  panel.panel_tache.messageId = message.id;
-  panel.panel_tache.channelId = message.channel.id;
-  panel.panel_tache.guildId = message.guild.id;
-
-  saveServerDatas(false, serveurDatas, serveur);
-
-  return {
-    type: 17,
-    accent_color: config.colors.success,
-    components: [
-      {
-        type: 10,
-        content: "## :white_check_mark: Panel Envoyé",
-      },
-      {
-        type: 14,
-        spacing: SeparatorSpacingSize.Large,
-      },
-      {
-        type: 10,
-        content: `Le panel du rôle-play **${panel.name}** a correctement été envoyé ici :${message.url}`,
-      },
-    ],
-  };
 }
 
-async function updatePanelTasks(client, serveur, serveurDatas, panelId) {
-  const panel = serveurDatas.panels.find((p) => p.id === panelId);
+async function buildWaitingTasks(client, panel) {
+  if (!panel.panel_tache.description.includes("[attenteTache]")) {
+    return "Aucune tâche en attente.";
+  }
 
-  if (!panel || !panel.panel_tache || !panel.panel_tache.messageId) return;
+  const entries = Object.entries(panel.salaire.salaire || {});
+  const tasksWaiting = [];
 
-  let channel = client.channels.cache.get(panel.panel_tache.channelId);
-  if (!channel) return;
-
-  const validTasks = panel.tasks
-    .filter(
-      (task) =>
-        task.type &&
-        task.grade &&
-        task.type !== "4" &&
-        (!task.panelId || task.panelId === panelId),
-    )
-    .slice(0, 100);
-
-  let attenteTachesTexte = "Aucune tâche en attente.";
-
-  if (panel.panel_tache.description.includes("[attenteTache]")) {
-    const tachesEnAttente = Object.entries(panel.salaire.salaire || {}).flatMap(
-      ([pseudoRp, pseudoRpData]) =>
-        Object.values(pseudoRpData || {}).flatMap((month) =>
-          (month.taches || [])
-            .filter((t) => t.status === "waiting")
-            .map((t) => ({ tache: t, pseudoRp })),
-        ),
-    );
-
-    if (tachesEnAttente.length > 0) {
-      const textes = await Promise.all(
-        tachesEnAttente.map(async ({ tache, pseudoRp }) => {
-          const emojiTete = await getEmojiTete(client, pseudoRp);
-          return `**${tache.nom}**, demandé par ${emojiTete} **${pseudoRp}**${
-            tache.details
-              ? `\n➩ *${
-                  tache.lien
-                    ? `[${tache.details}](${tache.lien})`
-                    : `${tache.details}`
-                }*`
-              : ""
-          }`;
-        }),
-      );
-      attenteTachesTexte = textes.join("\n");
+  for (const [pseudoRp, pseudoData] of entries) {
+    for (const month of Object.values(pseudoData || {})) {
+      for (const tache of month.taches || []) {
+        if (tache.status === "waiting") {
+          tasksWaiting.push({ tache, pseudoRp });
+        }
+      }
     }
   }
 
-  const panelTexte = panel.panel_tache.description.includes("[attenteTache]")
-    ? panel.panel_tache.description.replace(
-        "[attenteTache]",
-        attenteTachesTexte,
-      )
-    : panel.panel_tache.description;
+  if (tasksWaiting.length === 0) return "Aucune tâche en attente.";
 
-  const panelContainer = {
+  const lines = await Promise.all(
+    tasksWaiting.map(async ({ tache, pseudoRp }) => {
+      const emojiTete = await getEmojiTete(client, pseudoRp);
+      const detail = tache.details
+        ? `\n➩ *${tache.lien ? `[${tache.details}](${tache.lien})` : tache.details}*`
+        : "";
+
+      return `**${tache.nom}**, demandé par ${emojiTete} **${pseudoRp}**${detail}`;
+    }),
+  );
+
+  return lines.join("\n");
+}
+
+function buildPanelContainer(serveur, panel, panelTexte, validTasks) {
+  return {
     type: 17,
     accent_color: config.couleur[serveur],
     components: [
@@ -264,6 +61,7 @@ async function updatePanelTasks(client, serveur, serveurDatas, panelId) {
       { type: 14, spacing: SeparatorSpacingSize.Large },
       { type: 10, content: panelTexte },
       { type: 14, spacing: SeparatorSpacingSize.Large },
+
       {
         type: 1,
         components: [
@@ -274,22 +72,19 @@ async function updatePanelTasks(client, serveur, serveurDatas, panelId) {
             options: validTasks.map((task) => {
               let emoji;
               if (task.emoji) {
-                const customEmojiMatch = task.emoji.match(
-                  /^<a?:([a-zA-Z0-9_]+):(\d+)>$/,
-                );
-                if (customEmojiMatch) {
-                  emoji = {
-                    name: customEmojiMatch[1],
-                    id: customEmojiMatch[2],
-                    animated: task.emoji.startsWith("<a:"),
-                  };
-                } else {
-                  emoji = { name: task.emoji };
-                }
+                const match = task.emoji.match(/^<a?:([a-zA-Z0-9_]+):(\d+)>$/);
+                emoji = match
+                  ? {
+                      name: match[1],
+                      id: match[2],
+                      animated: task.emoji.startsWith("<a:"),
+                    }
+                  : { name: task.emoji };
               }
+
               return {
                 label: task.name.substring(0, 25),
-                value: `panel_tasks-${panelId}-${String(task.taskId)}`,
+                value: `panel_tasks-${panel.id}-${task.taskId}`,
                 description: task.description || undefined,
                 ...(emoji ? { emoji } : {}),
               };
@@ -299,14 +94,106 @@ async function updatePanelTasks(client, serveur, serveurDatas, panelId) {
       },
     ],
   };
+}
 
-  const message = await channel.messages.fetch(panel.panel_tache.messageId);
+async function buildPanelDescription(client, panel) {
+  const waitingText = await buildWaitingTasks(client, panel);
+
+  return panel.panel_tache.description.includes("[attenteTache]")
+    ? panel.panel_tache.description.replace("[attenteTache]", waitingText)
+    : panel.panel_tache.description;
+}
+
+async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
+  const panel = serveurDatas.panels.find((p) => p.id === panelId);
+
+  if (!panel?.tasks?.length) {
+    return errorPanel(`Le panel **${panel.name}** n’a aucune tâche définie.`);
+  }
+
+  const channel = client.channels.cache.get(panel.channels?.tasks);
+  if (!channel) {
+    return errorPanel(`Le salon du panel **${panel.name}** n'est pas valide.`);
+  }
+
+  const validTasks = getValidTasks(panel, panelId);
+  if (validTasks.length === 0) {
+    return errorPanel(
+      `Le panel **${panel.name}** n’a aucune tâche valide à afficher.`,
+    );
+  }
+
+  const panelTexte = await buildPanelDescription(client, panel);
+  const panelContainer = buildPanelContainer(
+    serveur,
+    panel,
+    panelTexte,
+    validTasks,
+  );
+
+  const message = await channel.send({
+    components: [panelContainer],
+    flags: MessageFlags.IsComponentsV2,
+    allowedMentions: { parse: [] },
+  });
+
+  panel.panel_tache.messageId = message.id;
+  panel.panel_tache.channelId = channel.id;
+  panel.panel_tache.guildId = channel.guild.id;
+
+  saveServerDatas(false, serveurDatas, serveur);
+
+  return {
+    type: 17,
+    accent_color: config.colors.success,
+    components: [
+      { type: 10, content: "## ✔️ Panel Envoyé" },
+      { type: 14, spacing: SeparatorSpacingSize.Large },
+      {
+        type: 10,
+        content: `Le panel du rôle-play **${panel.name}** a été envoyé ici :${message.url}`,
+      },
+    ],
+  };
+}
+
+async function updatePanelTasks(client, serveur, serveurDatas, panelId) {
+  const panel = serveurDatas.panels.find((p) => p.id === panelId);
+  if (!panel?.panel_tache?.messageId) return;
+
+  const channel = client.channels.cache.get(panel.panel_tache.channelId);
+  if (!channel) return;
+
+  const message = await channel.messages
+    .fetch(panel.panel_tache.messageId)
+    .catch(() => null);
   if (!message) return;
+
+  const validTasks = getValidTasks(panel, panelId);
+  const panelTexte = await buildPanelDescription(client, panel);
+  const panelContainer = buildPanelContainer(
+    serveur,
+    panel,
+    panelTexte,
+    validTasks,
+  );
 
   await message.edit({
     components: [panelContainer],
     flags: MessageFlags.IsComponentsV2,
   });
+}
+
+function errorPanel(text) {
+  return {
+    type: 17,
+    accent_color: config.colors.error,
+    components: [
+      { type: 10, content: "## ❌ Erreur" },
+      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 10, content: text },
+    ],
+  };
 }
 
 module.exports = { sendPanelTasks, updatePanelTasks };

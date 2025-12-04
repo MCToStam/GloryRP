@@ -8,70 +8,40 @@ const { discordLink } = require("../../utils/functions/linkedUser.js");
 const config = require("../../config.js");
 const { saveServerDatas } = require("./datas.js");
 
-async function sendEffectif(client, serveur, serveurDatas, panelId) {
-  const panel = serveurDatas.panels.find((p) => p.id === panelId);
+function sortGrades(panel) {
+  return [...panel.grade].sort((a, b) => Number(b.tier) - Number(a.tier));
+}
 
-  let errorMsg;
-  if (!panel.grade || panel.grade.length === 0) {
-    errorMsg = `Le rôle-play **${panel.name}** n’a aucun grade défini.`;
-  }
+async function buildEffectifContent(client, grades, ngData) {
+  let content = "";
 
-  let channel;
-  if (panel.channels.effectif) {
-    channel = client.channels.cache.get(panel.channels.effectif);
-    if (!channel) {
-      errorMsg = `Le salon d'effectif du rôle-play **${panel.name}** n'est pas valide.`;
-    }
-  } else {
-    errorMsg = `Le rôle-play **${panel.name}** n’a aucune salon d'effectif défini.`;
-  }
+  for (const grade of grades) {
+    const joueurs = grade.listeRp || [];
+    const mentions = [];
 
-  if (errorMsg) {
-    return {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        { type: 10, content: "## :no_entry_sign: Erreur" },
-        { type: 14, spacing: SeparatorSpacingSize.Large },
-        { type: 10, content: errorMsg },
-      ],
-    };
-  }
+    for (const joueur of joueurs) {
+      const pseudo = ngData.data[joueur];
 
-  const ngData = await discordLink();
-
-  const gradesTriees = panel.grade.sort(
-    (a, b) => Number(b.tier) - Number(a.tier),
-  );
-
-  let effectifContent = "";
-
-  for (const grade of gradesTriees) {
-    const mentionsArray = [];
-
-    if (grade.listeRp && grade.listeRp.length > 0) {
-      for (const joueur of grade.listeRp) {
-        const pseudo = ngData.data[joueur];
-
-        if (pseudo) {
-          const emojiTete = await getEmojiTete(client, pseudo);
-          mentionsArray.push(`${emojiTete} <@${joueur}> ➤ ${pseudo}`);
-        } else {
-          mentionsArray.push(`<@${joueur}>`);
-        }
+      if (pseudo) {
+        const emojiTete = await getEmojiTete(client, pseudo).catch(() => "");
+        mentions.push(`${emojiTete} <@${joueur}> ➤ ${pseudo}`);
+      } else {
+        mentions.push(`<@${joueur}>`);
       }
     }
 
-    const mentions =
-      mentionsArray.length > 0
-        ? mentionsArray.join("\n")
-        : "*Ce grade est vide*";
-    effectifContent += `**${grade.nom} (${
-      grade.listeRp ? grade.listeRp.length : 0
-    }) :**\n${mentions}\n\n`;
+    const finalMentions = mentions.length
+      ? mentions.join("\n")
+      : "*Ce grade est vide*";
+
+    content += `**${grade.nom} (${joueurs.length}) :**\n${finalMentions}\n\n`;
   }
 
-  const effectifContainer = {
+  return content;
+}
+
+function buildEffectifContainer(serveur, panel, effectifContent, buttons = []) {
+  const container = {
     type: 17,
     accent_color: config.couleur[serveur],
     components: [
@@ -84,20 +54,77 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
     ],
   };
 
-  const buttons =
-    panel.effectif.button?.map((b, i) => ({
-      type: 2,
-      style: ButtonStyle.Link,
-      label: b.label,
-      url: b.lien,
-    })) || [];
-
   if (buttons.length > 0) {
-    effectifContainer.components.push(
+    container.components.push(
       { type: 14, spacing: SeparatorSpacingSize.Large },
       { type: 1, components: buttons },
     );
   }
+
+  return container;
+}
+
+function buildButtons(panel) {
+  return (
+    panel.effectif.button?.map((b) => ({
+      type: 2,
+      style: ButtonStyle.Link,
+      label: b.label,
+      url: b.lien,
+    })) || []
+  );
+}
+
+function errorResponse(text) {
+  return {
+    type: 17,
+    accent_color: config.colors.error,
+    components: [
+      { type: 10, content: "## :no_entry_sign: Erreur" },
+      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 10, content: text },
+    ],
+  };
+}
+
+async function sendEffectif(client, serveur, serveurDatas, panelId) {
+  const panel = serveurDatas.panels.find((p) => p.id === panelId);
+
+  if (!panel?.grade?.length) {
+    return errorResponse(
+      `Le rôle-play **${panel.name}** n’a aucun grade défini.`,
+    );
+  }
+
+  const channelId = panel.channels.effectif;
+  if (!channelId) {
+    return errorResponse(
+      `Le rôle-play **${panel.name}** n’a aucune salon d'effectif défini.`,
+    );
+  }
+
+  const channel = client.channels.cache.get(channelId);
+  if (!channel) {
+    return errorResponse(
+      `Le salon d'effectif du rôle-play **${panel.name}** n'est pas valide.`,
+    );
+  }
+
+  const ngData = await discordLink();
+  const gradesTriees = sortGrades(panel);
+  const effectifContent = await buildEffectifContent(
+    client,
+    gradesTriees,
+    ngData,
+  );
+
+  const buttons = buildButtons(panel);
+  const effectifContainer = buildEffectifContainer(
+    serveur,
+    panel,
+    effectifContent,
+    buttons,
+  );
 
   const message = await channel.send({
     components: [effectifContainer],
@@ -108,6 +135,7 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
   panel.effectif.message = message.id;
   panel.effectif.channel = message.channelId;
   panel.effectif.guild = message.guildId;
+
   await saveServerDatas(false, serveurDatas, serveur);
 
   return {
@@ -126,87 +154,36 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
 
 async function updateEffectif(client, serveur, serveurDatas, panelId) {
   const panel = serveurDatas.panels.find((p) => p.id === Number(panelId));
-  if (
-    !panel ||
-    !panel.effectif ||
-    !panel.effectif.message ||
-    !panel.effectif.channel
-  )
-    return;
+  if (!panel?.effectif?.message || !panel.effectif.channel) return;
 
   const channel = client.channels.cache.get(panel.effectif.channel);
   if (!channel) return;
 
-  const ngData = await discordLink();
+  const message = await channel.messages
+    .fetch(panel.effectif.message)
+    .catch(() => null);
+  if (!message) return;
 
-  const gradesTriees = panel.grade.sort(
-    (a, b) => Number(b.tier) - Number(a.tier),
+  const ngData = await discordLink();
+  const gradesTriees = sortGrades(panel);
+  const effectifContent = await buildEffectifContent(
+    client,
+    gradesTriees,
+    ngData,
   );
 
-  let effectifContent = "";
+  const buttons = buildButtons(panel);
+  const effectifContainer = buildEffectifContainer(
+    serveur,
+    panel,
+    effectifContent,
+    buttons,
+  );
 
-  for (const grade of gradesTriees) {
-    const mentionsArray = [];
-
-    if (grade.listeRp && grade.listeRp.length > 0) {
-      for (const joueur of grade.listeRp) {
-        const pseudo = ngData.data[joueur];
-
-        if (pseudo) {
-          const emojiTete = await getEmojiTete(client, pseudo);
-          mentionsArray.push(`${emojiTete} <@${joueur}> ➤ ${pseudo}`);
-        } else {
-          mentionsArray.push(`<@${joueur}>`);
-        }
-      }
-    }
-
-    const mentions =
-      mentionsArray.length > 0
-        ? mentionsArray.join("\n")
-        : "*Ce grade est vide*";
-    effectifContent += `**${grade.nom} (${
-      grade.listeRp ? grade.listeRp.length : 0
-    }) :**\n${mentions}\n\n`;
-  }
-
-  const effectifContainer = {
-    type: 17,
-    accent_color: config.couleur[serveur],
-    components: [
-      {
-        type: 10,
-        content: `## ${panel.emoji ? `${panel.emoji} ` : ""}${panel.name}`,
-      },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
-      { type: 10, content: effectifContent },
-    ],
-  };
-
-  const buttons =
-    panel.effectif.button?.map((b, i) => ({
-      type: 2,
-      style: ButtonStyle.Link,
-      label: b.label,
-      url: b.lien,
-    })) || [];
-
-  if (buttons.length > 0) {
-    effectifContainer.components.push(
-      { type: 14, spacing: SeparatorSpacingSize.Large },
-      { type: 1, components: buttons },
-    );
-  }
-
-  try {
-    const message = await channel.messages.fetch(panel.effectif.message);
-    if (message) {
-      await message.edit({
-        components: [effectifContainer],
-        allowedMentions: { parse: [] },
-      });
-    }
-  } catch (err) {}
+  await message.edit({
+    components: [effectifContainer],
+    allowedMentions: { parse: [] },
+  });
 }
 
 module.exports = { sendEffectif, updateEffectif };

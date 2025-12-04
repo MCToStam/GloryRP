@@ -663,7 +663,7 @@ async function getEditGradeContainer(
         components: [{ type: 10, content: `**Nom :** ${grade.nom}` }],
         accessory: {
           type: 2,
-          custom_id: `edit_grade_nom-${panelId}-${gradeId}`,
+          custom_id: `edit_grade-${panelId}-${gradeId}-nom`,
           label: "⚙️ Modifier le Nom",
           style: ButtonStyle.Primary,
         },
@@ -684,7 +684,7 @@ async function getEditGradeContainer(
         ],
         accessory: {
           type: 2,
-          custom_id: `edit_grade_couleur-${panelId}-${gradeId}`,
+          custom_id: `edit_grade-${panelId}-${gradeId}-couleur`,
           label: "🎨 Modifier la Couleur",
           style: ButtonStyle.Primary,
         },
