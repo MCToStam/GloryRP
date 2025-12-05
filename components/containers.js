@@ -173,19 +173,19 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `config-channel-${panelId}`,
+            custom_id: `config-channel-${panelId}-panel`,
             label: "Configurer les Salons",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config-grade-${panelId}`,
+            custom_id: `config-grade-${panelId}-panel`,
             label: "Configurer les Grades",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config-tache-${panelId}`,
+            custom_id: `config-tache-${panelId}-panel`,
             label: "Configurer les Tâches",
             style: ButtonStyle.Primary,
           },
@@ -196,19 +196,19 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `config-panel-${panelId}`,
+            custom_id: `config-panel-${panelId}-panel`,
             label: "Configurer le Panel",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config-salaire-${panelId}`,
+            custom_id: `config-salaire-${panelId}-panel`,
             label: "Configurer les Salaires",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config-resumeonu-${panelId}`,
+            custom_id: `config-resumeonu-${panelId}-panel`,
             label: "Configurer le Résumé ONU",
             style: ButtonStyle.Secondary,
             disabled: true,
@@ -220,19 +220,19 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
         components: [
           {
             type: 2,
-            custom_id: `config-depotdeplainte-${panelId}`,
+            custom_id: `config-depotdeplainte-${panelId}-panel`,
             label: "Configurer le Dépot de Plainte",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config-candidature-${panelId}`,
+            custom_id: `config-candidature-${panelId}-panel`,
             label: "Configurer les Candidature",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config-effectif-${panelId}`,
+            custom_id: `config-effectif-${panelId}-panel`,
             label: "Configurer l'Effectif",
             style: ButtonStyle.Primary,
           },
@@ -305,19 +305,19 @@ async function getBoutiqueContainer(guildColor, boutiqueDatas, boutiqueId) {
         components: [
           {
             type: 2,
-            custom_id: `config-categorie-${boutiqueId}`,
+            custom_id: `config-categorie-${boutiqueId}-boutique`,
             label: "Configurer les Catégories",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config-article-${boutiqueId}`,
+            custom_id: `config-article-${boutiqueId}-boutique`,
             label: "Configurer les Articles",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config-reduction-${boutiqueId}`,
+            custom_id: `config-reduction-${boutiqueId}-boutique`,
             label: "Configurer les Réductions",
             style: ButtonStyle.Primary,
           },
@@ -328,13 +328,13 @@ async function getBoutiqueContainer(guildColor, boutiqueDatas, boutiqueId) {
         components: [
           {
             type: 2,
-            custom_id: `config-boutique-${boutiqueId}`,
+            custom_id: `config-boutique-${boutiqueId}-boutique`,
             label: "Configurer la Boutique",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config-payement-${boutiqueId}`,
+            custom_id: `config-payement-${boutiqueId}-boutique`,
             label: "Configurer le Payement",
             style: ButtonStyle.Primary,
           },
@@ -429,7 +429,7 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}`,
+            custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -615,7 +615,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}`,
+            custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -742,7 +742,7 @@ async function getEditGradeContainer(
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}-grade`,
+            custom_id: `return-${panelId}-panel-grade`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -842,7 +842,7 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}`,
+            custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -947,7 +947,7 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}`,
+            custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -1030,7 +1030,7 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}`,
+            custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -1134,7 +1134,7 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}`,
+            custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -1187,7 +1187,7 @@ async function getResumeONUContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}`,
+            custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -1304,7 +1304,7 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}`,
+            custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -1424,7 +1424,7 @@ async function getTacheContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}`,
+            custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -1738,7 +1738,7 @@ async function getEditTacheContainer(
         components: [
           {
             type: 2,
-            custom_id: `return-${panelId}-tache`,
+            custom_id: `return-${panelId}-panel-tache`,
             label: "🚪 Retour",
             style: ButtonStyle.Secondary,
           },
@@ -1753,6 +1753,118 @@ async function getEditTacheContainer(
             custom_id: `tache_delete-${panelId}-${task.taskId}`,
             label: "🗑️ Supprimer la Tâche",
             style: ButtonStyle.Danger,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+async function getBoutiqueCategorieContainer(
+  client,
+  boutiqueId,
+  guildColor,
+  boutiqueDatas,
+) {
+  const categoriesContent = await Promise.all(
+    boutiqueDatas.categorie.map(async (categorie) => ({
+      type: 9,
+      components: [
+        {
+          type: 10,
+          content: `- ${
+            categorie.couleur
+              ? `${await getHexEmoji(client, categorie.couleur)}`
+              : ""
+          } **${categorie.nom}**`,
+        },
+      ],
+      accessory: {
+        type: 2,
+        custom_id: `categorie_delete-${boutiqueId}-${categorie.id}`,
+        label: "Supprimer la Catégorie",
+        style: ButtonStyle.Danger,
+      },
+    })),
+  );
+
+  const categorieOptions = await Promise.all(
+    boutiqueDatas.categorie.map(async (categorie) => {
+      const e = categorie.couleur
+        ? await getHexEmoji(client, categorie.couleur)
+        : undefined;
+
+      let emoji;
+      if (e) {
+        if (e.id && /^\d+$/.test(e.id)) {
+          emoji = { id: e.id, name: e.name, animated: e.animated || false };
+        } else {
+          emoji = { name: e.name || e };
+        }
+      }
+
+      return {
+        label: categorie.nom,
+        value: `categorie_edit-${boutiqueId}-${categorie.id}`,
+        description: `Modifier la catégorie "${categorie.nom}"`,
+        emoji,
+      };
+    }),
+  );
+
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          boutiqueDatas.emoji ? `${boutiqueDatas.emoji} ` : ""
+        } Configuration de la Boutique ${boutiqueDatas.name}`,
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      ...categoriesContent,
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `categorie_edit-${boutiqueId}`,
+            placeholder: "Choisis une catégorie...",
+            disabled: !boutiqueDatas.enable,
+            options: [
+              ...categorieOptions,
+              {
+                label: "Créer une catégorie",
+                value: `categorie_create-${boutiqueId}`,
+                description: "Ajoute une nouvelle catégorie à la boutique",
+                emoji: { id: "1418880845808402492" },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${boutiqueId}-boutique`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: "aide-categorie",
+            label: "❓ Aide",
+            style: ButtonStyle.Secondary,
           },
         ],
       },
@@ -1775,4 +1887,5 @@ module.exports = {
   getDepotDePlainteContainer,
   getTacheContainer,
   getEditTacheContainer,
+  getBoutiqueCategorieContainer,
 };
