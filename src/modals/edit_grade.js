@@ -31,7 +31,9 @@ exports.run = async (client, interaction, config) => {
       components: [
         {
           type: 10,
-          content: `## :no_entry: ${type === "couleur" ? "Couleur" : "Nom"} invalide`,
+          content: `## :no_entry: ${
+            type === "couleur" ? "Couleur" : "Nom"
+          } invalide`,
         },
         { type: 14, spacing: SeparatorSpacingSize.Large },
         {
@@ -91,5 +93,5 @@ exports.run = async (client, interaction, config) => {
 };
 
 exports.data = {
-  name: "edit_grade",
+  name: "grade_edit",
 };

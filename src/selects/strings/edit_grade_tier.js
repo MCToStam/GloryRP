@@ -46,4 +46,4 @@ exports.run = async (client, interaction, config) => {
   });
 };
 
-exports.data = { name: "edit_grade_tier" };
+exports.data = { name: "grade_edit_tier" };

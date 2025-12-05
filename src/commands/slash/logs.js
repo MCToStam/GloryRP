@@ -5,7 +5,7 @@ const {
   MessageFlags,
 } = require("discord.js");
 const { getServerDatas } = require("../../../utils/functions/datas.js");
-const { getlogContainer } = require("../../../components/logContainer.js");
+const { getLogContainer } = require("../../../components/logContainer.js");
 const { discordStaff } = require("../../../utils/functions/linkedUser.js");
 
 exports.run = async (client, interaction, config) => {
@@ -136,7 +136,7 @@ exports.run = async (client, interaction, config) => {
   const [type, panelId] = interaction.options.getString("panel").split("-");
 
   const serverDatas = await getServerDatas(interaction, serv);
-  const { error, component: logContainer } = await getlogContainer(
+  const { error, component: logContainer } = await getLogContainer(
     serverDatas,
     panelId,
     serv,
