@@ -10,7 +10,7 @@ const {
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();
 
-  const type = interaction.customId.split("-")[1];
+  const type = interaction.values[0].split("-")[1];
   const panelId = Number(interaction.values[0].split("-")[2]);
 
   const guildColor = await getGuildColor(interaction);
@@ -21,7 +21,7 @@ exports.run = async (client, interaction, config) => {
       : serverDatas.boutiques.find((x) => x.id === panelId);
 
   const panelContainer =
-    type === "panels"
+    type === "panel"
       ? await getPanelContainer(guildColor, panelDatas, panelId)
       : await getBoutiqueContainer(guildColor, panelDatas, panelId);
 

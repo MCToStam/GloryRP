@@ -15,6 +15,7 @@ const {
 } = require("../../utils/functions/checkDepotDePlainte.js");
 const {
   checkDeletePanel,
+  checkDeleteBoutique,
 } = require("../../utils/functions/checkDeletePanel.js");
 const {
   cacheApiGloryBot,
@@ -58,7 +59,9 @@ module.exports = async (client, interaction) => {
   });
 
   log(
-    `${client.user.username} est pret en ${latence.toFixed(1)}s, sur ${guilds} serveurs et ${usersCount} utilisateurs.`,
+    `${client.user.username} est pret en ${latence.toFixed(
+      1,
+    )}s, sur ${guilds} serveurs et ${usersCount} utilisateurs.`,
     "READY",
     "green",
   );
@@ -73,6 +76,7 @@ module.exports = async (client, interaction) => {
   cron.schedule("*/30 * * * *", async () => {
     try {
       await checkDeletePanel();
+      await checkDeleteBoutique();
       await checkDepotDePlainte(client);
       await checkCandidature(client);
     } catch (err) {

@@ -1,32 +1,17 @@
 {
-  "_e74cff": {
-    "emojiId": "1446570043277312130",
-    "color": "#E74CFF",
-    "createdAt": 1764959574586
-  },
-  "_ff0000": {
-    "emojiId": "1446573252527784190",
-    "color": "#FF0000",
-    "createdAt": 1764960337893
+  "_e74c3c": {
+    "emojiId": "1446612055887974551",
+    "color": "#E74C3C",
+    "createdAt": 1764969589193
   },
   "titidu59285": {
-    "emojiId": "1446576877379653853",
+    "emojiId": "1446614626010661056",
     "nom": "titidu59285",
-    "createdAt": 1764961203819
+    "createdAt": 1764970203717
   },
   "snipfire": {
-    "emojiId": "1446576878893928622",
+    "emojiId": "1446614628372058313",
     "nom": "SnipFire",
-    "createdAt": 1764961204422
-  },
-  "_ffffff": {
-    "emojiId": "1446578329175195829",
-    "color": "#FFFFFF",
-    "createdAt": 1764961541986
-  },
-  "_fffffc": {
-    "emojiId": "1446578803571949732",
-    "color": "#FFFFFC",
-    "createdAt": 1764961661696
+    "createdAt": 1764970204299
   }
 }

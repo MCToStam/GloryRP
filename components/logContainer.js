@@ -6,7 +6,7 @@ const {
   ButtonStyle,
 } = require("discord.js");
 
-async function getlogContainer(serverDatas, panel, serv, page = 1, type) {
+async function getLogContainer(serverDatas, panel, serv, page, type) {
   const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
   const panelId = Number(panel);
 
@@ -73,7 +73,9 @@ async function getlogContainer(serverDatas, panel, serv, page = 1, type) {
       components: [
         {
           type: 10,
-          content: `## 📝 Logs ${type === "panel" ? "du Role-Play" : "de la Boutique"} ${servName} - ${panelLabel}`,
+          content: `## 📝 Logs ${
+            type === "panel" ? "du Role-Play" : "de la Boutique"
+          } ${servName} - ${panelLabel}`,
         },
         {
           type: 14,
@@ -92,7 +94,7 @@ async function getlogContainer(serverDatas, panel, serv, page = 1, type) {
           components: [
             {
               type: 2,
-              custom_id: `logs-prev-${serv}-${page}-${panelId}-${type}`,
+              custom_id: `logs-prev-${panelId}-${serv}-${page}-${type}`,
               label: "⬅️",
               style: ButtonStyle.Primary,
               disabled: page <= 1,
@@ -106,7 +108,7 @@ async function getlogContainer(serverDatas, panel, serv, page = 1, type) {
             },
             {
               type: 2,
-              custom_id: `logs-next-${serv}-${page}-${panelId}-${type}`,
+              custom_id: `logs-next-${panelId}-${serv}-${page}-${type}`,
               label: "➡️",
               style: ButtonStyle.Primary,
               disabled: page >= totalPages,
@@ -118,4 +120,4 @@ async function getlogContainer(serverDatas, panel, serv, page = 1, type) {
   };
 }
 
-module.exports = { getlogContainer };
+module.exports = { getLogContainer };

@@ -1,45 +1,51 @@
-const fs = require("node:fs");
-const path = require("node:path");
 const config = require("../../config.js");
 const { saveServerDatas, getServerDatas } = require("./datas.js");
 
-async function checkDeletePanel() {
+async function checkDelete(type, label) {
   for (const serveur of config.liste_serveur) {
     try {
       const serverDatas = await getServerDatas(false, serveur);
       let modified = false;
 
+      const items = serverDatas[type];
       const toDelete = [];
+      const now = Math.floor(Date.now() / 1000);
 
-      for (const panel of serverDatas.panels) {
-        if (panel.delete) {
-          const now = Math.floor(Date.now() / 1000);
-          if (now >= panel.delete) {
-            console.log(
-              `[CHECK] Suppression du panel ${panel.id} sur ${serveur}`,
-            );
-            toDelete.push(panel.id);
-            modified = true;
-          }
+      for (const item of items) {
+        if (item.delete && now >= item.delete) {
+          console.log(
+            `[CHECK] Suppression du ${label} ${item.id} sur ${serveur}`,
+          );
+          toDelete.push(item.id);
+          modified = true;
         }
       }
 
       if (toDelete.length > 0) {
+        // Suppression des logs associés
         serverDatas.logs = serverDatas.logs.filter(
-          (log) => !toDelete.includes(log.panel),
+          (log) => !toDelete.includes(log[type.slice(0, -1)]), // panel / boutique
         );
-        serverDatas.panels = serverDatas.panels.filter(
-          (p) => !toDelete.includes(p.id),
-        );
+
+        // Suppression des éléments
+        serverDatas[type] = items.filter((i) => !toDelete.includes(i.id));
       }
 
       if (modified) {
         await saveServerDatas(false, serverDatas, serveur);
       }
     } catch (err) {
-      console.error(`[ERREUR] checkDeletePanel sur ${serveur}:`, err);
+      console.error(`[ERREUR] checkDelete(${label}) sur ${serveur}:`, err);
     }
   }
 }
 
-module.exports = { checkDeletePanel };
+async function checkDeletePanel() {
+  return checkDelete("panels", "panel");
+}
+
+async function checkDeleteBoutique() {
+  return checkDelete("boutiques", "boutique");
+}
+
+module.exports = { checkDeletePanel, checkDeleteBoutique };

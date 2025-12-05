@@ -39,7 +39,7 @@ async function getConfigContainer(serverDatas, serv) {
       accessory: panel.delete
         ? {
             type: 2,
-            custom_id: `restore-panel-${panel.id}`,
+            custom_id: `restaurer-panel-${panel.id}`,
             label: "Restaurer",
             emoji: { name: "♻️" },
             style: ButtonStyle.Primary,
@@ -78,7 +78,7 @@ async function getConfigContainer(serverDatas, serv) {
       accessory: shop.delete
         ? {
             type: 2,
-            custom_id: `restore-boutique-${shop.id}`,
+            custom_id: `restaurer-boutique-${shop.id}`,
             label: "Restaurer",
             emoji: { name: "♻️" },
             style: ButtonStyle.Primary,
@@ -253,7 +253,7 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
           },
           {
             type: 2,
-            custom_id: `show_logs-panel-${panelId}`,
+            custom_id: `logs-first-${panelId}-${guildColor}-1-panel`,
             label: "📜 Afficher les Logs",
             style: ButtonStyle.Secondary,
           },
@@ -355,7 +355,7 @@ async function getBoutiqueContainer(guildColor, boutiqueDatas, boutiqueId) {
           },
           {
             type: 2,
-            custom_id: `show_logs-boutique-${boutiqueId}`,
+            custom_id: `logs-first-${boutiqueId}-${guildColor}-1-boutique`,
             label: "📜 Afficher les Logs",
             style: ButtonStyle.Secondary,
           },
@@ -663,7 +663,7 @@ async function getEditGradeContainer(
         components: [{ type: 10, content: `**Nom :** ${grade.nom}` }],
         accessory: {
           type: 2,
-          custom_id: `edit_grade-${panelId}-${gradeId}-nom`,
+          custom_id: `grade_edit-${panelId}-${gradeId}-nom`,
           label: "⚙️ Modifier le Nom",
           style: ButtonStyle.Primary,
         },
@@ -684,7 +684,7 @@ async function getEditGradeContainer(
         ],
         accessory: {
           type: 2,
-          custom_id: `edit_grade-${panelId}-${gradeId}-couleur`,
+          custom_id: `grade_edit-${panelId}-${gradeId}-couleur`,
           label: "🎨 Modifier la Couleur",
           style: ButtonStyle.Primary,
         },
@@ -698,12 +698,12 @@ async function getEditGradeContainer(
         components: [
           {
             type: 3,
-            custom_id: `edit_grade_tier-${panelId}-${gradeId}`,
+            custom_id: `grade_edit_tier-${panelId}-${gradeId}`,
             placeholder: "Choisis un Tier...",
             options: [
               ...[5, 4, 3, 2, 1].map((tier) => ({
                 label: `Tier ${tier}`,
-                value: `edit_grade_tier-${tier}`,
+                value: `grade_edit_tier-${tier}`,
                 description: `Définir en Tier ${tier}`,
                 default: grade.tier === String(tier),
               })),
@@ -720,7 +720,7 @@ async function getEditGradeContainer(
         components: [
           {
             type: 6,
-            custom_id: `edit_grade_role-${panelId}-${gradeId}`,
+            custom_id: `grade_edit_role-${panelId}-${gradeId}`,
             placeholder: "Sélectionne un rôle...",
             max_values: 25,
             default_values:
@@ -992,13 +992,13 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `config_panel_rename-${panelId}`,
+            custom_id: `panel_edit-rename-${panelId}`,
             label: "Renommer le Rôle-Play",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_panel_emoji-${panelId}`,
+            custom_id: `panel_edit-emoji-${panelId}`,
             label: "Modifier l'Emoji",
             style: ButtonStyle.Primary,
           },
@@ -1009,13 +1009,13 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `config_panel_description-${panelId}`,
+            custom_id: `panel_edit-description-${panelId}`,
             label: "Modifier la Description",
             style: ButtonStyle.Primary,
           },
           {
             type: 2,
-            custom_id: `config_panel_delete-${panelId}`,
+            custom_id: `panel_delete-${panelId}`,
             label: "Supprimer le Rôle-Play",
             style: ButtonStyle.Danger,
           },
@@ -1324,7 +1324,10 @@ async function getTacheContainer(panelId, guildColor, panelDatas) {
   const tasksContent = await Promise.all(
     panelDatas.tasks.map(async (task) => ({
       type: 10,
-      content: `- ${task.emoji ? `${task.emoji} ` : ""}**${task.name.slice(0, 100)}**`,
+      content: `- ${task.emoji ? `${task.emoji} ` : ""}**${task.name.slice(
+        0,
+        100,
+      )}**`,
     })),
   );
 
@@ -1766,7 +1769,7 @@ async function getBoutiqueCategorieContainer(
   guildColor,
   boutiqueDatas,
 ) {
-  const categoriesContent = await Promise.all(
+  let categoriesContent = await Promise.all(
     boutiqueDatas.categorie.map(async (categorie) => ({
       type: 9,
       components: [
@@ -1787,6 +1790,15 @@ async function getBoutiqueCategorieContainer(
       },
     })),
   );
+
+  if (boutiqueDatas.categorie.length === 0) {
+    categoriesContent = [
+      {
+        type: 10,
+        content: `Aucune catégorie configurée pour le moment.`,
+      },
+    ];
+  }
 
   const categorieOptions = await Promise.all(
     boutiqueDatas.categorie.map(async (categorie) => {
