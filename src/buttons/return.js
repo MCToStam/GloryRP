@@ -3,6 +3,7 @@ const {
   getPanelContainer,
   getGradeContainer,
   getTacheContainer,
+  getBoutiqueContainer,
 } = require("../../components/containers");
 const {
   getGuildColor,
@@ -11,7 +12,7 @@ const {
 
 exports.run = async (client, interaction) => {
   await interaction.deferUpdate();
-  const [action, panel, config] = interaction.customId.split("-");
+  const [action, panel, type, config] = interaction.customId.split("-");
   const panelId = Number(panel);
 
   if (action === "return" && !panelId && !config) {
@@ -26,18 +27,34 @@ exports.run = async (client, interaction) => {
   } else if (action === "return" && panelId && !config) {
     const guildColor = await getGuildColor(interaction);
     const serverDatas = await getServerDatas(interaction, guildColor);
-    const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
+    const panelDatas =
+      type === "panel"
+        ? serverDatas.panels.find((x) => x.id === panelId)
+        : serverDatas.boutiques.find((x) => x.id === panelId);
 
-    const panelContainer = await getPanelContainer(
-      guildColor,
-      panelDatas,
-      panelId,
-    );
+    if (type === "panel") {
+      const panelContainer = await getPanelContainer(
+        guildColor,
+        panelDatas,
+        panelId,
+      );
 
-    await interaction.message.edit({
-      components: [panelContainer],
-      allowedMentions: { parse: [] },
-    });
+      await interaction.message.edit({
+        components: [panelContainer],
+        allowedMentions: { parse: [] },
+      });
+    } else {
+      const panelContainer = await getBoutiqueContainer(
+        guildColor,
+        panelDatas,
+        panelId,
+      );
+
+      await interaction.message.edit({
+        components: [panelContainer],
+        allowedMentions: { parse: [] },
+      });
+    }
   } else if (action === "return" && panelId && config) {
     const guildColor = await getGuildColor(interaction);
     const serverDatas = await getServerDatas(interaction, guildColor);
