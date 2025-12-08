@@ -2,11 +2,12 @@ const {
   getServerDatas,
   saveServerDatas,
   getGuildColor,
-} = require("../../utils/functions/datas.js");
-
+} = require("../../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
-const { getEditGradeContainer } = require("../../components/containers.js");
-const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
+const { getEditGradeContainer } = require("../../../components/containers.js");
+const {
+  toTimeStamp,
+} = require("../../../utils/functions/numbersAndLetters.js");
 
 function formatHexColor(input) {
   const color = input.startsWith("#")

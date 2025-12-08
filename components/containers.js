@@ -992,7 +992,7 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
         components: [
           {
             type: 2,
-            custom_id: `panel_edit-rename-${panelId}`,
+            custom_id: `panel_edit-name-${panelId}`,
             label: "Renommer le Rôle-Play",
             style: ButtonStyle.Primary,
           },
@@ -1851,7 +1851,7 @@ async function getBoutiqueCategorieContainer(
               ...categorieOptions,
               {
                 label: "Créer une catégorie",
-                value: `categorie_create-${boutiqueId}`,
+                value: `create_categorie-${boutiqueId}`,
                 description: "Ajoute une nouvelle catégorie à la boutique",
                 emoji: { id: "1418880845808402492" },
               },
@@ -1884,6 +1884,180 @@ async function getBoutiqueCategorieContainer(
   };
 }
 
+async function getBoutiqueArticleContainer(
+  boutiqueId,
+  guildColor,
+  boutiqueDatas,
+  page,
+) {
+  const ARTICLES_PER_PAGE = 10;
+  const totalPages = Math.ceil(
+    boutiqueDatas.article.length / ARTICLES_PER_PAGE,
+  );
+  const currentPage = Math.min(Math.max(page, 1), totalPages);
+  const start = (page - 1) * ARTICLES_PER_PAGE;
+  const end = start + ARTICLES_PER_PAGE;
+  const articlesPage = boutiqueDatas.article.slice(start, end);
+
+  let articleContent = await Promise.all(
+    articlesPage.map(async (article) => ({
+      type: 9,
+      components: [
+        {
+          type: 10,
+          content: `- ${
+            article.emoji ? `${article.emoji} ` : ""
+          }**${article.nom}**`,
+        },
+      ],
+      accessory: {
+        type: 2,
+        custom_id: `article_delete-${boutiqueId}-${article.id}`,
+        label: "Supprimer l'Article",
+        style: ButtonStyle.Danger,
+      },
+    })),
+  );
+
+  if (boutiqueDatas.article.length === 0) {
+    articleContent = [
+      {
+        type: 10,
+        content: `Aucun article configurée pour le moment.`,
+      },
+    ];
+  }
+
+  if (boutiqueDatas.categorie.length === 0) {
+    articleContent = [
+      {
+        type: 10,
+        content: "Veuillez tout d'abord créer une catégorie.",
+      },
+    ];
+  }
+
+  const articleOptions = await Promise.all(
+    articlesPage.map(async (article) => {
+      let emoji;
+      if (article.emoji && article.emoji !== false) {
+        const customEmojiMatch = article.emoji.match(
+          /^<a?:([a-zA-Z0-9_]+):(\d+)>$/,
+        );
+        if (customEmojiMatch) {
+          emoji = {
+            id: customEmojiMatch[2],
+            name: customEmojiMatch[1],
+            animated: article.emoji.startsWith("<a:"),
+          };
+        } else if (
+          /^\p{Extended_Pictographic}$/u.test(article.emoji) ||
+          article.emoji.length <= 3
+        ) {
+          emoji = { name: article.emoji };
+        }
+      }
+
+      return {
+        label: article.nom,
+        value: `article_edit-${boutiqueId}-${article.id}`,
+        description: `Modifier l'article "${article.nom}"`,
+        ...(emoji ? { emoji } : {}),
+      };
+    }),
+  );
+
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          boutiqueDatas.emoji ? `${boutiqueDatas.emoji} ` : ""
+        } Configuration de la Boutique ${boutiqueDatas.name}`,
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      ...articleContent,
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `page-article-${currentPage - 1}`,
+            label: "◀️",
+            style: ButtonStyle.Primary,
+            disabled: currentPage <= 1,
+          },
+          {
+            type: 2,
+            custom_id: "page_status",
+            label: `Page ${currentPage}/${totalPages}`,
+            style: ButtonStyle.Primary,
+            disabled: true,
+          },
+          {
+            type: 2,
+            custom_id: `page-article-${currentPage + 1}`,
+            label: "▶️",
+            style: ButtonStyle.Primary,
+            disabled: currentPage === totalPages,
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `article_edit-${boutiqueId}`,
+            placeholder: "Choisis un article...",
+            disabled:
+              !boutiqueDatas.enable || boutiqueDatas.categorie.length === 0,
+            options: [
+              ...articleOptions,
+              {
+                label: "Créer un article",
+                value: `create_article-${boutiqueId}`,
+                description: "Ajoute un nouvel article à la boutique",
+                emoji: { id: "1418880845808402492" },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${boutiqueId}-boutique`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: "aide-article",
+            label: "❓ Aide",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  };
+}
+
 module.exports = {
   getConfigContainer,
   getPanelContainer,
@@ -1900,4 +2074,5 @@ module.exports = {
   getTacheContainer,
   getEditTacheContainer,
   getBoutiqueCategorieContainer,
+  getBoutiqueArticleContainer,
 };

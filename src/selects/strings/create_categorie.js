@@ -40,4 +40,4 @@ exports.run = async (client, interaction, config) => {
   await interaction.showModal(modal);
 };
 
-exports.data = { name: "categorie_create" };
+exports.data = { name: "create_categorie" };

@@ -21,8 +21,6 @@ exports.run = async (client, interaction, config) => {
   const guildColor =
     interaction.customId.split("-")[3] || (await getGuildColor(interaction));
   const confirm = interaction.customId.split("-")[4];
-  console.log(guildColor);
-  console.log(confirm);
 
   const serverDatas = await getServerDatas(interaction, guildColor);
   const boutiqueDatas = serverDatas.boutiques.find((x) => x.id === boutiqueId);

@@ -9,10 +9,10 @@ exports.run = async (client, interaction, config) => {
 
   const modalConfigs = {
     description: {
-      customId: `panel_description-${id}`,
+      customId: `panel_edit-description-${id}`,
       title: "Modifie la description d'un Rôle-Play",
       field: {
-        id: "new_description",
+        id: "description",
         label: "Nouvelle description du rôle-play",
         placeholder: "Ex: Gestion de la Justice du Serveur",
         required: false,
@@ -22,10 +22,10 @@ exports.run = async (client, interaction, config) => {
       },
     },
     emoji: {
-      customId: `panel_emoji-${id}`,
+      customId: `panel_edit-emoji-${id}`,
       title: "Modifie l'émoji d'un Rôle-Play",
       field: {
-        id: "new_emoji",
+        id: "emoji",
         label: "Nouvel émoji du rôle-play",
         placeholder: "Ex: ⚖️",
         required: false,
@@ -34,11 +34,11 @@ exports.run = async (client, interaction, config) => {
         value: panelDatas.emoji,
       },
     },
-    rename: {
-      customId: `panel_rename-${id}`,
+    name: {
+      customId: `panel_edit-name-${id}`,
       title: "Modifie le nom d'un Rôle-Play",
       field: {
-        id: "new_name",
+        id: "name",
         label: "Nouveau nom du rôle-play",
         placeholder: "Ex: Journaliste",
         required: true,
