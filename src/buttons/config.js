@@ -13,6 +13,7 @@ const {
   getCandidatureContainer,
   getDepotDePlainteContainer,
   getBoutiqueCategorieContainer,
+  getBoutiqueArticleContainer,
 } = require("../../components/containers.js");
 
 exports.run = async (client, interaction, config) => {
@@ -63,6 +64,14 @@ exports.run = async (client, interaction, config) => {
         panelId,
         guildColor,
         datas,
+      );
+      break;
+    case "article":
+      container = await getBoutiqueArticleContainer(
+        panelId,
+        guildColor,
+        datas,
+        1,
       );
       break;
   }
