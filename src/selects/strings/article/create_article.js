@@ -1,5 +1,5 @@
-const { getServerDatas } = require("../../../utils/functions/datas.js");
-const { getHexEmoji } = require("../../../utils/functions/emojis.js");
+const { getServerDatas } = require("../../../../utils/functions/datas.js");
+const { getHexEmoji } = require("../../../../utils/functions/emojis.js");
 
 exports.run = async (client, interaction, config) => {
   const boutiqueId = Number(interaction.customId.split("-")[1]);
@@ -66,7 +66,7 @@ exports.run = async (client, interaction, config) => {
   );
 
   const modal = {
-    custom_id: `create_article-${boutiqueId}`,
+    custom_id: `article_create-${boutiqueId}`,
     title: "Créer un nouvel article",
     components: [
       {
@@ -126,4 +126,4 @@ exports.run = async (client, interaction, config) => {
   await interaction.showModal(modal);
 };
 
-exports.data = { name: "create_article" };
+exports.data = { name: "article_create" };
