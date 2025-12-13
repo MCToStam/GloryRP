@@ -18,7 +18,9 @@ exports.run = async (client, interaction, config) => {
   const categorie = Number(
     interaction.fields.getStringSelectValues("categorie")[0],
   );
-  const prix = interaction.fields.getTextInputValue("prix");
+  const prix = Number(
+    interaction.fields.getTextInputValue("prix").replace(/\D/g, ""),
+  );
   const grade = interaction.fields.getStringSelectValues("grade");
 
   const boutiqueId = Number(interaction.customId.split("-")[1]);
@@ -83,7 +85,7 @@ exports.run = async (client, interaction, config) => {
 
   newArticle.id = newId;
   newArticle.nom = nom;
-  newArticle.categorie = categorie;
+  newArticle.categorie = Number(categorie);
   newArticle.prix = prix;
   newArticle.grade = grade;
   boutique.timestamp = modifDate;
@@ -119,5 +121,5 @@ exports.run = async (client, interaction, config) => {
 };
 
 exports.data = {
-  name: "create_article",
+  name: "article_create",
 };
