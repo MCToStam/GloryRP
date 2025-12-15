@@ -117,6 +117,9 @@ exports.run = async (client, interaction, config) => {
     action: `Création du bouton d'effectif ${new_label}`,
   });
 
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
   panelDatas.effectif.button.push({ label: new_label, lien: new_link });
 
   await saveServerDatas(interaction, serverDatas, guildColor);

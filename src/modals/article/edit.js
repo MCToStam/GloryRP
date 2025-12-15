@@ -31,7 +31,8 @@ exports.run = async (client, interaction, config) => {
   if (type !== "image") newValue = interaction.fields.getTextInputValue(type);
   if (type === "image") newValue = interaction.fields.getUploadedFiles(type);
   if (type === "couleur") newValue = formatHexColor(newValue);
-  if (type === "prix") newValue = Number(newValue.replace(/\D/g, ""));
+  if (type === "prix" || type === "quantite")
+    newValue = Number(newValue.replace(/[^0-9-]/g, "").replace(/(?!^)-/g, ""));
   if (type === "image" && !newValue.first().contentType?.startsWith("image/"))
     newValue = false;
 
@@ -62,7 +63,9 @@ exports.run = async (client, interaction, config) => {
                 ? "Le prix doit être un nombre valide."
                 : type === "image"
                   ? "Le fichier doit être une image valide"
-                  : "Valeur invalide",
+                  : type === "quantite"
+                    ? 'La quantité doit être un nombre valide ou "-1" pour ne pas définir de quantité limite.'
+                    : "Valeur invalide",
         },
       ],
     };
@@ -106,9 +109,11 @@ exports.run = async (client, interaction, config) => {
       ? "de la couleur"
       : type === "nom"
         ? "du nom"
-        : type === "emoji"
-          ? "de l'émoji"
-          : "de l'image";
+        : type === "prix"
+          ? "du prix"
+          : type === "quantite"
+            ? "de la quantité"
+            : "de l'image";
 
   serverDatas.logs ??= [];
   serverDatas.logs.push({
@@ -117,6 +122,9 @@ exports.run = async (client, interaction, config) => {
     boutique: boutiqueId,
     action: `Modification ${actionLabel} de l'article ${article.nom} de ${article[type]} en ${newValue}`,
   });
+
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
 
   article[type] = newValue;
 
@@ -132,6 +140,7 @@ exports.run = async (client, interaction, config) => {
 
   return interaction.editReply({
     components: [updatedContainer],
+    files: updatedContainer.files,
     flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
     allowedMentions: { parse: [] },
   });

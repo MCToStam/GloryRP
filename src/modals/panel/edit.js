@@ -85,6 +85,9 @@ exports.run = async (client, interaction, config) => {
     action: logAction,
   });
 
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
   await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditPanelContainer(

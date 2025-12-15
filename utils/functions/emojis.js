@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const Canvas = require("canvas");
 const config = require("../../config");
+const { log } = require("node:console");
 
 const cachePath = path.join(__dirname, "..", "..", "data", "emojisCache.json");
 let emojisCache = JSON.parse(fs.readFileSync(cachePath, "utf8"));
@@ -34,6 +35,36 @@ async function scheduleDeleteEmoji(
   }, delay);
 }
 
+async function createOrFetchEmoji(client, key, buffer, extraData = {}) {
+  const now = Date.now();
+  try {
+    const emoji = await client.application.emojis.create({
+      name: key.slice(0, 32),
+      attachment: buffer,
+    });
+    emojisCache[key] = { emojiId: emoji.id, ...extraData, createdAt: now };
+    await saveCache();
+    scheduleDeleteEmoji(client, key, emoji.id);
+    return emoji;
+  } catch (e) {
+    if (e.message.includes("Invalid Form Body")) {
+      const emojis = await client.application.emojis.fetch();
+      const existing = emojis.find((e) => e.name === key.slice(0, 32));
+      if (existing) {
+        emojisCache[key] = {
+          emojiId: existing.id,
+          ...extraData,
+          createdAt: now,
+        };
+        await saveCache();
+        scheduleDeleteEmoji(client, key, existing.id);
+        return existing;
+      }
+    }
+    throw e;
+  }
+}
+
 async function getEmojiDrapeau(client, serveur, pays) {
   const key = `${serveur.toLowerCase()}_${pays.toLowerCase()}`;
   const now = Date.now();
@@ -63,17 +94,7 @@ async function getEmojiDrapeau(client, serveur, pays) {
       );
     const buffer = Buffer.from(await response.arrayBuffer());
 
-    const emoji = await client.application.emojis.create({
-      name: key.slice(0, 32),
-      attachment: buffer,
-    });
-
-    emojisCache[key] = { emojiId: emoji.id, nom: key, createdAt: now };
-    await saveCache();
-
-    scheduleDeleteEmoji(client, key, emoji.id);
-
-    return emoji;
+    return await createOrFetchEmoji(client, key, buffer, { nom: key });
   })();
 
   try {
@@ -111,17 +132,7 @@ async function getEmojiTete(client, joueur) {
       throw new Error(`Impossible de récupérer l'image pour ${joueur}`);
     const buffer = Buffer.from(await response.arrayBuffer());
 
-    const emoji = await client.application.emojis.create({
-      name: key.slice(0, 32),
-      attachment: buffer,
-    });
-
-    emojisCache[key] = { emojiId: emoji.id, nom: joueur, createdAt: now };
-    await saveCache();
-
-    scheduleDeleteEmoji(client, key, emoji.id);
-
-    return emoji;
+    return await createOrFetchEmoji(client, key, buffer, { nom: key });
   })();
 
   try {
@@ -162,17 +173,7 @@ async function getHexEmoji(client, hexColor) {
 
     const buffer = canvas.toBuffer("image/png");
 
-    const emoji = await client.application.emojis.create({
-      name: key.slice(0, 32),
-      attachment: buffer,
-    });
-
-    emojisCache[key] = { emojiId: emoji.id, color: hexColor, createdAt: now };
-    await saveCache();
-
-    scheduleDeleteEmoji(client, key, emoji.id);
-
-    return emoji;
+    return await createOrFetchEmoji(client, key, buffer, { nom: key });
   })();
 
   try {

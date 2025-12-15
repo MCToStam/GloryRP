@@ -2,9 +2,11 @@ const {
   getServerDatas,
   saveServerDatas,
   getGuildColor,
-} = require("../../utils/functions/datas.js");
-const { getTacheContainer } = require("../../components/containers.js");
-const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
+} = require("../../../utils/functions/datas.js");
+const { getTacheContainer } = require("../../../components/containers.js");
+const {
+  toTimeStamp,
+} = require("../../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);

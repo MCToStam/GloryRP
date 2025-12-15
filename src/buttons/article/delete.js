@@ -52,7 +52,7 @@ exports.run = async (client, interaction, config) => {
           components: [
             {
               type: 2,
-              custom_id: `article_delete-${article.id}-${boutiqueId}-${guildColor}-confirm`,
+              custom_id: `article_delete-${boutiqueId}-${article.id}-${guildColor}-confirm`,
               label: "Oui, Supprimer",
               style: ButtonStyle.Danger,
             },
@@ -91,7 +91,7 @@ exports.run = async (client, interaction, config) => {
           },
           {
             type: 10,
-            content: "Cette catégorie n'existe pas ou a déjà été supprimé.",
+            content: "Cet article n'existe pas ou a déjà été supprimé.",
           },
         ],
       };

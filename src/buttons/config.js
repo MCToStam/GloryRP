@@ -14,6 +14,7 @@ const {
   getDepotDePlainteContainer,
   getBoutiqueCategorieContainer,
   getBoutiqueArticleContainer,
+  getBoutiqueReductionContainer,
 } = require("../../components/containers.js");
 
 exports.run = async (client, interaction, config) => {
@@ -68,6 +69,14 @@ exports.run = async (client, interaction, config) => {
       break;
     case "article":
       container = await getBoutiqueArticleContainer(
+        panelId,
+        guildColor,
+        datas,
+        1,
+      );
+      break;
+    case "reduction":
+      container = await getBoutiqueReductionContainer(
         panelId,
         guildColor,
         datas,

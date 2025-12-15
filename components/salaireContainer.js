@@ -98,27 +98,19 @@ async function getSalaireContainer(
 
       let emojiObj = null;
       let emojiString = "";
-      try {
-        const emojiGuildObj = await getEmojiTete(client, roleplayName);
+      const emojiGuildObj = await getEmojiTete(client, roleplayName);
 
-        if (emojiGuildObj && typeof emojiGuildObj === "object") {
-          emojiObj = {
-            id: emojiGuildObj.id,
-            name: emojiGuildObj.name,
-            animated: !!emojiGuildObj.animated,
-          };
+      if (emojiGuildObj && typeof emojiGuildObj === "object") {
+        emojiObj = {
+          id: emojiGuildObj.id,
+          name: emojiGuildObj.name,
+          animated: !!emojiGuildObj.animated,
+        };
 
-          emojiString = emojiGuildObj.toString();
-        } else if (typeof emojiGuildObj === "string") {
-          emojiObj = { name: emojiGuildObj };
-          emojiString = emojiGuildObj;
-        }
-      } catch (err) {
-        console.warn(
-          "Impossible de récupérer l'emoji tête pour",
-          roleplayName,
-          err,
-        );
+        emojiString = emojiGuildObj.toString();
+      } else if (typeof emojiGuildObj === "string") {
+        emojiObj = { name: emojiGuildObj };
+        emojiString = emojiGuildObj;
       }
 
       const tachesCount = taches.filter(

@@ -219,40 +219,32 @@ exports.data = {
 
       const focusedValue =
         interaction.options.getFocused()?.toLowerCase() ?? "";
+      const json = await getServerDatas(false, serveur);
 
-      try {
-        const json = await getServerDatas(false, serveur);
-
-        if (!json.panels || json.panels.length === 0) {
-          return await interaction.respond([
-            {
-              name: "Aucun rôle-play trouvé pour ce serveur",
-              value: "no-panel",
-            },
-          ]);
-        }
-
-        const panels = json.panels.map((p) => ({
-          name: `[Rôle-Play] ${p.name}`,
-          value: `panel-${String(p.id)}`,
-        }));
-
-        const boutiques = json.boutiques.map((b) => ({
-          name: `[Boutique] ${b.name}`,
-          value: `boutique-${String(b.id)}`,
-        }));
-
-        const donnee = [...panels, ...boutiques].filter((data) =>
-          data.name.toLowerCase().includes(focusedValue),
-        );
-
-        return await interaction.respond(donnee.slice(0, 25));
-      } catch (err) {
-        console.log(err);
+      if (!json.panels || json.panels.length === 0) {
         return await interaction.respond([
-          { name: "Erreur lors de la lecture des panels", value: "error" },
+          {
+            name: "Aucun rôle-play trouvé pour ce serveur",
+            value: "no-panel",
+          },
         ]);
       }
+
+      const panels = json.panels.map((p) => ({
+        name: `[Rôle-Play] ${p.name}`,
+        value: `panel-${String(p.id)}`,
+      }));
+
+      const boutiques = json.boutiques.map((b) => ({
+        name: `[Boutique] ${b.name}`,
+        value: `boutique-${String(b.id)}`,
+      }));
+
+      const donnee = [...panels, ...boutiques].filter((data) =>
+        data.name.toLowerCase().includes(focusedValue),
+      );
+
+      return await interaction.respond(donnee.slice(0, 25));
     }
   },
 };
