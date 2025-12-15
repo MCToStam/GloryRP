@@ -5,6 +5,7 @@ const {
   getTacheContainer,
   getBoutiqueContainer,
   getBoutiqueArticleContainer,
+  getBoutiqueReductionContainer,
 } = require("../../components/containers");
 const {
   getGuildColor,
@@ -74,6 +75,14 @@ exports.run = async (client, interaction) => {
     } else if (config === "article") {
       const boutiqueDatas = serverDatas.boutiques.find((x) => x.id === panelId);
       container = await getBoutiqueArticleContainer(
+        panelId,
+        guildColor,
+        boutiqueDatas,
+        1,
+      );
+    } else if (config === "reduction") {
+      const boutiqueDatas = serverDatas.boutiques.find((x) => x.id === panelId);
+      container = await getBoutiqueReductionContainer(
         panelId,
         guildColor,
         boutiqueDatas,

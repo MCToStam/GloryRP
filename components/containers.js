@@ -1925,7 +1925,7 @@ async function getBoutiqueArticleContainer(
     articleContent = [
       {
         type: 10,
-        content: `Aucun article configurée pour le moment.`,
+        content: `Aucun article configuré pour le moment.`,
       },
     ];
   }
@@ -2217,6 +2217,23 @@ async function getBoutiqueEditArticleContainer(
         },
       },
       {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Quantité Disponible :** ${
+              articleData.quantite !== -1 ? `${articleData.quantite}` : "Infini"
+            }`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `article_edit-${boutique.id}-${articleData.id}-quantite`,
+          label: "🔢 Modifier la Quantité Disponible",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
         type: 10,
         content: `**Grade(s) Vendeur(s) :**`,
       },
@@ -2242,7 +2259,7 @@ async function getBoutiqueEditArticleContainer(
           {
             type: 3,
             custom_id: `article_edit-${boutique.id}-${articleData.id}-categorie`,
-            placeholder: "Choisis un catégorie...",
+            placeholder: "Choisis une catégorie...",
             options: categorieOptions,
           },
         ],
@@ -2297,6 +2314,406 @@ async function getBoutiqueEditArticleContainer(
   };
 }
 
+async function getBoutiqueReductionContainer(
+  boutiqueId,
+  guildColor,
+  boutiqueDatas,
+  page,
+) {
+  const REDUCTION_PER_PAGE = 8;
+  const totalPages = Math.ceil(
+    boutiqueDatas.reduction.length / REDUCTION_PER_PAGE,
+  );
+  const currentPage = Math.min(Math.max(page, 1), totalPages);
+  const start = (page - 1) * REDUCTION_PER_PAGE;
+  const end = start + REDUCTION_PER_PAGE;
+  const reductionsPage = boutiqueDatas.reduction.slice(start, end);
+
+  let reductionContent = await Promise.all(
+    reductionsPage.map(async (reduction) => ({
+      type: 9,
+      components: [
+        {
+          type: 10,
+          content: `- ${reduction.debut ? `<t:${reduction.debut}:f> ` : ""}${
+            reduction.fin ? `➜ <t:${reduction.fin}:f> ` : ""
+          }**${reduction.code}**`,
+        },
+      ],
+      accessory: {
+        type: 2,
+        custom_id: `reduction_delete-${boutiqueId}-${reduction.id}`,
+        label: "Supprimer la Réduction",
+        style: ButtonStyle.Danger,
+      },
+    })),
+  );
+
+  if (boutiqueDatas.reduction.length === 0) {
+    reductionContent = [
+      {
+        type: 10,
+        content: `Aucune réduction configurée pour le moment.`,
+      },
+    ];
+  }
+
+  if (
+    boutiqueDatas.categorie.length === 0 ||
+    boutiqueDatas.article.length === 0
+  ) {
+    reductionContent = [
+      {
+        type: 10,
+        content:
+          "Veuillez tout d'abord créer une catégorie ainsi qu'un article.",
+      },
+    ];
+  }
+
+  const reductionOptions = await Promise.all(
+    reductionsPage.map(async (reduction) => {
+      return {
+        label: reduction.code,
+        value: `reduction_edit-${boutiqueId}-${reduction.id}`,
+        description: `Modifier la réduction "${reduction.code}"`,
+      };
+    }),
+  );
+
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          boutiqueDatas.emoji ? `${boutiqueDatas.emoji} ` : ""
+        } Configuration de la Boutique ${boutiqueDatas.name}`,
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      ...reductionContent,
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `page-reduction-${currentPage - 1}-${boutiqueId}`,
+            label: "◀️",
+            style: ButtonStyle.Primary,
+            disabled: currentPage <= 1,
+          },
+          {
+            type: 2,
+            custom_id: "page_status",
+            label: `Page ${currentPage}/${totalPages}`,
+            style: ButtonStyle.Primary,
+            disabled: true,
+          },
+          {
+            type: 2,
+            custom_id: `page-reduction-${currentPage + 1}-${boutiqueId}`,
+            label: "▶️",
+            style: ButtonStyle.Primary,
+            disabled: currentPage === totalPages,
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `reduction_edit-${boutiqueId}`,
+            placeholder: "Choisis une réduction...",
+            disabled:
+              !boutiqueDatas.enable || boutiqueDatas.categorie.length === 0,
+            options: [
+              ...reductionOptions,
+              {
+                label: "Créer une réduction",
+                value: `reduction_create-${boutiqueId}`,
+                description: "Ajoute une nouvelle réduction à la boutique",
+                emoji: { id: "1418880845808402492" },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${boutiqueId}-boutique`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: "aide-reduction",
+            label: "❓ Aide",
+            style: ButtonStyle.Secondary,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+async function getBoutiqueEditReductionContainer(
+  client,
+  guildColor,
+  reductionData,
+  boutique,
+) {
+  const categorieOptions = await Promise.all(
+    boutique.categorie.map(async (categorie) => {
+      const e = categorie.couleur
+        ? await getHexEmoji(client, categorie.couleur)
+        : undefined;
+
+      let emoji;
+      if (e) {
+        if (e.id && /^\d+$/.test(e.id)) {
+          emoji = { id: e.id, name: e.name, animated: e.animated || false };
+        } else {
+          emoji = { name: e.name || e };
+        }
+      }
+
+      return {
+        label: categorie.nom,
+        value: `reduction_edit-${categorie.id}`,
+        description: `Couleur : ${categorie.couleur}`,
+        emoji,
+        default: reductionData.categorie.includes(categorie.id),
+      };
+    }),
+  );
+
+  const categorieById = new Map(boutique.categorie.map((c) => [c.id, c.nom]));
+
+  const articleOptions = await Promise.all(
+    boutique.article
+      .filter((a) => reductionData.categorie.includes(a.categorie))
+      .map(async (article) => {
+        let emoji = null;
+
+        if (article.emoji) {
+          const customEmojiMatch = article.emoji.match(
+            /^<a?:([a-zA-Z0-9_]+):(\d+)>$/,
+          );
+
+          if (customEmojiMatch) {
+            emoji = {
+              name: customEmojiMatch[1],
+              id: customEmojiMatch[2],
+              animated: article.emoji.startsWith("<a:"),
+            };
+          } else {
+            emoji = {
+              name: article.emoji,
+            };
+          }
+        }
+
+        return {
+          label: article.nom,
+          value: `reduction_edit-${article.id}`,
+          description: `Categorie : ${
+            categorieById.get(article.categorie) ?? "Inconnue"
+          } | Prix Unitaire : ${article.prix}`,
+          ...(emoji && { emoji }),
+          default: reductionData.article.includes(article.id),
+        };
+      }),
+  );
+
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          reductionData.emoji ? `${reductionData.emoji} ` : ""
+        } Configuration de la Réduction ${reductionData.code}`,
+      },
+      {
+        type: 9,
+        components: [{ type: 10, content: `**Code :** ${reductionData.code}` }],
+        accessory: {
+          type: 2,
+          custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-code`,
+          label: "⚙️ Modifier le Code",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Valeur de Réduction :** ${reductionData.valeur}`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-valeur`,
+          label: "💵 Modifier la Valeur",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Nombre d'Utilisation Maximum :** ${
+              reductionData.usemax !== -1 ? `${reductionData.usemax}` : "Infini"
+            }`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-usemax`,
+          label: "🧮 Modifier le nombre d'Utilisation Maximum",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Date de Début :** <t:${reductionData.debut}:f>`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-debut`,
+          label: "⏲️ Modifier la Date de Début",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 9,
+        components: [
+          { type: 10, content: `**Date de Fin :** <t:${reductionData.fin}:f>` },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-fin`,
+          label: "⏲️ Modifier la Date de Fin",
+          style: ButtonStyle.Primary,
+        },
+      },
+      {
+        type: 10,
+        content: `**Catégorie Associée :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-categorie`,
+            max_values:
+              categorieOptions.length === 0 ? 1 : categorieOptions.length,
+            placeholder:
+              categorieOptions.length === 0
+                ? "Veuillez créer une catégorie"
+                : "Choisis une ou plusieurs catégories...",
+            options:
+              categorieOptions.length === 0
+                ? [
+                    {
+                      label: "Veuillez créer une catégorie",
+                      value: "Veuillez créer une catégorie",
+                      description: "Veuillez créer une catégorie",
+                    },
+                  ]
+                : categorieOptions,
+            disabled: categorieOptions.length === 0,
+          },
+        ],
+      },
+      {
+        type: 10,
+        content: `**Article Associée :**`,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-article`,
+            max_values: articleOptions.length === 0 ? 1 : articleOptions.length,
+            placeholder:
+              articleOptions.length === 0
+                ? "Veuillez choisir une catégorie possédant des articles"
+                : "Choisis un ou plusieurs articles...",
+            options:
+              articleOptions.length === 0
+                ? [
+                    {
+                      label:
+                        "Veuillez choisir une catégorie possédant des articles",
+                      value:
+                        "Veuillez choisir une catégorie possédant des articles",
+                      description:
+                        "Veuillez choisir une catégorie possédant des articles",
+                    },
+                  ]
+                : articleOptions,
+            disabled: articleOptions.length === 0,
+          },
+        ],
+      },
+      {
+        type: 14,
+        spacing: SeparatorSpacingSize.Small,
+      },
+
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${boutique.id}-boutique-reduction`,
+            label: "🚪 Retour",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: "aide-reduction",
+            label: "❓ Aide",
+            style: ButtonStyle.Secondary,
+          },
+          {
+            type: 2,
+            custom_id: `reduction_delete-${boutique.id}-${reductionData.id}`,
+            label: "🗑️ Supprimer la Réduction",
+            style: ButtonStyle.Danger,
+          },
+        ],
+      },
+    ],
+  };
+}
+
 module.exports = {
   getConfigContainer,
   getPanelContainer,
@@ -2315,4 +2732,6 @@ module.exports = {
   getBoutiqueCategorieContainer,
   getBoutiqueArticleContainer,
   getBoutiqueEditArticleContainer,
+  getBoutiqueReductionContainer,
+  getBoutiqueEditReductionContainer,
 };

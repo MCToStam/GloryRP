@@ -96,6 +96,9 @@ exports.run = async (client, interaction, config) => {
     action: `Modification du bouton d'effectif ${button.label}`,
   });
 
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
   button.label = new_label;
   button.lien = new_link;
 

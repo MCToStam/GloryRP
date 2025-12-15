@@ -1,4 +1,7 @@
-const { getBoutiqueArticleContainer } = require("../../components/containers");
+const {
+  getBoutiqueArticleContainer,
+  getBoutiqueReductionContainer,
+} = require("../../components/containers");
 const {
   getServerDatas,
   getGuildColor,
@@ -17,6 +20,13 @@ exports.run = async (client, interaction) => {
   let container;
   if (type === "article") {
     container = await getBoutiqueArticleContainer(
+      boutiqueId,
+      guildColor,
+      boutiqueDatas,
+      page,
+    );
+  } else if (type === "reduction") {
+    container = await getBoutiqueReductionContainer(
       boutiqueId,
       guildColor,
       boutiqueDatas,

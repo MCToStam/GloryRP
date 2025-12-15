@@ -7,7 +7,7 @@ const {
 } = require("../../../utils/functions/datas.js");
 const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const {
-  getBoutiqueArticleContainer,
+  getBoutiqueEditArticleContainer,
 } = require("../../../components/containers.js");
 const {
   toTimeStamp,
@@ -106,11 +106,12 @@ exports.run = async (client, interaction, config) => {
 
   await saveServerDatas(interaction, serverDatas, guildColor);
 
-  const goodContainer = await getBoutiqueArticleContainer(
-    boutiqueId,
+  const goodContainer = await getBoutiqueEditArticleContainer(
+    client,
     guildColor,
+    newArticle,
+    serverDatas,
     boutique,
-    1,
   );
 
   return interaction.update({

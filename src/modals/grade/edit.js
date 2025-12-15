@@ -74,6 +74,9 @@ exports.run = async (client, interaction, config) => {
     action: `Modification ${actionLabel} du grade ${grade.nom} de ${grade[type]} en ${newValue}`,
   });
 
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
   grade[type] = newValue;
 
   await saveServerDatas(interaction, serverDatas, guildColor);
