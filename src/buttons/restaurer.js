@@ -3,11 +3,10 @@ const {
   saveServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const {
   getConfigContainer,
   getBoutiqueContainer,
-} = require("../../components/containers.js");
+} = require("../../components/containers");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {
@@ -28,11 +27,13 @@ exports.run = async (client, interaction, config) => {
       components: [
         {
           type: 10,
-          content: `## :warning: ${type === "panel" ? "Rôle-Play" : "Boutique"} Introuvable`,
+          content: `## :warning: ${
+            type === "panel" ? "Rôle-Play" : "Boutique"
+          } Introuvable`,
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -46,7 +47,7 @@ exports.run = async (client, interaction, config) => {
 
     await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
     return await interaction.message.delete().catch(() => {});
@@ -66,7 +67,9 @@ exports.run = async (client, interaction, config) => {
     user: interaction.user.id,
     timestamp: modifDate,
     [type]: panelId,
-    action: `Restauration ${type === "panel" ? "du rôle-play" : "de la boutique"} "${panelDatas.nom || panelDatas.name}"`,
+    action: `Restauration ${
+      type === "panel" ? "du rôle-play" : "de la boutique"
+    } "${panelDatas.nom || panelDatas.name}"`,
   });
 
   serverDatas.lastUser = interaction.user.id;
@@ -78,7 +81,7 @@ exports.run = async (client, interaction, config) => {
 
   await interaction.update({
     components: [configContainer],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
     allowedMentions: { parse: [] },
   });
 };

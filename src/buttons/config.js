@@ -15,7 +15,7 @@ const {
   getBoutiqueCategorieContainer,
   getBoutiqueArticleContainer,
   getBoutiqueReductionContainer,
-} = require("../../components/containers.js");
+} = require("../../components/containers");
 
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();

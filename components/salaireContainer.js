@@ -1,5 +1,4 @@
 const config = require("../config.js");
-const { SeparatorSpacingSize, ButtonStyle } = require("discord.js");
 const { getEmojiTete } = require("../utils/functions/emojis.js");
 const { createCanvas } = require("canvas");
 const Chart = require("chart.js/auto");
@@ -55,7 +54,7 @@ async function getSalaireContainer(
           },
           {
             type: 14,
-            spacing: SeparatorSpacingSize.Large,
+            spacing: 2,
           },
           {
             type: 10,
@@ -159,7 +158,7 @@ async function getSalaireContainer(
     },
     {
       type: 14,
-      spacing: SeparatorSpacingSize.Large,
+      spacing: 2,
     },
     {
       type: 10,
@@ -167,7 +166,7 @@ async function getSalaireContainer(
     },
     {
       type: 14,
-      spacing: SeparatorSpacingSize.Small,
+      spacing: 1,
     },
     {
       type: 1,
@@ -176,20 +175,20 @@ async function getSalaireContainer(
           type: 2,
           custom_id: `salaire-${mois_precedent}_${annee_precedent}-${panelId}-${serv}`,
           label: "⬅️",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
         {
           type: 2,
           custom_id: "salaire-status",
           label: moisLabel,
-          style: ButtonStyle.Secondary,
+          style: 2,
           disabled: true,
         },
         {
           type: 2,
           custom_id: `salaire-${mois_suivant}_${annee_suivant}-${panelId}-${serv}`,
           label: "➡️",
-          style: ButtonStyle.Primary,
+          style: 1,
           disabled: moisActuel,
         },
       ],
@@ -200,7 +199,7 @@ async function getSalaireContainer(
     components.push(
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -241,7 +240,7 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
         accent_color: config.colors.error,
         components: [
           { type: 10, content: "## :no_entry: Panel Introuvable" },
-          { type: 14, spacing: SeparatorSpacingSize.Large },
+          { type: 14, spacing: 2 },
           { type: 10, content: `Le panel **${panel}** n'existe pas.` },
         ],
       },
@@ -338,7 +337,7 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
       type: 10,
       content: `## 💰 Salaire du Role-Play ${servName} - ${panelDatas.name}`,
     },
-    { type: 14, spacing: SeparatorSpacingSize.Large },
+    { type: 14, spacing: 2 },
   ];
 
   components.push({
@@ -351,7 +350,7 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
 
   if (attachments.length) {
     components.push(
-      { type: 14, spacing: SeparatorSpacingSize.Small },
+      { type: 14, spacing: 1 },
       { type: 12, items: [{ media: { url: "attachment://salaire.png" } }] },
     );
   }
@@ -372,7 +371,7 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
   }
 
   components.push(
-    { type: 14, spacing: SeparatorSpacingSize.Small },
+    { type: 14, spacing: 1 },
     {
       type: 1,
       components: [
@@ -380,13 +379,13 @@ async function getJoueurSalaireContainer(serverDatas, panel, serv, joueur) {
           type: 2,
           custom_id: `salaire-${currentMonth}_${currentYear}-${panelId}-${serv}`,
           label: "⬅️ Retour",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
         {
           type: 2,
           custom_id: `salaire_tache-${joueur}-${panelId}-${serv}-${latestMonth}_${latestYear}-true`,
           label: "📜 Afficher les Tâches",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       ],
     },
@@ -422,7 +421,7 @@ async function getJoueurTacheContainer(
         accent_color: config.colors.error,
         components: [
           { type: 10, content: "## :no_entry: Panel Introuvable" },
-          { type: 14, spacing: SeparatorSpacingSize.Large },
+          { type: 14, spacing: 2 },
           { type: 10, content: `Le panel **${panel}** n'existe pas.` },
         ],
       },
@@ -517,27 +516,27 @@ async function getJoueurTacheContainer(
       type: 10,
       content: `## 📝 Tâches du Role-Play ${servName} - ${panelDatas.name}`,
     },
-    { type: 14, spacing: SeparatorSpacingSize.Large },
+    { type: 14, spacing: 2 },
     {
       type: 10,
       content: `### <:accepted:1427727438263222424> Tâches Acceptées\n${acceptedLines}`,
     },
-    { type: 14, spacing: SeparatorSpacingSize.Small },
+    { type: 14, spacing: 1 },
     {
       type: 10,
       content: `### <:waiting:1427727440847044663> Tâches en Attente\n${waitingLines}`,
     },
-    { type: 14, spacing: SeparatorSpacingSize.Small },
+    { type: 14, spacing: 1 },
     {
       type: 10,
       content: `### <:refused:1427727444391104704> Tâches Refusées\n${refusedLines}`,
     },
-    { type: 14, spacing: SeparatorSpacingSize.Small },
+    { type: 14, spacing: 1 },
     {
       type: 10,
       content: `### Bonus & Malus\n${bonusMalusLines}`,
     },
-    { type: 14, spacing: SeparatorSpacingSize.Small },
+    { type: 14, spacing: 1 },
     {
       type: 1,
       components: [
@@ -545,17 +544,17 @@ async function getJoueurTacheContainer(
           type: 2,
           custom_id: `salaire_tache_ajout-bonus-${joueur}-${panelId}-${serv}-${mois}`,
           label: "Ajouter un Bonus",
-          style: ButtonStyle.Success,
+          style: 3,
         },
         {
           type: 2,
           custom_id: `salaire_tache_ajout-malus-${joueur}-${panelId}-${serv}-${mois}`,
           label: "Ajouter un Malus",
-          style: ButtonStyle.Danger,
+          style: 4,
         },
       ],
     },
-    { type: 14, spacing: SeparatorSpacingSize.Small },
+    { type: 14, spacing: 1 },
     {
       type: 1,
       components: [
@@ -563,20 +562,20 @@ async function getJoueurTacheContainer(
           type: 2,
           custom_id: `salaire_tache-${joueur}-${panelId}-${serv}-${mois_precedent}_${annee_precedent}`,
           label: "⬅️",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
         {
           type: 2,
           custom_id: "salaire-status",
           label: `${moisNom} ${targetYear}`,
-          style: ButtonStyle.Secondary,
+          style: 2,
           disabled: true,
         },
         {
           type: 2,
           custom_id: `salaire_tache-${joueur}-${panelId}-${serv}-${mois_suivant}_${annee_suivant}`,
           label: "➡️",
-          style: ButtonStyle.Primary,
+          style: 1,
           disabled: isCurrentMonth,
         },
       ],

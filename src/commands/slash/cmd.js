@@ -1,5 +1,4 @@
 const config = require("../../../config.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 
 exports.run = async (client, interaction) => {
   const subCmd = interaction.options.getSubcommand();
@@ -39,7 +38,7 @@ exports.run = async (client, interaction) => {
                 type: 10,
                 content: `## :white_check_mark: Succès`,
               },
-              { type: 14, spacing: SeparatorSpacingSize.Large },
+              { type: 14, spacing: 2 },
               { type: 10, content: msg },
             ],
           };
@@ -47,7 +46,7 @@ exports.run = async (client, interaction) => {
           return interaction.reply({
             components: [goodContainer],
             allowedMentions: { parse: [] },
-            flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+            flags: 32768 | 64,
           });
         })
         .catch((e) => console.error(e));
@@ -66,7 +65,7 @@ exports.run = async (client, interaction) => {
                 type: 10,
                 content: `## :white_check_mark: Succès`,
               },
-              { type: 14, spacing: SeparatorSpacingSize.Large },
+              { type: 14, spacing: 2 },
               { type: 10, content: msg },
             ],
           };
@@ -74,7 +73,7 @@ exports.run = async (client, interaction) => {
           return interaction.reply({
             components: [goodContainer],
             allowedMentions: { parse: [] },
-            flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+            flags: 32768 | 64,
           });
         })
         .catch((e) => console.error(e));
@@ -95,7 +94,7 @@ exports.run = async (client, interaction) => {
                 type: 10,
                 content: `## :white_check_mark: Succès`,
               },
-              { type: 14, spacing: SeparatorSpacingSize.Large },
+              { type: 14, spacing: 2 },
               { type: 10, content: msg },
             ],
           };
@@ -103,7 +102,7 @@ exports.run = async (client, interaction) => {
           return interaction.reply({
             components: [goodContainer],
             allowedMentions: { parse: [] },
-            flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+            flags: 32768 | 64,
           });
         })
         .catch((e) => console.error(e));
@@ -122,7 +121,7 @@ exports.run = async (client, interaction) => {
                 type: 10,
                 content: `## :white_check_mark: Succès`,
               },
-              { type: 14, spacing: SeparatorSpacingSize.Large },
+              { type: 14, spacing: 2 },
               { type: 10, content: msg },
             ],
           };
@@ -130,7 +129,7 @@ exports.run = async (client, interaction) => {
           return interaction.reply({
             components: [goodContainer],
             allowedMentions: { parse: [] },
-            flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+            flags: 32768 | 64,
           });
         })
         .catch((e) => console.error(e));
@@ -149,7 +148,7 @@ exports.run = async (client, interaction) => {
             type: 10,
             content: `## :x: Erreur`,
           },
-          { type: 14, spacing: SeparatorSpacingSize.Large },
+          { type: 14, spacing: 2 },
           { type: 10, content: `La commande "${name}" n'existe pas.` },
         ],
       };
@@ -157,7 +156,7 @@ exports.run = async (client, interaction) => {
       return interaction.reply({
         components: [erreurContainer],
         allowedMentions: { parse: [] },
-        flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+        flags: 32768 | 64,
       });
     }
 
@@ -180,7 +179,7 @@ exports.run = async (client, interaction) => {
           type: 10,
           content: `## :white_check_mark: Succès`,
         },
-        { type: 14, spacing: SeparatorSpacingSize.Large },
+        { type: 14, spacing: 2 },
         { type: 10, content: msg },
       ],
     };
@@ -188,7 +187,7 @@ exports.run = async (client, interaction) => {
     return interaction.reply({
       components: [goodContainer],
       allowedMentions: { parse: [] },
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
     });
   }
 };

@@ -3,8 +3,7 @@ const {
   saveServerDatas,
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
-const { getEditTacheContainer } = require("../../../components/containers.js");
+const { getEditTacheContainer } = require("../../../components/containers");
 const {
   toTimeStamp,
 } = require("../../../utils/functions/numbersAndLetters.js");
@@ -12,12 +11,14 @@ const {
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
   const taskId = Number(interaction.customId.split("-")[2]);
+  const type = interaction.customId.split("-")[3];
 
-  const new_lien = interaction.fields.getTextInputValue("new_link") || false;
+  const newData = interaction.fields.getTextInputValue(type) || false;
 
   if (
-    new_lien &&
-    !new_lien.startsWith("https://nationsglory.fr/forums/category")
+    type === "url" &&
+    newData &&
+    !newData.startsWith("https://nationsglory.fr/forums/category")
   ) {
     const errorContainer = {
       type: 17,
@@ -29,7 +30,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -41,7 +42,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -51,17 +52,55 @@ exports.run = async (client, interaction, config) => {
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
   const tache = panelDatas.tasks.find((t) => t.taskId === taskId);
 
+  if (type === "name") {
+    const nameExists = panelDatas.tasks.some(
+      (t) =>
+        t.taskId !== taskId && t.name.toLowerCase() === newData.toLowerCase(),
+    );
+    if (nameExists) {
+      const errorContainer = {
+        type: 17,
+        accent_color: config.colors.error,
+        components: [
+          {
+            type: 10,
+            content: `## :no_entry: Nom déjà Utilisé`,
+          },
+          {
+            type: 14,
+            spacing: 2,
+          },
+          {
+            type: 10,
+            content:
+              "Ce nom est déjà utilisé par une autre tâche, veuillez en choisir un autre.",
+          },
+        ],
+      };
+    }
+  }
+
   const modifDate = await toTimeStamp(new Date());
+
+  const textLog = {
+    description: "de la description",
+    name: "du nom",
+    emoji: "de l'émoji",
+    url: "du lien",
+  };
 
   if (!serverDatas.logs) serverDatas.logs = [];
   serverDatas.logs.push({
     user: interaction.user.id,
     timestamp: modifDate,
     panel: panelId,
-    action: `Modification du lien forum de la tâche ${tache.name} en ${new_lien}`,
+    action: `Modification ${textLog[type]} de la tâche ${tache.name} en ${newData}`,
   });
 
-  tache.url = new_lien;
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
+  tache[type] = newData;
 
   await saveServerDatas(interaction, serverDatas, guildColor);
 
@@ -74,11 +113,11 @@ exports.run = async (client, interaction, config) => {
   );
   return interaction.update({
     components: [goodContainer],
-    flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+    flags: 32768 | 64,
     allowedMentions: { parse: [] },
   });
 };
 
 exports.data = {
-  name: "edit_tache_lien",
+  name: "tache_edit",
 };

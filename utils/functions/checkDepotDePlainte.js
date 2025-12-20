@@ -2,11 +2,6 @@ const config = require("../../config.js");
 const cheerio = require("cheerio");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
 const { saveServerDatas, getServerDatas } = require("./datas.js");
-const {
-  MessageFlags,
-  SeparatorSpacingSize,
-  ButtonStyle,
-} = require("discord.js");
 
 async function fetchNewMessages(urlLien, savedIds, lastTimestamp) {
   const newMessages = [];
@@ -186,7 +181,7 @@ async function checkDepotDePlainte(client) {
               type: 10,
               content: `## Nouvelle Plainte`,
             },
-            { type: 14, spacing: SeparatorSpacingSize.Small },
+            { type: 14, spacing: 1 },
             {
               type: 10,
               content: `${await getEmojiTete(
@@ -198,7 +193,7 @@ async function checkDepotDePlainte(client) {
               type: 10,
               content: `🗓️ **Date de création :** <t:${plainte.timestamp}:R>`,
             },
-            { type: 14, spacing: SeparatorSpacingSize.Small },
+            { type: 14, spacing: 1 },
             {
               type: 1,
               components: [
@@ -206,7 +201,7 @@ async function checkDepotDePlainte(client) {
                   type: 2,
                   url: plainte.lien,
                   label: "Aller sur le Dépot de Plainte",
-                  style: ButtonStyle.Link,
+                  style: 5,
                 },
               ],
             },
@@ -229,7 +224,7 @@ async function checkDepotDePlainte(client) {
 
         await channel.send({
           components,
-          flags: MessageFlags.IsComponentsV2,
+          flags: 32768,
         });
       }
     }

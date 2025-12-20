@@ -3,8 +3,7 @@ const {
   saveServerDatas,
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
-const { getEditPanelContainer } = require("../../../components/containers.js");
+const { getEditPanelContainer } = require("../../../components/containers");
 const {
   toTimeStamp,
 } = require("../../../utils/functions/numbersAndLetters.js");
@@ -46,7 +45,7 @@ exports.run = async (client, interaction, config) => {
             },
             {
               type: 14,
-              spacing: SeparatorSpacingSize.Large,
+              spacing: 2,
             },
             {
               type: 10,
@@ -58,7 +57,7 @@ exports.run = async (client, interaction, config) => {
 
         return interaction.reply({
           components: [errorContainer],
-          flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+          flags: 32768 | 64,
           allowedMentions: { parse: [] },
         });
       }
@@ -98,7 +97,7 @@ exports.run = async (client, interaction, config) => {
 
   return interaction.update({
     components: [goodContainer],
-    flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+    flags: 32768 | 64,
     allowedMentions: { parse: [] },
   });
 };

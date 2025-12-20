@@ -3,7 +3,6 @@ const {
   saveServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
-const { SeparatorSpacingSize, MessageFlags } = require("discord.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {
@@ -28,6 +27,9 @@ exports.run = async (client, interaction, config) => {
     action: "Édition des commandes de salaire",
   });
 
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
   await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = {
@@ -40,7 +42,7 @@ exports.run = async (client, interaction, config) => {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Large,
+        spacing: 2,
       },
       {
         type: 10,
@@ -50,7 +52,7 @@ exports.run = async (client, interaction, config) => {
   };
   return interaction.reply({
     components: [goodContainer],
-    flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+    flags: 32768 | 64,
     allowedMentions: { parse: [] },
   });
 };

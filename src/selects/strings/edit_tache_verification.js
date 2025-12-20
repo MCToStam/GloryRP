@@ -3,7 +3,7 @@ const {
   saveServerDatas,
   getServerDatas,
 } = require("../../../utils/functions/datas.js");
-const { getEditTacheContainer } = require("../../../components/containers.js");
+const { getEditTacheContainer } = require("../../../components/containers");
 const {
   toTimeStamp,
 } = require("../../../utils/functions/numbersAndLetters.js");

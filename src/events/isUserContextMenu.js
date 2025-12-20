@@ -1,5 +1,4 @@
 const log = require("../../utils/modules/logger.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const config = require("../../config.js");
 
 module.exports = async (client, interaction) => {
@@ -19,7 +18,7 @@ module.exports = async (client, interaction) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -32,13 +31,13 @@ module.exports = async (client, interaction) => {
     if (interaction.deferred || interaction.replied) {
       await interaction.followUp({
         components: [errorContainer],
-        flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+        flags: 32768 | 64,
         allowedMentions: { parse: [] },
       });
     } else {
       await interaction.reply({
         components: [errorContainer],
-        flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+        flags: 32768 | 64,
         allowedMentions: { parse: [] },
       });
     }

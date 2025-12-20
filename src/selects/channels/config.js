@@ -1,11 +1,10 @@
-const { MessageFlags } = require("discord.js");
 const {
   getChannelContainer,
   getCandidatureContainer,
   getSalaireContainer,
   getDepotDePlainteContainer,
   getEffectifContainer,
-} = require("../../../components/containers.js");
+} = require("../../../components/containers");
 const {
   getGuildColor,
   saveServerDatas,

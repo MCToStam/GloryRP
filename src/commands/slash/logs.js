@@ -1,9 +1,3 @@
-const {
-  InteractionContextType,
-  SeparatorSpacingSize,
-  ButtonStyle,
-  MessageFlags,
-} = require("discord.js");
 const { getServerDatas } = require("../../../utils/functions/datas.js");
 const { getLogContainer } = require("../../../components/logContainer.js");
 const { discordStaff } = require("../../../utils/functions/linkedUser.js");
@@ -21,7 +15,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -30,7 +24,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 1,
@@ -39,7 +33,7 @@ exports.run = async (client, interaction, config) => {
               type: 2,
               url: "https://glorybot.fr/user/profile",
               label: "🔗 Lier son Compte",
-              style: ButtonStyle.Link,
+              style: 5,
             },
           ],
         },
@@ -47,7 +41,7 @@ exports.run = async (client, interaction, config) => {
     };
     return interaction.reply({
       components: [nonLieContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -63,7 +57,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -73,7 +67,7 @@ exports.run = async (client, interaction, config) => {
     };
     return interaction.reply({
       components: [permissionContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -89,7 +83,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -99,7 +93,7 @@ exports.run = async (client, interaction, config) => {
     };
     return interaction.reply({
       components: [unknownServerContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -118,7 +112,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -128,7 +122,7 @@ exports.run = async (client, interaction, config) => {
     };
     return interaction.reply({
       components: [permissionContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -145,9 +139,7 @@ exports.run = async (client, interaction, config) => {
   );
   return interaction.reply({
     components: [logContainer],
-    flags: error
-      ? MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral
-      : MessageFlags.IsComponentsV2,
+    flags: error ? 32768 | 64 : 32768,
     allowedMentions: { parse: [] },
   });
 };
@@ -171,7 +163,7 @@ exports.data = {
       required: true,
     },
   ],
-  contexts: [InteractionContextType.Guild],
+  contexts: [0],
   async autocomplete(client, interaction, config) {
     const focusedOption = interaction.options.getFocused(true);
 

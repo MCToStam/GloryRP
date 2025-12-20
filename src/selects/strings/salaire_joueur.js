@@ -2,7 +2,6 @@ const { getServerDatas } = require("../../../utils/functions/datas.js");
 const {
   getJoueurSalaireContainer,
 } = require("../../../components/salaireContainer.js");
-const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   const joueur = interaction.values[0].split("-")[1];
@@ -18,7 +17,7 @@ exports.run = async (client, interaction, config) => {
   return interaction.editReply({
     components: [salaireContainer],
     files: attachments || [],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
     allowedMentions: { parse: [] },
   });
 };

@@ -3,7 +3,7 @@ const {
   saveServerDatas,
   getServerDatas,
 } = require("../../../utils/functions/datas.js");
-const { getEditTacheContainer } = require("../../../components/containers.js");
+const { getEditTacheContainer } = require("../../../components/containers");
 const {
   toTimeStamp,
 } = require("../../../utils/functions/numbersAndLetters.js");
@@ -30,8 +30,9 @@ exports.run = async (client, interaction, config) => {
     action: `Modification des grades autorisés à ${type} la tâche ${tache.name}`,
   });
 
-  if (type === "valider") tache.grade_valider = new_grade;
-  else tache.grade = new_grade;
+  type === "valider"
+    ? (tache.grade_valider = new_grade)
+    : (tache.grade = new_grade);
 
   await saveServerDatas(interaction, serverDatas, guildColor);
   const tacheContainer = await getEditTacheContainer(

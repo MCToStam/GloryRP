@@ -1,16 +1,9 @@
-const config = require("../config.js");
-const {
-  SeparatorSpacingSize,
-  ButtonStyle,
-  ChannelType,
-  time,
-  userMention,
-} = require("discord.js");
+const config = require("../config");
 const {
   getPanelsSelecString,
   getBoutiquesSelecString,
-} = require("./selectsString.js");
-const { getHexEmoji } = require("../utils/functions/emojis.js");
+} = require("./selectsString");
+const { getHexEmoji } = require("../utils/functions/emojis");
 const fs = require("node:fs/promises");
 const path = require("node:path");
 
@@ -44,14 +37,14 @@ async function getConfigContainer(serverDatas, serv) {
             custom_id: `restaurer-panel-${panel.id}`,
             label: "Restaurer",
             emoji: { name: "♻️" },
-            style: ButtonStyle.Primary,
+            style: 1,
           }
         : {
             type: 2,
             custom_id: `toggle-panel-${panel.id}-acceuil`,
             label: panel.enable ? "Activé" : "Désactivé",
             emoji: { name: panel.enable ? "✅" : "❌" },
-            style: panel.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+            style: panel.enable ? 3 : 4,
           },
     }));
   }
@@ -83,14 +76,14 @@ async function getConfigContainer(serverDatas, serv) {
             custom_id: `restaurer-boutique-${shop.id}`,
             label: "Restaurer",
             emoji: { name: "♻️" },
-            style: ButtonStyle.Primary,
+            style: 1,
           }
         : {
             type: 2,
             custom_id: `toggle-boutique-${shop.id}-acceuil`,
             label: shop.enable ? "Activée" : "Désactivée",
             emoji: { name: shop.enable ? "✅" : "❌" },
-            style: shop.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+            style: shop.enable ? 3 : 4,
           },
     }));
   }
@@ -103,32 +96,28 @@ async function getConfigContainer(serverDatas, serv) {
         type: 10,
         content: "## :gear: Configuration du Role-Play " + servName,
       },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       { type: 10, content: "### 🧩 Panels configurés :" },
       ...panelsComponents,
       {
         type: 1,
         components: [getPanelsSelecString(serverDatas)],
       },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       { type: 10, content: "### 🛒 Boutiques configurées :" },
       ...boutiquesComponents,
       {
         type: 1,
         components: [getBoutiquesSelecString(serverDatas)],
       },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
     ],
   };
 
   if (serverDatas.lastUser && serverDatas.timestamp) {
     returnComponent.components.push({
       type: 10,
-      content:
-        "-# Dernières modifications par " +
-        userMention(serverDatas.lastUser) +
-        " " +
-        time(serverDatas.timestamp, "R"),
+      content: `-# Dernières modifications par <@${serverDatas.lastUser}> <t:${serverDatas.timestamp}:R>`,
     });
   }
 
@@ -148,7 +137,7 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 9,
@@ -163,12 +152,12 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
           custom_id: `toggle-panel-${panelId}-panel`,
           label: panelDatas.enable ? "Activé" : "Désactivé",
           emoji: { name: panelDatas.enable ? "✅" : "❌" },
-          style: panelDatas.enable ? ButtonStyle.Success : ButtonStyle.Danger,
+          style: panelDatas.enable ? 3 : 4,
         },
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -177,19 +166,19 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
             type: 2,
             custom_id: `config-channel-${panelId}-panel`,
             label: "Configurer les Salons",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `config-grade-${panelId}-panel`,
             label: "Configurer les Grades",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `config-tache-${panelId}-panel`,
             label: "Configurer les Tâches",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
         ],
       },
@@ -200,19 +189,19 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
             type: 2,
             custom_id: `config-panel-${panelId}-panel`,
             label: "Configurer le Panel",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `config-salaire-${panelId}-panel`,
             label: "Configurer les Salaires",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `config-resumeonu-${panelId}-panel`,
             label: "Configurer le Résumé ONU",
-            style: ButtonStyle.Secondary,
+            style: 2,
             disabled: true,
           },
         ],
@@ -224,25 +213,25 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
             type: 2,
             custom_id: `config-depotdeplainte-${panelId}-panel`,
             label: "Configurer le Dépot de Plainte",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `config-candidature-${panelId}-panel`,
             label: "Configurer les Candidature",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `config-effectif-${panelId}-panel`,
             label: "Configurer l'Effectif",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
         ],
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -251,13 +240,13 @@ async function getPanelContainer(guildColor, panelDatas, panelId) {
             type: 2,
             custom_id: "return",
             label: "🚪 Retour à l'Acceuil",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: `logs-first-${panelId}-${guildColor}-1-panel`,
             label: "📜 Afficher les Logs",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
         ],
       },
@@ -278,7 +267,7 @@ async function getBoutiqueContainer(guildColor, boutiqueDatas, boutiqueId) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 9,
@@ -293,14 +282,12 @@ async function getBoutiqueContainer(guildColor, boutiqueDatas, boutiqueId) {
           custom_id: `toggle-boutique-${boutiqueId}-boutique`,
           label: boutiqueDatas.enable ? "Activée" : "Désactivée",
           emoji: { name: boutiqueDatas.enable ? "✅" : "❌" },
-          style: boutiqueDatas.enable
-            ? ButtonStyle.Success
-            : ButtonStyle.Danger,
+          style: boutiqueDatas.enable ? 3 : 4,
         },
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -309,19 +296,19 @@ async function getBoutiqueContainer(guildColor, boutiqueDatas, boutiqueId) {
             type: 2,
             custom_id: `config-categorie-${boutiqueId}-boutique`,
             label: "Configurer les Catégories",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `config-article-${boutiqueId}-boutique`,
             label: "Configurer les Articles",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `config-reduction-${boutiqueId}-boutique`,
             label: "Configurer les Réductions",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
         ],
       },
@@ -332,19 +319,19 @@ async function getBoutiqueContainer(guildColor, boutiqueDatas, boutiqueId) {
             type: 2,
             custom_id: `config-boutique-${boutiqueId}-boutique`,
             label: "Configurer la Boutique",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `config-payement-${boutiqueId}-boutique`,
             label: "Configurer le Payement",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
         ],
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -353,13 +340,13 @@ async function getBoutiqueContainer(guildColor, boutiqueDatas, boutiqueId) {
             type: 2,
             custom_id: "return",
             label: "🚪 Retour à l'Acceuil",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: `logs-first-${boutiqueId}-${guildColor}-1-boutique`,
             label: "📜 Afficher les Logs",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
         ],
       },
@@ -389,10 +376,7 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
             max_values: 1,
             min_values: 0,
             disabled: panelDatas.enable ? false : true,
-            channel_types: [
-              ChannelType.GuildText,
-              ChannelType.GuildAnnouncement,
-            ],
+            channel_types: [0, 5],
             default_values: [
               panelDatas.enable && channelId
                 ? {
@@ -419,12 +403,12 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       ...channelsOptions,
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -433,13 +417,13 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: `send_panel-${panelId}`,
             label: "💲 Envoyer le panel de tâche",
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled:
               panelDatas.channels.tasks &&
               panelDatas.enable &&
@@ -451,7 +435,7 @@ async function getChannelContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `send_effectif-${panelId}`,
             label: "👥 Envoyer l'effectif",
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled:
               panelDatas.channels.effectif && panelDatas.enable ? false : true,
           },
@@ -474,7 +458,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 10,
@@ -492,10 +476,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
             max_values: 1,
             min_values: 0,
             disabled: panelDatas.enable ? false : true,
-            channel_types: [
-              ChannelType.GuildText,
-              ChannelType.GuildAnnouncement,
-            ],
+            channel_types: [0, 5],
             default_values: [
               panelDatas.enable && panelDatas.channels.salaire
                 ? {
@@ -523,10 +504,7 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
             max_values: 1,
             min_values: 0,
             disabled: panelDatas.enable ? false : true,
-            channel_types: [
-              ChannelType.GuildText,
-              ChannelType.GuildAnnouncement,
-            ],
+            channel_types: [0, 5],
             default_values: [
               panelDatas.enable && panelDatas.channels.cmd_salaire
                 ? {
@@ -604,13 +582,13 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
           type: 2,
           custom_id: `cmd_salaire-${panelId}-commande`,
           label: "🔧 Modifier les commandes",
-          style: ButtonStyle.Primary,
+          style: 1,
           disabled: panelDatas.enable ? false : true,
         },
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -619,19 +597,19 @@ async function getSalaireContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-salaire",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: `salairePost-${panelId}`,
             label: "💰 Envoyer les Salaires",
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled:
               panelDatas.channels.salaire && panelDatas.enable ? false : true,
           },
@@ -667,7 +645,7 @@ async function getEditGradeContainer(
           type: 2,
           custom_id: `grade_edit-${panelId}-${gradeId}-nom`,
           label: "⚙️ Modifier le Nom",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -688,7 +666,7 @@ async function getEditGradeContainer(
           type: 2,
           custom_id: `grade_edit-${panelId}-${gradeId}-couleur`,
           label: "🎨 Modifier la Couleur",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -736,7 +714,7 @@ async function getEditGradeContainer(
 
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
 
       {
@@ -746,19 +724,19 @@ async function getEditGradeContainer(
             type: 2,
             custom_id: `return-${panelId}-panel-grade`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-grade",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: `grade_delete-${panelId}-${gradeId}`,
             label: "🗑️ Supprimer le Grade",
-            style: ButtonStyle.Danger,
+            style: 4,
           },
         ],
       },
@@ -812,7 +790,7 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       ...gradesContent,
       {
@@ -837,7 +815,7 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -846,13 +824,13 @@ async function getGradeContainer(client, panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-grade",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
         ],
       },
@@ -873,7 +851,7 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 10,
@@ -891,10 +869,7 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
             max_values: 1,
             min_values: 0,
             disabled: panelDatas.enable ? false : true,
-            channel_types: [
-              ChannelType.GuildText,
-              ChannelType.GuildAnnouncement,
-            ],
+            channel_types: [0, 5],
             default_values: [
               panelDatas.enable && panelDatas.channels.effectif
                 ? {
@@ -908,7 +883,7 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       ...(panelDatas.effectif?.button?.length > 0
         ? panelDatas.effectif.button.map((btn, index) => ({
@@ -917,20 +892,20 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
               {
                 type: 2,
                 label: btn.label,
-                style: ButtonStyle.Link,
+                style: 5,
                 url: btn.lien,
               },
               {
                 type: 2,
                 custom_id: `effectif_editbutton-${panelId}-${btn.label}`,
                 label: "Modifier le Bouton",
-                style: ButtonStyle.Primary,
+                style: 1,
               },
               {
                 type: 2,
                 custom_id: `effectif_deletebutton-${panelId}-${btn.label}`,
                 label: "Supprimer le Bouton",
-                style: ButtonStyle.Danger,
+                style: 4,
               },
             ],
           }))
@@ -942,7 +917,7 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
           ]),
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -951,13 +926,13 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: `send_effectif-${panelId}`,
             label: "👥 Envoyer l'effectif",
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled:
               panelDatas.channels.effectif && panelDatas.enable ? false : true,
           },
@@ -965,7 +940,7 @@ async function getEffectifContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `effectif_addbutton-${panelId}`,
             label: "➕ Ajouter un Bouton",
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled: panelDatas.effectif?.button?.length >= 3,
           },
         ],
@@ -987,7 +962,7 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -996,13 +971,13 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `panel_edit-name-${panelId}`,
             label: "Renommer le Rôle-Play",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `panel_edit-emoji-${panelId}`,
             label: "Modifier l'Emoji",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
         ],
       },
@@ -1013,19 +988,19 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `panel_edit-description-${panelId}`,
             label: "Modifier la Description",
-            style: ButtonStyle.Primary,
+            style: 1,
           },
           {
             type: 2,
             custom_id: `panel_delete-${panelId}`,
             label: "Supprimer le Rôle-Play",
-            style: ButtonStyle.Danger,
+            style: 4,
           },
         ],
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -1034,7 +1009,7 @@ async function getEditPanelContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
         ],
       },
@@ -1055,7 +1030,7 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 9,
@@ -1071,7 +1046,7 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
           type: 2,
           custom_id: `config_depotdeplainte_lien-${panelId}`,
           label: "💬 Modifier le lien Forum",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -1090,11 +1065,7 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
             max_values: 1,
             min_values: 0,
             disabled: panelDatas.enable ? false : true,
-            channel_types: [
-              ChannelType.GuildText,
-              ChannelType.GuildAnnouncement,
-              ChannelType.GuildForum,
-            ],
+            channel_types: [0, 5, 15],
             default_values: [
               panelDatas.enable && panelDatas.channels.depotdeplainte
                 ? {
@@ -1129,7 +1100,7 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -1138,13 +1109,13 @@ async function getDepotDePlainteContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-depotdeplainte",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
         ],
       },
@@ -1165,7 +1136,7 @@ async function getResumeONUContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 9,
@@ -1181,7 +1152,7 @@ async function getResumeONUContainer(panelId, guildColor, panelDatas) {
           type: 2,
           custom_id: `config_resumeonu_lien-${panelId}`,
           label: "💬 Modifier le lien Forum",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -1191,20 +1162,20 @@ async function getResumeONUContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             url: `https://static.nationsglory.fr/resume-onu/${guildColor}.png`,
             label: "Voir le Résumé ONU",
-            style: ButtonStyle.Link,
+            style: 5,
             disabled: !panelDatas.resumeonu.found,
           },
           {
             type: 2,
             custom_id: "aide-resumeonu",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
         ],
       },
@@ -1225,7 +1196,7 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 9,
@@ -1241,7 +1212,7 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
           type: 2,
           custom_id: `config_candidature_lien-${panelId}`,
           label: "💬 Modifier le lien Forum",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -1260,11 +1231,7 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
             max_values: 1,
             min_values: 0,
             disabled: panelDatas.enable ? false : true,
-            channel_types: [
-              ChannelType.GuildText,
-              ChannelType.GuildAnnouncement,
-              ChannelType.GuildForum,
-            ],
+            channel_types: [0, 5, 15],
             default_values: [
               panelDatas.enable && panelDatas.channels.candidature
                 ? {
@@ -1299,7 +1266,7 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -1308,13 +1275,13 @@ async function getCandidatureContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-candidature",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
         ],
       },
@@ -1387,7 +1354,7 @@ async function getTacheContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 9,
@@ -1402,9 +1369,9 @@ async function getTacheContainer(panelId, guildColor, panelDatas) {
         ],
         accessory: {
           type: 2,
-          custom_id: `edit_tache_texte-${panelId}`,
+          custom_id: `tache_edit_texte-${panelId}`,
           label: "🔠 Modifier le Texte Affiché",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       ...tasksContent,
@@ -1422,7 +1389,7 @@ async function getTacheContainer(panelId, guildColor, panelDatas) {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -1431,19 +1398,19 @@ async function getTacheContainer(panelId, guildColor, panelDatas) {
             type: 2,
             custom_id: `return-${panelId}-panel`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-tâche",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: `send_panel-${panelId}`,
             label: "💲 Envoyer le panel de tâche",
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled:
               panelDatas.channels.tasks &&
               panelDatas.enable &&
@@ -1570,9 +1537,9 @@ async function getEditTacheContainer(
         components: [{ type: 10, content: `**Nom :** ${task.name}` }],
         accessory: {
           type: 2,
-          custom_id: `edit_tache_nom-${panelId}-${task.taskId}`,
+          custom_id: `tache_edit-${panelId}-${task.taskId}-name`,
           label: "⚙️ Modifier le Nom",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -1587,9 +1554,9 @@ async function getEditTacheContainer(
         ],
         accessory: {
           type: 2,
-          custom_id: `edit_tache_description-${panelId}-${task.taskId}`,
+          custom_id: `tache_edit-${panelId}-${task.taskId}-description`,
           label: "📜 Modifier la Description",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -1602,9 +1569,9 @@ async function getEditTacheContainer(
         ],
         accessory: {
           type: 2,
-          custom_id: `edit_tache_emoji-${panelId}-${task.taskId}`,
+          custom_id: `tache_edit-${panelId}-${task.taskId}-emoji`,
           label: "🎨 Modifier l'Emoji",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -1619,9 +1586,9 @@ async function getEditTacheContainer(
         ],
         accessory: {
           type: 2,
-          custom_id: `edit_tache_lien-${panelId}-${task.taskId}`,
+          custom_id: `tache_edit-${panelId}-${task.taskId}-url`,
           label: "🔗 Modifier le Lien Forum",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -1645,9 +1612,9 @@ async function getEditTacheContainer(
         ],
         accessory: {
           type: 2,
-          custom_id: `edit_tache_salaire-${panelId}-${task.taskId}`,
+          custom_id: `tache_edit_salaire-${panelId}-${task.taskId}`,
           label: "💲 Modifier le Salaire",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -1701,7 +1668,7 @@ async function getEditTacheContainer(
         components: [
           {
             type: 3,
-            custom_id: `edit_tache_grade-${panelId}-${task.taskId}-effectier`,
+            custom_id: `edit_tache_grade-${panelId}-${task.taskId}-effectuer`,
             placeholder:
               grades.length === 0
                 ? "Veuillez créer au moins un grade"
@@ -1736,7 +1703,7 @@ async function getEditTacheContainer(
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -1745,19 +1712,19 @@ async function getEditTacheContainer(
             type: 2,
             custom_id: `return-${panelId}-panel-tache`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-tâche",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: `tache_delete-${panelId}-${task.taskId}`,
             label: "🗑️ Supprimer la Tâche",
-            style: ButtonStyle.Danger,
+            style: 4,
           },
         ],
       },
@@ -1788,7 +1755,7 @@ async function getBoutiqueCategorieContainer(
         type: 2,
         custom_id: `categorie_delete-${boutiqueId}-${categorie.id}`,
         label: "Supprimer la Catégorie",
-        style: ButtonStyle.Danger,
+        style: 4,
       },
     })),
   );
@@ -1838,7 +1805,7 @@ async function getBoutiqueCategorieContainer(
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       ...categoriesContent,
       {
@@ -1863,7 +1830,7 @@ async function getBoutiqueCategorieContainer(
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -1872,13 +1839,13 @@ async function getBoutiqueCategorieContainer(
             type: 2,
             custom_id: `return-${boutiqueId}-boutique`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-categorie",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
         ],
       },
@@ -1916,7 +1883,7 @@ async function getBoutiqueArticleContainer(
         type: 2,
         custom_id: `article_delete-${boutiqueId}-${article.id}`,
         label: "Supprimer l'Article",
-        style: ButtonStyle.Danger,
+        style: 4,
       },
     })),
   );
@@ -1981,7 +1948,7 @@ async function getBoutiqueArticleContainer(
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       ...articleContent,
       {
@@ -1991,28 +1958,28 @@ async function getBoutiqueArticleContainer(
             type: 2,
             custom_id: `page-article-${currentPage - 1}-${boutiqueId}`,
             label: "◀️",
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled: currentPage <= 1,
           },
           {
             type: 2,
             custom_id: "page_status",
             label: `Page ${currentPage}/${totalPages}`,
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled: true,
           },
           {
             type: 2,
             custom_id: `page-article-${currentPage + 1}-${boutiqueId}`,
             label: "▶️",
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled: currentPage === totalPages,
           },
         ],
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -2037,7 +2004,7 @@ async function getBoutiqueArticleContainer(
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -2046,13 +2013,13 @@ async function getBoutiqueArticleContainer(
             type: 2,
             custom_id: `return-${boutiqueId}-boutique`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-article",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
         ],
       },
@@ -2175,7 +2142,7 @@ async function getBoutiqueEditArticleContainer(
           type: 2,
           custom_id: `article_edit-${boutique.id}-${articleData.id}-nom`,
           label: "⚙️ Modifier le Nom",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -2194,7 +2161,7 @@ async function getBoutiqueEditArticleContainer(
           type: 2,
           custom_id: `article_edit-${boutique.id}-${articleData.id}-emoji`,
           label: "🎨 Modifier l'Emoji",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -2213,7 +2180,7 @@ async function getBoutiqueEditArticleContainer(
           type: 2,
           custom_id: `article_edit-${boutique.id}-${articleData.id}-prix`,
           label: "💲 Modifier le Prix Unitaire",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -2230,7 +2197,7 @@ async function getBoutiqueEditArticleContainer(
           type: 2,
           custom_id: `article_edit-${boutique.id}-${articleData.id}-quantite`,
           label: "🔢 Modifier la Quantité Disponible",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -2278,13 +2245,13 @@ async function getBoutiqueEditArticleContainer(
           type: 2,
           custom_id: `article_edit-${boutique.id}-${articleData.id}-image`,
           label: "🖼️ Modifier l'Image",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       ...media,
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
 
       {
@@ -2294,19 +2261,19 @@ async function getBoutiqueEditArticleContainer(
             type: 2,
             custom_id: `return-${boutique.id}-boutique-article`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-article",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: `article_delete-${boutique.id}-${articleData.id}`,
             label: "🗑️ Supprimer l'Article",
-            style: ButtonStyle.Danger,
+            style: 4,
           },
         ],
       },
@@ -2344,7 +2311,7 @@ async function getBoutiqueReductionContainer(
         type: 2,
         custom_id: `reduction_delete-${boutiqueId}-${reduction.id}`,
         label: "Supprimer la Réduction",
-        style: ButtonStyle.Danger,
+        style: 4,
       },
     })),
   );
@@ -2393,7 +2360,7 @@ async function getBoutiqueReductionContainer(
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       ...reductionContent,
       {
@@ -2403,28 +2370,28 @@ async function getBoutiqueReductionContainer(
             type: 2,
             custom_id: `page-reduction-${currentPage - 1}-${boutiqueId}`,
             label: "◀️",
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled: currentPage <= 1,
           },
           {
             type: 2,
             custom_id: "page_status",
             label: `Page ${currentPage}/${totalPages}`,
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled: true,
           },
           {
             type: 2,
             custom_id: `page-reduction-${currentPage + 1}-${boutiqueId}`,
             label: "▶️",
-            style: ButtonStyle.Primary,
+            style: 1,
             disabled: currentPage === totalPages,
           },
         ],
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -2449,7 +2416,7 @@ async function getBoutiqueReductionContainer(
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 1,
@@ -2458,13 +2425,13 @@ async function getBoutiqueReductionContainer(
             type: 2,
             custom_id: `return-${boutiqueId}-boutique`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-reduction",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
         ],
       },
@@ -2558,7 +2525,7 @@ async function getBoutiqueEditReductionContainer(
           type: 2,
           custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-code`,
           label: "⚙️ Modifier le Code",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -2573,7 +2540,7 @@ async function getBoutiqueEditReductionContainer(
           type: 2,
           custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-valeur`,
           label: "💵 Modifier la Valeur",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -2590,7 +2557,7 @@ async function getBoutiqueEditReductionContainer(
           type: 2,
           custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-usemax`,
           label: "🧮 Modifier le nombre d'Utilisation Maximum",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -2605,7 +2572,7 @@ async function getBoutiqueEditReductionContainer(
           type: 2,
           custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-debut`,
           label: "⏲️ Modifier la Date de Début",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -2617,7 +2584,7 @@ async function getBoutiqueEditReductionContainer(
           type: 2,
           custom_id: `reduction_edit-${boutique.id}-${reductionData.id}-fin`,
           label: "⏲️ Modifier la Date de Fin",
-          style: ButtonStyle.Primary,
+          style: 1,
         },
       },
       {
@@ -2684,7 +2651,7 @@ async function getBoutiqueEditReductionContainer(
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
 
       {
@@ -2694,19 +2661,19 @@ async function getBoutiqueEditReductionContainer(
             type: 2,
             custom_id: `return-${boutique.id}-boutique-reduction`,
             label: "🚪 Retour",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: "aide-reduction",
             label: "❓ Aide",
-            style: ButtonStyle.Secondary,
+            style: 2,
           },
           {
             type: 2,
             custom_id: `reduction_delete-${boutique.id}-${reductionData.id}`,
             label: "🗑️ Supprimer la Réduction",
-            style: ButtonStyle.Danger,
+            style: 4,
           },
         ],
       },

@@ -9,7 +9,6 @@ const {
 const {
   toTimeStamp,
 } = require("../../../../utils/functions/numbersAndLetters.js");
-const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();
@@ -64,7 +63,7 @@ exports.run = async (client, interaction, config) => {
 
   return interaction.editReply({
     components: [articleContainer],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
     files: articleContainer.files,
     allowedMentions: { parse: [] },
   });

@@ -8,7 +8,7 @@ const {
   getConfigContainer,
   getPanelContainer,
   getBoutiqueContainer,
-} = require("../../components/containers.js");
+} = require("../../components/containers");
 
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();

@@ -3,7 +3,7 @@ const {
   saveServerDatas,
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
-const { getTacheContainer } = require("../../../components/containers.js");
+const { getTacheContainer } = require("../../../components/containers");
 const {
   toTimeStamp,
 } = require("../../../utils/functions/numbersAndLetters.js");
@@ -28,6 +28,9 @@ exports.run = async (client, interaction, config) => {
     action: "Édition du texte affiché sur le panel de tâche",
   });
 
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
   await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getTacheContainer(
@@ -43,5 +46,5 @@ exports.run = async (client, interaction, config) => {
 };
 
 exports.data = {
-  name: "edit_tache_texte",
+  name: "tache_edit_texte",
 };

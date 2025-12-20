@@ -3,11 +3,6 @@ const {
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
 const { discordStaff } = require("../../../utils/functions/linkedUser.js");
-const {
-  MessageFlags,
-  SeparatorSpacingSize,
-  ButtonStyle,
-} = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   const [, panelId, taskId, userId] = interaction.customId.split("-");
@@ -22,7 +17,7 @@ exports.run = async (client, interaction, config) => {
       accent_color: config.colors.error,
       components: [
         { type: 10, content: `## :x: Panel Introuvable` },
-        { type: 14, spacing: SeparatorSpacingSize.Large },
+        { type: 14, spacing: 2 },
         {
           type: 10,
           content: "Le panel lié à cette tâche n'existe pas ou a été supprimé.",
@@ -31,7 +26,7 @@ exports.run = async (client, interaction, config) => {
     };
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
     });
   }
 
@@ -48,7 +43,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -57,7 +52,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 1,
@@ -66,7 +61,7 @@ exports.run = async (client, interaction, config) => {
               type: 2,
               url: "https://glorybot.fr/user/profile",
               label: "🔗 Lier son Compte",
-              style: ButtonStyle.Link,
+              style: 5,
             },
           ],
         },
@@ -75,7 +70,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -105,7 +100,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -115,7 +110,7 @@ exports.run = async (client, interaction, config) => {
     };
     return interaction.reply({
       components: [permissionContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }

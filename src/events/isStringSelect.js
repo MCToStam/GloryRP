@@ -1,4 +1,3 @@
-const { SeparatorSpacingSize, MessageFlags } = require("discord.js");
 const log = require("../../utils/modules/logger.js");
 const config = require("../../config.js");
 
@@ -22,7 +21,7 @@ module.exports = async (client, interaction) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -33,7 +32,7 @@ module.exports = async (client, interaction) => {
     };
     return interaction.reply({
       components: [permissionContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -51,7 +50,7 @@ module.exports = async (client, interaction) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -64,13 +63,13 @@ module.exports = async (client, interaction) => {
     if (interaction.deferred || interaction.replied) {
       await interaction.followUp({
         components: [errorContainer],
-        flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+        flags: 32768 | 64,
         allowedMentions: { parse: [] },
       });
     } else {
       await interaction.reply({
         components: [errorContainer],
-        flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+        flags: 32768 | 64,
         allowedMentions: { parse: [] },
       });
     }
@@ -89,7 +88,7 @@ module.exports = async (client, interaction) => {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Small,
+        spacing: 1,
       },
       {
         type: 10,
@@ -103,7 +102,7 @@ module.exports = async (client, interaction) => {
 
   await channel.send({
     components: [logContainer],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
     allowedMentions: { parse: [] },
   });
 };

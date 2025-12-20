@@ -1,6 +1,5 @@
 const { getServerDatas } = require("../../../utils/functions/datas.js");
 const { formatDateFr } = require("../../../utils/functions/salairePost.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
@@ -38,7 +37,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -49,7 +48,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [erreurContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }

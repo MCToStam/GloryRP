@@ -2,11 +2,6 @@ const {
   getServerDatas,
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
-const {
-  MessageFlags,
-  ButtonStyle,
-  SeparatorSpacingSize,
-} = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
@@ -27,7 +22,7 @@ exports.run = async (client, interaction, config) => {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Large,
+        spacing: 2,
       },
       {
         type: 10,
@@ -37,7 +32,7 @@ exports.run = async (client, interaction, config) => {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Large,
+        spacing: 2,
       },
       {
         type: 1,
@@ -46,13 +41,13 @@ exports.run = async (client, interaction, config) => {
             type: 2,
             custom_id: `tache_delete_confirm-${tache.taskId}-${panelId}-${guildColor}`,
             label: "Oui, Supprimer",
-            style: ButtonStyle.Danger,
+            style: 4,
           },
           {
             type: 2,
             custom_id: `delete_cancel`,
             label: "Annuler",
-            style: ButtonStyle.Success,
+            style: 3,
           },
         ],
       },
@@ -61,7 +56,7 @@ exports.run = async (client, interaction, config) => {
 
   await interaction.reply({
     components: [deleteContainer],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
     allowedMentions: { parse: [] },
   });
 };

@@ -1,5 +1,4 @@
 const config = require("../../config.js");
-const { ActivityType } = require("discord.js");
 
 async function getPlayerCount(server) {
   try {
@@ -28,7 +27,7 @@ async function cycleStatus(client, statusIndex) {
       : `NationsGlory`;
 
   client.user.setPresence({
-    activities: [{ name: statusName, type: ActivityType.Watching }],
+    activities: [{ name: statusName, type: 3 }],
     status: "online",
   });
 

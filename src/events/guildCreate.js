@@ -1,9 +1,3 @@
-const {
-  MessageFlags,
-  SeparatorSpacingSize,
-  ButtonStyle,
-  AuditLogEvent,
-} = require("discord.js");
 const { discordStaff } = require("../../utils/functions/linkedUser.js");
 const config = require("../../config.js");
 
@@ -11,7 +5,7 @@ module.exports = async (client, guild) => {
   try {
     const auditLogs = await guild.fetchAuditLogs({
       limit: 1,
-      type: AuditLogEvent.BotAdd,
+      type: 28,
     });
     const botAddLog = auditLogs.entries.find(
       (entry) => entry.target.id === client.user.id,
@@ -31,13 +25,13 @@ module.exports = async (client, guild) => {
         accent_color: color,
         components: [
           { type: 10, content: title },
-          { type: 14, spacing: SeparatorSpacingSize.Large },
+          { type: 14, spacing: 2 },
           { type: 10, content },
         ],
       };
       await logChannel.send({
         components: [container],
-        flags: MessageFlags.IsComponentsV2,
+        flags: 32768,
       });
     };
 
@@ -47,13 +41,13 @@ module.exports = async (client, guild) => {
         accent_color: config.colors.error,
         components: [
           { type: 10, content: `## :x: Compte non Lié` },
-          { type: 14, spacing: SeparatorSpacingSize.Large },
+          { type: 14, spacing: 2 },
           {
             type: 10,
             content:
               "Ton compte Discord doit être lié à ton compte NationsGlory pour effectuer cette action.",
           },
-          { type: 14, spacing: SeparatorSpacingSize.Large },
+          { type: 14, spacing: 2 },
           {
             type: 1,
             components: [
@@ -61,7 +55,7 @@ module.exports = async (client, guild) => {
                 type: 2,
                 url: "https://glorybot.fr/user/profile",
                 label: "🔗 Lier son Compte",
-                style: ButtonStyle.Link,
+                style: 5,
               },
             ],
           },
@@ -71,7 +65,7 @@ module.exports = async (client, guild) => {
       await guild.leave();
       await inviter.send({
         components: [errorContainer],
-        flags: MessageFlags.IsComponentsV2,
+        flags: 32768,
         allowedMentions: { parse: [] },
       });
 
@@ -95,13 +89,13 @@ module.exports = async (client, guild) => {
         accent_color: config.colors.error,
         components: [
           { type: 10, content: `## :x: Accès Refusé` },
-          { type: 14, spacing: SeparatorSpacingSize.Large },
+          { type: 14, spacing: 2 },
           {
             type: 10,
             content:
               "GloryRP est un robot uniquement disponible aux différents staffs de NationsGlory, il est donc formellement interdit de l'inviter sur un autre serveur Discord que ceux autorisés.",
           },
-          { type: 14, spacing: SeparatorSpacingSize.Large },
+          { type: 14, spacing: 2 },
           {
             type: 1,
             components: [
@@ -110,7 +104,7 @@ module.exports = async (client, guild) => {
                 url: "https://discord.com/oauth2/authorize?client_id=829422257130176523",
                 label: "Inviter GloryBot",
                 emoji: "1360717989267378477",
-                style: ButtonStyle.Link,
+                style: 5,
               },
             ],
           },
@@ -120,7 +114,7 @@ module.exports = async (client, guild) => {
       await guild.leave();
       await inviter.send({
         components: [errorContainer],
-        flags: MessageFlags.IsComponentsV2,
+        flags: 32768,
         allowedMentions: { parse: [] },
       });
 
@@ -143,13 +137,13 @@ module.exports = async (client, guild) => {
       accent_color: config.colors.success,
       components: [
         { type: 10, content: `## 🎉 Merci d'avoir invité GloryRP` },
-        { type: 14, spacing: SeparatorSpacingSize.Large },
+        { type: 14, spacing: 2 },
         {
           type: 10,
           content:
             "Nous vous remercions pour l'interet que vous portez à l'égard de notre travail. Afin d'utiliser au mieux ce robot, il n'est constitué d'uniquement 5 commandes :\n- ``/config`` : Permet de configurer tous vos rôle-play\n- ``/logs`` : Affiche la liste des dernières modifications sur les différents rôle-play\n- ``/salaire`` : Regarde le salaire des mois ainsi que d'un joueur en particulier avec un graphique ainsi que la liste de ses tâches\n- ``/rank`` : Nécessaire pour que vos joueurs soient comptés comme ayant un grade, branché avec le système de permission- ``/derank`` : Comme précédement, commandes obligatoires, elles affiches aussi une affiche et l'historique des grades",
         },
-        { type: 14, spacing: SeparatorSpacingSize.Large },
+        { type: 14, spacing: 2 },
         {
           type: 1,
           components: [
@@ -158,7 +152,7 @@ module.exports = async (client, guild) => {
               url: "https://discord.gg/tFkb9nYSd8",
               label: "Discord Support",
               emoji: "1307452239052279858",
-              style: ButtonStyle.Link,
+              style: 5,
             },
           ],
         },
@@ -167,7 +161,7 @@ module.exports = async (client, guild) => {
 
     await inviter.send({
       components: [goodContainer],
-      flags: MessageFlags.IsComponentsV2,
+      flags: 32768,
       allowedMentions: { parse: [] },
     });
 

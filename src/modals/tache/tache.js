@@ -5,11 +5,6 @@ const {
 } = require("../../../utils/functions/datas.js");
 const { discordLink } = require("../../../utils/functions/linkedUser.js");
 const { updatePanelTasks } = require("../../../utils/functions/sendPanel.js");
-const {
-  MessageFlags,
-  SeparatorSpacingSize,
-  ButtonStyle,
-} = require("discord.js");
 const cheerio = require("cheerio");
 const { getEmojiTete } = require("../../../utils/functions/emojis.js");
 
@@ -26,7 +21,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -35,7 +30,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 1,
@@ -44,7 +39,7 @@ exports.run = async (client, interaction, config) => {
               type: 2,
               url: "https://glorybot.fr/user/profile",
               label: "🔗 Lier son Compte",
-              style: ButtonStyle.Link,
+              style: 5,
             },
           ],
         },
@@ -53,7 +48,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -76,7 +71,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -87,7 +82,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -104,7 +99,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -116,7 +111,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -132,7 +127,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -144,7 +139,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -167,7 +162,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -179,7 +174,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -195,7 +190,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -207,7 +202,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -264,7 +259,7 @@ exports.run = async (client, interaction, config) => {
                   },
                   {
                     type: 14,
-                    spacing: SeparatorSpacingSize.Large,
+                    spacing: 2,
                   },
                   {
                     type: 10,
@@ -272,7 +267,7 @@ exports.run = async (client, interaction, config) => {
                   },
                   {
                     type: 14,
-                    spacing: SeparatorSpacingSize.Small,
+                    spacing: 1,
                   },
                   {
                     type: 1,
@@ -281,7 +276,7 @@ exports.run = async (client, interaction, config) => {
                         type: 2,
                         url: foundUrl,
                         label: "🔗 Voir la Discussion Forum",
-                        style: ButtonStyle.Link,
+                        style: 5,
                       },
                     ],
                   },
@@ -290,7 +285,7 @@ exports.run = async (client, interaction, config) => {
 
               return await interaction.reply({
                 components: [errorContainer],
-                flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+                flags: 32768 | 64,
                 allowedMentions: { parse: [] },
               });
             }
@@ -319,7 +314,7 @@ exports.run = async (client, interaction, config) => {
                 },
                 {
                   type: 14,
-                  spacing: SeparatorSpacingSize.Large,
+                  spacing: 2,
                 },
                 {
                   type: 10,
@@ -333,7 +328,7 @@ exports.run = async (client, interaction, config) => {
                 },
                 {
                   type: 14,
-                  spacing: SeparatorSpacingSize.Small,
+                  spacing: 1,
                 },
                 {
                   type: 1,
@@ -342,7 +337,7 @@ exports.run = async (client, interaction, config) => {
                       type: 2,
                       url: foundUrl,
                       label: "Aller sur la Discussion Forum",
-                      style: ButtonStyle.Link,
+                      style: 5,
                     },
                   ],
                 },
@@ -351,7 +346,7 @@ exports.run = async (client, interaction, config) => {
 
             return await interaction.reply({
               components: [errorContainer],
-              flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+              flags: 32768 | 64,
               allowedMentions: { parse: [] },
             });
           }
@@ -369,7 +364,7 @@ exports.run = async (client, interaction, config) => {
             },
             {
               type: 14,
-              spacing: SeparatorSpacingSize.Large,
+              spacing: 2,
             },
             {
               type: 10,
@@ -380,7 +375,7 @@ exports.run = async (client, interaction, config) => {
 
         return await interaction.reply({
           components: [errorContainer],
-          flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+          flags: 32768 | 64,
           allowedMentions: { parse: [] },
         });
       }
@@ -396,7 +391,7 @@ exports.run = async (client, interaction, config) => {
           },
           {
             type: 14,
-            spacing: SeparatorSpacingSize.Large,
+            spacing: 2,
           },
           {
             type: 10,
@@ -407,7 +402,7 @@ exports.run = async (client, interaction, config) => {
 
       return await interaction.reply({
         components: [errorContainer],
-        flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+        flags: 32768 | 64,
         allowedMentions: { parse: [] },
       });
     }
@@ -439,7 +434,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -451,7 +446,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 1,
@@ -460,13 +455,13 @@ exports.run = async (client, interaction, config) => {
               type: 2,
               custom_id: `task_accepter-${panelId}-${taskId}-${interaction.user.id}`,
               label: "✅ Accepter la Tâche",
-              style: ButtonStyle.Success,
+              style: 3,
             },
             {
               type: 2,
               custom_id: `task_accepter_custom-${panelId}-${taskId}-${interaction.user.id}`,
               label: "✅ Accepter la Tâche avec un Salaire Customisé",
-              style: ButtonStyle.Secondary,
+              style: 2,
             },
           ],
         },
@@ -477,7 +472,7 @@ exports.run = async (client, interaction, config) => {
               type: 2,
               custom_id: `task_refuser-${panelId}-${taskId}-${interaction.user.id}`,
               label: "❌ Refuser la Tâche",
-              style: ButtonStyle.Danger,
+              style: 4,
             },
             ...(foundUrl
               ? [
@@ -485,7 +480,7 @@ exports.run = async (client, interaction, config) => {
                     type: 2,
                     label: "🔗 Lien vers la Tâche",
                     url: foundUrl,
-                    style: ButtonStyle.Link,
+                    style: 5,
                   },
                 ]
               : []),
@@ -496,7 +491,7 @@ exports.run = async (client, interaction, config) => {
 
     message = await respChannel.send({
       components: [tacheContainer],
-      flags: MessageFlags.IsComponentsV2,
+      flags: 32768,
       allowedMentions: { parse: [] },
     });
   } else {
@@ -510,7 +505,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -522,7 +517,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 1,
@@ -533,7 +528,7 @@ exports.run = async (client, interaction, config) => {
                     type: 2,
                     label: "🔗 Lien vers la Tâche",
                     url: foundUrl,
-                    style: ButtonStyle.Link,
+                    style: 5,
                   },
                 ]
               : []),
@@ -544,7 +539,7 @@ exports.run = async (client, interaction, config) => {
 
     message = await logsChannel.send({
       components: [tacheContainer],
-      flags: MessageFlags.IsComponentsV2,
+      flags: 32768,
       allowedMentions: { parse: [] },
     });
   }
@@ -583,7 +578,7 @@ exports.run = async (client, interaction, config) => {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Large,
+        spacing: 2,
       },
       {
         type: 10,
@@ -596,7 +591,7 @@ exports.run = async (client, interaction, config) => {
 
   await interaction.reply({
     components: [goodContainer],
-    flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+    flags: 32768 | 64,
     allowedMentions: { parse: [] },
   });
 
