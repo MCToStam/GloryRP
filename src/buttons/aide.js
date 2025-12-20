@@ -1,7 +1,5 @@
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
-
 exports.run = async (client, interaction, config) => {
-  await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+  await interaction.deferReply({ flags: 64 });
 
   const module = interaction.customId.split("-")[1];
 
@@ -32,7 +30,7 @@ exports.run = async (client, interaction, config) => {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Large,
+        spacing: 2,
       },
       {
         type: 10,
@@ -43,7 +41,7 @@ exports.run = async (client, interaction, config) => {
 
   await interaction.editReply({
     components: [aideContainer],
-    flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+    flags: 32768 | 64,
     allowedMentions: { parse: [] },
   });
 };

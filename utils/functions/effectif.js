@@ -1,8 +1,3 @@
-const {
-  MessageFlags,
-  SeparatorSpacingSize,
-  ButtonStyle,
-} = require("discord.js");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
 const { discordLink } = require("../../utils/functions/linkedUser.js");
 const config = require("../../config.js");
@@ -49,14 +44,14 @@ function buildEffectifContainer(serveur, panel, effectifContent, buttons = []) {
         type: 10,
         content: `## ${panel.emoji ? `${panel.emoji} ` : ""}${panel.name}`,
       },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       { type: 10, content: effectifContent },
     ],
   };
 
   if (buttons.length > 0) {
     container.components.push(
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       { type: 1, components: buttons },
     );
   }
@@ -68,7 +63,7 @@ function buildButtons(panel) {
   return (
     panel.effectif.button?.map((b) => ({
       type: 2,
-      style: ButtonStyle.Link,
+      style: 5,
       label: b.label,
       url: b.lien,
     })) || []
@@ -81,7 +76,7 @@ function errorResponse(text) {
     accent_color: config.colors.error,
     components: [
       { type: 10, content: "## :no_entry_sign: Erreur" },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       { type: 10, content: text },
     ],
   };
@@ -128,7 +123,7 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
 
   const message = await channel.send({
     components: [effectifContainer],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
     allowedMentions: { parse: [] },
   });
 
@@ -143,7 +138,7 @@ async function sendEffectif(client, serveur, serveurDatas, panelId) {
     accent_color: config.colors.success,
     components: [
       { type: 10, content: "## :white_check_mark: Effectif Envoyé" },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       {
         type: 10,
         content: `L'effectif du rôle-play **${panel.name}** a correctement été envoyé ici : ${message.url}`,

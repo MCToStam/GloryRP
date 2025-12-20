@@ -1,4 +1,3 @@
-const { MessageFlags, time, userMention } = require("discord.js");
 const {
   getGuildColor,
   saveServerDatas,
@@ -42,11 +41,7 @@ exports.run = async (client, interaction, config) => {
     for (const row of components) {
       for (const comp of row.components.filter((x) => x.type == 10)) {
         if (comp.content.startsWith("-# Dernières modifications par ")) {
-          comp.content =
-            "-# Dernières modifications par " +
-            userMention(panelDatas.lastUser) +
-            " " +
-            (await time(panelDatas.timestamp, "R"));
+          comp.content = `-# Dernières modifications par <@${panelDatas.lastUser}> <t:${panelDatas.timestamp}:R>`;
         }
       }
     }
@@ -58,7 +53,7 @@ exports.run = async (client, interaction, config) => {
     console.error(e);
     return interaction.reply({
       content: `:x: **| Une erreur a eu lieu lors de l'écriture de vos données !**`,
-      flags: MessageFlags.Ephemeral,
+      flags: 64,
     });
   }
 };

@@ -1,7 +1,5 @@
 const {
-  MessageFlags,
   ContainerBuilder,
-  ButtonStyle,
   AttachmentBuilder,
   MediaGalleryBuilder,
   ButtonBuilder,
@@ -44,7 +42,7 @@ module.exports = {
 
       return interaction.reply({
         components: [container],
-        flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+        flags: 32768 | 64,
       });
     }
 
@@ -154,18 +152,18 @@ module.exports = {
               `candidature_activite_page-/${joueur}/${semaineOffset - 1}`,
             )
             .setLabel("⬅️ Semaine précédente")
-            .setStyle(ButtonStyle.Primary),
+            .setStyle(1),
           new ButtonBuilder()
             .setCustomId(`candidature_activite_status`)
             .setLabel(`Semaine du ${mondayFormatted}`)
-            .setStyle(ButtonStyle.Secondary)
+            .setStyle(2)
             .setDisabled(true),
           new ButtonBuilder()
             .setCustomId(
               `candidature_activite_page-/${joueur}/${semaineOffset + 1}`,
             )
             .setLabel("Semaine suivante ➡️")
-            .setStyle(ButtonStyle.Primary)
+            .setStyle(1)
             .setDisabled(semaineOffset >= 0),
         ),
       );
@@ -173,7 +171,7 @@ module.exports = {
     return interaction.editReply({
       files: [attachment],
       components: [container],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   },

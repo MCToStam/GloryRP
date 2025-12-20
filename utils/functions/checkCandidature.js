@@ -2,11 +2,6 @@ const cheerio = require("cheerio");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
 const { saveServerDatas, getServerDatas } = require("./datas.js");
 const config = require("../../config.js");
-const {
-  MessageFlags,
-  SeparatorSpacingSize,
-  ButtonStyle,
-} = require("discord.js");
 
 const moisFR = {
   janvier: 0,
@@ -24,7 +19,8 @@ const moisFR = {
 };
 
 function parseFrenchDate(dateStr) {
-  const regex = /(\d{1,2}) (\w+) (\d{4}) à (\d{2}):(\d{2})/;
+  const regex =
+    /(\d{1,2}) ([a-zA-Zéèêëàâäîïôöùûüç]+) (\d{4}) à (\d{2}):(\d{2})/;
   const match = dateStr.match(regex);
   if (!match) return null;
   const [, jour, mois, annee, heure, minute] = match;
@@ -88,7 +84,7 @@ async function getCandidatureContent(url, serveur) {
         if (imgUrl) {
           components.push({
             type: 14,
-            spacing: SeparatorSpacingSize.Small,
+            spacing: 1,
           });
           components.push({
             type: 12,
@@ -194,7 +190,7 @@ async function sendCandidatures(client, AllCandidatures) {
           type: 10,
           content: `## Candidature ${panel.name} - [${candidature.auteur}](https://nationsglory.fr/profile/${candidature.auteur})`,
         },
-        { type: 14, spacing: SeparatorSpacingSize.Small },
+        { type: 14, spacing: 1 },
         {
           type: 10,
           content: `${await getEmojiTete(
@@ -260,7 +256,7 @@ async function sendCandidatures(client, AllCandidatures) {
       }
 
       if (doubleData || punisherData) {
-        components.push({ type: 14, spacing: SeparatorSpacingSize.Small });
+        components.push({ type: 14, spacing: 1 });
       }
 
       if (doubleData) {
@@ -315,7 +311,7 @@ async function sendCandidatures(client, AllCandidatures) {
       }
 
       components.push(
-        { type: 14, spacing: SeparatorSpacingSize.Small },
+        { type: 14, spacing: 1 },
         {
           type: 1,
           components: [
@@ -323,17 +319,17 @@ async function sendCandidatures(client, AllCandidatures) {
               type: 2,
               custom_id: `candidature_punisher-${candidature.auteur}`,
               label: "💢 Afficher le Punisher",
-              style: ButtonStyle.Primary,
+              style: 1,
             },
             {
               type: 2,
               custom_id: `candidature_activite-${candidature.auteur}-${serveur}`,
               label: "⌚ Afficher l'Activité",
-              style: ButtonStyle.Primary,
+              style: 1,
             },
           ],
         },
-        { type: 14, spacing: SeparatorSpacingSize.Small },
+        { type: 14, spacing: 1 },
         {
           type: 1,
           components: [
@@ -341,7 +337,7 @@ async function sendCandidatures(client, AllCandidatures) {
               type: 2,
               url: candidature.lien,
               label: "🔗 Aller sur la Candidature",
-              style: ButtonStyle.Link,
+              style: 5,
             },
           ],
         },
@@ -374,7 +370,7 @@ async function sendCandidatures(client, AllCandidatures) {
         if (channel.type === 0) {
           const sent = await channel.send({
             components,
-            flags: MessageFlags.IsComponentsV2,
+            flags: 32768,
           });
           candidature.messageId = sent.id;
           candidature.savedBadgeColor = candidature.badgeColor;
@@ -385,20 +381,20 @@ async function sendCandidatures(client, AllCandidatures) {
 
           await thread.send({
             components: [candidatureDetailsContainer],
-            flags: MessageFlags.IsComponentsV2,
+            flags: 32768,
           });
         } else if (channel.type === 15) {
           const thread = await channel.threads.create({
             name: `Candidature ${panel.name} - ${candidature.auteur}`,
             message: {
               components,
-              flags: MessageFlags.IsComponentsV2,
+              flags: 32768,
             },
           });
 
           await thread.send({
             components: [candidatureDetailsContainer],
-            flags: MessageFlags.IsComponentsV2,
+            flags: 32768,
           });
 
           let mainMessage;
@@ -502,13 +498,6 @@ async function fetchNewCandidatures() {
         continue;
 
       try {
-        let lastTimestamp = null;
-        if (panel.candidature.save.length > 0) {
-          lastTimestamp = panel.candidature.save.reduce((max, msg) => {
-            return msg.timestamp && msg.timestamp > max ? msg.timestamp : max;
-          }, 0);
-        }
-
         const response = await fetch(panel.candidature.lien);
         const html = await response.text();
         const $ = cheerio.load(html);

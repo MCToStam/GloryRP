@@ -4,7 +4,6 @@ const {
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
 const { discordLink } = require("../../../utils/functions/linkedUser.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const {
   getJoueurTacheContainer,
 } = require("../../../components/salaireContainer.js");
@@ -30,7 +29,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -41,7 +40,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }

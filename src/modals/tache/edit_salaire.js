@@ -3,8 +3,7 @@ const {
   saveServerDatas,
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
-const { getEditTacheContainer } = require("../../../components/containers.js");
+const { getEditTacheContainer } = require("../../../components/containers");
 const {
   toTimeStamp,
 } = require("../../../utils/functions/numbersAndLetters.js");
@@ -28,7 +27,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -39,7 +38,7 @@ exports.run = async (client, interaction, config) => {
 
     return await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
   }
@@ -77,6 +76,9 @@ exports.run = async (client, interaction, config) => {
     action: `Modification du salaire de la tâche ${tache.name} en ${new_salaire} ${jour_text}`,
   });
 
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
   await saveServerDatas(interaction, serverDatas, guildColor);
 
   const goodContainer = await getEditTacheContainer(
@@ -88,11 +90,11 @@ exports.run = async (client, interaction, config) => {
   );
   return interaction.update({
     components: [goodContainer],
-    flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+    flags: 32768 | 64,
     allowedMentions: { parse: [] },
   });
 };
 
 exports.data = {
-  name: "edit_tache_salaire",
+  name: "tache_edit_salaire",
 };

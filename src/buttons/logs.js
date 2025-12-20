@@ -1,6 +1,5 @@
 const { getLogContainer } = require("../../components/logContainer.js");
 const { getServerDatas } = require("../../utils/functions/datas.js");
-const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction) => {
   await interaction.deferUpdate();
@@ -26,7 +25,7 @@ exports.run = async (client, interaction) => {
   };
 
   if (action === "first") {
-    payload.flags = MessageFlags.IsComponentsV2;
+    payload.flags = 32768;
     return interaction.message.reply(payload);
   }
 

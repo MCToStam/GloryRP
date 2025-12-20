@@ -4,7 +4,6 @@ const {
   ContainerBuilder,
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle,
 } = require("discord.js");
 const { getEmojiTete } = require("../../utils/functions/emojis");
 
@@ -57,17 +56,17 @@ async function getPunisherContainer(
         new ButtonBuilder()
           .setCustomId(`punisher-prev-${joueur}-${page}-${serveur}`)
           .setLabel("◀️")
-          .setStyle(ButtonStyle.Primary)
+          .setStyle(1)
           .setDisabled(page <= 1),
         new ButtonBuilder()
           .setCustomId(`punisher-${page}`)
           .setLabel(`Page ${page}`)
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(2)
           .setDisabled(true),
         new ButtonBuilder()
           .setCustomId(`punisher-next-${joueur}-${page}-${serveur}`)
           .setLabel("▶️")
-          .setStyle(ButtonStyle.Primary)
+          .setStyle(1)
           .setDisabled(page >= maxPage),
       ),
     );

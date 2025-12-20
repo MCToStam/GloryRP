@@ -1,10 +1,4 @@
-const config = require("../config.js");
-const {
-  SeparatorSpacingSize,
-  time,
-  userMention,
-  ButtonStyle,
-} = require("discord.js");
+const config = require("../config");
 
 async function getLogContainer(serverDatas, panel, serv, page, type) {
   const servName = serv.charAt(0).toUpperCase() + serv.slice(1);
@@ -27,7 +21,7 @@ async function getLogContainer(serverDatas, panel, serv, page, type) {
           },
           {
             type: 14,
-            spacing: SeparatorSpacingSize.Large,
+            spacing: 2,
           },
           {
             type: 10,
@@ -54,11 +48,8 @@ async function getLogContainer(serverDatas, panel, serv, page, type) {
     logLines = ["> :x: Aucun log trouvé pour ce serveur."];
   } else {
     logLines = await Promise.all(
-      pageLogs.map(async (log) => {
-        return `- ${userMention(log.user)} : **${log.action}** ${await time(
-          log.timestamp,
-          "R",
-        )}`;
+      pageLogs.map((log) => {
+        return `- <@${log.user}> : **${log.action}** <t:${log.timestamp}:R>`;
       }),
     );
   }
@@ -79,7 +70,7 @@ async function getLogContainer(serverDatas, panel, serv, page, type) {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -87,7 +78,7 @@ async function getLogContainer(serverDatas, panel, serv, page, type) {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Small,
+          spacing: 1,
         },
         {
           type: 1,
@@ -96,21 +87,21 @@ async function getLogContainer(serverDatas, panel, serv, page, type) {
               type: 2,
               custom_id: `logs-prev-${panelId}-${serv}-${page}-${type}`,
               label: "⬅️",
-              style: ButtonStyle.Primary,
+              style: 1,
               disabled: page <= 1,
             },
             {
               type: 2,
               custom_id: "logs-status",
               label: `Page ${page}/${totalPages}`,
-              style: ButtonStyle.Secondary,
+              style: 2,
               disabled: true,
             },
             {
               type: 2,
               custom_id: `logs-next-${panelId}-${serv}-${page}-${type}`,
               label: "➡️",
-              style: ButtonStyle.Primary,
+              style: 1,
               disabled: page >= totalPages,
             },
           ],

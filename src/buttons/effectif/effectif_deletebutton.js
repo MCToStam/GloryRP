@@ -1,10 +1,9 @@
-const { MessageFlags } = require("discord.js");
 const {
   getServerDatas,
   saveServerDatas,
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
-const { getEffectifContainer } = require("../../../components/containers.js");
+const { getEffectifContainer } = require("../../../components/containers");
 const { updateEffectif } = require("../../../utils/functions/effectif.js");
 const {
   toTimeStamp,
@@ -45,7 +44,7 @@ exports.run = async (client, interaction, config) => {
   );
   await interaction.update({
     components: [goodContainer],
-    flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+    flags: 32768 | 64,
     allowedMentions: { parse: [] },
   });
 

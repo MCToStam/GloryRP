@@ -4,7 +4,6 @@ const {
   getGuildColor,
 } = require("../../utils/functions/datas.js");
 const { sendPanelTasks } = require("../../utils/functions/sendPanel.js");
-const { MessageFlags } = require("discord.js");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {
@@ -34,7 +33,7 @@ exports.run = async (client, interaction, config) => {
   return interaction.reply({
     components: [responseContainer],
     allowedMentions: { parse: [] },
-    flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+    flags: 32768 | 64,
   });
 };
 

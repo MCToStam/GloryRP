@@ -1,9 +1,8 @@
-const { getEditTacheContainer } = require("../../../components/containers.js");
+const { getEditTacheContainer } = require("../../../components/containers");
 const {
   getServerDatas,
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
-const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   await interaction.deferUpdate();
@@ -24,7 +23,7 @@ exports.run = async (client, interaction, config) => {
   );
   return interaction.editReply({
     components: [tacheContainer],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
     allowedMentions: { parse: [] },
   });
 };

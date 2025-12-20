@@ -2,7 +2,6 @@ const {
   ensureSanctions,
   getPunisherContainer,
 } = require("../../../utils/functions/punisher");
-const { MessageFlags } = require("discord.js");
 
 module.exports = {
   data: {
@@ -34,7 +33,7 @@ module.exports = {
 
     await interaction.editReply({
       components: [sanctionContainer],
-      flags: MessageFlags.IsComponentsV2,
+      flags: 32768,
     });
   },
 };

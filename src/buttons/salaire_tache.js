@@ -1,4 +1,3 @@
-const { MessageFlags } = require("discord.js");
 const { getServerDatas } = require("../../utils/functions/datas.js");
 const {
   getJoueurTacheContainer,
@@ -21,17 +20,13 @@ exports.run = async (client, interaction, config) => {
   if (first) {
     return interaction.reply({
       components: [salaireContainer],
-      flags: error
-        ? MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral
-        : MessageFlags.IsComponentsV2,
+      flags: error ? 32768 | 64 : 32768,
       allowedMentions: { parse: [] },
     });
   } else {
     return interaction.update({
       components: [salaireContainer],
-      flags: error
-        ? MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral
-        : MessageFlags.IsComponentsV2,
+      flags: error ? 32768 | 64 : 32768,
       allowedMentions: { parse: [] },
     });
   }

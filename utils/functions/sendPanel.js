@@ -1,4 +1,3 @@
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
 const config = require("../../config.js");
 const { saveServerDatas } = require("../../utils/functions/datas.js");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
@@ -39,7 +38,9 @@ async function buildWaitingTasks(client, panel) {
     tasksWaiting.map(async ({ tache, pseudoRp }) => {
       const emojiTete = await getEmojiTete(client, pseudoRp);
       const detail = tache.details
-        ? `\n➩ *${tache.lien ? `[${tache.details}](${tache.lien})` : tache.details}*`
+        ? `\n➩ *${
+            tache.lien ? `[${tache.details}](${tache.lien})` : tache.details
+          }*`
         : "";
 
       return `**${tache.nom}**, demandé par ${emojiTete} **${pseudoRp}**${detail}`;
@@ -58,9 +59,9 @@ function buildPanelContainer(serveur, panel, panelTexte, validTasks) {
         type: 10,
         content: `## ${panel.emoji ? `${panel.emoji} ` : ""}${panel.name}`,
       },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       { type: 10, content: panelTexte },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
 
       {
         type: 1,
@@ -133,7 +134,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
 
   const message = await channel.send({
     components: [panelContainer],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
     allowedMentions: { parse: [] },
   });
 
@@ -148,7 +149,7 @@ async function sendPanelTasks(client, serveur, serveurDatas, panelId) {
     accent_color: config.colors.success,
     components: [
       { type: 10, content: "## ✔️ Panel Envoyé" },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       {
         type: 10,
         content: `Le panel du rôle-play **${panel.name}** a été envoyé ici :${message.url}`,
@@ -180,7 +181,7 @@ async function updatePanelTasks(client, serveur, serveurDatas, panelId) {
 
   await message.edit({
     components: [panelContainer],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
   });
 }
 
@@ -190,7 +191,7 @@ function errorPanel(text) {
     accent_color: config.colors.error,
     components: [
       { type: 10, content: "## ❌ Erreur" },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       { type: 10, content: text },
     ],
   };

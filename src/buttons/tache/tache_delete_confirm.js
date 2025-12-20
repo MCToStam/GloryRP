@@ -2,8 +2,7 @@ const {
   getServerDatas,
   saveServerDatas,
 } = require("../../../utils/functions/datas.js");
-const { MessageFlags, SeparatorSpacingSize } = require("discord.js");
-const { getTacheContainer } = require("../../../components/containers.js");
+const { getTacheContainer } = require("../../../components/containers");
 const {
   toTimeStamp,
 } = require("../../../utils/functions/numbersAndLetters.js");
@@ -28,7 +27,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -39,7 +38,7 @@ exports.run = async (client, interaction, config) => {
 
     await interaction.reply({
       components: [errorContainer],
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: 32768 | 64,
       allowedMentions: { parse: [] },
     });
     return await interaction.message.delete().catch(() => {});
@@ -73,7 +72,7 @@ exports.run = async (client, interaction, config) => {
       },
       {
         type: 14,
-        spacing: SeparatorSpacingSize.Large,
+        spacing: 2,
       },
       {
         type: 10,
@@ -85,7 +84,7 @@ exports.run = async (client, interaction, config) => {
 
   await interaction.update({
     components: [goodContainer],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
     allowedMentions: { parse: [] },
   });
 
@@ -107,7 +106,7 @@ exports.run = async (client, interaction, config) => {
     );
     await originalMessage.edit({
       components: [configContainer],
-      flags: MessageFlags.IsComponentsV2,
+      flags: 32768,
       allowedMentions: { parse: [] },
     });
   }

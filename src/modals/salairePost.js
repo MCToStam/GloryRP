@@ -3,7 +3,6 @@ const {
   getServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
-const { MessageFlags } = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
@@ -23,7 +22,7 @@ exports.run = async (client, interaction, config) => {
   );
   return interaction.reply({
     components: [container],
-    flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+    flags: 32768 | 64,
     allowedMentions: { parse: [] },
   });
 };

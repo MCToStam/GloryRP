@@ -3,15 +3,10 @@ const {
   getGuildColor,
   saveServerDatas,
 } = require("../../../utils/functions/datas.js");
-const { getConfigContainer } = require("../../../components/containers.js");
+const { getConfigContainer } = require("../../../components/containers");
 const {
   toTimeStamp,
 } = require("../../../utils/functions/numbersAndLetters.js");
-const {
-  MessageFlags,
-  ButtonStyle,
-  SeparatorSpacingSize,
-} = require("discord.js");
 
 exports.run = async (client, interaction, config) => {
   const panelId = Number(interaction.customId.split("-")[1]);
@@ -33,7 +28,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -41,7 +36,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 1,
@@ -50,13 +45,13 @@ exports.run = async (client, interaction, config) => {
               type: 2,
               custom_id: `panel_delete-${panelId}-${guildColor}-confirm`,
               label: "Oui, Supprimer",
-              style: ButtonStyle.Danger,
+              style: 4,
             },
             {
               type: 2,
               custom_id: `delete_cancel-${panelId}`,
               label: "Annuler",
-              style: ButtonStyle.Success,
+              style: 3,
             },
           ],
         },
@@ -65,7 +60,7 @@ exports.run = async (client, interaction, config) => {
 
     await interaction.reply({
       components: [deleteContainer],
-      flags: MessageFlags.IsComponentsV2,
+      flags: 32768,
       allowedMentions: { parse: [] },
     });
   } else {
@@ -81,7 +76,7 @@ exports.run = async (client, interaction, config) => {
           },
           {
             type: 14,
-            spacing: SeparatorSpacingSize.Large,
+            spacing: 2,
           },
           {
             type: 10,
@@ -92,7 +87,7 @@ exports.run = async (client, interaction, config) => {
 
       await interaction.reply({
         components: [errorContainer],
-        flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+        flags: 32768 | 64,
         allowedMentions: { parse: [] },
       });
       return await interaction.message.delete().catch(() => {});
@@ -129,7 +124,7 @@ exports.run = async (client, interaction, config) => {
         },
         {
           type: 14,
-          spacing: SeparatorSpacingSize.Large,
+          spacing: 2,
         },
         {
           type: 10,
@@ -141,7 +136,7 @@ exports.run = async (client, interaction, config) => {
 
     await interaction.update({
       components: [goodContainer],
-      flags: MessageFlags.IsComponentsV2,
+      flags: 32768,
       allowedMentions: { parse: [] },
     });
 
@@ -159,7 +154,7 @@ exports.run = async (client, interaction, config) => {
       const configContainer = await getConfigContainer(serverDatas, guildColor);
       await originalMessage.edit({
         components: [configContainer],
-        flags: MessageFlags.IsComponentsV2,
+        flags: 32768,
         allowedMentions: { parse: [] },
       });
     }

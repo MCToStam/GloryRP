@@ -1,8 +1,3 @@
-const {
-  MessageFlags,
-  SeparatorSpacingSize,
-  ChannelType,
-} = require("discord.js");
 const config = require("../../config.js");
 const { getEmojiTete } = require("../../utils/functions/emojis.js");
 const { getServerDatas } = require("../../utils/functions/datas.js");
@@ -13,7 +8,7 @@ function createErrorBox(msg) {
     accent_color: config.colors.error,
     components: [
       { type: 10, content: "## :no_entry_sign: Erreur" },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       { type: 10, content: msg },
     ],
   };
@@ -25,7 +20,7 @@ function createPanel(title, content, color) {
     accent_color: color,
     components: [
       { type: 10, content: `## ${title}` },
-      { type: 14, spacing: SeparatorSpacingSize.Large },
+      { type: 14, spacing: 2 },
       { type: 10, content },
     ],
   };
@@ -95,7 +90,9 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
 
   if (!dateExiste) {
     return createErrorBox(
-      `Aucun salaire enregistré pour "**${formatDateFr(date)}**" dans **${panel.name}**.`,
+      `Aucun salaire enregistré pour "**${formatDateFr(date)}**" dans **${
+        panel.name
+      }**.`,
     );
   }
 
@@ -130,16 +127,18 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
           ]
         : []),
       createPanel(
-        `${panel.emoji ? panel.emoji + " " : ""}Salaires ${panel.name} - ${formatDateFr(date)}`,
+        `${panel.emoji ? panel.emoji + " " : ""}Salaires ${
+          panel.name
+        } - ${formatDateFr(date)}`,
         texte,
         config.couleur[serveur],
       ),
     ],
-    flags: MessageFlags.IsComponentsV2,
+    flags: 32768,
     allowedMentions: { parse: [] },
   });
 
-  if (channel.type === ChannelType.GuildAnnouncement) {
+  if (channel.type === 5) {
     await panelMessage.crosspost();
   }
 
@@ -150,7 +149,10 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
     if (responsableChannel) {
       const totalServeur = listeSalaires.reduce((a, s) => a + s.total, 0);
 
-      const cmdRetrait = `> 🌐 \`\`${panel.salaire.cmd_retrait.replace("[argent]", totalServeur)}\`\``;
+      const cmdRetrait = `> 🌐 \`\`${panel.salaire.cmd_retrait.replace(
+        "[argent]",
+        totalServeur,
+      )}\`\``;
 
       const commandes = [
         cmdRetrait,
@@ -160,16 +162,18 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
       const respMessage = await responsableChannel.send({
         components: [
           createPanel(
-            `${panel.emoji ? panel.emoji + " " : ""}Salaires ${panel.name} - ${formatDateFr(date)}`,
+            `${panel.emoji ? panel.emoji + " " : ""}Salaires ${
+              panel.name
+            } - ${formatDateFr(date)}`,
             commandes,
             config.couleur[serveur],
           ),
         ],
-        flags: MessageFlags.IsComponentsV2,
+        flags: 32768,
         allowedMentions: { parse: [] },
       });
 
-      if (responsableChannel.type === ChannelType.GuildAnnouncement) {
+      if (responsableChannel.type === 5) {
         await respMessage.crosspost();
       }
     }
@@ -177,7 +181,9 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
 
   return createPanel(
     ":white_check_mark: Salaire Envoyé",
-    `Salaire du mois "**${formatDateFr(date)}**" pour **${panel.name}** envoyé ici :${panelMessage.url}`,
+    `Salaire du mois "**${formatDateFr(date)}**" pour **${
+      panel.name
+    }** envoyé ici :${panelMessage.url}`,
     config.colors.success,
   );
 }

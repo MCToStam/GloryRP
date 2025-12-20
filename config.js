@@ -1,7 +1,7 @@
-const { Partials, GatewayIntentBits } = require("discord.js");
+const { Partials } = require("discord.js");
 
 const config = {
-  developpeur: ["506118119216119810", "719072181631320145"],
+  developpeur: [],
   guilds: { dev: "1415033751733538868" },
   colors: { statut: 0x480ca8, error: 0xff0000, success: 0x3fff00 },
   log_channels: {
@@ -103,7 +103,7 @@ const config = {
     depotdeplainte:
       "<:a:1415827518057091122> Salon où sera envoyé les nouvelles plaintes",
   },
-  intents: [GatewayIntentBits.Guilds],
+  intents: [1],
   partials: [Partials.User, Partials.Channel, Partials.GuildMember],
 };
 
