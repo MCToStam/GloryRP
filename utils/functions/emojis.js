@@ -2,7 +2,6 @@ const fs = require("node:fs");
 const path = require("node:path");
 const Canvas = require("canvas");
 const config = require("../../config");
-const { log } = require("node:console");
 
 const cachePath = path.join(__dirname, "..", "..", "data", "emojisCache.json");
 let emojisCache = JSON.parse(fs.readFileSync(cachePath, "utf8"));
