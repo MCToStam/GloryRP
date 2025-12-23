@@ -3,10 +3,7 @@ const {
   saveServerDatas,
   getGuildColor,
 } = require("../../utils/functions/datas.js");
-const {
-  getConfigContainer,
-  getBoutiqueContainer,
-} = require("../../components/containers");
+const { getConfigContainer } = require("../../components/containers");
 const { toTimeStamp } = require("../../utils/functions/numbersAndLetters.js");
 
 exports.run = async (client, interaction, config) => {

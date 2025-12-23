@@ -1,5 +1,4 @@
 const fs = require("node:fs");
-const path = require("node:path");
 const config = require("../../config.js");
 
 async function discordLink(discordId) {
@@ -12,7 +11,7 @@ async function discordLink(discordId) {
 
     if (response.ok) {
       const data = await response.json();
-      return discordId ? (data.pseudo ?? {}) : data;
+      return discordId ? (data.pseudo ?? false) : data;
     } else {
       console.warn("⚠️ API get-ng indisponible, utilisation du fichier local.");
     }
@@ -22,7 +21,7 @@ async function discordLink(discordId) {
     const localData = JSON.parse(
       fs.readFileSync("../../data/data/api_get_ng.json", "utf8"),
     );
-    return discordId ? (localData[discordId] ?? {}) : localData;
+    return discordId ? (localData[discordId] ?? false) : localData;
   } catch (err) {
     console.error(
       "❌ Erreur lors de la lecture du fichier api_get_ng.json :",
