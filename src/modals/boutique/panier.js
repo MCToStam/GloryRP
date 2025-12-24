@@ -1,9 +1,9 @@
 const {
   getServerDatas,
   saveServerDatas,
-} = require("../../utils/functions/datas.js");
-const { discordLink } = require("../../utils/functions/linkedUser");
-const { getPanierContainer } = require("../../components/boutique.js");
+} = require("../../../utils/functions/datas.js");
+const { discordLink } = require("../../../utils/functions/linkedUser.js");
+const { getPanierContainer } = require("../../../components/boutique.js");
 
 exports.run = async (client, interaction, config) => {
   const guildColor = interaction.customId.split("-")[1];

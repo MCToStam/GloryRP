@@ -44,18 +44,28 @@ exports.run = async (client, interaction, config) => {
   const reductionId = Number(reductionIdStr);
 
   let newValue = interaction.fields.getTextInputValue(type);
-  if (type === "usemax")
-    newValue = Number(newValue.replace(/[^0-9-]/g, "").replace(/(?!^)-/g, ""));
 
-  if (type === "debut" || type === "fin")
+  if (type === "usemax") {
+    newValue = Number(newValue.replace(/[^0-9-]/g, "").replace(/(?!^)-/g, ""));
+  }
+
+  if (type === "valeur") {
+    const valeurRegex = /^-?\d+(\.\d+)?(%|\$)$/;
+    if (!valeurRegex.test(newValue)) {
+      newValue = null;
+    }
+  }
+
+  if (type === "debut" || type === "fin") {
     newValue = parseFrenchDateToDiscordTimestamp(newValue);
+  }
 
   if (!newValue) {
     const texte =
-      newValue === "usemax"
+      type === "usemax" || type === "valeur"
         ? `${
             type === "usemax" ? "L'utilisation maximale" : "La valeur"
-          } doit être un nombre valide.`
+          } doit être un nombre valide${type === "valeur" ? "du type ``5000$`` ou ``50%`` par exemple" : ""}.`
         : 'Les dates de début et de fin doivent être au format "JJ/MM/AAAA HHhMM", soit par exemple "14/12/2025 15h00".';
     const errorContainer = {
       type: 17,
@@ -64,7 +74,11 @@ exports.run = async (client, interaction, config) => {
         {
           type: 10,
           content: `## :no_entry: ${
-            newValue === "usemax" ? "Utilisation Maximale" : "Date"
+            type === "usemax"
+              ? "Utilisation Maximale"
+              : type === "valeur"
+                ? "Valeur"
+                : "Date"
           } Invalide`,
         },
         {

@@ -29,6 +29,9 @@ exports.run = async (client, interaction, config) => {
     action: `Modification du niveau de vérification de la tâche ${tache.name} de ${tache.type} en ${new_type}`,
   });
 
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
   tache.type = new_type;
 
   await saveServerDatas(interaction, serverDatas, guildColor);

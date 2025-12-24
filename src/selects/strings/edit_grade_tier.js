@@ -29,6 +29,9 @@ exports.run = async (client, interaction, config) => {
     action: `Modification du tier du grade ${grade.nom} de ${grade.tier} en ${new_tier}`,
   });
 
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
   grade.tier = new_tier;
 
   await saveServerDatas(interaction, serverDatas, guildColor);

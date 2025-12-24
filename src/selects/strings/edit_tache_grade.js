@@ -30,6 +30,9 @@ exports.run = async (client, interaction, config) => {
     action: `Modification des grades autorisés à ${type} la tâche ${tache.name}`,
   });
 
+  serverDatas.lastUser = interaction.user.id;
+  serverDatas.timestamp = modifDate;
+
   type === "valider"
     ? (tache.grade_valider = new_grade)
     : (tache.grade = new_grade);

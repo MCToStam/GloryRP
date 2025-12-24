@@ -48,6 +48,9 @@ exports.run = async (client, interaction, config) => {
       action: `Modification ${actionLabel} de l'article ${articleData.nom} de ${articleData[type]} en ${newValue}`,
     });
 
+    serverDatas.lastUser = interaction.user.id;
+    serverDatas.timestamp = modifDate;
+
     articleData[type] = newValue;
 
     await saveServerDatas(interaction, serverDatas, guildColor);
