@@ -2681,6 +2681,106 @@ async function getBoutiqueEditReductionContainer(
   };
 }
 
+async function getBoutiquePayementContainer(
+  boutiqueId,
+  guildColor,
+  boutiqueDatas,
+) {
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components: [
+      {
+        type: 10,
+        content: `## ${
+          boutiqueDatas.emoji ? `${boutiqueDatas.emoji} ` : ""
+        } Configuration de la Boutique ${boutiqueDatas.name}`,
+      },
+      {
+        type: 14,
+        spacing: 1,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 3,
+            custom_id: `boutique_payement-${boutiqueId}`,
+            placeholder: "Choisit la manière de payer",
+            options: [
+              {
+                label: "Manuelle",
+                value: `boutique_payement-${boutiqueId}-manuelle`,
+                description: "Les joueurs devront envoyer une capture d'écran",
+                emoji: { name: "🤚" },
+                default: boutiqueDatas.payement.mode === "manuelle",
+              },
+              {
+                label: "Automatique",
+                value: `boutique_payement-${boutiqueId}-automatique`,
+                description: "Les joueurs devront faire une commande en jeu",
+                emoji: { name: "🤖" },
+                default: boutiqueDatas.payement.mode === "automatique",
+              },
+            ],
+          },
+        ],
+      },
+      boutiqueDatas.payement.mode === "automatique"
+        ? {
+            type: 9,
+            components: [
+              {
+                type: 10,
+                content: `**Commande à exécuter pour payer :** \`\`/${boutiqueDatas.payement.commande}\`\``,
+              },
+            ],
+            accessory: {
+              type: 2,
+              custom_id: `boutique_payement-${boutiqueId}-commande`,
+              label: "🤖 Modifier la Commande",
+              style: 1,
+            },
+          }
+        : null,
+      boutiqueDatas.payement.mode === "automatique"
+        ? {
+            type: 1,
+            components: [
+              {
+                type: 2,
+                custom_id: `boutique_payement-${boutiqueId}-donnee`,
+                label: "💰 Modifier l'argent d'un joueur",
+                style: 3,
+              },
+            ],
+          }
+        : null,
+      {
+        type: 14,
+        spacing: 1,
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            custom_id: `return-${boutiqueId}-boutique`,
+            label: "🚪 Retour",
+            style: 2,
+          },
+          {
+            type: 2,
+            custom_id: "aide-payement",
+            label: "❓ Aide",
+            style: 2,
+          },
+        ],
+      },
+    ].filter(Boolean),
+  };
+}
+
 module.exports = {
   getConfigContainer,
   getPanelContainer,
@@ -2701,4 +2801,5 @@ module.exports = {
   getBoutiqueEditArticleContainer,
   getBoutiqueReductionContainer,
   getBoutiqueEditReductionContainer,
+  getBoutiquePayementContainer,
 };

@@ -47,6 +47,9 @@ exports.run = async (client, interaction, config) => {
 
     reductionData[type] = newValue;
 
+    serverDatas.lastUser = interaction.user.id;
+    serverDatas.timestamp = modifDate;
+
     await saveServerDatas(interaction, serverDatas, guildColor);
   }
 
