@@ -1,5 +1,9 @@
 .vscode
 .env
+.prettierignore
+prettierrc.json
+README.md
+
 package-lock.json
 node_modules/
 components/json/
@@ -15,6 +19,3 @@ data/*
 !data/tacheBaseData.json
 !data/paiement.png
 !data/logo/*.png
-
-prettierrc.json
-README.md
