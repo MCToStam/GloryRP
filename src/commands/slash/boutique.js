@@ -1,9 +1,41 @@
 const { getServerDatas } = require("../../../utils/functions/datas");
 const { getBoutiqueContainer } = require("../../../components/boutique");
 const { discordLink } = require("../../../utils/functions/linkedUser");
+const {
+  getServerCommand,
+} = require("../../../utils/functions/getServerCommand");
 
 exports.run = async (client, interaction, config) => {
-  const serv = interaction.options.getString("serveur").toLowerCase();
+  const serv =
+    interaction.options.getString("serveur")?.toLowerCase() ||
+    (await getServerCommand(interaction.guild.id));
+
+  if (!serv) {
+    const nonServeurContainer = {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        {
+          type: 10,
+          content: "## :no_entry_sign: Aucun Serveur",
+        },
+        {
+          type: 14,
+          spacing: 2,
+        },
+        {
+          type: 10,
+          content:
+            "Aucun serveur par défaut n'a été trouvé sur ce serveur Discord, veuillez en spécifier un manuellement.",
+        },
+      ],
+    };
+    return interaction.reply({
+      components: [nonServeurContainer],
+      flags: 32768 | 64,
+      allowedMentions: { parse: [] },
+    });
+  }
 
   const pseudonym = await discordLink(interaction.user.id);
   if (!pseudonym) {
@@ -69,7 +101,7 @@ exports.data = {
       name: "serveur",
       description: "Serveur pour lequel afficher la boutique",
       autocomplete: true,
-      required: true,
+      required: false,
     },
   ],
   contexts: [0],
