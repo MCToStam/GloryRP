@@ -1,0 +1,10 @@
+{
+  "id": false,
+  "code": false,
+  "debut": false,
+  "fin": false,
+  "valeur": false,
+  "categorie": [],
+  "article": [],
+  "usemax": -1
+}
