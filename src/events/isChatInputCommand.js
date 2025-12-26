@@ -94,6 +94,11 @@ module.exports = async (client, interaction) => {
     setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
   }
 
+  const formattedOptions = formatOptions(interaction.options.data);
+  const commandPath = `/${interaction.commandName}${
+    formattedOptions ? " " + formattedOptions : ""
+  }`;
+
   try {
     await slashCmd.run(client, interaction, config);
   } catch (e) {
@@ -130,14 +135,40 @@ module.exports = async (client, interaction) => {
       });
     }
     log(e, "error", "red");
+
+    const channel = await client.channels.fetch(config.log_channels.error);
+
+    const errorLogContainer = {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        {
+          type: 10,
+          content: "## ❌ Erreur",
+        },
+        {
+          type: 14,
+          spacing: 1,
+        },
+        {
+          type: 10,
+          content: `**🔧 Action Effectuée :** ${commandPath}`,
+        },
+        {
+          type: 10,
+          content: `**💢 Erreur :** \`\`\`${e}\`\`\``,
+        },
+      ],
+    };
+
+    await channel.send({
+      components: [errorLogContainer],
+      flags: 32768,
+      allowedMentions: { parse: [] },
+    });
   }
 
   const channel = await client.channels.fetch(config.log_channels.command);
-
-  const formattedOptions = formatOptions(interaction.options.data);
-  const commandPath = `/${interaction.commandName}${
-    formattedOptions ? " " + formattedOptions : ""
-  }`;
 
   const logContainer = {
     type: 17,

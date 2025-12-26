@@ -206,7 +206,7 @@ async function getPanierContainer(
 ) {
   const panier = boutiqueDatas.panier.find((p) => p.memberId === memberId);
 
-  const articlesPanier = panier.article ?? [];
+  const articlesPanier = panier?.article ?? [];
 
   let totalBrut = 0;
   const detailsArticles = [];
@@ -229,7 +229,7 @@ async function getPanierContainer(
 
   const now = Math.floor(Date.now() / 1000);
 
-  const reductionsValides = (panier.reduction ?? [])
+  const reductionsValides = (panier?.reduction ?? [])
     .map((id) => boutiqueDatas.reduction.find((r) => r.id === id))
     .filter((r) => r && r.debut <= now && now <= r.fin);
 
@@ -286,7 +286,7 @@ async function getPanierContainer(
       type: 10,
       content: `## ${await getEmojiTete(
         client,
-        panier.pseudo || (await discordLink(memberId)),
+        panier?.pseudo || (await discordLink(memberId)),
       )} Panier ${guildColor.charAt(0).toUpperCase() + guildColor.slice(1)} - ${
         boutiqueDatas.name
       }`,
@@ -294,7 +294,7 @@ async function getPanierContainer(
     { type: 14, spacing: 1 },
   ];
 
-  if (panier.article?.length > 0) {
+  if (panier && panier.article?.length > 0) {
     for (const article of panier.article) {
       const articleVrai = boutiqueDatas.article.find(
         (a) => a.id === article.id,
@@ -391,8 +391,92 @@ async function getPanierContainer(
           type: 2,
           style: 3,
           label: "✅ Valider la commande",
-          custom_id: `boutique_commande-valider-${guildColor}-${boutiqueId}`,
-          disabled: panier.article?.length === 0,
+          custom_id: `boutique_valider-${guildColor}-${boutiqueId}`,
+          disabled: !panier || panier.article.length === 0,
+        },
+      ],
+    },
+  );
+
+  return {
+    type: 17,
+    accent_color: config.couleur[guildColor],
+    components,
+  };
+}
+
+async function getPaiementDonneeContainer(
+  guildColor,
+  boutiqueId,
+  boutiqueDatas,
+  client,
+  page,
+) {
+  const ITEMS_PER_PAGE = 7;
+
+  const entries = Object.entries(boutiqueDatas.paiement.donnee);
+  const totalPages = Math.ceil(entries.length / ITEMS_PER_PAGE);
+
+  const start = page * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const pageEntries = entries.slice(start, end);
+
+  const components = [
+    {
+      type: 10,
+      content: `## Donnée de Paiement ${
+        guildColor.charAt(0).toUpperCase() + guildColor.slice(1)
+      } - ${boutiqueDatas.name}`,
+    },
+    { type: 14, spacing: 1 },
+  ];
+
+  for (const [pseudo, montant] of pageEntries) {
+    components.push({
+      type: 9,
+      components: [
+        {
+          type: 10,
+          content: `## ${await getEmojiTete(
+            client,
+            pseudo,
+          )} ${pseudo} : ${montant.toLocaleString()}$`,
+        },
+      ],
+      accessory: {
+        type: 2,
+        style: 1,
+        label: "Modifier l'argent",
+        custom_id: `boutique_paiement-${boutiqueId}-edit-${pseudo}`,
+      },
+    });
+  }
+
+  components.push(
+    { type: 14, spacing: 1 },
+    {
+      type: 1,
+      components: [
+        {
+          type: 2,
+          style: 2,
+          label: "◀️ Page Précédente",
+          custom_id: `boutique_paiement-${boutiqueId}-donnee-${page - 1}`,
+          disabled: page <= 0,
+        },
+        {
+          type: 2,
+          style: 2,
+          label: `Page ${page + 1}/${totalPages}`,
+          custom_id: "boutique_paiement_status",
+          disabled: true,
+        },
+        {
+          type: 2,
+          style: 2,
+          label: "Page Suivante ▶️",
+          custom_id: `boutique_paiement-${boutiqueId}-donnee-${page + 1}`,
+          disabled: page + 1 === totalPages,
         },
       ],
     },
@@ -409,4 +493,5 @@ module.exports = {
   getBoutiqueContainer,
   getBoutiqueCategorieContainer,
   getPanierContainer,
+  getPaiementDonneeContainer,
 };

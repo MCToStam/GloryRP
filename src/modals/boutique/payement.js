@@ -4,9 +4,9 @@ const {
   getGuildColor,
 } = require("../../../utils/functions/datas.js");
 const {
-  getBoutiquePayementContainer,
+  getBoutiquePaiementContainer,
 } = require("../../../components/containers");
-const { getEmojiTete } = require("../../../utils/functions/emojis");
+const { getPaiementDonneeContainer } = require("../../../components/boutique");
 
 exports.run = async (client, interaction, config) => {
   const boutiqueId = Number(interaction.customId.split("-")[1]);
@@ -46,11 +46,11 @@ exports.run = async (client, interaction, config) => {
       });
     }
 
-    boutiqueDatas.payement.commande = commande;
+    boutiqueDatas.paiement.commande = commande;
 
     await saveServerDatas(interaction, serverDatas, guildColor);
 
-    const container = await getBoutiquePayementContainer(
+    const container = await getBoutiquePaiementContainer(
       boutiqueId,
       guildColor,
       boutiqueDatas,
@@ -61,54 +61,55 @@ exports.run = async (client, interaction, config) => {
       flags: 32768,
       allowedMentions: { parse: [] },
     });
-  } else if (action === "donnee") {
+  } else if (action === "edit") {
     const type = interaction.fields.getStringSelectValues("type")[0];
     let pseudo = interaction.fields.getTextInputValue("pseudo");
     const argent = Number(interaction.fields.getTextInputValue("argent"));
 
-    const searchRes = await fetch(
-      `https://apiv2.nationsglory.fr/forums/userSearch?search=${pseudo}`,
-    );
-    const similarUsers = await searchRes.json();
+    if (!boutiqueDatas.paiement.donnee[pseudo]) {
+      const searchRes = await fetch(
+        `https://apiv2.nationsglory.fr/forums/userSearch?search=${pseudo}`,
+      );
+      const similarUsers = await searchRes.json();
 
-    const foundUser = similarUsers.find(
-      (user) => user.username.toLowerCase() === pseudo.toLowerCase(),
-    );
+      const foundUser = similarUsers.find(
+        (user) => user.username.toLowerCase() === pseudo.toLowerCase(),
+      );
 
-    if (!foundUser) {
-      const suggestions = similarUsers
-        .map((user) => `- ${user.username.replace(/_/g, "\\_")}`)
-        .join("\n");
+      if (!foundUser) {
+        const suggestions = similarUsers
+          .map((user) => `- ${user.username.replace(/_/g, "\\_")}`)
+          .join("\n");
 
-      const description =
-        similarUsers.length === 0
-          ? "L'utilisateur que vous recherchez n'existe pas."
-          : `L'utilisateur que vous recherchez n'existe pas, il s'agit peut-être de :\n${suggestions}`;
+        const description =
+          similarUsers.length === 0
+            ? "L'utilisateur que vous recherchez n'existe pas."
+            : `L'utilisateur que vous recherchez n'existe pas, il s'agit peut-être de :\n${suggestions}`;
 
-      const errorContainer = {
-        type: 17,
-        accent_color: config.colors.error,
-        components: [
-          {
-            type: 10,
-            content: `## ❌ Pseudonyme Invalide`,
-          },
-          { type: 14, spacing: 2 },
-          {
-            type: 10,
-            content: description,
-          },
-        ],
-      };
+        const errorContainer = {
+          type: 17,
+          accent_color: config.colors.error,
+          components: [
+            {
+              type: 10,
+              content: `## ❌ Pseudonyme Invalide`,
+            },
+            { type: 14, spacing: 2 },
+            {
+              type: 10,
+              content: description,
+            },
+          ],
+        };
 
-      return await interaction.reply({
-        components: [errorContainer],
-        flags: 32768 | 64,
-        allowedMentions: { parse: [] },
-      });
+        return await interaction.reply({
+          components: [errorContainer],
+          flags: 32768 | 64,
+          allowedMentions: { parse: [] },
+        });
+      }
+      pseudo = foundUser.username;
     }
-
-    pseudo = foundUser.username;
 
     if (!argent) {
       const errorContainer = {
@@ -134,43 +135,30 @@ exports.run = async (client, interaction, config) => {
       });
     }
 
-    if (!boutiqueDatas.payement.donnee[pseudo])
-      boutiqueDatas.payement.donnee[pseudo] = 0;
-    if (type === "add") boutiqueDatas.payement.donnee[pseudo] += argent;
-    if (type === "remove") boutiqueDatas.payement.donnee[pseudo] -= argent;
-    if (type === "set") boutiqueDatas.payement.donnee[pseudo] = argent;
+    if (!boutiqueDatas.paiement.donnee[pseudo])
+      boutiqueDatas.paiement.donnee[pseudo] = 0;
+    if (type === "add") boutiqueDatas.paiement.donnee[pseudo] += argent;
+    if (type === "remove") boutiqueDatas.paiement.donnee[pseudo] -= argent;
+    if (type === "set") boutiqueDatas.paiement.donnee[pseudo] = argent;
 
     await saveServerDatas(interaction, serverDatas, guildColor);
 
-    const goodContainer = {
-      type: 17,
-      accent_color: config.colors.success,
-      components: [
-        {
-          type: 10,
-          content: "## ✅ Argent Modifié",
-        },
-        { type: 14, spacing: 2 },
-        {
-          type: 10,
-          content: `${await getEmojiTete(
-            client,
-            pseudo,
-          )} ${pseudo} a maintenant ${boutiqueDatas.payement.donnee[
-            pseudo
-          ].toLocaleString()}$.`,
-        },
-      ],
-    };
+    const goodContainer = await getPaiementDonneeContainer(
+      guildColor,
+      boutiqueId,
+      boutiqueDatas,
+      client,
+      0,
+    );
 
-    return await interaction.reply({
+    return await interaction.update({
       components: [goodContainer],
-      flags: 32768 | 64,
+      flags: 32768,
       allowedMentions: { parse: [] },
     });
   }
 };
 
 exports.data = {
-  name: "boutique_payement",
+  name: "boutique_paiement",
 };

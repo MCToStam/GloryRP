@@ -1,5 +1,5 @@
 const {
-  getBoutiquePayementContainer,
+  getBoutiquePaiementContainer,
 } = require("../../../components/containers");
 const {
   getServerDatas,
@@ -25,30 +25,30 @@ exports.run = async (client, interaction, config) => {
       user: interaction.user.id,
       timestamp: modifDate,
       boutique: boutiqueId,
-      action: `Modification du mode de payement de ${boutiqueDatas.payement.mode} en ${type}`,
+      action: `Modification du mode de paiement de ${boutiqueDatas.paiement.mode} en ${type}`,
     });
 
     serverDatas.lastUser = interaction.user.id;
     serverDatas.timestamp = modifDate;
 
-    boutiqueDatas.payement.mode = type;
+    boutiqueDatas.paiement.mode = type;
 
     await saveServerDatas(interaction, serverDatas, guildColor);
   }
 
-  const payementContainer = await getBoutiquePayementContainer(
+  const paiementContainer = await getBoutiquePaiementContainer(
     boutiqueId,
     guildColor,
     boutiqueDatas,
   );
 
   return interaction.update({
-    components: [payementContainer],
+    components: [paiementContainer],
     flags: 32768,
     allowedMentions: { parse: [] },
   });
 };
 
 exports.data = {
-  name: "boutique_payement",
+  name: "boutique_paiement",
 };
