@@ -3,9 +3,42 @@ const {
   getSalaireContainer,
 } = require("../../../components/salaireContainer.js");
 const { discordStaff } = require("../../../utils/functions/linkedUser.js");
+const {
+  getServerCommand,
+} = require("../../../utils/functions/getServerCommand");
 
 exports.run = async (client, interaction, config) => {
-  const serv = interaction.options.getString("serveur").toLowerCase();
+  const serv =
+    interaction.options.getString("serveur")?.toLowerCase() ||
+    (await getServerCommand(interaction.guild.id));
+
+  if (!serv) {
+    const nonServeurContainer = {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        {
+          type: 10,
+          content: "## :no_entry_sign: Aucun Serveur",
+        },
+        {
+          type: 14,
+          spacing: 2,
+        },
+        {
+          type: 10,
+          content:
+            "Aucun serveur par défaut n'a été trouvé sur ce serveur Discord, veuillez en spécifier un manuellement.",
+        },
+      ],
+    };
+    return interaction.reply({
+      components: [nonServeurContainer],
+      flags: 32768 | 64,
+      allowedMentions: { parse: [] },
+    });
+  }
+
   if (serv === "non-lie") {
     const nonLieContainer = {
       type: 17,
@@ -154,7 +187,7 @@ exports.data = {
       name: "serveur",
       description: "Serveur sur lequel voir les logs",
       autocomplete: true,
-      required: true,
+      required: false,
     },
     {
       type: 3,

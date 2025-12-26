@@ -19,3 +19,4 @@ data/*
 !data/tacheBaseData.json
 !data/paiement.png
 !data/logo/*.png
+data/logo/serveur.json

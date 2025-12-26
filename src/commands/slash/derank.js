@@ -10,6 +10,9 @@ const {
   saveServerDatas,
 } = require("../../../utils/functions/datas.js");
 const { createCanvas, loadImage } = require("canvas");
+const {
+  getServerCommand,
+} = require("../../../utils/functions/getServerCommand");
 
 function getContrastTextColor(colorNumber) {
   const hex = colorNumber.toString(16).padStart(6, "0");
@@ -64,7 +67,37 @@ function drawRoundedHexagonPath(ctx, x, y, width, height, radius) {
 }
 
 exports.run = async (client, interaction, config) => {
-  const serveur = interaction.options.getString("serveur").toLowerCase();
+  const serveur =
+    interaction.options.getString("serveur")?.toLowerCase() ||
+    (await getServerCommand(interaction.guild.id));
+
+  if (!serveur) {
+    const nonServeurContainer = {
+      type: 17,
+      accent_color: config.colors.error,
+      components: [
+        {
+          type: 10,
+          content: "## :no_entry_sign: Aucun Serveur",
+        },
+        {
+          type: 14,
+          spacing: 2,
+        },
+        {
+          type: 10,
+          content:
+            "Aucun serveur par défaut n'a été trouvé sur ce serveur Discord, veuillez en spécifier un manuellement.",
+        },
+      ],
+    };
+    return interaction.reply({
+      components: [nonServeurContainer],
+      flags: 32768 | 64,
+      allowedMentions: { parse: [] },
+    });
+  }
+
   if (serveur === "non-lie") {
     const nonLieContainer = {
       type: 17,
@@ -689,7 +722,7 @@ exports.data = {
       name: "serveur",
       description: "Serveur sur lequel derank",
       autocomplete: true,
-      required: true,
+      required: false,
     },
     {
       type: 6,
