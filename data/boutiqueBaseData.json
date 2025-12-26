@@ -1,0 +1,15 @@
+{
+  "id": false,
+  "name": false,
+  "description": false,
+  "emoji": false,
+  "enable": true,
+  "categorie": [],
+  "article": [],
+  "reduction": [],
+  "paiement": { "mode": "automatique", "commande": "payrp", "donnee": {} },
+  "panier": [],
+  "timestamp": false,
+  "lastUser": false,
+  "delete": false
+}

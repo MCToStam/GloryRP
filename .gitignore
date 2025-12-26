@@ -6,8 +6,14 @@ components/json/
 eslint.config.mjs
 
 data/*
-!data/logo/
-data/logo/*
+
+!data/articleBaseData.json
+!data/boutiqueBaseData.json
+!data/categorieBaseData.json
+!data/panelBaseData.json
+!data/reductionBaseData.json
+!data/tacheBaseData.json
+!data/paiement.png
 !data/logo/*.png
 
 prettierrc.json

@@ -1,0 +1,10 @@
+{
+  "id": false,
+  "nom": false,
+  "categorie": false,
+  "prix": false,
+  "quantite": -1,
+  "grade": false,
+  "emoji": false,
+  "image": false
+}
