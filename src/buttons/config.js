@@ -15,7 +15,7 @@ const {
   getBoutiqueCategorieContainer,
   getBoutiqueArticleContainer,
   getBoutiqueReductionContainer,
-  getBoutiquePayementContainer,
+  getBoutiquePaiementContainer,
 } = require("../../components/containers");
 
 exports.run = async (client, interaction, config) => {
@@ -84,8 +84,8 @@ exports.run = async (client, interaction, config) => {
         1,
       );
       break;
-    case "payement":
-      container = await getBoutiquePayementContainer(
+    case "paiement":
+      container = await getBoutiquePaiementContainer(
         panelId,
         guildColor,
         datas,

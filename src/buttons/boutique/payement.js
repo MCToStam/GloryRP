@@ -1,16 +1,41 @@
-const { getServerDatas } = require("../../../utils/functions/datas.js");
+const {
+  getGuildColor,
+  getServerDatas,
+} = require("../../../utils/functions/datas.js");
+const { getPaiementDonneeContainer } = require("../../../components/boutique");
 
 exports.run = async (client, interaction, config) => {
   const boutiqueId = Number(interaction.customId.split("-")[1]);
   const action = interaction.customId.split("-")[2];
+  const pseudo = interaction.customId.split("-")[3];
+  const first = interaction.customId.split("-")[4];
 
-  const serverDatas = await getServerDatas(interaction);
+  const guildColor = await getGuildColor(interaction);
+  const serverDatas = await getServerDatas(interaction, guildColor);
   const boutiqueDatas = serverDatas.boutiques.find((b) => b.id === boutiqueId);
 
   let modal;
-  if (action === "commande") {
+  if (action === "donnee") {
+    if (first === "first") {
+      await interaction.deferReply();
+    } else {
+      await interaction.deferUpdate();
+    }
+    const container = await getPaiementDonneeContainer(
+      guildColor,
+      boutiqueId,
+      boutiqueDatas,
+      client,
+      Number(pseudo),
+    );
+
+    return interaction.editReply({
+      components: [container],
+      flags: 32768,
+    });
+  } else if (action === "commande") {
     modal = {
-      custom_id: `boutique_payement-${boutiqueId}-${action}`,
+      custom_id: `boutique_paiement-${boutiqueId}-${action}`,
       title: "Modifier la commande",
       components: [
         {
@@ -24,8 +49,8 @@ exports.run = async (client, interaction, config) => {
               min_length: 1,
               max_length: 20,
               placeholder: "Ex: payrp",
-              ...(boutiqueDatas.payement.commande
-                ? { value: boutiqueDatas.payement.commande }
+              ...(boutiqueDatas.paiement.commande
+                ? { value: boutiqueDatas.paiement.commande }
                 : {}),
               required: true,
             },
@@ -33,9 +58,9 @@ exports.run = async (client, interaction, config) => {
         },
       ],
     };
-  } else if (action === "donnee") {
+  } else if (action === "edit") {
     modal = {
-      custom_id: `boutique_payement-${boutiqueId}-${action}`,
+      custom_id: `boutique_paiement-${boutiqueId}-${action}`,
       title: "Modifier l'argent d'un joueur",
       components: [
         {
@@ -75,6 +100,7 @@ exports.run = async (client, interaction, config) => {
               min_length: 3,
               max_length: 32,
               placeholder: "Ex: ToStam",
+              ...(pseudo ? { value: pseudo } : {}),
               required: true,
             },
           ],
@@ -88,7 +114,7 @@ exports.run = async (client, interaction, config) => {
               label: "Somme à ajouter/retirer/définir",
               style: 1,
               min_length: 1,
-              max_length: 5,
+              max_length: 20,
               placeholder: "Ex: 10000",
               required: true,
             },
@@ -101,4 +127,4 @@ exports.run = async (client, interaction, config) => {
   await interaction.showModal(modal);
 };
 
-exports.data = { name: "boutique_payement" };
+exports.data = { name: "boutique_paiement" };

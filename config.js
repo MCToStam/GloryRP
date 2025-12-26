@@ -10,6 +10,7 @@ const config = {
     selectMenu: "1428358686925131776",
     modal: "1428358710853369938",
     invitationBot: "1428042447665107096",
+    error: "1454072478707220595",
   },
   glorybot_url: "http://fi2.bot-hosting.net:20247",
   glorystaff_url: "http://fi2.bot-hosting.net:21319",

@@ -323,8 +323,8 @@ async function getBoutiqueContainer(guildColor, boutiqueDatas, boutiqueId) {
           },
           {
             type: 2,
-            custom_id: `config-payement-${boutiqueId}-boutique`,
-            label: "Configurer le Payement",
+            custom_id: `config-paiement-${boutiqueId}-boutique`,
+            label: "Configurer le Paiement",
             style: 1,
           },
         ],
@@ -2681,7 +2681,7 @@ async function getBoutiqueEditReductionContainer(
   };
 }
 
-async function getBoutiquePayementContainer(
+async function getBoutiquePaiementContainer(
   boutiqueId,
   guildColor,
   boutiqueDatas,
@@ -2705,55 +2705,61 @@ async function getBoutiquePayementContainer(
         components: [
           {
             type: 3,
-            custom_id: `boutique_payement-${boutiqueId}`,
+            custom_id: `boutique_paiement-${boutiqueId}`,
             placeholder: "Choisit la manière de payer",
             options: [
               {
                 label: "Manuelle",
-                value: `boutique_payement-${boutiqueId}-manuelle`,
+                value: `boutique_paiement-${boutiqueId}-manuelle`,
                 description: "Les joueurs devront envoyer une capture d'écran",
                 emoji: { name: "🤚" },
-                default: boutiqueDatas.payement.mode === "manuelle",
+                default: boutiqueDatas.paiement.mode === "manuelle",
               },
               {
                 label: "Automatique",
-                value: `boutique_payement-${boutiqueId}-automatique`,
+                value: `boutique_paiement-${boutiqueId}-automatique`,
                 description: "Les joueurs devront faire une commande en jeu",
                 emoji: { name: "🤖" },
-                default: boutiqueDatas.payement.mode === "automatique",
+                default: boutiqueDatas.paiement.mode === "automatique",
               },
             ],
           },
         ],
       },
-      boutiqueDatas.payement.mode === "automatique"
+      boutiqueDatas.paiement.mode === "automatique"
         ? {
             type: 9,
             components: [
               {
                 type: 10,
-                content: `**Commande à exécuter pour payer :** \`\`/${boutiqueDatas.payement.commande}\`\``,
+                content: `**Commande à exécuter pour payer :** \`\`/${boutiqueDatas.paiement.commande}\`\``,
               },
             ],
             accessory: {
               type: 2,
-              custom_id: `boutique_payement-${boutiqueId}-commande`,
+              custom_id: `boutique_paiement-${boutiqueId}-commande`,
               label: "🤖 Modifier la Commande",
               style: 1,
             },
           }
         : null,
-      boutiqueDatas.payement.mode === "automatique"
+      boutiqueDatas.paiement.mode === "automatique"
         ? {
             type: 1,
             components: [
               {
                 type: 2,
-                custom_id: `boutique_payement-${boutiqueId}-donnee`,
+                custom_id: `boutique_paiement-${boutiqueId}-donnee-0-first`,
                 label: "💰 Modifier l'argent d'un joueur",
                 style: 3,
               },
             ],
+          }
+        : null,
+      boutiqueDatas.paiement.mode === "automatique"
+        ? {
+            type: 10,
+            content: `\`\`\`/sa single create_${boutiqueDatas.paiement.commande} /sa multiple ${boutiqueDatas.paiement.commande}_<args:1> /frame <args:1> http://rp.glorybot.fr/token?pseudonyme=<args:1>&argent=<args:2>#/playsound note.pling <args:1>#/jp <args:1> [*banner id="rp"] &l>> &aTu viens de déposer <args:2>$ avec succès !\`\`\`\n\`\`\`/sa multiple ${boutiqueDatas.paiement.commande} /create_${boutiqueDatas.paiement.commande} <sender_name> <args:1>#[d:1]/sa setting ${boutiqueDatas.paiement.commande}_<sender_name> price <args:1>>#[d:1]/sa setting ${boutiqueDatas.paiement.commande}_<sender_name> bank rp#[d:1]/sa setting ${boutiqueDatas.paiement.commande}_<sender_name> exec console#[d:2]/sudo <sender_name> c:/${boutiqueDatas.paiement.commande}_<sender_name>#[d:3]/sa delete ${boutiqueDatas.paiement.commande}_<sender_name>\`\`\`\n\`\`\`/sa setting ${boutiqueDatas.paiement.commande} exec console\`\`\`\n\`\`\`/sa setting create_${boutiqueDatas.paiement.commande} exac true\`\`\``,
           }
         : null,
       {
@@ -2771,7 +2777,7 @@ async function getBoutiquePayementContainer(
           },
           {
             type: 2,
-            custom_id: "aide-payement",
+            custom_id: "aide-paiement",
             label: "❓ Aide",
             style: 2,
           },
@@ -2801,5 +2807,5 @@ module.exports = {
   getBoutiqueEditArticleContainer,
   getBoutiqueReductionContainer,
   getBoutiqueEditReductionContainer,
-  getBoutiquePayementContainer,
+  getBoutiquePaiementContainer,
 };
