@@ -670,6 +670,44 @@ async function getEditGradeContainer(
         },
       },
       {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Texte de Rank :** ${
+              grade.couleur
+                ? grade.desc_affiche_rank
+                : "Aucune texte de rank configuré"
+            }`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `grade_edit-${panelId}-${gradeId}-desc_affiche_rank`,
+          label: "⬆️ Modifier le Texte de Rank",
+          style: 1,
+        },
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
+            content: `**Texte de Dérank :** ${
+              grade.couleur
+                ? grade.desc_affiche_derank
+                : "Aucune texte de dérank configuré"
+            }`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `grade_edit-${panelId}-${gradeId}-desc_affiche_derank`,
+          label: "⬇️ Modifier le Texte de Dérank",
+          style: 1,
+        },
+      },
+      {
         type: 10,
         content: `**Tier du grade :**`,
       },

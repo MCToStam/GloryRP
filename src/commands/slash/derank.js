@@ -402,7 +402,7 @@ exports.run = async (client, interaction, config) => {
     }
   }
 
-  const subtitle = "Quitte l'équipe des " + gradeChoisi.nom + "s";
+  const subtitle = gradeChoisi.desc_affiche_derank;
   const badgeText = serveur.charAt(0).toUpperCase() + serveur.slice(1);
   let iconPath;
   if (["alpha", "sigma", "omega", "delta", "epsilon"].includes(serveur)) {
@@ -718,13 +718,6 @@ exports.data = {
   description: "Retire un grade à un joueur",
   options: [
     {
-      type: 3,
-      name: "serveur",
-      description: "Serveur sur lequel derank",
-      autocomplete: true,
-      required: false,
-    },
-    {
       type: 6,
       name: "joueur",
       description: "Joueur à derank",
@@ -736,6 +729,13 @@ exports.data = {
       description: "Grade à retirer",
       autocomplete: true,
       required: true,
+    },
+    {
+      type: 3,
+      name: "serveur",
+      description: "Serveur sur lequel derank",
+      autocomplete: true,
+      required: false,
     },
   ],
   contexts: [0],
@@ -777,7 +777,9 @@ exports.data = {
     }
 
     if (focusedOption.name === "grade") {
-      const serveur = interaction.options.getString("serveur");
+      const serveur =
+        interaction.options.getString("serveur") ||
+        (await getServerCommand(interaction.guild.id));
       if (!serveur) {
         return await interaction.respond([
           { name: "Sélectionne d'abord un serveur", value: "no-server" },

@@ -184,17 +184,17 @@ exports.data = {
   options: [
     {
       type: 3,
-      name: "serveur",
-      description: "Serveur sur lequel voir les logs",
-      autocomplete: true,
-      required: false,
-    },
-    {
-      type: 3,
       name: "panel",
       description: "Panel sur lequel voir les logs",
       autocomplete: true,
       required: true,
+    },
+    {
+      type: 3,
+      name: "serveur",
+      description: "Serveur sur lequel derank",
+      autocomplete: true,
+      required: false,
     },
   ],
   contexts: [0],
