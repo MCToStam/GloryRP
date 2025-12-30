@@ -20,6 +20,16 @@ exports.run = async (client, interaction, config) => {
       label: "Nouveau nom du grade",
       placeholder: "Ex: Rédacteur en Chef",
     },
+    desc_affiche_rank: {
+      title: "Modifie le texte de rank d'un Grade",
+      label: "Nouveau texte de rank du grade",
+      placeholder: "Ex: Rejoint l'équipe des...",
+    },
+    desc_affiche_derank: {
+      title: "Modifie le texte de dérank d'un Grade",
+      label: "Nouveau texte de dérank du grade",
+      placeholder: "Ex: Quitte l'équipe des...",
+    },
   };
 
   const field = fields[type];

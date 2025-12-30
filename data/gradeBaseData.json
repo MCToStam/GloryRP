@@ -1,6 +1,8 @@
 {
   "gradeId": false,
   "nom": false,
+  "desc_affiche_rank": false,
+  "desc_affiche_derank": false,
   "couleur": false,
   "tier": false,
   "role": [],

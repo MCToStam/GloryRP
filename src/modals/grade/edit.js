@@ -63,7 +63,14 @@ exports.run = async (client, interaction, config) => {
 
   const modifDate = await toTimeStamp(new Date());
 
-  const actionLabel = type === "couleur" ? "de la couleur" : "du nom";
+  const actionLabel =
+    type === "couleur"
+      ? "de la couleur"
+      : type === "nom"
+        ? "du nom"
+        : type === "desc_affiche_rank"
+          ? "du texte de rank"
+          : "du texte de dérank";
 
   serverDatas.logs ??= [];
   serverDatas.logs.push({

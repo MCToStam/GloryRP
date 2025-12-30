@@ -108,6 +108,8 @@ exports.run = async (client, interaction, config) => {
 
   newPanel.gradeId = newId;
   newPanel.nom = nom;
+  newPanel.desc_affiche_rank = `Rejoint l'équipe des ${nom}s`;
+  newPanel.desc_affiche_derank = `Quitte l'équipe des ${nom}s`;
   newPanel.couleur = couleur;
   newPanel.tier = tier;
 
