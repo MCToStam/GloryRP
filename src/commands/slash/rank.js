@@ -886,5 +886,4 @@ exports.data = {
 exports.conf = {
   cooldown: 5,
   enabled: true,
-  category: "⚙ Configuration",
 };
