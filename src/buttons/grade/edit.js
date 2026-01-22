@@ -30,6 +30,11 @@ exports.run = async (client, interaction, config) => {
       label: "Nouveau texte de dérank du grade",
       placeholder: "Ex: Quitte l'équipe des...",
     },
+    salaire_fix: {
+      title: "Modifie le salaire fix d'un Grade",
+      label: "Nouveau salaire fix du grade",
+      placeholder: "Ex: 1000",
+    },
   };
 
   const field = fields[type];

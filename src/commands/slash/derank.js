@@ -402,7 +402,9 @@ exports.run = async (client, interaction, config) => {
     }
   }
 
-  const subtitle = gradeChoisi.desc_affiche_derank;
+  const subtitle =
+    gradeChoisi.desc_affiche_derank ||
+    `Quitte l'équipe des ${gradeChoisi.nom}s`;
   const badgeText = serveur.charAt(0).toUpperCase() + serveur.slice(1);
   let iconPath;
   if (["alpha", "sigma", "omega", "delta", "epsilon"].includes(serveur)) {

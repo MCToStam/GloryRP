@@ -674,8 +674,27 @@ async function getEditGradeContainer(
         components: [
           {
             type: 10,
+            content: `**Salaire Fix :** ${
+              grade.salaire_fix
+                ? `${grade.salaire_fix.toLocaleString()}$`
+                : "0$"
+            }`,
+          },
+        ],
+        accessory: {
+          type: 2,
+          custom_id: `grade_edit-${panelId}-${gradeId}-salaire_fix`,
+          label: "💵 Modifier le Salaire Fix",
+          style: 1,
+        },
+      },
+      {
+        type: 9,
+        components: [
+          {
+            type: 10,
             content: `**Texte de Rank :** ${
-              grade.couleur
+              grade.desc_affiche_rank
                 ? grade.desc_affiche_rank
                 : "Aucune texte de rank configuré"
             }`,
@@ -694,7 +713,7 @@ async function getEditGradeContainer(
           {
             type: 10,
             content: `**Texte de Dérank :** ${
-              grade.couleur
+              grade.desc_affiche_derank
                 ? grade.desc_affiche_derank
                 : "Aucune texte de dérank configuré"
             }`,

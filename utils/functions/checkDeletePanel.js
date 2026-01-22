@@ -22,12 +22,10 @@ async function checkDelete(type, label) {
       }
 
       if (toDelete.length > 0) {
-        // Suppression des logs associés
         serverDatas.logs = serverDatas.logs.filter(
-          (log) => !toDelete.includes(log[type.slice(0, -1)]), // panel / boutique
+          (log) => !toDelete.includes(log[type.slice(0, -1)]),
         );
 
-        // Suppression des éléments
         serverDatas[type] = items.filter((i) => !toDelete.includes(i.id));
       }
 

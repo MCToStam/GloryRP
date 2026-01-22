@@ -23,6 +23,7 @@ exports.run = async (client, interaction, config) => {
 
   let newValue = interaction.fields.getTextInputValue(type);
   if (type === "couleur") newValue = formatHexColor(newValue);
+  if (type === "salaire_fix") newValue = Number(newValue);
 
   if (!newValue) {
     const errorContainer = {
@@ -32,7 +33,7 @@ exports.run = async (client, interaction, config) => {
         {
           type: 10,
           content: `## :no_entry: ${
-            type === "couleur" ? "Couleur" : "Nom"
+            type === "couleur" ? "Couleur" : "Salaire Fix"
           } invalide`,
         },
         { type: 14, spacing: 2 },
@@ -41,7 +42,7 @@ exports.run = async (client, interaction, config) => {
           content:
             type === "couleur"
               ? "La couleur doit être au format hexadécimal (#RRGGBB)."
-              : "Valeur invalide.",
+              : "Le salaire fix doit être un nombre valide.",
         },
       ],
     };
@@ -70,7 +71,9 @@ exports.run = async (client, interaction, config) => {
         ? "du nom"
         : type === "desc_affiche_rank"
           ? "du texte de rank"
-          : "du texte de dérank";
+          : type === "desc_affiche_derank"
+            ? "du texte de rank"
+            : "du salaire fix";
 
   serverDatas.logs ??= [];
   serverDatas.logs.push({
