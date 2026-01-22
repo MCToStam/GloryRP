@@ -3,6 +3,7 @@
 .prettierignore
 prettierrc.json
 README.md
+token.json
 
 package-lock.json
 node_modules/
