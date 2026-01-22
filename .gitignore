@@ -11,6 +11,7 @@ components/json/
 eslint.config.mjs
 
 data/*
+backups/*
 
 !data/articleBaseData.json
 !data/boutiqueBaseData.json

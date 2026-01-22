@@ -191,7 +191,6 @@ async function salairePost(client, serveur, serveurDatas, panelId, date) {
 async function salaireAutomatique(client) {
   const d = new Date();
   const date = `${String(d.getMonth() + 1).padStart(2, "0")}_${d.getFullYear()}`;
-  console.log(date);
 
   for (const serveur of config.liste_serveur) {
     const datas = await getServerDatas(false, serveur);

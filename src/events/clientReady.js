@@ -4,6 +4,7 @@ const { getDateTs } = require("../../utils/functions/numbersAndLetters.js");
 const { botLaunch } = require("../../index.js");
 const { checkEmojiCache } = require("../../utils/functions/emojis.js");
 const { salaireAutomatique } = require("../../utils/functions/salairePost.js");
+const { salaireFix } = require("../../utils/functions/salaireFix.js");
 const { updateLogo } = require("../../utils/functions/updateLogo.js");
 const cron = require("node-cron");
 const {
@@ -93,6 +94,7 @@ module.exports = async (client, interaction) => {
     "0 10 1 * *",
     async () => {
       await salaireAutomatique(client);
+      await salaireFix();
     },
     {
       timezone: "Europe/Paris",
