@@ -74,7 +74,7 @@ function getBoutiquesSelecString(serverDatas) {
     custom_id: "config-boutiques",
     placeholder: "Choisis une boutique à configurer",
     max_values: 1,
-    disabled: false,
+    disabled: true,
     options: boutiqueOptions,
   };
 }
