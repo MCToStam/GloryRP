@@ -126,19 +126,17 @@ async function getCandidatureContent(url, serveur) {
 
 async function sendCandidatures(client, AllCandidatures) {
   for (const { serveur, panel, candidature } of AllCandidatures) {
+    if (
+      candidature.messageId &&
+      candidature.badgeColor === candidature.savedBadgeColor
+    )
+      continue;
+
     const channelId = panel.channels.candidature;
 
-    let channel;
-    try {
-      channel = await client.channels.fetch(channelId);
-    } catch (e) {
-      console.log("Impossible de fetch le salon:", e.message);
-    }
+    const channel = await client.channels.fetch(channelId);
 
-    if (!channel) {
-      console.log("Salon introuvable malgré le fetch");
-      continue;
-    }
+    if (!channel) continue;
 
     try {
       const accentColor = candidature.badgeColor
@@ -204,7 +202,7 @@ async function sendCandidatures(client, AllCandidatures) {
         },
       ];
 
-      if (data && data.servers[serveur]) {
+      if (data && data.servers && data.servers[serveur]) {
         const lastConnectionDate = new Date(
           data.servers[serveur].last_connection + "Z",
         );
@@ -349,8 +347,7 @@ async function sendCandidatures(client, AllCandidatures) {
         components: components,
       };
 
-      const isNew = !candidature.messageId;
-      if (isNew) {
+      if (candidature.messageId) {
         const candidatureDetailsContainer = await getCandidatureContent(
           candidature.lien,
           serveur,

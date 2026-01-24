@@ -2,180 +2,38 @@ const { getServerDatas } = require("../../../utils/functions/datas.js");
 const {
   getSalaireContainer,
 } = require("../../../components/salaireContainer.js");
-const { discordStaff } = require("../../../utils/functions/linkedUser.js");
-const {
-  getServerCommand,
-} = require("../../../utils/functions/getServerCommand");
+const getServerCommand = require("../../../utils/functions/getServerCommand");
+const proxyCommande = require("../../../utils/functions/proxyCmd");
 
 exports.run = async (client, interaction, config) => {
-  const serv =
-    interaction.options.getString("serveur")?.toLowerCase() ||
-    (await getServerCommand(interaction.guild.id));
+  await proxyCommande(client, interaction, config);
+};
 
-  if (!serv) {
-    const nonServeurContainer = {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Aucun Serveur",
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 10,
-          content:
-            "Aucun serveur par défaut n'a été trouvé sur ce serveur Discord, veuillez en spécifier un manuellement.",
-        },
-      ],
-    };
-    return interaction.reply({
-      components: [nonServeurContainer],
-      flags: 32768 | 64,
-      allowedMentions: { parse: [] },
-    });
-  }
-
-  if (serv === "non-lie") {
-    const nonLieContainer = {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Compte non Lié",
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 10,
-          content:
-            'Votre compte Discord n\'est pas reconnu, il vous faut être renseigné pour utiliser cette commande. Pour ce faire, il te suffit de te connecter à notre panel de contrôle. Une fois connecté avec ton compte Discord, va dans la partie "Profil" puis tu as un bouton afin de lier ton compte NationsGlory.',
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 1,
-          components: [
-            {
-              type: 2,
-              url: "https://glorybot.fr/user/profile",
-              label: "🔗 Lier son Compte",
-              style: 5,
-            },
-          ],
-        },
-      ],
-    };
-    return interaction.reply({
-      components: [nonLieContainer],
-      flags: 32768 | 64,
-      allowedMentions: { parse: [] },
-    });
-  }
-
-  if (serv === "permission") {
-    const permissionContainer = {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Permission Refusée",
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 10,
-          content: "Tu n'as pas la permission d'effectuer cette commande !",
-        },
-      ],
-    };
-    return interaction.reply({
-      components: [permissionContainer],
-      flags: 32768 | 64,
-      allowedMentions: { parse: [] },
-    });
-  }
-
-  if (!config.liste_serveur.includes(serv)) {
-    const unknownServerContainer = {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Serveur Inconnu",
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 10,
-          content: `Le serveur **${serv}** n'est pas un serveur reconnu. Veuillez fournir un serveur valide.`,
-        },
-      ],
-    };
-    return interaction.reply({
-      components: [unknownServerContainer],
-      flags: 32768 | 64,
-      allowedMentions: { parse: [] },
-    });
-  }
-
-  const { pseudonym, servers } = await discordStaff(interaction.user.id);
-  if (!servers.includes(serv)) {
-    const capitalizedServeur = serv.charAt(0).toUpperCase() + serv.slice(1);
-    const emojiId = config.emoji[serv.toLowerCase()];
-    const permissionContainer = {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Permission Refusée",
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 10,
-          content: `Tu n'as pas la permission d'effectuer cette commande pour le serveur <:NG${capitalizedServeur}:${emojiId}> **${capitalizedServeur}** !`,
-        },
-      ],
-    };
-    return interaction.reply({
-      components: [permissionContainer],
-      flags: 32768 | 64,
-      allowedMentions: { parse: [] },
-    });
-  }
+exports.proxy = async (client, interaction, config) => {
+  const { serveur, panel } = interaction.parametre;
 
   const panelId = interaction.options.getString("panel").toLowerCase();
 
-  const serverDatas = await getServerDatas(interaction, serv);
+  const serverDatas = await getServerDatas(interaction, serveur);
   const { error, component: salaireContainer } = await getSalaireContainer(
     client,
     serverDatas,
     panelId,
-    serv,
+    serveur,
   );
-  return interaction.reply({
-    components: [salaireContainer],
-    flags: error ? 32768 | 64 : 32768,
-    allowedMentions: { parse: [] },
-  });
+  if (interaction.isMessageComponent()) {
+    return interaction.update({
+      components: [salaireContainer],
+      flags: 32768,
+      allowedMentions: { parse: [] },
+    });
+  } else {
+    return interaction.reply({
+      components: [salaireContainer],
+      flags: error ? 32768 | 64 : 32768,
+      allowedMentions: { parse: [] },
+    });
+  }
 };
 
 exports.data = {
@@ -189,54 +47,13 @@ exports.data = {
       autocomplete: true,
       required: true,
     },
-    {
-      type: 3,
-      name: "serveur",
-      description: "Serveur sur lequel derank",
-      autocomplete: true,
-      required: false,
-    },
   ],
   contexts: [0],
   async autocomplete(client, interaction, config) {
     const focusedOption = interaction.options.getFocused(true);
 
-    if (focusedOption.name === "serveur") {
-      const { pseudonym, servers } = await discordStaff(interaction.user.id);
-
-      if (!pseudonym) {
-        return interaction.respond([
-          {
-            name: "Compte NationsGlory non lié, fais-le maintenant : https://glorybot.fr",
-            value: "non-lie",
-          },
-        ]);
-      }
-
-      if (!servers || servers.length === 0) {
-        return interaction.respond([
-          {
-            name: "Vous n'êtes opérateur d'aucun serveur de NationsGlory.",
-            value: "permission",
-          },
-        ]);
-      }
-
-      const focusedValue =
-        interaction.options.getFocused()?.toLowerCase() ?? "";
-      const filtered = servers
-        .filter((serv) => serv.toLowerCase().includes(focusedValue))
-        .slice(0, 25)
-        .map((serv) => ({
-          name: serv.charAt(0).toUpperCase() + serv.slice(1),
-          value: serv,
-        }));
-
-      await interaction.respond(filtered);
-    }
-
     if (focusedOption.name === "panel") {
-      const serveur = interaction.options.getString("serveur");
+      const serveur = await getServerCommand(interaction.guild.id);
       if (!serveur) {
         return await interaction.respond([
           { name: "Sélectionne d'abord un serveur", value: "no-server" },
@@ -273,4 +90,5 @@ exports.data = {
 exports.conf = {
   cooldown: 5,
   enabled: true,
+  permission: "super_moderateur",
 };

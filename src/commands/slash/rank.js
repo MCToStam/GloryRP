@@ -1,18 +1,14 @@
 const path = require("node:path");
 const { updateEffectif } = require("../../../utils/functions/effectif.js");
 const { getEmojiTete } = require("../../../utils/functions/emojis.js");
-const {
-  discordLink,
-  discordStaff,
-} = require("../../../utils/functions/linkedUser.js");
+const { discordLink } = require("../../../utils/functions/linkedUser.js");
 const {
   getServerDatas,
   saveServerDatas,
 } = require("../../../utils/functions/datas.js");
 const { createCanvas, loadImage } = require("canvas");
-const {
-  getServerCommand,
-} = require("../../../utils/functions/getServerCommand");
+const getServerCommand = require("../../../utils/functions/getServerCommand");
+const proxyCommande = require("../../../utils/functions/proxyCmd");
 
 function getContrastTextColor(colorNumber) {
   const hex = colorNumber.toString(16).padStart(6, "0");
@@ -67,166 +63,13 @@ function drawRoundedHexagonPath(ctx, x, y, width, height, radius) {
 }
 
 exports.run = async (client, interaction, config) => {
-  const serveur =
-    interaction.options.getString("serveur")?.toLowerCase() ||
-    (await getServerCommand(interaction.guild.id));
+  await proxyCommande(client, interaction, config);
+};
 
-  if (!serveur) {
-    const nonServeurContainer = {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Aucun Serveur",
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 10,
-          content:
-            "Aucun serveur par défaut n'a été trouvé sur ce serveur Discord, veuillez en spécifier un manuellement.",
-        },
-      ],
-    };
-    return interaction.reply({
-      components: [nonServeurContainer],
-      flags: 32768 | 64,
-      allowedMentions: { parse: [] },
-    });
-  }
+exports.proxy = async (client, interaction, config) => {
+  const { serveur, grade, membre } = interaction.parametre;
 
-  if (serveur === "non-lie") {
-    const nonLieContainer = {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Compte non Lié",
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 10,
-          content:
-            'Votre compte Discord n\'est pas reconnu, il vous faut être renseigné pour utiliser cette commande. Pour ce faire, il te suffit de te connecter à notre panel de contrôle. Une fois connecté avec ton compte Discord, va dans la partie "Profil" puis tu as un bouton afin de lier ton compte NationsGlory.',
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 1,
-          components: [
-            {
-              type: 2,
-              url: "https://glorybot.fr/user/profile",
-              label: "🔗 Lier son Compte",
-              style: 5,
-            },
-          ],
-        },
-      ],
-    };
-    return interaction.reply({
-      components: [nonLieContainer],
-      flags: 32768 | 64,
-      allowedMentions: { parse: [] },
-    });
-  }
-
-  if (serveur === "permission") {
-    const permissionContainer = {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Permission Refusée",
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 10,
-          content: "Tu n'as pas la permission d'effectuer cette commande !",
-        },
-      ],
-    };
-    return interaction.reply({
-      components: [permissionContainer],
-      flags: 32768 | 64,
-      allowedMentions: { parse: [] },
-    });
-  }
-
-  if (!config.liste_serveur.includes(serveur)) {
-    const unknownServerContainer = {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Serveur Inconnu",
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 10,
-          content: `Le serveur **${serveur}** n'est pas un serveur reconnu. Veuillez fournir un serveur valide.`,
-        },
-      ],
-    };
-    return interaction.reply({
-      components: [unknownServerContainer],
-      flags: 32768 | 64,
-      allowedMentions: { parse: [] },
-    });
-  }
-
-  const { pseudonym: pseudonyme_staff, servers } = await discordStaff(
-    interaction.user.id,
-  );
-  if (!servers.includes(serveur)) {
-    const capitalizedServeur =
-      serveur.charAt(0).toUpperCase() + serveur.slice(1);
-    const emojiId = config.emoji[serveur.toLowerCase()];
-    const permissionContainer = {
-      type: 17,
-      accent_color: config.colors.error,
-      components: [
-        {
-          type: 10,
-          content: "## :no_entry_sign: Permission Refusée",
-        },
-        {
-          type: 14,
-          spacing: 2,
-        },
-        {
-          type: 10,
-          content: `Tu n'as pas la permission d'effectuer cette commande pour le serveur <:NG${capitalizedServeur}:${emojiId}> **${capitalizedServeur}** !`,
-        },
-      ],
-    };
-    return interaction.reply({
-      components: [permissionContainer],
-      flags: 32768 | 64,
-      allowedMentions: { parse: [] },
-    });
-  }
-
-  const grade = interaction.options.getString("grade");
-  const membre = interaction.options.getUser("joueur");
-  const utilisateur = interaction.guild.members.cache.get(membre.id);
+  const utilisateur = interaction.guild.members.cache.get(membre);
 
   const gradeConfig = await getServerDatas(interaction, serveur);
 
@@ -302,7 +145,7 @@ exports.run = async (client, interaction, config) => {
   const tousLesRoles = panel.grade.flatMap((g) => g.roles || []);
   const rolesEnlever = tousLesRoles.filter((r) => !rolesGrade.includes(r));
 
-  let pseudonym = await discordLink(membre.id);
+  let pseudonym = await discordLink(membre);
 
   let replyInteraction;
   if (pseudonym) {
@@ -310,7 +153,7 @@ exports.run = async (client, interaction, config) => {
     replyInteraction = interaction;
   } else {
     const modal = {
-      custom_id: `rankModal_${membre.id}`,
+      custom_id: `rankModal_${membre}`,
       title: "Choisissez le pseudonyme de la personne",
       components: [
         {
@@ -334,8 +177,7 @@ exports.run = async (client, interaction, config) => {
     await interaction.showModal(modal);
 
     const filter = (i) =>
-      i.customId === "rankModal_" + membre.id &&
-      i.user.id === interaction.user.id;
+      i.customId === "rankModal_" + membre && i.user.id === interaction.user.id;
 
     try {
       const submitted = await interaction.awaitModalSubmit({
@@ -349,7 +191,7 @@ exports.run = async (client, interaction, config) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          discord_id: membre.id,
+          discord_id: membre,
           pseudo_ng: pseudonym,
         }),
       });
@@ -653,13 +495,13 @@ exports.run = async (client, interaction, config) => {
   gradeConfig.historique.push(newEntryObj);
 
   if (!gradeChoisi.listeRp) gradeChoisi.listeRp = [];
-  if (!gradeChoisi.listeRp.includes(membre.id)) {
-    gradeChoisi.listeRp.push(membre.id);
+  if (!gradeChoisi.listeRp.includes(membre)) {
+    gradeChoisi.listeRp.push(membre);
   }
 
   for (const g of panel.grade) {
     if (g.gradeId !== gradeChoisi.gradeId && g.listeRp) {
-      g.listeRp = g.listeRp.filter((id) => id !== membre.id);
+      g.listeRp = g.listeRp.filter((id) => id !== membre);
     }
   }
 
@@ -729,7 +571,7 @@ exports.run = async (client, interaction, config) => {
   });
 
   for (const guild of interaction.client.guilds.cache.values()) {
-    const member = guild.members.cache.get(membre.id);
+    const member = guild.members.cache.get(membre);
     if (!member) continue;
 
     try {
@@ -772,56 +614,13 @@ exports.data = {
       autocomplete: true,
       required: true,
     },
-    {
-      type: 3,
-      name: "serveur",
-      description: "Serveur sur lequel derank",
-      autocomplete: true,
-      required: false,
-    },
   ],
   contexts: [0],
   async autocomplete(client, interaction, config) {
     const focusedOption = interaction.options.getFocused(true);
 
-    if (focusedOption.name === "serveur") {
-      const { pseudonym, servers } = await discordStaff(interaction.user.id);
-
-      if (!pseudonym) {
-        return interaction.respond([
-          {
-            name: "Compte NationsGlory non lié, fais-le maintenant : https://glorybot.fr",
-            value: "non-lie",
-          },
-        ]);
-      }
-
-      if (!servers || servers.length === 0) {
-        return interaction.respond([
-          {
-            name: "Vous n'êtes opérateur d'aucun serveur de NationsGlory.",
-            value: "permission",
-          },
-        ]);
-      }
-
-      const focusedValue =
-        interaction.options.getFocused()?.toLowerCase() ?? "";
-      const filtered = servers
-        .filter((serv) => serv.toLowerCase().includes(focusedValue))
-        .slice(0, 25)
-        .map((serv) => ({
-          name: serv.charAt(0).toUpperCase() + serv.slice(1),
-          value: serv,
-        }));
-
-      await interaction.respond(filtered);
-    }
-
     if (focusedOption.name === "grade") {
-      const serveur =
-        interaction.options.getString("serveur") ||
-        (await getServerCommand(interaction.guild.id));
+      const serveur = await getServerCommand(interaction.guild.id);
       if (!serveur) {
         return await interaction.respond([
           { name: "Sélectionne d'abord un serveur", value: "no-server" },
@@ -887,4 +686,5 @@ exports.data = {
 exports.conf = {
   cooldown: 5,
   enabled: true,
+  permission: "super_moderateur",
 };

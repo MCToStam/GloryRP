@@ -1,5 +1,11 @@
 const fs = require("node:fs");
 const config = require("../../config.js");
+const {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ContainerBuilder,
+} = require("discord.js");
 
 async function discordLink(discordId) {
   try {
@@ -113,4 +119,67 @@ async function discordStaff(discordId, serveur = "all") {
   }
 }
 
-module.exports = { discordLink, discordStaff };
+async function errorStaffContainer(serveur) {
+  if (serveur === "non-lie") {
+    const errorContainer = new ContainerBuilder()
+      .setAccentColor(config.colors.error)
+      .addTextDisplayComponents((textDisplay) =>
+        textDisplay.setContent("## ❌ Compte non Lié"),
+      )
+      .addSeparatorComponents((separator) => separator)
+      .addTextDisplayComponents((textDisplay) =>
+        textDisplay.setContent(
+          "Ton compte Discord doit être lié à ton compte NationsGlory pour effectuer cette action.",
+        ),
+      )
+      .addSeparatorComponents((separator) => separator)
+      .addActionRowComponents(
+        new ActionRowBuilder().addComponents(
+          new ButtonBuilder()
+            .setLabel("🔗 Lier son Compte")
+            .setURL("https://glorybot.fr/user/profile")
+            .setStyle(ButtonStyle.Link),
+        ),
+      );
+    return errorContainer;
+  }
+
+  if (serveur !== "all" && !config.liste_serveur.includes(serveur)) {
+    const errorContainer = new ContainerBuilder()
+      .setAccentColor(config.colors.error)
+      .addTextDisplayComponents((textDisplay) =>
+        textDisplay.setContent("## ❌ Serveur Invalide"),
+      )
+      .addSeparatorComponents((separator) => separator)
+      .addTextDisplayComponents((textDisplay) =>
+        textDisplay.setContent(
+          `Le serveur **${serveur}** n'est pas un serveur reconnu. Veuillez fournir un serveur valide.`,
+        ),
+      );
+
+    return errorContainer;
+  }
+
+  const capitalizedServeur = serveur.charAt(0).toUpperCase() + serveur.slice(1);
+  const emojiId = config.emoji[serveur.toLowerCase()];
+
+  if (serveur === "permission") {
+    const errorContainer = new ContainerBuilder()
+      .setAccentColor(config.colors.error)
+      .addTextDisplayComponents((textDisplay) =>
+        textDisplay.setContent("## ❌ Permission Manquante"),
+      )
+      .addSeparatorComponents((separator) => separator)
+      .addTextDisplayComponents((textDisplay) =>
+        textDisplay.setContent(
+          `Tu n'as pas la permission d'effectuer cette action pour le serveur <:NG${capitalizedServeur}:${emojiId}> **${capitalizedServeur}** !`,
+        ),
+      );
+
+    return errorContainer;
+  }
+
+  return false;
+}
+
+module.exports = { discordLink, discordStaff, errorStaffContainer };
