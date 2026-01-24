@@ -1,7 +1,7 @@
 const { Partials } = require("discord.js");
 
 const config = {
-  developpeur: [],
+  developpeur: ["719072181631320145", "506118119216119810"],
   guilds: { dev: "1415033751733538868" },
   colors: { statut: 0x480ca8, error: 0xff0000, success: 0x3fff00 },
   log_channels: {
