@@ -347,7 +347,7 @@ async function sendCandidatures(client, AllCandidatures) {
         components: components,
       };
 
-      if (candidature.messageId) {
+      if (!candidature.messageId) {
         const candidatureDetailsContainer = await getCandidatureContent(
           candidature.lien,
           serveur,

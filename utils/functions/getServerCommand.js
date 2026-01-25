@@ -4,7 +4,6 @@ const { discordStaff } = require("../../utils/functions/linkedUser");
 async function getServerCommand(guildId, userId) {
   const { servers } = await discordStaff(userId, "all", "guide");
   if (servers.length === 1) return servers[0];
-  return servers;
   if (!guildId) return;
   const rawDatas = fs.readFileSync("data/logo/serveur.json", "utf-8");
   const data = JSON.parse(rawDatas);

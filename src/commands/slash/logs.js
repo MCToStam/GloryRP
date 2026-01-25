@@ -53,7 +53,10 @@ exports.data = {
     const focusedOption = interaction.options.getFocused(true);
 
     if (focusedOption.name === "panel") {
-      const serveur = await getServerCommand(interaction.guild.id);
+      const serveur = await getServerCommand(
+        interaction.guild.id,
+        interaction.user.id,
+      );
       if (!serveur) {
         return await interaction.respond([
           { name: "Sélectionne d'abord un serveur", value: "no-server" },
