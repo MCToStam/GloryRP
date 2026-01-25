@@ -63,13 +63,17 @@ function drawRoundedHexagonPath(ctx, x, y, width, height, radius) {
 }
 
 exports.run = async (client, interaction, config) => {
-  await proxyCommande(client, interaction, config);
+  try {
+    await proxyCommande(client, interaction, config);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 exports.proxy = async (client, interaction, config) => {
-  const { serveur, grade, membre } = interaction.parametre;
+  const { serveur, grade, joueur } = interaction.parametre;
 
-  const utilisateur = interaction.guild.members.cache.get(membre);
+  const utilisateur = interaction.guild.members.cache.get(joueur);
 
   const gradeConfig = await getServerDatas(interaction, serveur);
 
@@ -145,7 +149,7 @@ exports.proxy = async (client, interaction, config) => {
   const tousLesRoles = panel.grade.flatMap((g) => g.roles || []);
   const rolesEnlever = tousLesRoles.filter((r) => !rolesGrade.includes(r));
 
-  let pseudonym = await discordLink(membre);
+  let pseudonym = await discordLink(joueur);
 
   let replyInteraction;
   if (pseudonym) {
@@ -153,7 +157,7 @@ exports.proxy = async (client, interaction, config) => {
     replyInteraction = interaction;
   } else {
     const modal = {
-      custom_id: `rankModal_${membre}`,
+      custom_id: `rankModal_${joueur}`,
       title: "Choisissez le pseudonyme de la personne",
       components: [
         {
@@ -177,7 +181,7 @@ exports.proxy = async (client, interaction, config) => {
     await interaction.showModal(modal);
 
     const filter = (i) =>
-      i.customId === "rankModal_" + membre && i.user.id === interaction.user.id;
+      i.customId === "rankModal_" + joueur && i.user.id === interaction.user.id;
 
     try {
       const submitted = await interaction.awaitModalSubmit({
@@ -191,7 +195,7 @@ exports.proxy = async (client, interaction, config) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          discord_id: membre,
+          discord_id: joueur,
           pseudo_ng: pseudonym,
         }),
       });
@@ -252,6 +256,7 @@ exports.proxy = async (client, interaction, config) => {
   } else {
     iconPath = path.join(__dirname, "../../../data/icon-java.png");
   }
+
   const avatarUrl = `https://skins.nationsglory.fr/body/${pseudonym}/3d/4?vr=-20&hr=10&hrh=20&vrla=50&vrra=-10&vrll=-10&vrrl=20&ratio=12&format=png&displayHair=true&headOnly=false&layers=false`;
 
   const W = 1920;
@@ -495,13 +500,13 @@ exports.proxy = async (client, interaction, config) => {
   gradeConfig.historique.push(newEntryObj);
 
   if (!gradeChoisi.listeRp) gradeChoisi.listeRp = [];
-  if (!gradeChoisi.listeRp.includes(membre)) {
-    gradeChoisi.listeRp.push(membre);
+  if (!gradeChoisi.listeRp.includes(joueur)) {
+    gradeChoisi.listeRp.push(joueur);
   }
 
   for (const g of panel.grade) {
     if (g.gradeId !== gradeChoisi.gradeId && g.listeRp) {
-      g.listeRp = g.listeRp.filter((id) => id !== membre);
+      g.listeRp = g.listeRp.filter((id) => id !== joueur);
     }
   }
 
@@ -571,7 +576,7 @@ exports.proxy = async (client, interaction, config) => {
   });
 
   for (const guild of interaction.client.guilds.cache.values()) {
-    const member = guild.members.cache.get(membre);
+    const member = guild.members.cache.get(joueur);
     if (!member) continue;
 
     try {
