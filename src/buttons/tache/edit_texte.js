@@ -7,7 +7,7 @@ exports.run = async (client, interaction, config) => {
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
 
   const modal = {
-    custom_id: `edit_tache_texte-${panelId}`,
+    custom_id: `tache_edit_texte-${panelId}`,
     title: "Modifier le texte du panel de tâche",
     components: [
       {
