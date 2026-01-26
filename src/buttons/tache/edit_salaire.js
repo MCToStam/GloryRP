@@ -8,8 +8,12 @@ exports.run = async (client, interaction, config) => {
   const panelDatas = serverDatas.panels.find((x) => x.id === panelId);
   const tache = panelDatas.tasks.find((t) => t.taskId === taskId);
 
+  const salaires = Object.values(tache.salaire);
+  const salaireUnique = salaires.every((v) => v === salaires[0]);
+  const defaultSalaire = salaireUnique ? String(salaires[0]) : "";
+
   const modal = {
-    custom_id: `edit_tache_salaire-${panelId}-${tache.taskId}`,
+    custom_id: `tache_edit_salaire-${panelId}-${tache.taskId}`,
     title: "Modifie le salaire d'une Tâche",
     components: [
       {
@@ -24,6 +28,7 @@ exports.run = async (client, interaction, config) => {
               label: "Tous les jours",
               value: "all",
               description: "Modifier le salaire de la tâche globalement",
+              default: salaireUnique,
             },
             {
               label: "Lundi",
@@ -74,6 +79,7 @@ exports.run = async (client, interaction, config) => {
             min_length: 1,
             max_length: 100,
             placeholder: "Ex: 5000",
+            ...(defaultSalaire ? { value: defaultSalaire } : {}),
             required: true,
           },
         ],
