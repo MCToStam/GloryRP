@@ -1,6 +1,6 @@
 const { ModalBuilder, TextInputBuilder, LabelBuilder } = require("discord.js");
-const path = require("path");
-const fs = require("fs");
+const path = require("node:path");
+const fs = require("node:fs");
 
 function getFunctionParams(fn) {
   const str = fn

@@ -5,8 +5,8 @@ const {
   ButtonBuilder,
   ButtonStyle,
 } = require("discord.js");
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 function getFunctionArgs(fn) {
   const str = fn
