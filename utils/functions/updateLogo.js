@@ -1,6 +1,5 @@
-const fs = require("fs");
+const fs = require("node:fs");
 const { getServerDatas } = require("../../utils/functions/datas.js");
-require("dotenv").config();
 
 async function updateLogo(client, config) {
   const token = process.env.DISCORD_TOKEN;

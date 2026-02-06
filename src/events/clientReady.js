@@ -115,4 +115,14 @@ module.exports = async (client, interaction) => {
     await updateLogo(client, config);
     zipAndUpload();
   });
+
+  process.on("unhandledRejection", (reason, p) => {
+    log(`${reason} ${p}`, "ERROR", "red");
+  });
+  process.on("uncaughtException", (err, origin) => {
+    log(`${err} ${origin}`, "ERROR", "red");
+  });
+  process.on("uncaughtExceptionMonitor", (err, origin) => {
+    log(`${err} ${origin}`, "ERROR", "red");
+  });
 };

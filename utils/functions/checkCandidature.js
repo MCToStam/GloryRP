@@ -551,8 +551,6 @@ async function fetchNewCandidatures() {
           }
         });
 
-        if (!panel.candidature.save) panel.candidature.save = [];
-
         for (const cand of candidatures) {
           const existing = panel.candidature.save.find(
             (c) => c.lien === cand.lien,
@@ -571,6 +569,7 @@ async function fetchNewCandidatures() {
           `❌ Erreur fetch candidatures ${panel.candidature.lien}`,
           err.message,
         );
+        continue;
       }
     }
 
