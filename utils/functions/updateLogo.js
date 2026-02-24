@@ -1,10 +1,12 @@
 const fs = require("node:fs");
-const { getServerDatas } = require("../../utils/functions/datas.js");
+const { getServerDatas } = require("../../utils/functions/datas");
+const ServeurDiscord = require("../../database/models/ServeurDiscord");
 
 async function updateLogo(client, config) {
   const token = process.env.DISCORD_TOKEN;
-  const cachePath = "./data/logo/serveur.json";
-  const cache = JSON.parse(fs.readFileSync(cachePath, "utf8"));
+
+  const cacheDocs = await ServeurDiscord.find({});
+  const cache = new Map(cacheDocs.map((doc) => [doc.guildId, doc.serveur]));
 
   const guildsToKeep = new Set();
   const channelCache = new Map();
@@ -22,7 +24,6 @@ async function updateLogo(client, config) {
         body: JSON.stringify({ avatar: avatarBase64 }),
       },
     );
-
     return res.ok;
   }
 
@@ -58,7 +59,7 @@ async function updateLogo(client, config) {
       for (const guildId of guildIds) {
         guildsToKeep.add(guildId);
 
-        if (cache[guildId] === serveur) continue;
+        if (cache.get(guildId) === serveur) continue;
 
         const ok = await patchAvatar(
           guildId,
@@ -67,28 +68,40 @@ async function updateLogo(client, config) {
         );
 
         if (ok) {
-          cache[guildId] = serveur;
+          await ServeurDiscord.updateOne(
+            { guildId },
+            { serveur },
+            { upsert: true },
+          );
+          cache.set(guildId, serveur);
+          await new Promise((r) => setTimeout(r, 5000));
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error(`Erreur updateLogo serveur ${serveur}:`, e);
+    }
   }
 
   const allGuilds = await client.guilds.fetch();
 
   for (const [guildId] of allGuilds) {
-    if (!guildsToKeep.has(guildId) && cache[guildId]) {
+    if (!guildsToKeep.has(guildId) && cache.has(guildId)) {
       try {
-        const ok = await patchAvatar(guildId, null, "Suppression de l’avatar");
-
+        const ok = await patchAvatar(
+          guildId,
+          null,
+          "Suppression automatique du logo",
+        );
         if (ok) {
-          delete cache[guildId];
-          await new Promise((r) => setTimeout(r, 1500));
+          await ServeurDiscord.deleteOne({ guildId });
+          cache.delete(guildId);
+          await new Promise((r) => setTimeout(r, 5000));
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error(`Erreur suppression logo → ${guildId}:`, e);
+      }
     }
   }
-
-  fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2));
 }
 
 module.exports = { updateLogo };
