@@ -23,8 +23,10 @@ const {
 
 const { cycleStatus } = require("../../utils/functions/basics.js");
 const { zipAndUpload } = require("../../utils/functions/backupData.js");
+const connectMongo = require("../../utils/database/index.js");
 
 module.exports = async (client, interaction) => {
+  await connectMongo();
   const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
   chanCmds.send("**✅ | BOT ON !**");
 

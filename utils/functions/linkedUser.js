@@ -70,7 +70,7 @@ async function discordStaff(discordId, serveur = "all") {
 
     try {
       allStaff = JSON.parse(
-        fs.readFileSync("../../data/data/api_api_all_staff.json", "utf8"),
+        fs.readFileSync("../../data/data/api_all_staff.json", "utf8"),
       );
     } catch (fileErr) {
       console.error(
