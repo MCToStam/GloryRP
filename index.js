@@ -8,6 +8,7 @@ const { readdirSync, statSync } = require("node:fs");
 const pathModule = require("node:path");
 const { intents, partials } = require("./config");
 const log = require("./utils/modules/logger");
+const { connectMongo } = require("./utils/database/index");
 const botLaunch = [];
 const myIntents = new IntentsBitField();
 myIntents.add(intents);
@@ -35,6 +36,7 @@ client.container = {
 };
 
 const init = async () => {
+  await connectMongo();
   async function load(type, dirPath, typeLog) {
     function getFilesRecursively(dir) {
       let results = [];

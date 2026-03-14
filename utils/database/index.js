@@ -1,9 +1,18 @@
 const mongoose = require("mongoose");
-const log = require("../../util/module/log");
+const log = require("../../utils/modules/logger");
+
+let GloryProjectsConnection;
+let GloryRPConnection;
 
 async function connectMongo() {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    GloryProjectsConnection = await mongoose.createConnection(
+      process.env.MONGO_URI_GLORYPROJECTS,
+    );
+
+    GloryRPConnection = await mongoose.createConnection(
+      process.env.MONGO_URI_GLORYRP,
+    );
 
     log("MongoDB est correctement connecté", "READY", "green");
   } catch (err) {
@@ -11,4 +20,8 @@ async function connectMongo() {
   }
 }
 
-module.exports = connectMongo;
+module.exports = {
+  connectMongo,
+  getGloryProjectsConnection: () => GloryProjectsConnection,
+  getGloryRPConnection: () => GloryRPConnection,
+};

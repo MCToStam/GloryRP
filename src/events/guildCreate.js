@@ -1,8 +1,11 @@
-const { discordStaff } = require("../../utils/functions/linkedUser.js");
+const { discordStaff } = require("../../utils/functions/linkedUser");
+const updateServeurDB = require("../../utils/functions/updateServeurDB");
 const config = require("../../config.js");
 
 module.exports = async (client, guild) => {
   try {
+    await updateServeurDB(client);
+
     const auditLogs = await guild.fetchAuditLogs({
       limit: 1,
       type: 28,

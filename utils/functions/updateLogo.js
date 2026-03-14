@@ -1,6 +1,6 @@
 const fs = require("node:fs");
 const { getServerDatas } = require("../../utils/functions/datas");
-const ServeurDiscord = require("../../database/models/ServeurDiscord");
+const ServeurDiscord = require("../../utils/database/models/ServeurDiscord");
 
 async function updateLogo(client, config) {
   const token = process.env.DISCORD_TOKEN;
