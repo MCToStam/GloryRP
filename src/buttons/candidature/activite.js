@@ -14,7 +14,7 @@ module.exports = {
     name: "candidature_activite",
   },
 
-  async execute(client, interaction, config) {
+  async run(client, interaction, config) {
     const serveur = interaction.customId.split("-")[2];
     const joueur = interaction.customId.split("-")[1];
 

@@ -134,9 +134,15 @@ async function sendCandidatures(client, AllCandidatures) {
 
     const channelId = panel.channels.candidature;
 
-    const channel = await client.channels.fetch(channelId);
-
+    const channel = await client.channels.fetch(channelId).catch(() => null);
     if (!channel) continue;
+
+    const botMember = channel.guild?.members?.me;
+    if (botMember) {
+      const perms = channel.permissionsFor(botMember);
+      if (!perms?.has("ViewChannel") || !perms?.has("SendMessages")) continue;
+      if (channel.type === 15 && !perms?.has("CreatePublicThreads")) continue;
+    }
 
     try {
       const accentColor = candidature.badgeColor
@@ -152,29 +158,6 @@ async function sendCandidatures(client, AllCandidatures) {
           },
         },
       );
-
-      const responseDouble = await fetch(
-        `https://apiv2.nationsglory.fr/plugins/api/user/all/${candidature.auteur}/check_if_unique`,
-      );
-
-      const responsePunisher = await fetch(
-        `https://apiv2.nationsglory.fr/plugins/api/user/all/${candidature.auteur}/get_punisher/1`,
-      );
-
-      let doubleData = null;
-      let punisherData = null;
-
-      try {
-        doubleData = await responseDouble.text();
-      } catch (err) {
-        doubleData = null;
-      }
-
-      try {
-        punisherData = await responsePunisher.text();
-      } catch (err) {
-        punisherData = null;
-      }
 
       let data = null;
       try {
@@ -253,72 +236,11 @@ async function sendCandidatures(client, AllCandidatures) {
         );
       }
 
-      if (doubleData || punisherData) {
-        components.push({ type: 14, spacing: 1 });
-      }
-
-      if (doubleData) {
-        const cleanedDouble = doubleData
-          .split(/,|\/|;/)
-          .map((d) => d.trim())
-          .filter(
-            (d) =>
-              d &&
-              !["null", "undefined", "-", "aucun", "none"].includes(
-                d.toLowerCase(),
-              ),
-          );
-        components.push({
-          type: 10,
-          content: `👥 **Doubles Comptes :** ${
-            cleanedDouble.length > 0
-              ? cleanedDouble.join(", ")
-              : "Aucun double compte"
-          }`,
-        });
-      }
-
-      if (punisherData) {
-        const sanctions = punisherData
-          .split("###")
-          .map((s) => s.trim())
-          .filter((s) => s && s.startsWith("&7[&cPunisher&7]"));
-
-        if (sanctions.length > 0) {
-          const lastSanctionRaw = sanctions[0];
-          const match = lastSanctionRaw.match(
-            /&4(\w+)&7.*]&r\s+'(.+?)'\s+by &7([\w\d_]+)&r on &7(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/,
-          );
-
-          if (match) {
-            const [, type, reason, auteur, dateStr] = match;
-
-            const timestamp = Math.floor(
-              new Date(dateStr + "Z").getTime() / 1000,
-            );
-
-            components.push({
-              type: 10,
-              content: `🚫 **Dernière Sanction :** ${type} : ${reason} par ${await getEmojiTete(
-                client,
-                auteur,
-              )} ${auteur} <t:${timestamp}:R>`,
-            });
-          }
-        }
-      }
-
       components.push(
         { type: 14, spacing: 1 },
         {
           type: 1,
           components: [
-            {
-              type: 2,
-              custom_id: `candidature_punisher-${candidature.auteur}`,
-              label: "💢 Afficher le Punisher",
-              style: 1,
-            },
             {
               type: 2,
               custom_id: `candidature_activite-${candidature.auteur}-${serveur}`,
@@ -369,6 +291,8 @@ async function sendCandidatures(client, AllCandidatures) {
             components,
             flags: 32768,
           });
+          if (!sent) continue;
+
           candidature.messageId = sent.id;
           candidature.savedBadgeColor = candidature.badgeColor;
 
@@ -376,10 +300,12 @@ async function sendCandidatures(client, AllCandidatures) {
             name: `Candidature ${panel.name} - ${candidature.auteur}`,
           });
 
-          await thread.send({
-            components: [candidatureDetailsContainer],
-            flags: 32768,
-          });
+          if (thread) {
+            await thread.send({
+              components: [candidatureDetailsContainer],
+              flags: 32768,
+            });
+          }
         } else if (channel.type === 15) {
           const thread = await channel.threads.create({
             name: `Candidature ${panel.name} - ${candidature.auteur}`,
@@ -388,6 +314,7 @@ async function sendCandidatures(client, AllCandidatures) {
               flags: 32768,
             },
           });
+          if (!thread) continue;
 
           await thread.send({
             components: [candidatureDetailsContainer],
@@ -398,8 +325,10 @@ async function sendCandidatures(client, AllCandidatures) {
           if (thread.appliedMessage) {
             mainMessage = thread.appliedMessage;
           } else {
-            const fetched = await thread.messages.fetch({ limit: 1 });
-            mainMessage = fetched.first();
+            const fetched = await thread.messages
+              .fetch({ limit: 1 })
+              .catch(() => null);
+            mainMessage = fetched?.first() || null;
           }
 
           if (mainMessage) {
@@ -410,8 +339,6 @@ async function sendCandidatures(client, AllCandidatures) {
               "Impossible de récupérer le message principal du thread forum",
             );
           }
-        } else {
-          console.warn(`⚠️ Channel ${channelId} n'est ni texte ni forum.`);
         }
       } else if (
         candidature.messageId &&
@@ -531,23 +458,29 @@ async function fetchNewCandidatures() {
               (c) => c.lien === "https://nationsglory.fr" + lien,
             );
 
-            const candidatureObj = {
-              titre,
-              lien: "https://nationsglory.fr" + lien,
-              auteur,
-              timestamp,
-              badgeColor,
-              messageId: existing?.messageId || null,
-              savedBadgeColor: existing?.savedBadgeColor || badgeColor || null,
-            };
+            if (existing) {
+              existing.badgeColor = badgeColor;
+              existing.timestamp = timestamp;
 
-            candidatures.push(candidatureObj);
+              AllCandidatures.push({ serveur, panel, candidature: existing });
+            } else {
+              const candidatureObj = {
+                titre,
+                lien: "https://nationsglory.fr" + lien,
+                auteur,
+                timestamp,
+                badgeColor,
+                messageId: null,
+                savedBadgeColor: null,
+              };
 
-            AllCandidatures.push({
-              serveur: serveur,
-              panel: panel,
-              candidature: candidatureObj,
-            });
+              panel.candidature.save.push(candidatureObj);
+              AllCandidatures.push({
+                serveur,
+                panel,
+                candidature: candidatureObj,
+              });
+            }
           }
         });
 
