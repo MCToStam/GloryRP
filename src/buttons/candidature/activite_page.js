@@ -15,7 +15,7 @@ module.exports = {
     name: "candidature_activite_page",
   },
 
-  async execute(client, interaction, config) {
+  async run(client, interaction, config) {
     const serveur = await getGuildColor(interaction);
     const joueur = interaction.customId.split("/")[1];
     const semaineOffset = Number(interaction.customId.split("/")[2]);

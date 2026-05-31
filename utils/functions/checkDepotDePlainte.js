@@ -138,14 +138,8 @@ async function checkDepotDePlainte(client) {
 
       const channelId = panel.channels.depotdeplainte;
 
-      let channel;
-      try {
-        channel = await client.channels.fetch(channelId);
-      } catch (e) {}
-
-      if (!channel) {
-        continue;
-      }
+      const channel = await client.channels.fetch(channelId).catch(() => null);
+      if (!channel) continue;
 
       if (!Array.isArray(panel.depotdeplainte.save))
         panel.depotdeplainte.save = [];

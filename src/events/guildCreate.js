@@ -17,9 +17,9 @@ module.exports = async (client, guild) => {
 
     const { pseudonym, servers } = await discordStaff(inviter.id);
 
-    const logChannel = await client.channels.fetch(
-      config.log_channels.invitationBot,
-    );
+    const logChannel = await client.channels
+      .fetch(config.log_channels.invitationBot)
+      .catch(() => null);
 
     const sendLog = async (title, content, color = config.colors.success) => {
       if (!logChannel?.isTextBased()) return;

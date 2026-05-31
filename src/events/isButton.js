@@ -76,7 +76,9 @@ module.exports = async (client, interaction) => {
     }
     log(e, "error", "red");
 
-    const channel = await client.channels.fetch(config.log_channels.error);
+    const channel = await client.channels
+      .fetch(config.log_channels.error)
+      .catch(() => null);
 
     const errorLogContainer = {
       type: 17,
@@ -108,7 +110,9 @@ module.exports = async (client, interaction) => {
     });
   }
 
-  const channel = await client.channels.fetch(config.log_channels.button);
+  const channel = await client.channels
+    .fetch(config.log_channels.button)
+    .catch(() => null);
 
   const logContainer = {
     type: 17,
