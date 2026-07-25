@@ -10,7 +10,38 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/:token", async (req, res) => {
+const rateLimits = new Map();
+
+function rateLimit({ windowMs, max }) {
+  return (req, res, next) => {
+    const ip = req.ip;
+    const now = Date.now();
+
+    if (!rateLimits.has(ip)) {
+      rateLimits.set(ip, []);
+    }
+
+    const requests = rateLimits.get(ip).filter((time) => now - time < windowMs);
+
+    if (requests.length >= max) {
+      return res.status(429).json({
+        error: "Trop de requêtes, veuillez réessayer plus tard.",
+      });
+    }
+
+    requests.push(now);
+    rateLimits.set(ip, requests);
+
+    next();
+  };
+}
+
+const payementLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 1,
+});
+
+app.get("/:token", payementLimiter, async (req, res) => {
   const token = req.params.token;
 
   const tokens = JSON.parse(fs.readFileSync("./data/tokenApiPaiement.json"));

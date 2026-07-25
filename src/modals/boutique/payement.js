@@ -78,7 +78,10 @@ exports.run = async (client, interaction, config) => {
 
       if (!foundUser) {
         const suggestions = similarUsers
-          .map((user) => `- ${user.username.replace(/_/g, "\\_")}`)
+          .map(
+            (user) =>
+              `- ${user.username.replace(/\\/g, "\\\\").replace(/_/g, "\\_")}`,
+          )
           .join("\n");
 
         const description =

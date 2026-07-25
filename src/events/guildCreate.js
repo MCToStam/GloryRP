@@ -172,7 +172,7 @@ module.exports = async (client, guild) => {
       "## ✅ Accès Autorisé",
       `GloryRP a été invité par <@${
         inviter.id
-      }>.\n\n> Nom : ${guild.name.replace(/_/g, "\\_")}\n> Membres : ${
+      }>.\n\n> Nom : ${guild.name.replace(/\\/g, "\\\\").replace(/_/g, "\\_")}\n> Membres : ${
         guild.memberCount
       }\n> Propriétaire : <@${
         guild.ownerId
