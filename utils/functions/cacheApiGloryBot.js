@@ -8,10 +8,10 @@ async function cacheApiGloryBot() {
 
     const [getNgResponse, allStaffResponse] = await Promise.all([
       fetch(`${config.glorybot_url}/api/get-ng`, {
-        headers: { Authorization: `Bearer ${config.glorybot_token}` },
+        headers: { Authorization: `Bearer ${process.env.GLORYBOT_TOKEN}` },
       }),
       fetch(`${config.glorybot_url}/api/allStaff`, {
-        headers: { Authorization: `Bearer ${config.glorybot_token}` },
+        headers: { Authorization: `Bearer ${process.env.GLORYBOT_TOKEN}` },
       }),
     ]);
 

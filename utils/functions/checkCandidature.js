@@ -153,7 +153,7 @@ async function sendCandidatures(client, AllCandidatures) {
         `https://publicapi.nationsglory.fr/user/${candidature.auteur}`,
         {
           headers: {
-            Authorization: `Bearer ${config.ng_token}`,
+            Authorization: `Bearer ${process.env.NG_API_TOKEN}`,
             accept: "application/json",
           },
         },

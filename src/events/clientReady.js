@@ -22,7 +22,6 @@ const {
 } = require("../../utils/functions/cacheApiGloryBot.js");
 
 const { cycleStatus } = require("../../utils/functions/basics.js");
-const { zipAndUpload } = require("../../utils/functions/backupData.js");
 
 module.exports = async (client, interaction) => {
   const chanCmds = client.channels.cache.get(config.salon.dev.cmd);
@@ -113,7 +112,6 @@ module.exports = async (client, interaction) => {
 
   cron.schedule("0 0 * * *", async () => {
     await updateLogo(client, config);
-    zipAndUpload();
   });
 
   process.on("unhandledRejection", (reason, p) => {

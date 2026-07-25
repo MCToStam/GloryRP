@@ -57,7 +57,7 @@ async function discordStaff(discordId, serveur = "all") {
 
   try {
     const response = await fetch(`${config.glorybot_url}/api/allStaff`, {
-      headers: { Authorization: `Bearer ${config.glorybot_token}` },
+      headers: { Authorization: `Bearer ${process.env.GLORYBOT_TOKEN}` },
     });
 
     if (!response.ok) throw new Error("API non fonctionnelle");
